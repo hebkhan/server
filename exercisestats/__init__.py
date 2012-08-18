@@ -49,7 +49,7 @@ def enqueue_task(exid, start_dt, end_dt, cursor, uid, i):
         deferred.defer( fancy_stats_deferred, exid, start_dt, end_dt,
                         cursor, uid, i,
                         _name = task_name,
-                        _queue = 'fancy-exercise-stats-queue')
+                        _queue = 'slow-background-queue')
 
     except (taskqueue.TaskAlreadyExistsError, taskqueue.TombstonedTaskError):
         logging.info("Ignoring task named '%s' as it already exists", task_name)

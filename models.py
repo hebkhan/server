@@ -1691,7 +1691,7 @@ class TopicVersion(db.Model):
     def set_default_version(self):
         logging.info("starting set_default_version")
 
-        deferred.defer(apply_version_content_changes, self, _queue="topics-set-default-queue")
+        deferred.defer(apply_version_content_changes, self, _queue="slow-background-queue")
 
 def apply_version_content_changes(version):
     changes = VersionContentChange.all().filter('version =', version).fetch(10000)
@@ -1699,7 +1699,7 @@ def apply_version_content_changes(version):
     for change in changes:
         change.apply_change()
     logging.info("applied content changes")
-    deferred.defer(preload_library, version, _queue="topics-set-default-queue")
+    deferred.defer(preload_library, version, _queue="slow-background-queue")
 
 
 def preload_library(version):
@@ -1720,7 +1720,7 @@ def preload_library(version):
     templatetags.topic_browser("browse", version.number)
     templatetags.topic_browser("browse-fixed", version.number)
     logging.info("preloaded topic_browser")
-    deferred.defer(change_default_version, version, _queue="topics-set-default-queue")
+    deferred.defer(change_default_version, version, _queue="slow-background-queue")
     
 def change_default_version(version):
     default_version = TopicVersion.get_default_version()
@@ -1761,7 +1761,7 @@ def change_default_version(version):
     Setting.count_videos(len(vids) + len(urls))
     Video.approx_count(bust_cache=True)
 
-    deferred.defer(rebuild_content_caches, version, _queue="topics-set-default-queue")
+    deferred.defer(rebuild_content_caches, version, _queue="slow-background-queue")
 
 
 def rebuild_content_caches(version):
