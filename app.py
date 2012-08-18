@@ -17,7 +17,7 @@ class App(object):
     root = os.path.dirname(__file__)
     is_dev_server = os.environ["SERVER_SOFTWARE"].startswith('Development')
 
-    offline_mode = True
+    offline_mode = False
 
 for attr in [
     'facebook_app_id',
