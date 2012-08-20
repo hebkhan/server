@@ -17,6 +17,9 @@ class App(object):
     root = os.path.dirname(__file__)
     is_dev_server = os.environ["SERVER_SOFTWARE"].startswith('Development')
 
+    domain = "hebkhan.appspot.com"
+    realm = "http://hebkhan.appspot.com"
+
     offline_mode = False
 
 for attr in [
