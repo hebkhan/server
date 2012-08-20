@@ -165,7 +165,7 @@ def check_secrets():
 
     # Try to find the beginning of our production facebook app secret
     # to verify deploy is being sent from correct directory.
-    regex = re.compile("^facebook_app_secret = '050c.+'$", re.MULTILINE)
+    regex = re.compile("^facebook_app_secret = '4362.+'$", re.MULTILINE)
     return regex.search(content)
 
 def check_deps():
@@ -200,8 +200,9 @@ def prime_cache(version):
         resp = urllib2.urlopen("http://%s.%s.appspot.com/api/v1/topics/library/compact" % (version, get_app_id()))
         resp.read()
         print "Primed cache"
-    except:
+    except urllib2.HTTPError, e:
         print "Error when priming cache"
+        print e.read()
 
 def open_browser_to_ka_version(version):
     webbrowser.open("http://%s.%s.appspot.com" % (version, get_app_id()))
