@@ -549,6 +549,7 @@ class RequestHandler(object):
         try:
             return method(*args, **kwargs)
         except Exception, e:
+            logging.exception("Exception in method: %s", method)
             return self.handle_exception(e, self.app.debug)
 
     def error(self, code):
