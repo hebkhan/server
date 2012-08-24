@@ -16,4 +16,11 @@ def get():
     if SHARED_APP is None:
         SHARED_APP = webapp2.WSGIApplication(debug=App.is_dev_server)
 
+
+    from pprint import pformat
+    import os
+    logging.info("ENVIRON:\n%s\n\n", pformat(dict(os.environ)))
+    logging.info("APP:\n%s\n\n", pformat(dict(vars(App))))
+    logging.info("JINJA2:\n%s\n\n", pformat(config_jinja.jinja2.default_config))
+
     return jinja2.get_jinja2(app=SHARED_APP)

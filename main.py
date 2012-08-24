@@ -476,7 +476,8 @@ class MobileOAuthLogin(request_handler.RequestHandler):
 class PostLogin(request_handler.RequestHandler):
     def get(self):
         cont = self.request_string('continue', default = "/")
-
+        from xiv.pyutils import xpdb
+        xpdb.set_trace()
         # Immediately after login we make sure this user has a UserData entity
         user_data = UserData.current()
         if user_data:
@@ -949,6 +950,9 @@ application = GAEBingoWSGIMiddleware(application)
 application = request_cache.RequestCacheMiddleware(application)
 
 def main():
+    if not models.Topic.all().count(1):
+        logging.warning("Inserting top level topic")
+        models.Topic.insert("Top Level")
     if os.environ["SERVER_NAME"] == "smarthistory.khanacademy.org":
         run_wsgi_app(applicationSmartHistory)
     else:
