@@ -2354,7 +2354,7 @@ class Topic(Searchable, db.Model):
             if parent is not None:
                 version = parent.version
             else:
-                version = TopicVersion.get_edit_version()
+                version = TopicVersion.get_edit_version() or TopicVersion.create_edit_version()
 
         if version.default:
             raise Exception("You can't edit the default version")
