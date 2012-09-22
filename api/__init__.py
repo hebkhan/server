@@ -52,7 +52,7 @@ def is_current_api_version(xsrf_token):
 
     delims = xsrf_token.split("_")
     if len(delims) != 3 or delims[0] != XSRF_API_VERSION:
-        logging.warning("Out of date API version detected: %s" % (delims[0]))
+        logging.warning("Out of date API version detected: %s != %s" % (XSRF_API_VERSION, delims[0]))
         return False
 
     return True
