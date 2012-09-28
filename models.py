@@ -1617,11 +1617,6 @@ class TopicVersion(db.Model):
     @staticmethod
     def get_default_version():
         version = TopicVersion.all().filter("default = ", True).get()
-        if not version:
-            logging.warning("No default version - creating new")
-            version = TopicVersion.create_new_version()
-            version.default = True
-            version.put()
         return version
 
     @staticmethod
