@@ -2030,9 +2030,10 @@ class Topic(Searchable, db.Model):
     @staticmethod
     def get_new_id(parent, title, version):       
         potential_id = title.lower()
-        potential_id = re.sub('[^a-z0-9]', '-', potential_id);
-        potential_id = re.sub('-+$', '', potential_id)  # remove any trailing dashes (see issue 1140)
-        potential_id = re.sub('^-+', '', potential_id)  # remove any leading dashes (see issue 1526)
+        potential_id = re.compile("[\W_]", re.UNICODE).sub('-', potential_id);
+        # remove any trailing dashes (see issue 1140)
+        # remove any leading dashes (see issue 1526)
+        potential_id.strip("-")
 
         if potential_id[0].isdigit():
             potential_id = parent.id + "-" + potential_id

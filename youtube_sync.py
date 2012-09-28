@@ -41,9 +41,9 @@ def youtube_get_video_data_dict(youtube_id):
         video_data["description"] = (video.media.description.text or '').decode('utf-8')
         video_data["keywords"] = (video.media.keywords.text or '').decode('utf-8')
 
-        potential_id = re.sub('[^a-z0-9]', '-', video_data["title"].lower());
-        potential_id = re.sub('-+$', '', potential_id)  # remove any trailing dashes (see issue 1140)
-        potential_id = re.sub('^-+', '', potential_id)  # remove any leading dashes (see issue 1526)                        
+        potential_id = video_data["title"].lower()
+        potential_id = re.compile("[\W_]", re.UNICODE).sub('-', potential_id);
+        potential_id = potential_id.strip("-")
 
         number_to_add = 0
         current_id = potential_id

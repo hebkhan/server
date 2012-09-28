@@ -102,7 +102,7 @@ class ViewVideo(request_handler.RequestHandler):
         topic = None
         video_id = self.request.get('v')
         topic_id = self.request_string('topic', default="")
-        readable_id = urllib.unquote(readable_id)
+        readable_id = urllib.unquote(readable_id).decode("utf-8")
         readable_id = re.sub('-+$', '', readable_id)  # remove any trailing dashes (see issue 1140)
 
         # If either the readable_id or topic title is missing,
