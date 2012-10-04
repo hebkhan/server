@@ -14,6 +14,7 @@ from google.appengine.ext import db
 
 from models import Setting, Video, Playlist, VideoPlaylist, Topic
 import request_handler
+import hashlib
 
 def youtube_get_video_data_dict(youtube_id):
     yt_service = gdata.youtube.service.YouTubeService()
@@ -41,9 +42,12 @@ def youtube_get_video_data_dict(youtube_id):
         video_data["description"] = (video.media.description.text or '').decode('utf-8')
         video_data["keywords"] = (video.media.keywords.text or '').decode('utf-8')
 
-        potential_id = video_data["title"].lower()
-        potential_id = re.compile("[\W_]", re.UNICODE).sub('-', potential_id);
-        potential_id = potential_id.strip("-")
+        potential_id = re.sub('[^a-z0-9]', '-', video_data["title"].lower());
+        potential_id = re.sub('-+$', '', potential_id)  # remove any trailing dashes (see issue 1140)
+        potential_id = re.sub('^-+', '', potential_id)  # remove any leading dashes (see issue 1526)
+        
+        if not potential_id:
+            potential_id = "topic-%s" % hashlib.md5(video_data['title']).hexdigest()[:6]
 
         number_to_add = 0
         current_id = potential_id
