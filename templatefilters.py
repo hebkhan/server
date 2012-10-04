@@ -95,9 +95,8 @@ def column_height(list_item_index, column_breakpoints):
 def slugify(value):
     # Just like Django's version of slugify
     "Converts to lowercase, removes non-alpha chars and converts spaces to hyphens"
-    
-    value = re.compile("[\W_]", re.UNICODE).sub(' ', value.lower())
-    return "-".join(value.strip().split())
+    value = re.sub('[^\w\s-]', '', value).strip().lower()
+    return re.sub('[-\s]+', '-', value)
 
 def mygetattr(obj, name):
     return getattr(obj, name)

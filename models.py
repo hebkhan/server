@@ -2033,7 +2033,7 @@ class Topic(Searchable, db.Model):
         potential_id = re.compile("[\W_]", re.UNICODE).sub('-', potential_id);
         # remove any trailing dashes (see issue 1140)
         # remove any leading dashes (see issue 1526)
-        potential_id = potential_id.replace(":","-").strip("-")
+        potential_id.strip("-")
 
         if potential_id[0].isdigit():
             potential_id = parent.id + "-" + potential_id

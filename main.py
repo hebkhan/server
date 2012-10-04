@@ -149,7 +149,7 @@ class ViewVideo(request_handler.RequestHandler):
             if exid:
                 qs['exid'] = exid
 
-            urlpath = "/video/%s" % urllib.quote(readable_id.encode("utf-8"))
+            urlpath = "/video/%s" % urllib.quote(readable_id)
             url = urlparse.urlunparse(('', '', urlpath, '', urllib.urlencode(qs), ''))
             self.redirect(url, True)
             return
