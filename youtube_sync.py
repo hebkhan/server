@@ -79,13 +79,13 @@ def youtube_get_video_data(video):
 
 class YouTubeSyncStep:
     START = 0
-#    UPDATE_VIDEO_AND_PLAYLIST_DATA = 1 # Sets all VideoPlaylist.last_live_association_generation = Setting.last_youtube_sync_generation_start
+    UPDATE_VIDEO_AND_PLAYLIST_DATA = 1 # Sets all VideoPlaylist.last_live_association_generation = Setting.last_youtube_sync_generation_start
 #    UPDATE_VIDEO_AND_PLAYLIST_READABLE_NAMES = 2
 #    COMMIT_LIVE_ASSOCIATIONS = 3 # Put entire set of video_playlists in bulk according to last_live_association_generation
 #    INDEX_VIDEO_DATA = 4
 #    INDEX_PLAYLIST_DATA = 5
-#    REGENERATE_LIBRARY_CONTENT = 6
-    UPDATE_FROM_TOPICS = 1
+    REGENERATE_LIBRARY_CONTENT = 6
+    UPDATE_FROM_TOPICS = 7
 
 class YouTubeSyncStepLog(db.Model):
     step = db.IntegerProperty()
@@ -115,8 +115,8 @@ class YouTubeSync(request_handler.RequestHandler):
 
         if step == YouTubeSyncStep.START:
             self.startYouTubeSync()
-#        elif step == YouTubeSyncStep.UPDATE_VIDEO_AND_PLAYLIST_DATA:
-#            self.updateVideoAndPlaylistData()
+        elif step == YouTubeSyncStep.UPDATE_VIDEO_AND_PLAYLIST_DATA:
+            self.updateVideoAndPlaylistData()
 #        elif step == YouTubeSyncStep.UPDATE_VIDEO_AND_PLAYLIST_READABLE_NAMES:
 #            self.updateVideoAndPlaylistReadableNames()
 #        elif step == YouTubeSyncStep.COMMIT_LIVE_ASSOCIATIONS:
@@ -161,15 +161,15 @@ class YouTubeSync(request_handler.RequestHandler):
         association_generation = int(Setting.last_youtube_sync_generation_start())
 
         playlist_start_index = 1
-        playlist_feed = yt_service.GetYouTubePlaylistFeed(uri='http://gdata.youtube.com/feeds/api/users/khanacademy/playlists?start-index=%s&max-results=50' % playlist_start_index)
+        playlist_feed = yt_service.GetYouTubePlaylistFeed(uri='http://gdata.youtube.com/feeds/api/users/KhanAcademyHebrew/playlists?start-index=%s&max-results=50' % playlist_start_index)
 
         while len(playlist_feed.entry) > 0:
 
             for playlist in playlist_feed.entry:
 
                 self.response.out.write('<p>Playlist  ' + playlist.id.text)
-                playlist_id = playlist.id.text.replace('http://gdata.youtube.com/feeds/api/users/khanacademy/playlists/', '')
-                playlist_uri = playlist.id.text.replace('users/khanacademy/', '')
+                playlist_id = playlist.id.text.replace('http://gdata.youtube.com/feeds/api/users/KhanAcademyHebrew/playlists/', '')
+                playlist_uri = playlist.id.text.replace('users/KhanAcademyHebrew/', '')
                 query = Playlist.all()
                 query.filter('youtube_id =', playlist_id)
                 playlist_data = query.get()
@@ -177,8 +177,8 @@ class YouTubeSync(request_handler.RequestHandler):
                     playlist_data = Playlist(youtube_id=playlist_id)
                     self.response.out.write('<p><strong>Creating Playlist: ' + playlist.title.text + '</strong>')
                 playlist_data.url = playlist_uri
-                playlist_data.title = playlist.title.text
-                playlist_data.description = playlist.description.text
+                playlist_data.title = playlist.title.text.decode("utf-8")
+                playlist_data.description = playlist.description.text.decode("utf-8")
 
                 playlist_data.tags = []
                 for category in playlist.category:
@@ -249,7 +249,7 @@ class YouTubeSync(request_handler.RequestHandler):
             # Check next set of playlists
 
             playlist_start_index += 50
-            playlist_feed = yt_service.GetYouTubePlaylistFeed(uri='http://gdata.youtube.com/feeds/api/users/khanacademy/playlists?start-index=%s&max-results=50' % playlist_start_index)
+            playlist_feed = yt_service.GetYouTubePlaylistFeed(uri='http://gdata.youtube.com/feeds/api/users/KhanAcademyHebrew/playlists?start-index=%s&max-results=50' % playlist_start_index)
 
     def updateVideoAndPlaylistReadableNames(self):
         # Makes sure every video and playlist has a unique "name" that can be used in URLs
