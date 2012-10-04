@@ -145,8 +145,6 @@ class YouTubeSync(request_handler.RequestHandler):
         Setting.last_youtube_sync_generation_start(int(Setting.last_youtube_sync_generation_start()) + 1)
 
     def updateVideoAndPlaylistData(self):
-        self.response.out.write('<html>')
-
         yt_service = gdata.youtube.service.YouTubeService()
 
         # Now that we run these queries from the App Engine servers, we need to 
@@ -160,14 +158,15 @@ class YouTubeSync(request_handler.RequestHandler):
 
         association_generation = int(Setting.last_youtube_sync_generation_start())
 
+        logging.info("Fetching playlists")
         playlist_start_index = 1
         playlist_feed = yt_service.GetYouTubePlaylistFeed(uri='http://gdata.youtube.com/feeds/api/users/KhanAcademyHebrew/playlists?start-index=%s&max-results=50' % playlist_start_index)
 
         while len(playlist_feed.entry) > 0:
 
             for playlist in playlist_feed.entry:
+                logging.info("Playlist: %s", playlist.id.text)
 
-                self.response.out.write('<p>Playlist  ' + playlist.id.text)
                 playlist_id = playlist.id.text.replace('http://gdata.youtube.com/feeds/api/users/KhanAcademyHebrew/playlists/', '')
                 playlist_uri = playlist.id.text.replace('users/KhanAcademyHebrew/', '')
                 query = Playlist.all()
@@ -175,7 +174,7 @@ class YouTubeSync(request_handler.RequestHandler):
                 playlist_data = query.get()
                 if not playlist_data:
                     playlist_data = Playlist(youtube_id=playlist_id)
-                    self.response.out.write('<p><strong>Creating Playlist: ' + playlist.title.text + '</strong>')
+                    logging.info('Creating Playlist: %s', playlist.title.text)
                 playlist_data.url = playlist_uri
                 playlist_data.title = playlist.title.text.decode("utf-8")
                 playlist_data.description = playlist.description.text.decode("utf-8")
@@ -203,10 +202,11 @@ class YouTubeSync(request_handler.RequestHandler):
                         video_data = None
                         if video_youtube_id_dict.has_key(video_id):
                             video_data = video_youtube_id_dict[video_id]
+                            logging.info('Found Video: %s (%s)', video.media.title.text.decode('utf-8'), video_id)
                         
                         if not video_data:
                             video_data = Video(youtube_id=video_id)
-                            self.response.out.write('<p><strong>Creating Video: ' + video.media.title.text.decode('utf-8') + '</strong>')
+                            logging.info('Creating Video: %s (%s)', video.media.title.text.decode('utf-8'), video_id)
 
                         video_data.title = video.media.title.text.decode('utf-8')
                         video_data.url = video.media.player.url.decode('utf-8')
@@ -238,9 +238,9 @@ class YouTubeSync(request_handler.RequestHandler):
 
                         if not playlist_video:
                             playlist_video = VideoPlaylist(playlist=playlist_data.key(), video=video_data.key())
-                            self.response.out.write('<p><strong>Creating VideoPlaylist(' + playlist_data.title + ',' + video_data.title + ')</strong>')
+                            logging.info('Creating VideoPlaylist: %s, %s', playlist_data.title, video_data.title)
                         else:
-                            self.response.out.write('<p>Updating VideoPlaylist(' + playlist_video.playlist.title + ',' + playlist_video.video.title + ')')
+                            logging.info('Updating VideoPlaylist: %s, %s', playlist_video.playlist.title, playlist_video.video.title)
                         playlist_video.last_live_association_generation = association_generation
                         playlist_video.video_position = int(video_data.position.text)
                         playlist_videos.append(playlist_video)
