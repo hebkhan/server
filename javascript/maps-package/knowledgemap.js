@@ -619,7 +619,7 @@ function KnowledgeMap(params) {
 
         // ensure blank elements take up the right amount of space
         var createEl = function() {
-            return $("<div>", {'class': 'exercise-badge'});
+            return $("<div>", {'class': this.admin ? 'exercise-edit' : 'exercise-badge'});
         };
 
         _.each(this.exercisesByName, function(exerciseModel) {
@@ -745,7 +745,7 @@ function KnowledgeMap(params) {
 
             if (row.visible) {
                 // only actually inflate if it's going to be on screen
-                if (renderedHeight < screenHeight) {
+                if (this.admin || renderedHeight < screenHeight) {
                     if (!row.inflated) {
                         row.inflate();
                     }
