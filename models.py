@@ -124,6 +124,7 @@ class Setting(db.Model):
 class Exercise(db.Model):
 
     name = db.StringProperty()
+    display_name = db.StringProperty(default="")
     short_display_name = db.StringProperty(default="")
     prerequisites = db.StringListProperty()
     covers = db.StringListProperty()
@@ -186,9 +187,9 @@ class Exercise(db.Model):
             return name.replace('_', ' ').capitalize()
         return ""
 
-    @property
-    def display_name(self):
-        return Exercise.to_display_name(self.name)
+#    @property
+#    def display_name(self):
+#        return Exercise.to_display_name(self.name)
 
     # The number of "sub-bars" in a summative (equivalently, # of save points + 1)
     @property

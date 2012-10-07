@@ -642,6 +642,7 @@ class EditExercise(request_handler.RequestHandler):
             for exercise in exercises:
                 if exercise.name == exercise_name:
                     main_exercise = exercise
+                    break
 
 
             exercise_videos = main_exercise.related_videos_query().fetch(50)
@@ -663,6 +664,7 @@ class UpdateExercise(request_handler.RequestHandler):
         user = dict.get("user") or (current_user and current_user.user)
 
         exercise_name = dict["name"]
+        display_name = dict.get("display_name") or models.Exercise.to_display_name(exercise_name)
 
         query = models.Exercise.all()
         query.filter('name =', exercise_name)
@@ -677,6 +679,7 @@ class UpdateExercise(request_handler.RequestHandler):
 
         exercise.prerequisites = dict["prerequisites"] 
         exercise.covers = dict["covers"]
+        exercise.display_name = display_name
 
         if "v_position" in dict:
             exercise.v_position = int(dict["v_position"])
@@ -781,6 +784,7 @@ class UpdateExercise(request_handler.RequestHandler):
         dict["summative"] = self.request_bool('summative', default=False)
         dict["v_position"] = self.request.get('v_position')
         dict["h_position"] = self.request.get('h_position')
+        dict["display_name"] = self.request.get('display_name')
         dict["short_display_name"] = self.request.get('short_display_name')
         dict["live"] = self.request_bool("live", default=False)
 
