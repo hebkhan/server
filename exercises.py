@@ -2,9 +2,11 @@ import re
 import os
 import hashlib
 import urllib
+import logging
 
 from google.appengine.ext import db
 from google.appengine.ext import deferred
+from google.appengine.api import taskqueue, urlfetch
 
 import datetime
 import models
@@ -248,8 +250,8 @@ class ViewExercise(request_handler.RequestHandler):
                 'Hints or Show Solution Nov 5'),
             'reviews_left_count': reviews_left_count if review_mode else "null",
         }
-
         self.render_jinja2_template("exercise_template.html", template_values)
+
 
 def exercise_graph_dict_json(user_data, admin=False):
     user_exercise_graph = models.UserExerciseGraph.get(user_data)
@@ -657,7 +659,8 @@ class UpdateExercise(request_handler.RequestHandler):
     
     @staticmethod
     def do_update(dict):
-        user = models.UserData.current().user
+        current_user = models.UserData.current()
+        user = dict.get("user") or (current_user and current_user.user)
 
         exercise_name = dict["name"]
 
@@ -668,7 +671,8 @@ class UpdateExercise(request_handler.RequestHandler):
             exercise = models.Exercise(name=exercise_name)
             exercise.prerequisites = []
             exercise.covers = []
-            exercise.author = user
+            if user:
+                exercise.author = user
             exercise.summative = dict["summative"]
 
         exercise.prerequisites = dict["prerequisites"] 
@@ -682,6 +686,9 @@ class UpdateExercise(request_handler.RequestHandler):
 
         if "short_display_name" in dict:
             exercise.short_display_name = dict["short_display_name"]
+
+        if "description" in dict:
+            exercise.description = dict["description"]
 
         exercise.live = dict["live"]
 
@@ -803,3 +810,58 @@ class UpdateExercise(request_handler.RequestHandler):
         self.do_update(dict)
 
         self.redirect('/editexercise?saved=1&name=' + dict["name"])
+
+
+
+class SyncExercises(request_handler.RequestHandler):
+
+    def get(self):
+
+        if self.request_bool("start", default = False):
+            taskqueue.add(url='/admin/exercisesync', queue_name='slow-background-queue')
+            self.response.out.write("Sync started")
+        else:
+            self.response.out.write("<br/><a href='/admin/exercisesync?start=1'>Start New Sync</a>")
+
+    def post(self):
+        # Protected for admins only by app.yaml so taskqueue can hit this URL
+        self.syncExercises()
+
+    def syncExercises(self):
+        khan_url = "http://www.khanacademy.org/api/v1/exercises"
+        logging.info("Fetching from: %s", khan_url)
+        try:
+            result = urlfetch.fetch(khan_url, deadline=30)
+            khan_exercises = json.loads(result.content)
+        except:
+            logging.exception("Failed fetching smarthistory video list")
+            return
+
+        exercises_dir = os.path.join(os.path.dirname(__file__), "khan-exercises/exercises")
+
+        available_exercises = set(os.path.basename(p)[:-5] for p in os.listdir(exercises_dir) if p.endswith(".html"))
+        logging.debug("Found exercise files:\n%s", "\n".join(sorted(available_exercises)))
+
+        #existing_exercises = set(e.name for e in models.Exercise.all())
+
+        keys = ["name", "summative", "live", "v_position", "h_position",
+                "short_display_name", "covers", "description", "prerequisites"]
+        c = 0
+        for exercise in khan_exercises:
+            name = exercise['name']
+            if not (exercise['summative'] or name in available_exercises):
+                logging.warning("We don't have exercise '%s'", name)
+                continue
+            d = dict((k, exercise[k]) for k in keys if k in exercise)
+            d['user'] = None
+            try:
+                contents = raw_exercise_contents("%s.html" % name)
+                title = re.search("<title>(.*)</title>", contents).groups()[0]
+                d['display_name'] = title.decode("utf-8")
+            except:
+                logging.exception("Could not get title for '%s'", name)
+            else:
+                logging.info("Updating '%s'", name)
+            UpdateExercise.do_update(d)
+            c+=1
+        logging.info("Added %s exercises", c)
