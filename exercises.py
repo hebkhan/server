@@ -358,7 +358,7 @@ def exercise_template():
 
     if f:
         try:
-            contents = f.read()
+            contents = f.read().decode("utf-8")
         finally:
             f.close()
 
@@ -388,7 +388,7 @@ def exercise_contents(exercise):
     list_style_contents = re_style_contents.findall(contents)
     style_contents = "\n".join(list_style_contents)
 
-    sha1 = hashlib.sha1(contents).hexdigest()
+    sha1 = hashlib.sha1(contents.decode("utf-8").encode("ascii", "replace")).hexdigest()
 
     if not len(body_contents):
         raise MissingExerciseException("Missing exercise body in content for exid '%s'" % exercise.name)
