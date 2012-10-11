@@ -30,7 +30,7 @@
     </ul></div>
     <div class="clear"></div>
 
-    <div id="real_fb_button" style="display: none;"><fb:login-button></fb:login-button></div>
+    <div id="real_fb_button" style="display: none;"></div>
 
     <h5 style="margin:18px 0 0 0;">Don't have an account yet?</h5>
     <div>
@@ -57,7 +57,7 @@ $("#login-google").click(function(e) {
     $("#login-form").submit();
 });
 $("#login-facebook").click(function(e) {
-    $("#real_fb_button a").click();
+    FacebookHook.doLogin();
 });
 </script>
 {% endblock bottompagescript %}
