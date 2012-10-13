@@ -12,7 +12,7 @@ import facebook
 import layer_cache
 import request_cache
 
-FACEBOOK_ID_PREFIX = "http://facebookid.khanacademy.org/"
+FACEBOOK_ID_PREFIX = "http://facebookid.hebrewkhan.org/"
 
 def is_facebook_user_id(user_id):
     return user_id.startswith(FACEBOOK_ID_PREFIX)

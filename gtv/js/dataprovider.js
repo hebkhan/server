@@ -203,7 +203,7 @@ gtv.jq.DataProvider.prototype.getData = function(processVideos) {
 */
 
 
-    $.getJSON('http://www.khanacademy.org/api/v1/playlists/library', function(data) {
+    $.getJSON('http://www.hebrewkhan.org/api/v1/playlists/library', function(data) {
       processVideos(data);
     });
 

@@ -26,11 +26,11 @@ function submitForm(value)
         {% block submitted_the_issue %}submitted the issue{% endblock submitted_the_issue %}
         and you can simply vote for it by turning on <b>the star next to it</b> in
         the
-        {% block list_of_issues_link %}<a href="http://code.google.com/p/khanacademy/issues/list?can=2&q=Status:Accepted,Started%20Type:Defect&sort=-stars&colspec=Summary">list of known problems</a>{% endblock list_of_issues_link %}.
+        {% block list_of_issues_link %}<a href="http://code.google.com/p/hebrewkhan/issues/list?can=2&q=Status:Accepted,Started%20Type:Defect&sort=-stars&colspec=Summary">list of known problems</a>{% endblock list_of_issues_link %}.
         Otherwise, please use the following steps to create a new issue in our issue tracking system.
 	<ol>
 		<li>Go to the
-	        {% block new_issue_link %}<a href="http://code.google.com/p/khanacademy/issues/entry?template=Defect%20report%20from%20user&labels=Referer-{{referer|urlencode}},Type-Defect,{{issues_label|urlencode}}">new problem form</a>{% endblock new_issue_link %}.
+	        {% block new_issue_link %}<a href="http://code.google.com/p/hebrewkhan/issues/entry?template=Defect%20report%20from%20user&labels=Referer-{{referer|urlencode}},Type-Defect,{{issues_label|urlencode}}">new problem form</a>{% endblock new_issue_link %}.
 		</li>
 		<li>Fill in the <b>Summary</b> and <b>Description</b> fields. <span style="color: red; font-size: 12px;"/>Note: The information you provide will become public, so do not include any private or confidential information.</span></li>
 		<li>Click the <b>Submit Issue</b> button.</li>

@@ -4,9 +4,9 @@ import logging
 import shared_jinja
 
 SITE_TAGLINE = "Trying to make a world-class education available to anyone, anywhere."
-BASE_VIDEO_URL = "http://khanacademy.org/video?v=%s"
-BASE_EXERCISE_URL = "http://khanacademy.org/exercisedashboard"
-BASE_BADGE_URL = "http://khanacademy.org/"
+BASE_VIDEO_URL = "http://hebrewkhan.org/video?v=%s"
+BASE_EXERCISE_URL = "http://hebrewkhan.org/exercisedashboard"
+BASE_BADGE_URL = "http://hebrewkhan.org/"
 
 def facebook_share_badge(desc, icon, extended_desc, activity, event_description=None):
     context = {}

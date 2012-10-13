@@ -8,7 +8,7 @@ import models
 from cookie_util import set_request_cookie
 
 # TODO: consolidate this with the constants in models.py:UserData
-PHANTOM_ID_EMAIL_PREFIX = "http://nouserid.khanacademy.org/"
+PHANTOM_ID_EMAIL_PREFIX = "http://nouserid.hebrewkhan.org/"
 PHANTOM_MORSEL_KEY = 'ureg_id'
 
 def is_phantom_id(user_id):

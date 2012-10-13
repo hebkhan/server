@@ -886,7 +886,7 @@ class NicknameIndex(db.Model):
         q.filter("index_value =", nicknames.build_search_query(raw_query))
         return list(set([entry.parent_key() for entry in q]))
 
-PRE_PHANTOM_EMAIL = "http://nouserid.khanacademy.org/pre-phantom-user-2"
+PRE_PHANTOM_EMAIL = "http://nouserid.hebrewkhan.org/pre-phantom-user-2"
 
 class UserData(GAEBingoIdentityModel, db.Model):
     # Canonical reference to the user entity. Avoid referencing this directly

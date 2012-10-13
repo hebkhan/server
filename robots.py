@@ -8,8 +8,7 @@ class RobotsTxt(RequestHandler):
         self.response.write("User-agent: *\n")
 
         visible_domains = [
-            'www.khanacademy.org',
-            'smarthistory.khanacademy.org',
+            'www.hebrewkhan.org',
         ]
 
         if os.environ['SERVER_NAME'] in visible_domains:
