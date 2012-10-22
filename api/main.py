@@ -12,7 +12,6 @@ from gae_bingo import middleware
 from api import api_app
 from api import api_request_class #@UnusedImport
 from api import auth #@UnusedImport
-from api import v0 #@UnusedImport
 from api import v1 #@UnusedImport
 
 def real_main():
