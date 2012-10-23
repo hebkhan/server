@@ -14,12 +14,12 @@
 #video_menu ol {
     z-index: 2;
     position: absolute;
-    right: 3px;
+    left: 3px;
     top: 5px;
 }
 #video_dropdown ol {
     max-height: 20em;
-    padding-left: 3em;
+    padding-right: 3em;
     overflow-y: auto;
     overflow-x: hidden;
     list-style: outside decimal;
@@ -35,10 +35,10 @@
 #video_dropdown .ui-button-text, #video_dropdown .ui-menu-item a {
     font-weight: normal;
     line-height: inherit;
-    padding: 0px 25px 0px 1ex;
+    padding: 0px 1ex 0px 25px;
 }
 #video_dropdown .ui-menu-item a {
-    padding: 0px 25px 0px 0px;
+    padding: 0px 0px 0px 25px;
 }
 #video_dropdown a:visited {
     color: #DD6900;
@@ -58,29 +58,29 @@
 }
 #prev_video {
     display: block;
-    float: left;
-    margin-right: 1em;
-    text-align: left;
-    background: url(/images/list-item-black-left.png) no-repeat 0 6px;
-    padding-left: 10px;
-}
-    #prev_video a .vid-progress {
-        margin-left: 5px;
-    }
-#topics {
-    display: block;
-    float: left;
-}
-#next_video {
-    display: block;
     float: right;
     margin-left: 1em;
     text-align: right;
     background: url(/images/list-item-black.png) no-repeat 100% 6px;
     padding-right: 10px;
 }
+    #prev_video a .vid-progress {
+        margin-right: 5px;
+    }
+#topics {
+    display: block;
+    float: right;
+}
+#next_video {
+    display: block;
+    float: left;
+    margin-right: 1em;
+    text-align: left;
+    background: url(/images/list-item-black-left.png) no-repeat 0 6px;
+    padding-left: 10px;
+}
     #next_video a .vid-progress {
-          margin: 0 3px 0 2px;
+          margin: 3px 0 0 2px;
       }
 
 #youtube_blocked {
@@ -128,12 +128,12 @@
 }
 .subtitles-warning {
     display: none;
-    margin-left: 256px;
-    padding-left: 8px;
+    margin-right: 256px;
+    padding-right: 8px;
     padding-top: 0px;
     position: absolute;
     bottom: -33px;
-    right: 0px;
+    left: 0px;
 }
 .extra-link-bar .more-content {
     display: none;
@@ -141,7 +141,7 @@
 }
 .extra-link-bar a {
     color: #069;
-    margin-left: 5px;
+    margin-right: 5px;
 }
 .simple-button.with-icon.download-icon img { top: 5px; }
 
@@ -150,20 +150,20 @@
 }
 .extra-link-bar .sharepop {
 	position:absolute;
-	float:right;
+	float:left;
 	top:30px;
-	left:auto;
-	right:-4px;
+	right:auto;
+	left:-4px;
 	padding:0px;
 	z-index:30;
 }
 
 .extra-link-bar {
-	float:right;
+	float:left;
 	position:relative;
 	top: 1px;
 }
-.video_extra_links {float:right;}
+.video_extra_links {float:left;}
 
 .sticky_note_content h2 {
     margin-bottom: 18px;
@@ -179,11 +179,11 @@
 
 .sticky_note_content .cell {
     width: 46%;
-    text-align: left;
+    text-align: right;
 }
 
 .sticky_note_content .left-cell {
-    padding-right: 8%;
+    padding-left: 8%;
 }
 
 .sticky_note_content .question-example {

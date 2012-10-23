@@ -464,8 +464,8 @@ function KnowledgeMapDrawer(container, knowledgeMap) {
     };
 
     this.isExpanded = function() {
-        var sCSSLeft = $("#" + this.container + " .dashboard-drawer").css("left").toLowerCase();
-        return sCSSLeft == "0px" || sCSSLeft == "auto" || sCSSLeft == "";
+        var sCSSRight = $("#" + this.container + " .dashboard-drawer").css("right").toLowerCase();
+        return sCSSRight == "0px" || sCSSRight == "auto" || sCSSRight == "";
     };
 
     this.toggle = function() {
@@ -475,20 +475,20 @@ function KnowledgeMapDrawer(container, knowledgeMap) {
         var fExpanded = this.isExpanded();
 
         var jelDrawer = $("#" + this.container + " .dashboard-drawer");
-        var leftDrawer = fExpanded ? -1 * (jelDrawer.width() + 20) : 0;
+        var rightDrawer = fExpanded ? -1 * (jelDrawer.width() + 20) : 0;
 
         var jelTitle = $("#" + this.container + " .dashboard-title");
-        var leftTitle = fExpanded ? -1 * (jelTitle.width() + 10) : 5;
+        var rightTitle = fExpanded ? -1 * (jelTitle.width() + 10) : 5;
 
-        jelTitle.animate({left: leftTitle}, 500);
+        jelTitle.animate({right: rightTitle}, 500);
 
         this.fToggling = true;
-        jelDrawer.animate({left: leftDrawer}, 500, function() {self.fToggling = false;});
+        jelDrawer.animate({right: rightDrawer}, 500, function() {self.fToggling = false;});
 
         if (self.knowledgeMap)
         {
             var leftMap = (fExpanded ? 0 : 340);
-            $("#" + this.container + " .map-canvas").animate({marginRight: leftMap + "px", left: leftMap + "px"},
+            $("#" + this.container + " .map-canvas").animate({marginLeft: leftMap + "px", right: leftMap + "px"},
                     500,
                     function() {
                         google.maps.event.trigger(self.knowledgeMap, "resize");

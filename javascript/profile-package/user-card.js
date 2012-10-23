@@ -174,7 +174,7 @@ var ProfileModel = Backbone.Model.extend({
     }
 });
 
-ProfileModel.PHANTOM_EMAIL_PREFIX = "http://nouserid.khanacademy.org/";
+ProfileModel.PHANTOM_EMAIL_PREFIX = "http://nouserid.hebrewkhan.org/";
 
 UserCardView = Backbone.View.extend({
     className: "user-card",

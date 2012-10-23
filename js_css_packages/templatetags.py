@@ -44,7 +44,7 @@ def get_inline_template(package_name, file_name):
     """
     path = "clienttemplates/%s-package/%s" % (package_name, file_name)
     handle = open(path, 'r')
-    contents = handle.read()
+    contents = handle.read().decode("utf-8")
     handle.close()
     name = base_name(file_name)
     return ("<script type='text/x-handlebars-template' "

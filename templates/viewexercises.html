@@ -57,14 +57,14 @@
 
 </script>
 {% endblock pagescript %}
-{% block pagetitle %}Exercise Dashboard{% endblock pagetitle %}
+{% block pagetitle %}לוח התרגילים{% endblock pagetitle %}
 {% block pagecontent %}
 <div id="background">
   <div id="container" class="dashboard{% if not logged_in %} unregistered{% endif %}">
     {{ exercise_macros.exercise_legend() }}
     {{ exercise_macros.exercise_dashboard(show_review_drawer, review_statement, review_call_to_action) }}
 
-    <div class="dashboard-map">
+    <div class="dashboard-map"  style="direction: ltr">
         {{ exercise_macros.knowledgemap(true) }}
     </div>
 </div>

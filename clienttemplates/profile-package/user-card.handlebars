@@ -3,11 +3,11 @@
     <div class="basic-user-info" style="float: left;">
       <div class="avatar-pic-container{{#if isEditable}} editable{{/if}}" style="float:left;" >
         <img src="{{avatarSrc}}" id="avatar-pic" class="avatar-pic" >
-        <div class="avatar-change-overlay" style="display: none">Change avatar</div>
+        <div class="avatar-change-overlay" style="display: none">שנה אווטאר</div>
       </div>
       <div class="user-deets">
           {{#if isPhantom}}
-             <a href="/login?continue=/postlogin?continue=/profile" class="simple-button action-gradient green">Log in to claim your profile</a>
+             <a href="/login?continue=/postlogin?continue=/profile" class="simple-button action-gradient green">התחבר כדי לזכות בפרופיל</a>
           {{else}}
           <div>
               <span class="nickname">{{nickname}}</span>
@@ -20,15 +20,15 @@
           {{#if isEditable}}
               <ul class="dropdown">
                   <li>
-                      <span id="edit-profile" class="simple-button action-gradient">Edit profile</span>
+                      <span id="edit-profile" class="simple-button action-gradient">ערוך פרופיל</span>
                       <ul class="sub_menu">
                         {{#if isFullyEditable}}
-                        <li><a id="edit-basic-info" href="javascript:void(0)">Edit basic info</a></li>
+                        <li><a id="edit-basic-info" href="javascript:void(0)">ערוך מידע בסיסי</a></li>
                         {{/if}}
-                        <li><a id="edit-display-case" href="javascript:void(0)">Edit display case</a></li>
-                        <li><a id="edit-avatar" href="javascript:void(0)">Edit avatar</a></li>
+                        <li><a id="edit-display-case" href="javascript:void(0)">ערוך את תיבת התצוגה</a></li>
+                        <li><a id="edit-avatar" href="javascript:void(0)">ערוף אווטאר</a></li>
                         {{#if isFullyEditable}}
-                        <li><a id="edit-visibility" href="javascript:void(0)">Toggle privacy setting</a></li>
+                        <li><a id="edit-visibility" href="javascript:void(0)">מתג פרטיות</a></li>
                         {{/if}}
                       </ul>
                   </li>

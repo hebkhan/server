@@ -50,7 +50,7 @@
 }
 
 #profile-header #high-level-stats {
-    float: right;
+    float: left;
     position: relative;
     top: -7px;
 }
@@ -74,7 +74,7 @@
 #profile-header #high-level-stats #exercises-completed,
 #profile-header #high-level-stats #students-coached
 {
-    margin-right: 10px;
+    margin-left: 10px;
 }
     #profile-header #high-level-stats span > span.count {
         font-size: 16px;
@@ -154,7 +154,7 @@
     /* Only the class profile page uses #stats-nav these days */
     #individual_report #vital-statistics #stats-nav {
         width: 280px;
-        float: left;
+        float: right;
         margin: 0px 20px 10px 0;
     }
     #individual_report #vital-statistics #stats-nav ul#nav-accordion {
@@ -179,7 +179,7 @@
         border-radius: 5px;
     }
     #individual_report #vital-statistics #stats-nav ul#nav-accordion .accordion-content ul {
-        padding-left: 15px;
+        padding-right: 15px;
         list-style: disc outside none;
     }
     #individual_report #vital-statistics #stats-nav ul#nav-accordion .accordion-content ul li {
@@ -245,7 +245,7 @@
     }
     .tab-content .graph-date-picker {
         display: inline-block;
-        float: right;
+        float: left;
     }
     .tab-content .vital-statistics-description,
     .tab-content .graph-picker {
@@ -263,7 +263,7 @@
     .tab-content .graph-options {
         font-size: 10px;
         display: inline-block;
-        float:right;
+        float:left;
         margin: 0;
     }
     .tab-content .graph-options .progress-legend {
@@ -275,7 +275,7 @@
             padding: 0;
             line-height: 24px;
             height: 26px;
-            float: right;
+            float: left;
         }
         .tabrow li {
             display: inline-block;
@@ -296,11 +296,11 @@
             z-index: 3;
             width: 0;
             height: 15px;
-            border-left: 7px solid transparent;
             border-right: 7px solid transparent;
+            border-left: 7px solid transparent;
             border-bottom: 7px solid #CCC;
-            left: 50%;
-            margin-left: -7px;
+            right: 50%;
+            margin-right: -7px;
             bottom: -3px;
             display: block;
         }
@@ -346,10 +346,10 @@
     }
     #individual_report #vital-statistics #stats-charts #module-progress .exercise-progress-block {
         width: 70px;
-        float: left;
+        float: right;
         overflow: hidden;
         height: auto;
-        padding-left: 0;
+        padding-right: 0;
     }
     #individual_report #vital-statistics #stats-charts #module-progress .exercise-progress-block.transparent {
         cursor: pointer;
@@ -388,8 +388,8 @@
             text-align: center;
             margin: 10px 0;
             padding: 5px;
-            margin-left: auto;
             margin-right: auto;
+            margin-left: auto;
         }
             #individual_report #achievements #badge-container .badge-description-container .badge-description-content {
                 text-align: center;
@@ -400,7 +400,7 @@
         margin: 0 0 30px;
     }
     #individual_report #achievements #achievement-list .achievement-badge {
-        float: left;
+        float: right;
         width: 30%;
     }
     #individual_report #achievements #achievement-list > ul {
@@ -410,13 +410,13 @@
     }
     #individual_report #achievements #achievement-list > ul li {
         display: block;
-        float: left;
+        float: right;
         padding-top: 10px;
         opacity: 0.5;
         width: auto;
         text-align: center;
         min-width: 16%;
-        margin-left: 0.5%;
+        margin-right: 0.5%;
     }
         #individual_report #achievements #achievement-list > ul li img {
             /* On iOS, disable the Save popup so that holding an image down makes the gray background */
@@ -458,7 +458,7 @@
             border-bottom: 1px solid #999;
             cursor: pointer;
             background: #ddd;
-            background-image: -webkit-gradient(linear, left top, left bottom,  from(#eee), to(#ccc));
+            background-image: -webkit-gradient(linear, right top, right bottom,  from(#eee), to(#ccc));
             background-image: -moz-linear-gradient( top, #eee, #ccc );
             background-image: -o-linear-gradient( top, #eee, #ccc );
             filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#eeeeee', endColorstr='#cccccc');
@@ -481,15 +481,15 @@
 }
 .activity-column {
     width: 530px;
-    float: left;
+    float: right;
     position: relative;
 }
 .mini-stats-column {
-    margin-left: 3%;
+    margin-right: 3%;
     width: 39%;
     height: 500px;
     /* background: #eee; */
-    float: left;
+    float: right;
 }
 .activity-list > ul {
     margin: 0;
@@ -506,7 +506,7 @@
     }
     .ach-text {
         display: block;
-        float: left;
+        float: right;
         background: #EEE;
         padding: 10px 0 10px 10px;
         border-radius: 5px;
@@ -516,8 +516,8 @@
         box-sizing: border-box;
     }
     .activity-list .activity-image {
-        float: left;
-        margin-right: 8px;
+        float: right;
+        margin-left: 8px;
         width: 40px;
         height: 40px;
         background-color: #ccc;
@@ -558,12 +558,12 @@
         width: 100%;
         height: 100%;
         top: 0;
-        left: 0;
+        right: 0;
         z-index: 1;
     }
     .suggested-activity-controls {
         position: absolute;
-        right: 10px;
+        left: 10px;
         top: 20px;
         font-size: 15px;
     }
@@ -596,11 +596,11 @@
     }
     .activity-list .streak-bar {
         height: 10px;
-        margin-left: 48px;
+        margin-right: 48px;
         margin-top: 4px;
     }
     .description {
-        float: left;
+        float: right;
         width: 420px;
     }
 a.graph-link {
@@ -620,11 +620,11 @@ div.graph-notification {
 div.profile-notification {
     display: none;
     padding: 20px 0 0 20px; /* should be the same as padding on tab-content */
-    margin: 0 -19px 0 0; /* should be the same right margin as .profile-sheet-title */
+    margin: 0 -19px 0 0; /* should be the same left margin as .profile-sheet-title */
     position: absolute;
     top: 55px;
-    right: 0;
     left: 0;
+    right: 0;
     bottom: 0;
     color: #333333;
     background-color: #FFFFFF;
@@ -685,7 +685,7 @@ div.profile-notification.uncover-nav {
 }
 
 #student-list table td {
-    padding-right: 10px;
+    padding-left: 10px;
     margin: 0;
 }
 
@@ -715,14 +715,14 @@ div.profile-notification.uncover-nav {
 
 #stats-filters a.graph-link{ display:none; }
 
-#stats-filters .filter-block{ display:inline-block; vertical-align:top; margin-right:24px; }
+#stats-filters .filter-block{ display:inline-block; vertical-align:top; margin-left:24px; }
 
-#stats-filters .coach-filter-block {display:inline; margin-right:1em;}
+#stats-filters .coach-filter-block {display:inline; margin-left:1em;}
 
 #stats-filters p {font-size:10px; margin: 0; display:inline-block; }
 #stats-filters h3 {
   font-family: "MuseoSans300"; font-size:18px;
-  margin-right:.5em;
+  margin-left:.5em;
   display:inline-block;
 }
 #stats-filters h3 small{ font-size:14px; }
@@ -757,7 +757,7 @@ div.profile-notification.uncover-nav {
 .user-info-container .avatar-change-overlay {
   position: absolute;
   top: 60%;
-  right: 0;
+  left: 0;
   padding: 0 0.5em;
   background: #fff;
   opacity: 0.85;
@@ -773,26 +773,26 @@ div.profile-notification.uncover-nav {
      margin-top: 5px;
  }
 .user-profile-controls .dropdown {
-    float: left;
+    float: right;
 }
 .user-profile-controls .dropdown:hover .sub_menu {
     position: absolute;
     z-index: 10;
 }
 ul.dropdown li {
-    float: left;
+    float: right;
     background: transparent;
 }
 ul.dropdown li a {
     display: block;
     padding: 4px 8px;
-    border-right: 1px solid #333;
+    border-left: 1px solid #333;
     color: black;
     white-space: nowrap;
 }
 /* Doesn't work in IE */
 ul.dropdown li:last-child a {
-    border-right: none;
+    border-left: none;
 }
 ul.dropdown li {
     color: black;
@@ -827,12 +827,12 @@ ul.dropdown ul.sub_menu:before{
     height: 15px;
 
     /* simulate a triangle with borders */
-    border-left: 10px solid transparent;
     border-right: 10px solid transparent;
+    border-left: 10px solid transparent;
     border-bottom: 10px solid #999; /* must be the same as badge-picker */
 
-    left: 25%;
-    margin-left: -10px;
+    right: 25%;
+    margin-right: -10px;
     top: -25px;
     display: block;
 }
@@ -850,7 +850,7 @@ ul.dropdown ul li {
 .lte8 .sticker-book {
     width: 540px;
     float: none;
-    margin-left: 370px;
+    margin-right: 370px;
 }
 .sticker-book {
     position: relative;
@@ -858,12 +858,12 @@ ul.dropdown ul li {
     background: #fff;
     border: 1px solid #ccc;
     box-shadow: inset 0 0 5px #bbb;
-    float: right;
+    float: left;
 }
 
 .profile-navigation {
     position: absolute;
-    width: 150px; /* must be the same as left margin of .tab-content */
+    width: 150px; /* must be the same as right margin of .tab-content */
 }
 .profile-navigation > .vertical-tab-list {
     /* force a position-context and background color so that it can be
@@ -883,7 +883,7 @@ ul.dropdown ul li {
     font-weight: bold;
 }
 .vertical-tab-list ul.second-tier {
-    padding-left: 5px;
+    padding-right: 5px;
 }
 .profile-navigation .tab-link {
     display: block;
@@ -893,7 +893,7 @@ ul.dropdown ul li {
     overflow: hidden;
     text-overflow: ellipsis;
     border: 1px solid transparent;
-    border-right: none;
+    border-left: none;
 
     -webkit-border-radius: 3px 0 0 3px;
     -moz-border-radius: 3px 0 0 3px;
@@ -908,28 +908,28 @@ ul.dropdown ul li {
     color: #333;
     background-color: #eee;
     border: 1px solid #ccc;
-    border-right: none;
+    border-left: none;
 }
 .profile-navigation .tab-link.has-icon {
-    padding-left: 24px;
+    padding-right: 24px;
 }
 a[rel="vital-statistics activity"] {
-    background: transparent url(/images/profile-icons/chart.png) no-repeat 4px 50%;
+    background: transparent url(/images/profile-icons/chart.png) no-repeat 125px 50%;
 }
 a[rel="vital-statistics focus"] {
-    background: transparent url(/images/profile-icons/chart-pie-separate.png) no-repeat 4px 50%;
+    background: transparent url(/images/profile-icons/chart-pie-separate.png) no-repeat 125px 50%;
 }
 a[rel="vital-statistics exercise-progress"] {
-    background: transparent url(/images/profile-icons/color-swatch.png) no-repeat 4px 50%;
+    background: transparent url(/images/profile-icons/color-swatch.png) no-repeat 125px 50%;
 }
 a[rel="vital-statistics exercise-progress-over-time"] {
-    background: transparent url(/images/profile-icons/chart-up.png) no-repeat 4px 50%;
+    background: transparent url(/images/profile-icons/chart-up.png) no-repeat 125px 50%;
 }
 a[rel="achievements"] {
-    background: transparent url(/images/profile-icons/shield.png) no-repeat 4px 50%;
+    background: transparent url(/images/profile-icons/shield.png) no-repeat 125px 50%;
 }
 a[rel="goals"] {
-    background: transparent url(/images/profile-icons/tick-circle.png) no-repeat 4px 50%;
+    background: transparent url(/images/profile-icons/tick-circle.png) no-repeat 125px 50%;
 }
 li.profile-tab {
     margin-bottom: 10px;
@@ -941,16 +941,16 @@ li.profile-tab {
     vertical-align: middle;
 }
 .tab-content {
-    margin-left: 150px; /* must be the same as width of profile-navigation */
+    margin-right: 150px; /* must be the same as width of profile-navigation */
     padding: 20px 0 20px 20px;
     min-height: 500px;
-    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
     position: relative;
 }
 
 .user-deets {
-    float:left;
-    margin-left: 10px;
+    float:right;
+    margin-right: 10px;
     max-width: 240px;
 }
 .user-deets .nickname {
@@ -974,9 +974,9 @@ li.profile-tab {
 }
 
 .basic-stats .simple-stat {
-    float: left;
-    text-align: left;
-    margin-right: 9px;
+    float: right;
+    text-align: right;
+    margin-left: 9px;
 }
 .simple-stat .summary-icon {
     display: block;
@@ -1002,11 +1002,11 @@ li.profile-tab {
 
 #username-picker-container {
     position: fixed;
-    /* set the point on which top and left operate to the middle top edge*/
+    /* set the point on which top and right operate to the middle top edge*/
     width: 500px; /* this is redundant but here for clarity */
     margin: 0 0 0 -250px;
     top: 60px;
-    left: 50%;
+    right: 50%;
 }
 #username-picker-container .notification {
     padding: 5px 5px 5px 10px;
@@ -1045,10 +1045,10 @@ li.profile-tab {
 .username-picker .labels{
     position: absolute;
     width: 80px;
-    text-align: right;
+    text-align: left;
 }
 .username-picker .inputs {
-    margin-left: 90px;
+    margin-right: 90px;
 }
 .username-picker input,
 .username-picker label{
@@ -1072,7 +1072,7 @@ li.profile-tab {
 .username-picker .sidenote {
     background-repeat: no-repeat;
     background-position: 0 30%;
-    padding-left: 13px;
+    padding-right: 13px;
 }
 .username-picker .sidenote.success {
     background-image:url(/images/video-indicator-complete.png);
@@ -1083,7 +1083,7 @@ li.profile-tab {
 
 .avatar-picker.modal {
     width: 700px;
-    left: 50%;
+    right: 50%;
     margin: 0 0 0 -300px;
     position: absolute;
 }
@@ -1092,7 +1092,7 @@ li.profile-tab {
 }
 .avatar-picker .avatar {
     display: block;
-    float: left;
+    float: right;
     border: 1px solid transparent;
     cursor: pointer;
     text-align: center;
@@ -1145,10 +1145,10 @@ li.profile-tab {
 
     box-shadow: 0 2px 2px #ddd;
 
-    float: right;
+    float: left;
     display: block;
     width: 87px;
-    margin-right: 34px;
+    margin-left: 34px;
     position: relative;
     top: -8px;
 }
@@ -1161,10 +1161,10 @@ li.profile-tab {
 
 .ka_guider_button {
     display: inline-block;
-    float: right;
+    float: left;
     font-size: 90%;
     font-weight: bold;
-    margin-left: 6px;
+    margin-right: 6px;
     min-width: 40px;
     padding: 3px 5px;
     text-align: center;

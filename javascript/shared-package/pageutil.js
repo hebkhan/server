@@ -440,7 +440,25 @@ var FacebookHook = {
             FB.init({appId: FB_APP_ID, status: true, cookie: true, xfbml: true, oauth: true});
 
             if (!USERNAME) {
-                FB.Event.subscribe("auth.login", FacebookHook.postLogin);
+                FB.Event.subscribe("auth.login", function(response) {
+
+                    if (response.authResponse) {
+                        FacebookHook.fixMissingCookie(response.authResponse);
+                    }
+
+                    var url = URL_CONTINUE || "/";
+                    if (url.indexOf("?") > -1)
+                        url += "&fb=1";
+                    else
+                        url += "?fb=1";
+
+                    var hasCookie = !!readCookie("fbsr_" + FB_APP_ID);
+                    url += "&hc=" + (hasCookie ? "1" : "0");
+
+                    url += "&hs=" + (response.authResponse ? "1" : "0");
+
+                    window.location = url;
+               });
             }
 
             FB.getLoginStatus(function(response) {
@@ -473,30 +491,6 @@ var FacebookHook = {
             e.src = document.location.protocol + "//connect.facebook.net/en_US/all.js";
             document.getElementById("fb-root").appendChild(e);
         });
-    },
-
-    doLogin: function() {
-        FB.login(FacebookHook.postLogin, {})
-    },
-
-    postLogin: function(response) {
-
-        if (response.authResponse) {
-            FacebookHook.fixMissingCookie(response.authResponse);
-        }
-
-        var url = URL_CONTINUE || "/";
-        if (url.indexOf("?") > -1)
-            url += "&fb=1";
-        else
-            url += "?fb=1";
-
-        var hasCookie = !!readCookie("fbsr_" + FB_APP_ID);
-        url += "&hc=" + (hasCookie ? "1" : "0");
-
-        url += "&hs=" + (response.authResponse ? "1" : "0");
-
-                window.location = url;
     },
 
     fixMissingCookie: function(authResponse) {

@@ -22,7 +22,7 @@
 
 .css-menu {
     position:relative;        /* establish a menu-relative positioning context */
-    float:left;                                     /* play nicely with others */
+    float:right;                                    /* play nicely with others */
     margin:0;
     padding:0;
     border:0;
@@ -45,7 +45,7 @@
 }                               
 
 .css-menu > ul > li, .css-menu > ul > li > ul > li {
-    float:left;    /* this creates the side-by-side array of top-level buttons */
+    float:right;    /* this creates the side-by-side array of top-level buttons */
     position:relative;    /* create local positioning contexts for each button */
     margin: 0;
     white-space: nowrap;    
@@ -126,9 +126,9 @@
 
 
 .css-menu > ul > li > ul {
-    clear:left;
+    clear:right;
     position:absolute;
-    left: -999em;                  /* initially hide the entire list hierarchy */
+    right: -999em;                /* initially hide the entire list hierarchy */
     padding:0;                               /* this is our box border width */
     z-index: 3;
     background-color: #f7f7f7;
@@ -138,7 +138,7 @@
 .css-menu > ul > li > a,
 .css-menu > ul > li > a:visited {                    /* unselected top-level menu items */
     display:block;
-    float:left;
+    float:right;
     text-decoration:none;
 }
 
@@ -151,7 +151,7 @@
     border-top: 1px solid transparent;
     display:block;
     margin:0;
-    left: -1px;       /* left-align our drop-down to the previous button border */
+    right: -1px;       /* left-align our drop-down to the previous button border */
     height:auto;      /* the drop-down height will be determiend by line count */
     width:auto;
     min-width: 150px;
@@ -166,18 +166,18 @@
 .css-menu > ul > li > ul {
     overflow: hidden;
     border: solid 1px #ddd;
-    -webkit-box-shadow: 1px 1px 2px rgba(0,0,0, .5);
-    -moz-box-shadow: 1px 1px 2px rgba(0,0,0, .5);
+    -webkit-box-shadow: -1px 1px 2px rgba(0,0,0, .5);
+    -moz-box-shadow: -1px 1px 2px rgba(0,0,0, .5);
     
     -webkit-border-bottom-left-radius: 5px;
     -webkit-border-bottom-right-radius: 5px;
-    -webkit-border-top-right-radius: 5px;
+    -webkit-border-top-left-radius: 5px;
     -moz-border-radius-bottomleft: 5px;
     -moz-border-radius-bottomright: 5px;
     -moz-border-radius-topright: 5px;
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
-    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
 }
 
 .css-menu > ul > li > ul li,
@@ -198,7 +198,7 @@
 }
 
 .css-menu > ul > li > ul > li > ul > li > a {
-    padding-left: 2ex !important;    
+    padding-right: 2ex !important;    
 }
 
 .css-menu > ul > li > ul > li > ul {
@@ -225,7 +225,7 @@
 
 .css-menu > ul > li > ul > li  {
     display: block;
-    clear: left;
+    clear: right;
     padding: 0;
     height:auto;      /* the drop-down height will be determiend by line count */
     width: 100%;

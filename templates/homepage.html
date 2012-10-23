@@ -29,16 +29,16 @@
         {% endif %}
     </div>
     <div id="homepage-text" class="visited-no-recolor">
-        <h1 class="section-headline pulls"><a href="/#browse">Watch.</a> <a href="/exercisedashboard">Practice.</a></h1>
-        <h1>Learn almost anything for free.</h1>
+        <h1 class="section-headline pulls"><a href="/#browse">צפה.</a> <a href="/exercisedashboard">תרגל.</a></h1>
+        <h1>למד כמעט הכל בחינם.</h1>
         <p>
-            With a library of over <a href="/#browse">{{approx_vid_count|thousands_separated}} videos</a> covering
-            everything from arithmetic to physics, finance, and history and <a href="/exercisedashboard">{{exercise_count}} practice exercises</a>,
-            <a href="/about">we're on a mission</a> to help you learn what you want, when you want, at your own pace.
-        </p>
+            עם ספריה של יותר מ-<a href="/#browse">{{approx_vid_count|thousands_separated}} סרטים</a> המכסים
+            תחומים מחשבון עד פיסיקה, כלכלה והיסטוריה ו-<a href="/exercisedashboard">{{exercise_count}} תרגילים</a>,
+            <a href="/about">אנו במשימה</a> לעזור לך ללמוד מה שאתה רוצה, מתי שאתה רוצה, בקצב שלך.
+       </p>
         <p class="call-to-action-buttons">
-        	<a href="/#browse" class="call-to-action simple-button action-gradient green">Watch a video</a>
-        	<a href="/exercisedashboard" class="call-to-action simple-button action-gradient blue">Practice with an exercise </a>
+        	<a href="/#browse" class="call-to-action simple-button action-gradient green">צפה בסרט</a>
+        	<a href="/exercisedashboard" class="call-to-action simple-button action-gradient blue">התאמן עם תרגיל </a>
         </p>
         <div id="social-actions">
             <table>
@@ -57,14 +57,14 @@
                 </tr>
                 <tr>
                     <td colspan=3 class="homepage-mailing">
-                        <span>{{ mailing_lists.signup_form(3, "Get Updates", "Enter your email to learn about new courses.") }}</span>
+                        <span>{{ mailing_lists.signup_form(3, "קבל עידכונים", "הזן אימייל לקבלת עידכונים על קורסים חדשים.") }}</span>
                     </td>
                 </tr>
             </table>
         </div>
     </div>
     <h2>
-        New <span class="ampersand">&amp;</span> Noteworthy
+        חדש ומעניין
     </h2>
     {% if thumbnail_link_sets %}
     <div id="thumbnails_container">
@@ -120,7 +120,7 @@
                     </span>&nbsp;lessons delivered
             </span>
         </div>
-        <h2 class="main-headline">Browse our library of over {{approx_vid_count|thousands_separated}} educational videos...</h2>
+        <h2 class="main-headline">עיין בספרייה של יותר מ-{{approx_vid_count|thousands_separated}} סרטוני לימוד...</h2>
         {% if DVD_list %}
         <ul class="menu" id="menu">
             {% for topic in DVD_list %}
@@ -133,7 +133,7 @@
         {{ templatetags.topic_browser("browse-fixed", version_number) }}
 
         {% endif %}
-        <a href="/mobilefullsite" class="mobile-only" data-role="button" data-ajax="false">View standard site</a>
+        <a href="/mobilefullsite" class="mobile-only" data-role="button" data-ajax="false">צפה באתר הרגיל</a>
     </div>
 </div>
 <div class="clear"></div>
@@ -143,7 +143,7 @@
 
 <div id="back-to-top">
     <a class="arrow" href="#">▲</a>
-    <a class="text" href="#">Back to Top</a>
+    <a class="text" href="#">חזור למעלה</a>
 </div>
 {% endblock pagecontent %}
 

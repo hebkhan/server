@@ -1,11 +1,11 @@
 
-.video_comments { text-align: left; }
+.video_comments { text-align: right; }
 .video_comments .comment { padding: 2px 0; position: relative; }
-.video_comments div.comment_form { width:350px; margin-right: auto; }
+.video_comments div.comment_form { width:350px; margin-left: auto; }
 .video_comments div.comment_form .comment_text { width:350px; }
 
 
-.video_comments .comments_show_more { padding-left: 6px; display:none; }
+.video_comments .comments_show_more { padding-right: 6px; display:none; }
 .video_comments a.comment_add { outline: none; }
 
 .video_questions { padding-top: 18px; }
@@ -22,7 +22,7 @@
 
 .video_questions .question_text {
     width: 750px;
-    background: #fff url(/images/questionmark.gif) no-repeat 680px center;
+    background: #fff url(/images/questionmark.gif) no-repeat -15px center;
     height: 80px;
     resize: none;
 }
@@ -41,10 +41,10 @@
 .video_questions div.answers_container div.unanswered { padding: 10px 0 0 80px; }
 
 .video_questions div.question_answer_count {
-    float: right;
+    float: left;
 	position:relative;
     top: -10px;
-    left: 25px;
+    right: 25px;
 	padding: 4px 0px 4px 12px;
 	background:#D2DDED;
     min-width: 120px;
@@ -60,7 +60,7 @@
 	position:absolute;
 	z-index:0;
 	top:-25px;
-	left:10px;
+	right:10px;
 	width:0;
 	height:0;
 	border:15px solid transparent;
@@ -88,8 +88,8 @@
 	position:absolute;
 	z-index:2;
 	top:8px; /* value = - border-top-width - border-bottom-width */
-	left:-64px; /* controls horizontal position */
-    right:10px;
+	right:-64px; /* controls horizontal position */
+    left:10px;
 	width:25px;
 	height:25px;
     font-size: 32px;
@@ -109,7 +109,7 @@
 
 .video_questions div.answer:before,
 .video_questions div.answer_placeholder:before {
-	left:-57px; /* controls horizontal position */
+	right:-57px; /* controls horizontal position */
     color: #D2DDED;
     content:"A.";
 }
@@ -121,7 +121,7 @@
 	position:absolute;
 	z-index:-1;
 	bottom:-25px; /* value = - border-top-width - border-bottom-width */
-	left:50px; /* controls horizontal position */
+	right:50px; /* controls horizontal position */
 	width:0;
 	height:0;
 	border-width:15px 15px; /* vary these values to change the angle of the vertex */
@@ -130,8 +130,8 @@
 }
 
 .video_questions div.answer, .video_questions div.answer_placeholder {
-    margin-left: 80px;
-    margin-right: 0;
+    margin-right: 80px;
+    margin-left: 0;
 	background:#D2DDED;
 }
 
@@ -160,11 +160,11 @@ span.mod_tools_hidden, span.flag_tools_hidden {
 }
 
 .feedback_add_controls .controls, .feedback_add_controls .chars_remaining {
-    float:left;
+    float:right;
     width:50%;
-    text-align: left;
+    text-align: right;
 }
-.feedback_add_controls .chars_remaining { text-align: right; color: #898989; }
+.feedback_add_controls .chars_remaining { text-align: left; color: #898989; }
 .feedback_add_controls .chars_remaining_none { color: red; }
 .comment_add_controls .controls { padding-top:2px; }
 .comment_add_controls .chars_remaining { padding-top:8px; }
@@ -283,8 +283,8 @@ span.mod_tools_hidden, span.flag_tools_hidden {
 }
 
 span.playYouTube {
-    padding-right: 16px;
-    background:url('/images/play.png') no-repeat right center;
+    padding-left: 16px;
+    background:url('/images/play.png') no-repeat left center;
     color:#006699;
     cursor: pointer;
     border-bottom: dotted 1px #069;
@@ -299,7 +299,7 @@ table.feedback_list {
 }
 
 table.feedback_list th {
-    text-align: left;
+    text-align: right;
 }
 
 .page_controls img.icon { position:relative; top:-1px; }
@@ -308,7 +308,7 @@ table.feedback_list th {
 .page_controls { padding: 5px 0; }
 .page_controls a.button { padding: 3px 5px; }
 
-.sig { font-style: italic; padding-left: 7px; color: #898989; }
+.sig { font-style: italic; padding-right: 7px; color: #898989; }
 
 span.flag_tools_show img {
     width: 14px;
@@ -336,8 +336,8 @@ span.flag_tools_show:hover img.feedback_flag_gray { display:none; }
 }
 
 a.vote_for {
-    margin-left:auto;
     margin-right:auto;
+    margin-left:auto;
 }
 .lte7 a.vote_for {
     margin: 0;
@@ -370,13 +370,13 @@ div.vote_tools {
 
 .question_container div.vote_tools {
     top: 4px;
-    left: -21px;
+    right: -21px;
 }
 
 .comments_container div.vote_tools {
-    left: -25px;
+    right: -25px;
     top: -2px;
-    padding-right: 20px;
+    padding-left: 20px;
 }
 
 .comments_container .comment a.vote_for { padding-bottom: 2px; }

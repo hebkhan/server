@@ -8,22 +8,22 @@
     <ul class="vertical-tab-list">
         <li class="profile-tab"><a href="{{profileRoot}}" class="tab-link no-recolor active-tab" rel="profile">
             <img src="{{profileData.avatarSrc}}" class="profile-tab-avatar">
-            <span id="profile-tab-link" class="profile-tab-text">{{#if profileData.nickname}}{{profileData.nickname}}{{else}}Profile{{/if}}</span>
+            <span id="profile-tab-link" class="profile-tab-text">{{#if profileData.nickname}}{{profileData.nickname}}{{else}}פרופיל{{/if}}</span>
         </a></li>
         <li>
-            <span class="inactive link-section-header">Accomplishments</span>
+            <span class="inactive link-section-header">הישגים</span>
             <ul class="vertical-tab-list second-tier">
-                <li><a href="{{profileRoot}}/achievements" class="tab-link has-icon no-recolor" rel="achievements">Achievements</a></li>
-                <li><a href="{{profileRoot}}/goals" class="tab-link has-icon no-recolor" rel="goals">Goals (beta)</a></li>
+                <li><a href="{{profileRoot}}/achievements" class="tab-link has-icon no-recolor" rel="achievements">הישגים</a></li>
+                <li><a href="{{profileRoot}}/goals" class="tab-link has-icon no-recolor" rel="goals">מטרות (בניסוי)</a></li>
             </ul>
         </li>
         <li>
-            <span class="inactive link-section-header">Vital statistics</span>
+            <span class="inactive link-section-header">מדדים חיוניים</span>
             <ul class="vertical-tab-list second-tier">
-                <li><a href="{{profileRoot}}/vital-statistics/activity" class="tab-link has-icon no-recolor" rel="vital-statistics activity">Activity</a></li>
-                <li><a href="{{profileRoot}}/vital-statistics/focus" class="tab-link has-icon no-recolor" rel="vital-statistics focus">Focus</a></li>
-                <li><a href="{{profileRoot}}/vital-statistics/exercise-progress" class="tab-link has-icon no-recolor" rel="vital-statistics exercise-progress">Exercise Progress</a></li>
-                <li><a href="{{profileRoot}}/vital-statistics/exercise-progress-over-time" class="tab-link has-icon no-recolor" rel="vital-statistics exercise-progress-over-time">Progress Over Time</a></li>
+                <li><a href="{{profileRoot}}/vital-statistics/activity" class="tab-link has-icon no-recolor" rel="vital-statistics activity">פעילות</a></li>
+                <li><a href="{{profileRoot}}/vital-statistics/focus" class="tab-link has-icon no-recolor" rel="vital-statistics focus">פוקוס</a></li>
+                <li><a href="{{profileRoot}}/vital-statistics/exercise-progress" class="tab-link has-icon no-recolor" rel="vital-statistics exercise-progress">התקדמות בתרגילים</a></li>
+                <li><a href="{{profileRoot}}/vital-statistics/exercise-progress-over-time" class="tab-link has-icon no-recolor" rel="vital-statistics exercise-progress-over-time">התקדמות לאורך זמן</a></li>
             </ul>
         </li>
     </ul>
@@ -34,17 +34,17 @@
     <div class="profile-notification">
         {{#if profileData.email}}
             <div class="empty-graph">
-                <h2><a href='/#browse'>Watch a video</a> or <a href='/exercisedashboard'>try an exercise</a>!</h2>
-                <p>Once you do, real data will show up here.</p>
+                <h2><a href='/#browse'>צפה בסרטון</a> או <a href='/exercisedashboard'>נסה תרגיל</a>!</h2>
+                <p>כשתעשה זאת, מידע אמיתי יופיע כאן.</p>
             </div>
             <div class="error-graph">
-                <h2>It's our fault.</h2>
-                <p>Try again later, and please <a href='/reportissue?type=Defect'>let us know</a> if it continues.</p>
+                <h2>באשמתנו.</h2>
+                <p>נסה שוב מאוחר יותר, ובבקשה <a href='/reportissue?type=Defect'>ידע אותנו</a> אם זה ממשיך.</p>
             </div>
         {{else}}
             <div class="public">
-                <h2>Oops, you're not allowed!</h2>
-                <p>To view real data, you must be a coach.</p>
+                <h2>אופס - אינך מורשה!</h2>
+                <p>כדאי לראות נתונים אמיתיים, אתה חייב להיות מדריך.</p>
             </div>
         {{/if}}
     </div>
@@ -55,17 +55,17 @@
             {{#if profileData.email}}
             <div class="activity-column">
                 <div id="activity-loading-placeholder">
-                    <h2>Loading activity...</h2>
+                    <h2>טוען פעילויות...</h2>
                     <div id="recent-activity-progress-bar"></div>
                 </div>
                 <div id="activity-contents" style="display:none">
                     {{#if profileData.showSuggestedActivity}}
                     <div id="suggested-activity">
-                        <h2>Suggested Activity</h2>
+                        <h2>פעילויות ממולצות</h2>
                     </div>
                     {{/if}}
                     <div id="recent-activity">
-                        <h2>Recently Completed Activity</h2>
+                        <h2>פעילויות שהסתיימו לאחרונה</h2>
                     </div>
                 </div>
             </div>
@@ -83,19 +83,19 @@
 
         <div id="tab-content-goals" rel="goals">
             <div class="graph-picker">
-                Shows your current, completed and abandoned goals.
+                מציג את המטרות הנוכחיות שלך, אלו שהשלמת ואלו שזנחת.
                 <ul class="tabrow">
                     <li class="type current">
-                        <a href="{{profileRoot}}/goals/current" class="graph-link no-recolor">Current</a>
+                        <a href="{{profileRoot}}/goals/current" class="graph-link no-recolor">נוכחי</a>
                     </li>
                     <li class="type completed">
-                        <a href="{{profileRoot}}/goals/completed" class="graph-link no-recolor">Completed</a>
+                        <a href="{{profileRoot}}/goals/completed" class="graph-link no-recolor">הושלם</a>
                     </li>
                     <li class="type abandoned">
-                        <a href="{{profileRoot}}/goals/abandoned" class="graph-link no-recolor">Abandoned</a>
+                        <a href="{{profileRoot}}/goals/abandoned" class="graph-link no-recolor">נזנח</a>
                     </li>
                     <li>
-                        <a class="new-goal simple-button action-gradient disabled" href="javascript:void(0);" style="display: inline-block;">Create a new goal</a>
+                        <a class="new-goal simple-button action-gradient disabled" href="javascript:void(0);" style="display: inline-block;">צור מטרה חדשה</a>
                     </li>
                 </ul>
             </div>

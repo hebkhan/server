@@ -10,7 +10,7 @@
             {% endif %}
             <div data-role="page" id="{{ topic.id }}" data-theme="b">
                 <div data-role="header" class="library-content-header">
-                    <a href="#" data-rel="back" data-icon="arrow-l" class="mobile-only">Back</a>
+                    <a href="#" data-rel="back" data-icon="arrow-l" class="mobile-only">חזור</a>
                     {% if topic.depth %}
                         <h2 class='subtopic-{{ topic.depth }}-heading {% if loop.first %}topic-heading-first{% endif %}'>{{topic.homepage_title|escape}}</h2>
                     {% else %}
@@ -27,7 +27,7 @@
                     {% if topic.content %}
                         {% if ajax %}
                             <ol style="height:{{topic.height}}px;" data-role="listview" data-inset="true">
-                            <span style="padding-left: 16px;">Loading videos...</span>
+                            <span style="padding-left: 16px;">טוען סרטונים...</span>
                             </ol>
                         {% else %}
                             {{ templatetags.column_major_sorted_videos(topic) }}
