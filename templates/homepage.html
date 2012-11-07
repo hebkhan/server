@@ -29,16 +29,16 @@
         {% endif %}
     </div>
     <div id="homepage-text" class="visited-no-recolor">
-        <h1 class="section-headline pulls"><a href="/#browse">צפה.</a> <a href="/exercisedashboard">תרגל.</a></h1>
-        <h1>למד כמעט הכל בחינם.</h1>
+        <h1 class="section-headline pulls"><a href="/#browse">צפו.</a> <a href="/exercisedashboard">תרגלו.</a></h1>
+        <h1>למדו כמעט הכל - בחינם.</h1>
         <p>
             עם ספריה של יותר מ-<a href="/#browse">{{approx_vid_count|thousands_separated}} סרטים</a> המכסים
-            תחומים מחשבון עד פיסיקה, כלכלה והיסטוריה ו-<a href="/exercisedashboard">{{exercise_count}} תרגילים</a>,
-            <a href="/about">אנו במשימה</a> לעזור לך ללמוד מה שאתה רוצה, מתי שאתה רוצה, בקצב שלך.
+            תחומים מחשבון עד פיסיקה, וכלכלה ו-<a href="/exercisedashboard">{{exercise_count}} תרגילים</a>,
+            <a href="/about">מטרתנו</a>היא לעזור לכם ללמוד מה שאתם רוצים, מתי שאתה רוצים, בקצב שלכם .
        </p>
         <p class="call-to-action-buttons">
-        	<a href="/#browse" class="call-to-action simple-button action-gradient green">צפה בסרט</a>
-        	<a href="/exercisedashboard" class="call-to-action simple-button action-gradient blue">התאמן עם תרגיל </a>
+        	<a href="/#browse" class="call-to-action simple-button action-gradient green">צפו בסרט</a>
+        	<a href="/exercisedashboard" class="call-to-action simple-button action-gradient blue">תרגלו </a>
         </p>
         <div id="social-actions">
             <table>
@@ -57,7 +57,7 @@
                 </tr>
                 <tr>
                     <td colspan=3 class="homepage-mailing">
-                        <span>{{ mailing_lists.signup_form(3, "קבל עידכונים", "הזן אימייל לקבלת עידכונים על קורסים חדשים.") }}</span>
+                        <span>{{ mailing_lists.signup_form(3, "קבלו עידכונים", "הזינו כתובת דוא\"ל לקבלת עידכונים על קורסים חדשים.") }}</span>
                     </td>
                 </tr>
             </table>
@@ -133,7 +133,7 @@
         {{ templatetags.topic_browser("browse-fixed", version_number) }}
 
         {% endif %}
-        <a href="/mobilefullsite" class="mobile-only" data-role="button" data-ajax="false">צפה באתר הרגיל</a>
+        <a href="/mobilefullsite" class="mobile-only" data-role="button" data-ajax="false">צפו באתר הרגיל</a>
     </div>
 </div>
 <div class="clear"></div>
@@ -143,7 +143,7 @@
 
 <div id="back-to-top">
     <a class="arrow" href="#">▲</a>
-    <a class="text" href="#">חזור למעלה</a>
+    <a class="text" href="#">לחזרה למעלה</a>
 </div>
 {% endblock pagecontent %}
 

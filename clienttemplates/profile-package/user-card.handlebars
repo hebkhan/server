@@ -14,7 +14,7 @@
           </div>
           {{/if}}
           <div>
-              <span>Joined <abbr class="timeago" title="{{dateJoined}}">{{dateJoined}}</abbr></span>
+              <span>הצטרף <abbr class="timeago" title="{{dateJoined}}">{{dateJoined}}</abbr></span>
           </div>
           <div class="user-profile-controls clearfix">
           {{#if isEditable}}
@@ -35,8 +35,8 @@
               </ul>
           {{else}}
             <!--
-              {{#unless isSelf}}<a href="javascript:void(0)" class="add-remove-coach simple-button action-gradient" style="{{#if isCoachingLoggedInUser}} display: none;{{/if}}">Add as a coach</a>{{/unless}}
-              <a href="javascript:void(0)" class="add-remove-coach simple-button action-gradient" style="{{#unless isCoachingLoggedInUser}} display: none;{{/unless}}">Remove as a coach</a>
+              {{#unless isSelf}}<a href="javascript:void(0)" class="add-remove-coach simple-button action-gradient" style="{{#if isCoachingLoggedInUser}} display: none;{{/if}}">הוסף כחונך</a>{{/unless}}
+              <a href="javascript:void(0)" class="add-remove-coach simple-button action-gradient" style="{{#unless isCoachingLoggedInUser}} display: none;{{/unless}}">הסר כחונך</a>
               -->
           {{/if}}
           </div>
@@ -49,7 +49,7 @@
                   <img class="summary-icon" src="/images/profile-icons/inset-camera.png">
                   <div class="stat-text">{{countVideosCompleted}}<span class="stat-divider">/</span>{{countVideos}}</div>
               </div>
-              <div class="simple-stat"><span title="{{commafy points}} energy points" class="energy-points-badge" style="float:none; display:block; margin-bottom: 1px; margin-top: 2px; padding:0; line-height: 20px;">{{commafy points}}</span> Energy Points</div>
+              <div class="simple-stat"><span title="{{commafy points}} נקודות" class="energy-points-badge" style="float:none; display:block; margin-bottom: 1px; margin-top: 2px; padding:0; line-height: 20px;">{{commafy points}}</span> נקודות</div>
           </div>
       </div>
     </div>
@@ -59,7 +59,7 @@
 </div>
 {{#if isFullyEditable}}
 <a href="javascript:void(0)" id="edit-visibility"
-    class="edit-visibility visibility-toggler {{#if isPublic}}public{{else}}private{{/if}}">Profile is {{#if isPublic}}public{{else}}private{{/if}}</a>
+    class="edit-visibility visibility-toggler {{#if isPublic}}public{{else}}private{{/if}}">הפרופיל {{#if isPublic}}ציבורי{{else}}חסוי{{/if}}</a>
 <div id="username-picker-container" class="modal fade hide" style="display: none;">
 </div>
 {{/if}}

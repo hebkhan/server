@@ -531,9 +531,9 @@ footer {
     }
     #top-header #logo #logo-image {
         width: 280px;
-        height: 70px;
+        height: 75px;
         background-image: url(/images/non-repeating-sprites.3.png);
-        background-position: -10px -465px;
+        background-position: -10px -460px;
     }
         .dark #top-header #logo #logo-image {
             background-image: url(/images/non-repeating-sprites.3.png);
@@ -552,8 +552,8 @@ footer {
     #top-header #stats #page_visitors {
         font-family: Georgia, serif;
         position: absolute;
-        right: 5px;
-        top: -79px;
+        right: 118px;
+        top: -83px;
         font-size:13px;
         font-style: italic;
         font-weight: normal;
@@ -1826,7 +1826,9 @@ ul.ui-autocomplete .ui-menu-item a span.autocomplete-exercise {
       bottom:2px; right:85px;
       width:228px;
     }
-
+    #streak-bar-container {
+        -webkit-transform: scaleX(-1);
+    }
     .streak-bar {
         /* the dashboard streak bar doesn't use a generated gradient*/
         background-image: url(/images/non-repeating-sprites.3.png);
