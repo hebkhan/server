@@ -198,7 +198,7 @@
 	
 	
 	<div id="cc-header">
-		<h1 class="section-headline" style="float:left;">Common Core Map</h1>
+		<h1 class="section-headline" style="float:left;">ליבת מפה שכיחה</h1>
 		<!--a href="#" class="simple-button action-gradient" style="float:right; margin-top:22px;">Submit a Common Core Tag</a>
 		<div style="clear:both;"></div-->
 	</div>
@@ -209,7 +209,7 @@
 		
 		<div id="sidebar-wrapper">
 		
-			<h6 id="filter-header"><b>FILTER MAP</b></h6>
+			<h6 id="filter-header"><b>מפת סינון</b></h6>
 		
 	        <div id="search-box">
 	            <!-- Hold for el search box -->
@@ -218,7 +218,7 @@
 			<div id="grade-list" class="pull-down">
 				
 				{% for grade in cc_map %}
-					<h4 class="grade-link" href="#grade-{{grade["grade"]|escape}}"><a href="#grade-{{grade["grade"]|escape}}">Grade: {{grade["grade"]|escape}}</a></h4>
+					<h4 class="grade-link" href="#grade-{{grade["grade"]|escape}}"><a href="#grade-{{grade["grade"]|escape}}">ציון: {{grade["grade"]|escape}}</a></h4>
 					<div class="domain-link">
 						<ul>
 							{% for domain in grade["domains"] %}
@@ -258,10 +258,10 @@
 					
 				<thead>
 					<tr>
-						<th class="standard">Standard</th>
-						<th>Description</th>
-						<th>Videos</th>
-						<th>Exercises</th>
+						<th class="standard">סטנדרטי</th>
+						<th>תיאור</th>
+						<th>סרטון</th>
+						<th>תרגילים</th>
 					</tr>	
 				</thead>
 		
@@ -276,11 +276,11 @@
 		<div id="grade-{{grade["grade"]|escape}}" class="grade-level">
 			
 			<div class="heading">
-				<h4 class="grade-heading">Grade: {{grade["grade"]|escape}}</h4>
+				<h4 class="grade-heading">ציון: {{grade["grade"]|escape}}</h4>
 				<p class="content-totals">
 					{% filter upper %}
-						{{ grade_totals[grade_level].videos|escape }} videos <br />
-						{{ grade_totals[grade_level].exercises|escape }} exercises
+						{{ grade_totals[grade_level].videos|escape }} סרטונים <br />
+						{{ grade_totals[grade_level].exercises|escape }} תרגילים
 					{% endfilter %}
 				</p>
 			</div>
@@ -306,7 +306,7 @@
     										    {% for video in standard["videos"]|sort(attribute='title') %}
 												
         											{% if loop.index == 9 %}
-        												<li>...and <a href="#" class="expand-videos">{{standard.videos|count - 8}} more</a> ...</li>
+        												<li>ו... <a href="#" class="expand-videos">{{standard.videos|count - 8}} עוד</a> ...</li>
 														<div class="hidden-videos">
 													{% endif %}
         												<li><a href="{{video["ka_url"]|escape}}" title="{{video["title"]|escape}}" target="_blank">{{video["title"]|escape}}</a></li>

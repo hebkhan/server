@@ -2,8 +2,8 @@
 
 {% block pagesubmenu %}
 <span class="breadcrumbs_nav">
-    <a href="/badges/custom/create" class="selected">Create custom badge</a>
-    <a href="/badges/custom/award">Award custom badge</a>
+    <a href="/badges/custom/create" class="selected">צרו תג מותאם</a>
+    <a href="/badges/custom/award">העניקו תג מותאם</a>
 </span>
 {% endblock pagesubmenu %}
 
@@ -17,7 +17,7 @@
     <div style="padding: 9px 23px;">
 
         {% if failed %}
-        <div style="color:red;padding-bottom:9px;">Badge creation failed. Either this badge already exists or the fields below were missing data.</div>
+        <div style="color:red;padding-bottom:9px;">יצירת תא נכשלה. או שהתג כבר קיים או ששדות המידע למטה היו חסרים.</div>
         {% endif %}
 
         <div>
@@ -26,39 +26,39 @@
                 <table>
 
                     <tr>
-                        <td style="font-weight:bold;">Name</td>
+                        <td style="font-weight:bold;">שם</td>
                         <td style="padding-bottom:9px;">
                             <input type="text" name="name" value="" maxlength="30"/><br/>
-                            <em>A unique name for this badge. This can never be changed and is not shown to the user.</em>
+                            <em>שם מיוחד בשביל התג. לא יכול להשתנות ולא נראה על ידי המשתמש.</em>
                         </td>
                     </tr>
 
                     <tr>
-                        <td style="font-weight:bold;">Description</td>
+                        <td style="font-weight:bold;">תיאור</td>
                         <td style="padding-bottom:9px;">
                             <input type="text" name="description" value="" maxlength="30"/><br/>
-                            <em>The short description of the badge, like "Great Streak" or "Perseverance." This is shown to the user.</em>
+                            <em>תיאור קצר של התג, כמו "רצף טוב" או "התמדה". זה נראה למשתמש.</em>
                         </td>
                     </tr>
 
                     <tr>
-                        <td style="font-weight:bold;">Full description</td>
+                        <td style="font-weight:bold;">תיאור מלא</td>
                         <td style="padding-bottom:9px;">
                             <textarea name="full_description" rows="5" cols="40"></textarea><br/>
-                            <em>An extended description of how or why the user earned this badge, usually phrased in the present tense.<br/>Examples: "Earn 100,000 energy points," "Remain a member of the Khan Academy for 3 years," "Achieve proficiency in 25 exercises."</em>
+                            <em>תיאור מאורך או למה ואיך המשתמש הרוויח אותו, בדרך מושג בזמן עבר.<br/>לדוגמא: "הרוויח 100,000", "השאר משתמש של אקדמיית קהאן למשך 3 שנים" "השג מיומנות ב-25 תרגילים."</em>
                         </td>
                     </tr>
 
                     <tr>
-                        <td style="font-weight:bold;">Points</td>
+                        <td style="font-weight:bold;">נקודות</td>
                         <td style="padding-bottom:9px;">
                             <input type="text" name="points" value="0"/><br/>
-                            <em>How many points should be given to those who are awarded this badge?</em>
+                            <em>כמה נקודות כדאי לתת לאלו אשר מרוויחים את התג?</em>
                         </td>
                     </tr>
 
                     <tr>
-                        <td style="font-weight:bold;">Badge category</td>
+                        <td style="font-weight:bold;">קטגורית התגים</td>
                         <td style="padding-bottom:9px;">
                             <select name="badge_category" style="width:200px;">
                                 <option value="-1"></option>
@@ -70,11 +70,11 @@
                     </tr>
 
                     <tr>
-                        <td style="font-weight:bold;">Custom icon path</td>
+                        <td style="font-weight:bold;">דרך איקון מותאם</td>
                         <td style="padding-bottom:9px;">
                             <input type="text" name="icon_src" value=""/><br/>
-                            <em>Leave blank to use standard icon for badge's category.<br/>
-                                Use a relative url like "/images/your-icon.png" to specify a custom icon to be used for this badge.</em>
+                            <em>השאר ריק לשימוש באיקון סטנדרטי בשביל קטגורית התגים.<br/>
+                                השתמש ב-URL רלוונטי כמו "/images/your-icon.png" לאיקון מותאם ספציפי שיכול להיות משומש בתג זה.</em>
                         </td>
                     </tr>
 

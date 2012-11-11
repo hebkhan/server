@@ -3,40 +3,40 @@
     <div class="basic-user-info" style="float: left;">
       <div class="avatar-pic-container{{#if isEditable}} editable{{/if}}" style="float:left;" >
         <img src="{{avatarSrc}}" id="avatar-pic" class="avatar-pic" >
-        <div class="avatar-change-overlay" style="display: none">שנה אווטאר</div>
+        <div class="avatar-change-overlay" style="display: none">Change avatar</div>
       </div>
       <div class="user-deets">
           {{#if isPhantom}}
-             <a href="/login?continue=/postlogin?continue=/profile" class="simple-button action-gradient green">התחבר כדי לזכות בפרופיל</a>
+             <a href="/login?continue=/postlogin?continue=/profile" class="simple-button action-gradient green">Log in to claim your profile</a>
           {{else}}
           <div>
               <span class="nickname">{{nickname}}</span>
           </div>
           {{/if}}
           <div>
-              <span>הצטרף <abbr class="timeago" title="{{dateJoined}}">{{dateJoined}}</abbr></span>
+              <span>Joined <abbr class="timeago" title="{{dateJoined}}">{{dateJoined}}</abbr></span>
           </div>
           <div class="user-profile-controls clearfix">
           {{#if isEditable}}
               <ul class="dropdown">
                   <li>
-                      <span id="edit-profile" class="simple-button action-gradient">ערוך פרופיל</span>
+                      <span id="edit-profile" class="simple-button action-gradient">Edit profile</span>
                       <ul class="sub_menu">
                         {{#if isFullyEditable}}
-                        <li><a id="edit-basic-info" href="javascript:void(0)">ערוך מידע בסיסי</a></li>
+                        <li><a id="edit-basic-info" href="javascript:void(0)">Edit basic info</a></li>
                         {{/if}}
-                        <li><a id="edit-display-case" href="javascript:void(0)">ערוך את תיבת התצוגה</a></li>
-                        <li><a id="edit-avatar" href="javascript:void(0)">ערוף אווטאר</a></li>
+                        <li><a id="edit-display-case" href="javascript:void(0)">Edit display case</a></li>
+                        <li><a id="edit-avatar" href="javascript:void(0)">Edit avatar</a></li>
                         {{#if isFullyEditable}}
-                        <li><a id="edit-visibility" href="javascript:void(0)">מתג פרטיות</a></li>
+                        <li><a id="edit-visibility" href="javascript:void(0)">Toggle privacy setting</a></li>
                         {{/if}}
                       </ul>
                   </li>
               </ul>
           {{else}}
             <!--
-              {{#unless isSelf}}<a href="javascript:void(0)" class="add-remove-coach simple-button action-gradient" style="{{#if isCoachingLoggedInUser}} display: none;{{/if}}">הוסף כחונך</a>{{/unless}}
-              <a href="javascript:void(0)" class="add-remove-coach simple-button action-gradient" style="{{#unless isCoachingLoggedInUser}} display: none;{{/unless}}">הסר כחונך</a>
+              {{#unless isSelf}}<a href="javascript:void(0)" class="add-remove-coach simple-button action-gradient" style="{{#if isCoachingLoggedInUser}} display: none;{{/if}}">Add as a coach</a>{{/unless}}
+              <a href="javascript:void(0)" class="add-remove-coach simple-button action-gradient" style="{{#unless isCoachingLoggedInUser}} display: none;{{/unless}}">Remove as a coach</a>
               -->
           {{/if}}
           </div>
@@ -49,7 +49,7 @@
                   <img class="summary-icon" src="/images/profile-icons/inset-camera.png">
                   <div class="stat-text">{{countVideosCompleted}}<span class="stat-divider">/</span>{{countVideos}}</div>
               </div>
-              <div class="simple-stat"><span title="{{commafy points}} נקודות" class="energy-points-badge" style="float:none; display:block; margin-bottom: 1px; margin-top: 2px; padding:0; line-height: 20px;">{{commafy points}}</span> נקודות</div>
+              <div class="simple-stat"><span title="{{commafy points}} energy points" class="energy-points-badge" style="float:none; display:block; margin-bottom: 1px; margin-top: 2px; padding:0; line-height: 20px;">{{commafy points}}</span> Energy Points</div>
           </div>
       </div>
     </div>
@@ -59,7 +59,7 @@
 </div>
 {{#if isFullyEditable}}
 <a href="javascript:void(0)" id="edit-visibility"
-    class="edit-visibility visibility-toggler {{#if isPublic}}public{{else}}private{{/if}}">הפרופיל {{#if isPublic}}ציבורי{{else}}חסוי{{/if}}</a>
+    class="edit-visibility visibility-toggler {{#if isPublic}}public{{else}}private{{/if}}">Profile is {{#if isPublic}}public{{else}}private{{/if}}</a>
 <div id="username-picker-container" class="modal fade hide" style="display: none;">
 </div>
 {{/if}}

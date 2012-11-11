@@ -27,13 +27,13 @@
     </script>
 
     <div>
-        <h2>Manage Developers</h2>
+        <h2>ניהול מפתחים</h2>
 
-        <div><b>Current developers:</b></div>
+        <div><b>מפתחים קיימים:</b></div>
 
         <ul>
         {% for dev in developers %}
-        <li>{{ dev.email }} &ndash; <a href="#" class="remove-dev" data-email="{{ dev.email|escape }}">remove</a></li>
+        <li>{{ dev.email }} &ndash; <a href="#" class="remove-dev" data-email="{{ dev.email|escape }}">הסרה</a></li>
         {% endfor %}
         </ul>
 

@@ -2,9 +2,9 @@
 
 {% block panelcontent %}
 
-<h2>Banned users</h2>
+<h2>משתמשים מורחקים</h2>
 <br/>
-<strong>Banned users' discussion posts are automatically hidden from the rest of the community.</strong>
+<strong>פרסומים של דיונים מידי משתמשים מורחקים מוחבאים באופן אוטומטי משאר הקהילה.</strong>
 <br/><br/>
 
 {% if banned_user_data_list.count() %}
@@ -18,24 +18,24 @@
                 <form method="POST" action="/discussion/mod/bannedlist">
                     <input type="hidden" name="banned" value="0" />
                     <input type="hidden" name="user" value="{{user_data.email|escape}}" />
-                    <input type="submit" value="Remove"/>
+                    <input type="submit" value="הסר"/>
                 </form>
             </td>
         </tr>
     {% endfor %}
 </table>
 {% else %}
-    No banned users.
+    אין משתמשים מורחקים.
 {% endif %}
 
 <br/></br>
 
-<h3>Ban a user</h3>
-Enter a user's email address below (e.g. "user@gmail.com") to ban them from discussions in our community.<br/>
+<h3>הרחקת משתמש</h3>
+הזינו כתובת דוא"ל של משתמש כדי להרחיקו ממערכת הדיונים.<br/>
 <form method="POST" action="/discussion/mod/bannedlist">
     <input type="hidden" name="banned" value="1" />
     <input type="text" name="user" value="" />
-    <input type="submit" value="Lay down the ban hammer"/>
+    <input type="submit" value="בצע הרחקה"/>
 </form>
 
 {% endblock panelcontent %}

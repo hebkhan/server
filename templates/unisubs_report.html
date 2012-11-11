@@ -30,30 +30,30 @@
 <article>
 <div class="unisubs-report">
 {% if started: %}
-<p class="started">Started job {{ started|e }}</p>
+<p class="started">עבודה שהתחילה {{ started|e }}</p>
 {% endif %}
-<h2>Universal Subtitles Import</h2>
+<h2>ייבוא כתוביות אוניברסליות</h2>
 <form action="/admin/unisubs/import" method="POST">
     <input type="hidden" name="interactive" value="1">
     <p>
-    The import job runs automatically. Don't start one unless you're sure that you need to.
+    עבודת הייבוא רצה באופן אוטומטי. אל תתחילו אחת אלא אם כן אתם בטוחים.
     <input type="submit" value="Start Import Job" onclick="return confirm('Seriously? You want to batch import tons of subtitles?')">
     </p>
 </form>
-<h3>Reports by date</h3>
+<h3>דיווחים לפי תאריך</h3>
 <div class="reports">
 {% if reports|length == 0 %}
-<p>None yet.</p>
+<p>עדיין אין.</p>
 {% else %}
 <table>
 <tr>
-    <th>Status</th>
-    <th>Date</th>
-    <th>Job</th>
-    <th>Fetches</th>
-    <th>Writes</th>
-    <th>Errors</th>
-    <th>Redirects</th>
+    <th>מצב</th>
+    <th>תאריך</th>
+    <th>עבודה</th>
+    <th>מאחזר</th>
+    <th>כתיבה</th>
+    <th>שגיאות</th>
+    <th>הפניות</th>
 </tr>
 {% for report in reports %}
 {% if report.key().name() == started %}
@@ -80,7 +80,7 @@
 </table>
 {% endif %}
 {% if truncated %}
-<p>&hellip; there are more reports but we'll stop here.</p>
+<p>&hellip; יש עוד דיווחיםאבל נפסיק פה.</p>
 {% endif %}
 </div>
 </div>

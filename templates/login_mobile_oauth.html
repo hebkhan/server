@@ -59,13 +59,13 @@
                 <ul class="providers"> 
                     <li class="action-gradient" title="Google">
                         <a ontouchstart="" href="/api/auth/request_token_callback/google/{{ oauth_map_id|escape }}">
-                            <div class="sign-in-text">Login with:</div>
+                            <div class="sign-in-text">התחברו עם:</div>
                             <img width="205" height="70" src="/images/google-logo-large.png" />
                         </a>
                     </li>
                     <li class="action-gradient facebook" title="Facebook">
                         <a ontouchstart="" href="/api/auth/request_token_callback/facebook/{{ oauth_map_id|escape }}">
-                            <div class="sign-in-text">Login with:</div>
+                            <div class="sign-in-text">התחברו עם:</div>
                             <img width="205" height="70" src="/images/facebook-logo-large.png" />
                         </a>
                     </li>
@@ -74,7 +74,7 @@
                 <div class="clear">&nbsp;</div>
 
                 {% if not anointed %}
-                    <p>By logging in, you agree to give this application access to your personal Khan Academy usage data.</p>
+                    <p>בהתחברות אתם מסכימים לתת לאפליקציה הזו גישה לנתוני המידע שלכם באקדמיית קהאן.</p>
                 {% endif %}
             </div>
         </article>

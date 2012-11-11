@@ -112,10 +112,10 @@
 
 {% block pagesubmenu %}
     <span class="breadcrumbs_nav">
-        <a href="/admin94040">Exercises</a>
+        <a href="/admin94040">תרגילים</a>
         {{ main_exercise.display_name|escape }}
         {% if saved %}
-            <span style="color:green;" id="saved">...Saved!</span>
+            <span style="color:green;" id="saved">...נשמרו!</span>
             <script>$(function(){setTimeout(function(){$("#saved").fadeOut("slow");}, 2000);});</script>
         {% endif %}
     </span>
@@ -136,116 +136,116 @@
                 <table class="exercise-properties">
 
                     <tr>
-                        <td style="font-weight:bold;">View</td>
+                        <td style="font-weight:bold;">צפו</td>
                         <td style="padding-bottom:9px;">
-                            <a href="{{ main_exercise.relative_url|escape }}" target="_blank">Open {{ main_exercise.display_name|escape }} in new tab</a>
+                            <a href="{{ main_exercise.relative_url|escape }}" target="_blank">פתחו {{ main_exercise.display_name|escape }} בסמנייה חדשה</a>
                         </td>
                     </tr>
 
                     <tr>
-                        <td style="font-weight:bold;">Status</td>
+                        <td style="font-weight:bold;">מצב</td>
                         <td style="padding-bottom:9px;">
-                            <label for="live_yes">Live&nbsp;</label><input type="radio" id="live_yes" name="live" value="1" {% if main_exercise.live %}checked="checked"{% endif %}/>
+                            <label for="live_yes">שידור חי&nbsp;</label><input type="radio" id="live_yes" name="live" value="1" {% if main_exercise.live %}checked="checked"{% endif %}/>
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            <label for="live_no">Developers only&nbsp;</label><input type="radio" id="live_no" name="live" value="0" {% if not main_exercise.live %}checked="checked"{% endif %}/>
+                            <label for="live_no">מפתחים בלבד&nbsp;</label><input type="radio" id="live_no" name="live" value="0" {% if not main_exercise.live %}checked="checked"{% endif %}/>
                             <br/>
-                            <em>Non-live exercises are completely hidden from normal users.</em>
+                            <em>תרגילים לא בשידור חי מוחבאים לחלוטין ממשתמשים רגילים.</em>
                         </td>
                     </tr>
 
                     <tr>
-                        <td style="font-weight:bold;">Display name</td>
+                        <td style="font-weight:bold;">שם תצוגה</td>
                         <td style="padding-bottom:9px;">
                             <input type="text" name="display_name" value="{{main_exercise.display_name|escape}}"/><br/>
                         </td>
                     </tr>
 
                     <tr>
-                        <td style="font-weight:bold;">Short name</td>
+                        <td style="font-weight:bold;">שם קצר</td>
                         <td style="padding-bottom:9px;">
                             <input type="text" name="short_display_name" value="{{main_exercise.short_display_name|escape}}" maxlength="11"/><br/>
-                            <em>Short name is used in some UI elements that are too small to display the full exercise name (11 chars max).</em>
+                            <em>שם קצר הוא בשימוש בכמה אלמנטים של UI שהם קטנים מידי לתצוגה של השם המלא של התרגיל (11 תווים מקסימום).</em>
                         </td>
                     </tr>
 
                     <tr>
-                        <td style="font-weight:bold;">Horizontal position</td>
+                        <td style="font-weight:bold;">מצב פשוט</td>
                         <td style="padding-bottom:9px;">
                             <input type="text" name="v_position" value="{{main_exercise.v_position}}"/></br>
-                            <em>Bigger numbers move this exercise to the right on the knowledge map.</em>
+                            <em>מספרים גדולים מזיזים את התרגיל הזה ימינה במפת הידע.</em>
                         </td>
                     </tr>
 
                     <tr>
-                        <td style="font-weight:bold;">Vertical position</td>
+                        <td style="font-weight:bold;">מצב אנכי</td>
                         <td style="padding-bottom:9px;">
                             <input type="text" name="h_position" value="{{main_exercise.h_position}}"/></br>
-                            <em>Bigger numbers move this exercise down the knowledge map.</em>
+                            <em>מספרים גדולים מזיזים את התרגיל הזה למטה במפת הידע.</em>
                         </td>
                     </tr>
 
                     <tr>
-                        <td style="font-weight:bold;">Prerequisites</td>
+                        <td style="font-weight:bold;">תנאים מותאמים</td>
                         <td style="padding-bottom:9px;">
                             <div id="prereqs-container"></div>
 
                             <select id="add-prereq" onchange="addPrereq();" style="width:200px;">
-                                <option value=""> - Add prerequisite exercise - </option>
+                                <option value=""> - הוסיפו תרגיל מותאם - </option>
                                 {% for exercise in exercises %}
                                     <option value="{{ exercise.name|escape }}">{{ exercise.display_name|escape }}</option>
                                 {% endfor %}
                             </select><br/>
 
-                            <em>This exercise will be suggested once these prereqs are completed.</em><br/>
+                            <em>התרגיל הזה יהיה מוצע כאשר התנאים יושלמו.</em><br/>
                             {% if main_exercise.summative %}
-                            <em><strong>Summative exercises</strong> will generate problems from all prereqs.</em></br>
+                            <em><strong>תרגילים מסכמים</strong> יווצרו תרגילים מכל התנאים.</em></br>
                             {% endif %}
                         </td>
                     </tr>
 
                     <tr>
-                        <td style="font-weight:bold;">Covered exercises</td>
+                        <td style="font-weight:bold;">התרגילים המכסים את החומר</td>
                         <td style="padding-bottom:9px;">
                             <div id="covers-container"></div>
 
                             <select id="add-cover" onchange="addCover();" style="width:200px;">
-                                <option value=""> - Add covered exercise - </option>
+                                <option value=""> - הוסיפו תרגיל המכסה את החומר - </option>
                                 {% for exercise in exercises %}
                                     <option value="{{ exercise.name|escape }}">{{ exercise.display_name|escape }}</option>
                                 {% endfor %}
                             </select><br/>
 
-                            <em>Achieving proficiency in this exercise will give proficiency in all covered exercises.</em>
+                            <em>השגת מיומנות בתרגיל זה ישיג לכם מיומנות בכל התרגילים אשר מכסים את החומר.</em>
                         </td>
                     </tr>
 
                     {% if not main_exercise.summative %}
                     <tr>
-                        <td style="font-weight:bold;">Related Videos</td>
+                        <td style="font-weight:bold;">סרטונים קשורים</td>
                         <td style="padding-bottom:9px;">
                             <div id="videos-container"></div>
 
-                            <input id="related-videos-input" style="width:200px;" type="text" placeholder="- Add related video -" value='' class="placeholder" />
+                            <input id="related-videos-input" style="width:200px;" type="text" placeholder="- הוסיפו סרטון קשור -" value='' class="placeholder" />
                         </td>
                     </tr>
                     {% endif %}
 
 
                     <tr>
-                        <td style="font-weight:bold;">Description</td>
+                        <td style="font-weight:bold;">תיאור</td>
                         <td style="padding-bottom:9px;">
                         <input type="text" name="description" value="{{ main_exercise.description }}" maxlength="256"/><br/>
-                        <em>Description text visible in topic listings</em>
+                        <em>טקסט תיאורי הנראה ברשימת הנושאים</em>
                         </td>
                     </tr>
 
                     <tr>
-                        <td style="font-weight:bold;">Tags</td>
+                        <td style="font-weight:bold;">תיוויות</td>
                         <td style="padding-bottom:9px;">
                             <div class="tags-list"></div>
 
-                            <input class="add-tag" type="text" value="" maxlength="32" placeholder="- Add tag" class="placeholder short" /> 
-                            <a href="javascript:" data-id="add-tag" class="item-action simple-button action-gradient">Add</a>
+                            <input class="add-tag" type="text" value="" maxlength="32" placeholder="- הוסיפו תווית" class="placeholder short" /> 
+                            <a href="javascript:" data-id="add-tag" class="item-action simple-button action-gradient">הוסיפו</a>
                         </td>
                     </tr>
 
@@ -257,12 +257,12 @@
                 <input class="button" type="submit" value="Update {{ main_exercise.display_name|escape }}"/>
 
                 {% if App.is_dev_server %}
-                ...or <a href="#" onclick="showLiveInstructions();return false;">deploy these updates to the live production datastore.</a>
+                ...או <a href="#" onclick="showLiveInstructions();return false;">לפרוס את העדכונים האלו למאגר מידע החי של ההפקה</a>
 
                     <div id="live-instructions" style="display:none;padding:18px;margin:18px;background:#CCC;">
-                        <strong style="color:red;">Warning</strong>: submitting will send these updates to the live www.hebrewkhan.org datastore, and this exercise will immediately become available according to its above status.<br/>
+                        <strong style="color:red;">אזהרה:</strong>היישום ישלח את העדכונים האלו בשידור חי למאגר המידע של www.hebrewkhan.org, התרגיל הזה באופן מיידי יהפוך לזמין לפי המצב מעליו.<br/>
                         <input id="submit-live-button" class="button" onclick="submitLive();return false;" type="button" value="Send {{ main_exercise.display_name|escape }} updates to live www.hebrewkhan.org datastore"/><br/>
-                        <em>Submits in new window. If you are not logged in as an admin to www.hebrewkhan.org, you'll need to login and click this button again.</em>
+                        <em>יישום בחלון חדש. אם אתם לא מחוברים כמנהל ל- wwww.hebrewkhan.org, אתם תצטרכו להתחבר וללחוץ על הכפתור שוב.</em>
                     </div>
                 {% endif %}
 

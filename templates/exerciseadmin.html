@@ -4,7 +4,7 @@
 
 {% block pagesubmenu %}
     <span class="breadcrumbs_nav">
-        Exercises
+        תרגילים
     </span>
 {% endblock pagesubmenu %}
 
@@ -73,12 +73,12 @@
   
                         <nobr>
                             <label for="name">
-                                Name (file name without .html)
+                                שם (שם המסמך ללא html.)
                             </label>
                             <input id="name" type="text" name="name" size="40" />
                             <span style="padding-left: 20px;">
                                 <input id="summative" name="summative" type="checkbox" value="1" />
-                                <label style="display:inline;" for="summative">Summative</label>
+                                <label style="display:inline;" for="summative">סיכום</label>
                             </span>
                             <span style="padding-left: 20px;">
                                 <input type="submit" value="Add Exercise" />
@@ -87,20 +87,20 @@
                 </form>
      
         </div>
-        <div class="dashboard-title"><img src="/images/dashboard-icon-active.png" class="dashboard-icon" width=22 height=22 /> Exercises <a href="#" class="collapse-drawer toggle-drawer"><img src="/images/expand-left.png" width="25" height="25"/></a></div>
+        <div class="dashboard-title"><img src="/images/dashboard-icon-active.png" class="dashboard-icon" width=22 height=22 /> תרגילים <a href="#" class="collapse-drawer toggle-drawer"><img src="/images/expand-left.png" width="25" height="25"/></a></div>
             <a href="#" class="expand-drawer toggle-drawer"><img src="/images/expand-right.png" width="25" height="25" /></a>
         </div>
     <div class="dashboard-drawer drawer-hoverable">
     <div class="dashboard-drawer-inner fancy-scrollbar"><div>
 
        <div class="dashboard-filter">
-          <input type="text" class="dashboard-filter-text ui-corner-all simple-input" placeholder="Start typing the name of an exercise to find it" /><input type="button" value="Clear" class="dashboard-filter-clear simple-button action-gradient ui-corner-right strict" style="display: none;"></input>
+          <input type="text" class="dashboard-filter-text ui-corner-all simple-input" placeholder="התחילו להקליד שם של תרגיל בשביל למצוא אותו." /><input type="button" value="Clear" class="dashboard-filter-clear simple-button action-gradient ui-corner-right strict" style="display: none;"></input>
        </div>
        <div class="exercise-list">
         <span class="exercise-sublist dashboard-all-exercises">
          <div class="exercise-content all-exercises-content"></div>
         </span>
-        <span class="exercise-no-results" style="display: none;">No exercises match your query.</span>
+        <span class="exercise-no-results" style="display: none;">אין תרגילים המתאימים לחיפוש שלכם.</span>
         <span class="exercise-sublist dashboard-suggested-exercises hide-on-dashboard-filter">
         </span>
         <span class="exercise-sublist dashboard-recent-exercises hide-on-dashboard-filter">

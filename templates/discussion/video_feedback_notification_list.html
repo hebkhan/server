@@ -8,7 +8,7 @@
 
 {% block pagesubmenu %}
     <span class="breadcrumbs_nav">
-        <a href="/discussion/videofeedbacknotificationlist" class="selected">Unread Answers</a>
+        <a href="/discussion/videofeedbacknotificationlist" class="selected">תשובות שלא נקראו</a>
         <a href="/discussion/videofeedbacknotificationfeed?email={{ email }}">RSS</a>
     </span>
 {% endblock pagesubmenu %}
@@ -24,7 +24,7 @@
             </div>
         {% endfor %}
     {% else %}
-        <p>No new answers to any of your questions.  Go watch more videos and ask more questions!</p>
+        <p>אין תשובות חדשות לאף מהשאלות שלכם. לכו לצפות בעוד סרטונים ותשאלו עוד שאלות!</p>
     {% endif %}
 
     </article>

@@ -25,9 +25,9 @@
 
 {% block pagesubmenu %}
 <span class="breadcrumbs_nav">
-    <a href="/coaches" id="manage-coaches" class="selected">Manage Coaches</a>
-    <a href="/students" id="manage-students">Manage Students</a>
-    <a href="/class_profile" id="class-stats">Class Stats</a>
+    <a href="/coaches" id="manage-coaches" class="selected">נהלו מדריכים</a>
+    <a href="/students" id="manage-students">נהלו תלמידים</a>
+    <a href="/class_profile" id="class-stats">מצב כיתתי</a>
 </span>
 {% endblock pagesubmenu %}
 
@@ -35,9 +35,9 @@
 
 <article id="coaches">
 {% if coach_requests %}
-    <h2>New coaches are waiting</h2>
+    <h2>מדריכים חדשים מחכים</h2>
 
-    <p>These coaches have requested you as their student. <strong>If you accept them as your coach, they will have access to your Khan Academy data</strong>.</p>
+    <p>המדריכים האלו ביקשו אותכם בתור התלמידים שלהם. <strong>אם אתם מקבלים אותם כהמדריכים שלכם, הם יקבלו גישה למידע שלכם באקדמיית קהאן.</strong>.</p>
 
     <table>
     {% for coach_request in coach_requests %}
@@ -47,16 +47,16 @@
             <tr class="odd_row">
             {% endif %}
                 <td>{{ coach_request.coach_requesting_data.email|escape }}</td>
-                <td><a href="/acceptcoach?accept=1&coach_email={{ coach_request.coach_requesting_data.email|urlencode|escape }}" class="simple-button action-gradient">Accept coach</a></td>
-                <td><a href="/acceptcoach?accept=0&coach_email={{ coach_request.coach_requesting_data.email|urlencode|escape }}" class="simple-button action-gradient">Deny coach</a></td>
+                <td><a href="/acceptcoach?accept=1&coach_email={{ coach_request.coach_requesting_data.email|urlencode|escape }}" class="simple-button action-gradient">קבלו מדריכים</a></td>
+                <td><a href="/acceptcoach?accept=0&coach_email={{ coach_request.coach_requesting_data.email|urlencode|escape }}" class="simple-button action-gradient">סרבו למדריכים</a></td>
             </tr>
     {% endfor %}
     </table>
 {% endif %}
 
-<h2 {% if coach_requests %}class="section-headline"{% endif %}>Add a coach</h2>
+<h2 {% if coach_requests %}class="section-headline"{% endif %}>הוסיפו מדריכים</h2>
 <p>
-    Your coach will give you their coach id. Enter it here to give them access to your Khan Academy data.
+    המדריכים שלכם יתנו לכם את שם המשתמש שלהם. הכניסו אותו פה בשביל לתת להם גישה למידע שלכם באקדמיית קהאן.
 </p>
 
 <form action="/registercoach" method="post">
@@ -65,17 +65,17 @@
 </form>
 
 {% if invalid_coach %}
-<p><span style="color:red;font-weight:bold;">We can't find this coach.</span></p>
+<p><span style="color:red;font-weight:bold;">אנחנו לא יכולים למצוא את המדריכים.</span></p>
 
 <p style="padding-left:18px;">
-Make sure you're entering your full coach's full id, which is <em>case sensitive</em>. The coach id looks like <strong>teacher@gmail.com</strong> or <strong>http://facebookid.hebrewkhan.org/1067499349</strong>.<br/>
-        If you're entering your coach id correctly and still having trouble, make sure your coach has logged in to the Khan Academy at least once.
+וודא שאתם מכניסים את השם המשתמש המלא של המדריכים שלכם, שהוא <em>מקרה רגיש.</em>שם המשתמש של המדריכים שלכם נראה כמו: <strong>teacher@gmail.com</strong> או <strong>http://facebookid.hebrewkhan.org/1067499349</strong>.<br/>
+        אם אתם מכניסים את שם המשתמש של המדריכים באופן נכון ועדיין נתקלים בבעיות, וודא שהמדריכים התחברו לאקדמיית קהאן לפחות פעם אחת.
 </p>
 {% endif %}
 
 {% if coach_emails %}
 
-    <h2 class="section-headline">Your coaches</h2>
+    <h2 class="section-headline">המדריכים שלך</h2>
 
     <table>
     {% for coach_email in coach_emails %}
@@ -85,13 +85,13 @@ Make sure you're entering your full coach's full id, which is <em>case sensitive
             <tr class="odd_row">
             {% endif %}
                 <td>{{ coach_email|escape }}</td>
-                <td><a href="/unregistercoach?coach={{ coach_email|urlencode|escape }}" class="simple-button action-gradient">Remove coach</a></td>
+                <td><a href="/unregistercoach?coach={{ coach_email|urlencode|escape }}" class="simple-button action-gradient">הסירו מדריכים</a></td>
             </tr>
     {% endfor %}
     </table>
 {% endif %}
 
-<h2 class="section-headline">Your Student ID</h2>
-<p>If your coach asks for your student id, it is: {{student_id|escape}}</p>
+<h2 class="section-headline">השם משתמש שלכם כתלמידים</h2>
+<p>אם המדריכים שלכם מבקש ממכם עבור השם משתמש שלכם, הנה הוא: {{student_id|escape}}</p>
 </article>
 {% endblock pagecontent %}

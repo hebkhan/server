@@ -2,9 +2,9 @@
 
 {% block panelcontent %}
 
-<h2>Moderators</h2>
+<h2>מפקחים</h2>
 <br/>
-<strong>Moderators can delete and modify discussion content.  All devs and admins have moderation powers by default.</strong>
+<strong>מפקחים יכולים למחוק ולשנות תוכן דיונים. לכל המפתחים והמנהלים יש כוח פיקוח על פי ברירת המחדל.</strong>
 <br/><br/>
 
 {% if mods.count %}
@@ -18,7 +18,7 @@
                 <form method="POST" action="/discussion/mod/moderatorlist">
                     <input type="hidden" name="mod" value="0" />
                     <input type="hidden" name="user" value="{{mod.email|escape}}" />
-                    <input type="submit" value="Remove"/>
+                    <input type="submit" value="הסר"/>
                 </form>
             </td>
         </tr>
@@ -26,17 +26,17 @@
 </table>
 
 {% else %}
-    No moderators.
+    אין מפקחים.
 {% endif %}
 
 <br/></br>
 
-<h3>Add moderators</h3>
-Enter a user's email address below (e.g. "user@gmail.com") to add them as a moderator.<br/>
+<h3>הוסיפו מפקחים</h3>
+הזינו כתובת דוא"ל של משתמש כדי להוסיף אותו כמפקח<br/>
 <form method="POST" action="/discussion/mod/moderatorlist">
     <input type="hidden" name="mod" value="1" />
     <input type="text" name="user" value="" />
-    <input type="submit" value="Add Moderator"/>
+    <input type="submit" value="הוסף מפקח"/>
 </form>
 
 {% endblock panelcontent %}

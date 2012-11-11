@@ -49,7 +49,7 @@
 {% block pagemessage %}
     {% if query_too_short %}
     <div class="error">
-        Search terms must contain at least {{query_too_short}} letters.
+        תנאי החיפוש חייבים לכלול לפחות {{query_too_short}} אותיות.
     </div>
     {% endif %}
 {% endblock pagemessage %}
@@ -57,13 +57,13 @@
 <article class="search_results" id="search_results">
     <form id="page_requery" action="/search">
         <input id="search-page-box" type="text" name="page_search_query" value='{{page_search_query|escape}}'>
-        <button type="submit">New Search</button>
+        <button type="submit">חיפוש חדש</button>
     </form>
     <section class="searchresult-counts">
         {% if (video_count == 0 and topic_count == 0) %}
-            No results for this search. Please try a different query.
+            אין התאמות לחיפוש זה. בבקשה נסו שאלה אחרת.
         {% else %}
-            Found {{ video_count }} video{{ video_count|pluralize }} and {{ topic_count }}  topic{{ topic_count|pluralize }} that match your query:
+            נמצא {{ video_count }} סרטון{{ video_count|pluralize }} ו{{ topic_count }} נושא{{ topic_count|pluralize }} אשר מתאימים לחיפוש שלך:
         {% endif %}
     </section>
     {% if topics %}
@@ -73,7 +73,7 @@
             <dt><h2 class="topic searchresulthighlight">{{ topic.standalone_title|escape }}
             <span class="match_count">
                 {% if topic.match_count > 0 %}
-                    ({{ topic.match_count }} matching video{{ topic.match_count|pluralize }})
+                    ({{ topic.match_count }} סרטון תואם{{ topic.match_count|pluralize }})
                 {% endif %}
             </span>
             </h2>
@@ -93,14 +93,14 @@
                         {% endif %}
                       </div>
                       <div class="column">
-                        <p class="column-heading">Watch</p>
+                        <p class="column-heading">צפיה</p>
                         <ul>
-                          <li><a href="{% if video.readable_id %}/video/{{video.readable_id|urlencode}}{% else %}{{video.url}}{% endif %}" class="vl"><span class="vid-progress v{{ video.key().id() }}">Watch the video lesson</a></li>
+                          <li><a href="{% if video.readable_id %}/video/{{video.readable_id|urlencode}}{% else %}{{video.url}}{% endif %}" class="vl"><span class="vid-progress v{{ video.key().id() }}">צפו בסרטון הלימודי</a></li>
                         </ul>
                       </div>
                       {% if video_exercises[video.key().__str__()] %}
                       <div class="column">
-                        <p class="column-heading">Practice Exercises</p>
+                        <p class="column-heading">תרגלו תרגילים</p>
                           <ul>
                             {% for exercise in video_exercises[video.key().__str__()] %}
                               <li><a href="{{ exercise.relative_url }}" class="exercise-link">{{ exercise.display_name|escape }}</a></li>
@@ -113,7 +113,7 @@
                 {% endif %}
             {% endfor %}
             <li>
-                <a href="/#{{topic.standalone_title|slugify|escape}}">See all videos from topic {{ topic.standalone_title|escape }}</a>
+                <a href="/#{{topic.standalone_title|slugify|escape}}">ראו כל הסרטונים מהנושא {{ topic.standalone_title|escape }}</a>
             </li>
             </ol>
         {% endfor %}
@@ -124,7 +124,7 @@
 
 <div id="back-to-top">
     <a class="arrow" href="#">▲</a>
-    <a class="text" href="#">Back to Top</a>
+    <a class="text" href="#">בחזרה לראש העמוד</a>
 </div>
 {% endblock pagecontent %}
 

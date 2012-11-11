@@ -2,8 +2,8 @@
 
 {% block pagesubmenu %}
 <span class="breadcrumbs_nav">
-    <a href="/badges/custom/create">Create custom badge</a>
-    <a href="/badges/custom/award" class="selected">Award custom badge</a>
+    <a href="/badges/custom/create">צרו תג מותאם</a>
+    <a href="/badges/custom/award" class="selected">העניקו תג מותאם</a>
 </span>
 {% endblock pagesubmenu %}
 
@@ -17,7 +17,7 @@
     <div style="padding: 9px 23px;">
 
         {% if custom_badge_awarded %}
-            <div style="font-weight:bold;">{{ custom_badge_awarded.description|escape }} awarded to:<br/>
+            <div style="font-weight:bold;">{{ custom_badge_awarded.description|escape }} העניקו ל:<br/>
                 {% for email in emails_awarded %}
                     {{ email|escape }}<br/>
                 {% endfor %}
@@ -30,10 +30,10 @@
                 <table>
 
                     <tr>
-                        <td style="font-weight:bold;">Custom Badge</td>
+                        <td style="font-weight:bold;">תג מותאם</td>
                         <td style="padding-bottom:9px;">
                             <select name="name" style="width:200px;">
-                                <option value="-1"> - Choose a badge - </option>
+                                <option value="-1"> - בחרו תג - </option>
                                 {% for custom_badge in custom_badges %}
                                     <option value="{{ custom_badge.name|escape }}">{{ custom_badge.description|escape }}</option>
                                 {% endfor %}
@@ -42,11 +42,11 @@
                     </tr>
 
                     <tr>
-                        <td style="font-weight:bold;">Users</td>
+                        <td style="font-weight:bold;">משתמשים</td>
                         <td style="padding-bottom:9px;">
                             <textarea name="emails" rows="5" cols="40"></textarea><br/>
                             <em>
-                                Specify all student ids to be awarded, separated by newlines.
+                                ציינו את כל שמות המשתמשים של התלמידים שהתג מוענק להם, מופרדים בשורה חדשה.
                             </em>
                         </td>
                     </tr>

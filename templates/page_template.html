@@ -121,22 +121,22 @@
                                     {{ user.user_info(username, user_data) }}
                                 </span>
                                 <span class="separator"></span>
-                                <a id="page_logout" href="{{ logout_url|escape }}">להתנתקות</a>
+                                <a id="page_logout" href="{{ logout_url|escape }}">התנתקות</a>
                             {% else %}
-                                <a class="badge-target" href="{{ login_url|escape }}">להתחברות</a>
+                                <a class="badge-target" href="{{ login_url|escape }}">התחברות</a>
                             {% endif %}
                             <span class="separator"></span>
-                            <a href="/contribute" id="donate-link">לתרומה</a>
+                            <a href="/contribute" id="donate-link">תרומה</a>
                         </span>
                         <div class="clear"></div>
                         <div id="nav-and-search">
                             <div id="sitewide-navigation">
                                 <nav>
                                   <span class="links">
-                                      <a href="/#browse" {% if selected_nav_link == "watch" %}class="selected watch-link"{% else %}class="watch-link"{% endif %}>לצפות</a>
-                                    <a href="/exercisedashboard" {% if selected_nav_link == "practice" %}class="selected practice-link"{% endif %}>לתרגל</a>
-                                    <a href="/class_profile" {% if selected_nav_link == "coach" %}class="selected coach-link"{% endif %}>להדריך</a>
-                                    <a href="/contribute" {% if selected_nav_link == "contribute" %}class="selected contribute-link"{% endif %}>להתנדב</a>
+                                      <a href="/#browse" {% if selected_nav_link == "watch" %}class="selected watch-link"{% else %}class="watch-link"{% endif %}>צפו</a>
+                                    <a href="/exercisedashboard" {% if selected_nav_link == "practice" %}class="selected practice-link"{% endif %}>תרגלו</a>
+                                    <a href="/class_profile" {% if selected_nav_link == "coach" %}class="selected coach-link"{% endif %}>מדריכים</a>
+                                    <a href="/contribute" {% if selected_nav_link == "contribute" %}class="selected contribute-link"{% endif %}>מתנדבים</a>
                                     <a href="/about" {% if selected_nav_link == "about" %}class="selected about-link"{% endif %}>אודות</a>
                                     </span>
                                 </nav>
@@ -156,7 +156,7 @@
                         <span id="page_visitors">
                                 <span id="page_num_visitors">
                                     <!-- Content will get populated by javacript at end of page -->
-                                </span>&nbsp;שיעורים שנלקחו
+                                </span>&nbsp;שיעורים שהועברו
                         </span>
                     </div>
                     <div class="clear"></div>

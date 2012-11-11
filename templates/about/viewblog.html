@@ -12,16 +12,16 @@
         <div id="post-content">
         {{ post.body }}
         </div>
-        <p><a class="dsq-comment-count" href="{{ post.local_url()|escape }}#disqus_thread">Comments</a></p>
+        <p><a class="dsq-comment-count" href="{{ post.local_url()|escape }}#disqus_thread">תגובות</a></p>
         <hr style="margin-top: 36px;">
         {% endfor %}
         <div id="page-controls">
             {% if has_prev %}
-                <a href="/about/blog?offset={{ prev_offset|escape }}" class="simple-button action-gradient">Newer Posts</a>
+                <a href="/about/blog?offset={{ prev_offset|escape }}" class="simple-button action-gradient">פרסומים חדשים</a>
             {% endif %}
         
             {% if has_next %}
-                <a href="/about/blog?offset={{ next_offset|escape }}" class="simple-button action-gradient">Older Posts</a>
+                <a href="/about/blog?offset={{ next_offset|escape }}" class="simple-button action-gradient">פרסומים ישנים</a>
             {% endif %}
         </div>
         <script type="text/javascript">var disqus_url = ""; var disqus_title ="";</script><script type="text/javascript">
@@ -36,41 +36,41 @@
     </div>
     <div id="blog-sidebar">
         <div id="social-links">
-            <h2>Let's get social!</h2>
+            <h2>בואו להפוך לחברתיים!</h2>
             <p>
                 <a href="http://feeds.feedburner.com/KhanAcademy" class="simple-button action-gradient social-button">
                     <img src="/images/social_rss_box_orange_48.png" width=48 height=48 />
-                    Subscribe to the blog
+                    הרשמו לבלוג
                 </a>
                 <a href="http://www.facebook.com/khanacademy" class="simple-button action-gradient social-button">
                     <img src="/images/social_facebook_box_blue_48.png" width=48 height=48 />
-                    Join us on Facebook
+                    הצטרפו אלינו ב-Facebook
                 </a>
                 <a href="http://twitter.com/khanacademy" class="simple-button action-gradient social-button">
                     <img src="/images/social_twitter_box_blue_48.png" width=48 height=48 />
-                    Follow us on Twitter
+                    עקבו אחרינו ב- Twitter
                 </a>
             </p>
         </div>
         <div id="mailing-list">
-            <h2>Prefer email?</h2>
+            <h2>מעדיפים דוא"ל?</h2>
             <p>
-                If you don't need every little detail but 
-                want to hear the big news, then email 
-                updates may be right for you. We will 
-                never (ever) sell your email address to 
-                anyone else for any reason.
+                אם אתם לא צריכים כל פרט קטן אבל 
+                רוצים לשמוע על החדשות, אז עידכונים 
+                בדוא"ל יכולים להתאים לכם. אנחנו 
+                לעולםלא נמכור את כתובת הדוא"ל שלכם  
+                לאיש מאיזו סיבה שהיא.
             </p>
             <p>
                 {{ mailing_lists.signup_form(1, "Sign me up", "Enter your email address") }}
             </p>
         </div>
         <div id="pilot-list">
-            <h2>Want to use Khan Academy in your school?</h2>
+            <h2>רוצים להשתמש באקדמיית קהאן בביה"ס שלכם?</h2>
             <p>
-                If you are a teacher or administrator, 
-                sign up to learn more about how Khan Academy
-                can be used in schools.
+                אם אתם המורים או המנהלים, 
+                הרשמו בשביל ללמוד עוד על איך בתי ספר
+                יכולים להשתמש באקדמיית קהאן.
             </p>
             <p>
                 {{ mailing_lists.signup_form(2, "Sign me up", "Enter your email address") }}

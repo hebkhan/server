@@ -36,7 +36,7 @@
 <article id="video-page">
 <div class="video" data-role="page" data-theme="b">
     <div data-role="header" class="mobile-only">
-        <a href="#" data-rel="back" data-icon="arrow-l">חזרה</a>
+        <a href="#" data-rel="back" data-icon="arrow-l">חזרה אחורה</a>
         <h2>{{video.title|escape}}</h2>
         <a href="/" data-icon="home" data-iconpos="notext" data-direction="reverse"></a>
     </div>
@@ -44,7 +44,7 @@
         <link itemprop="url" href="/video/{{video.readable_id}}?topic={{topic.id|urlencode}}">
         <div id="description">
             {%- if button_top_exercise %}
-            <a href="{{button_top_exercise.url}}" class="practice simple-button action-gradient green desktop-only" title="בדוק את הבנתך באמצעות תרגיל">תרגל את הנושא שבסרטון</a>
+            <a href="{{button_top_exercise.url}}" class="practice simple-button action-gradient green desktop-only" title="Test your understanding with an exercise">תרגלו את המושג הזה</a>
             {%- endif %}
             <h1 class="title-header">
                 <span itemprop="name" class="title desktop-only">{{video.title|escape}}</span>
@@ -55,7 +55,7 @@
 
             {%- if related_exercises %}
             <div class="related-content visited-no-recolor">
-                <span class="related-content-title">תרגילים נוספים:</span>
+                <span class="related-content-title">תרגילים קשורים:</span>
                 <ul class="related-exercise-list">
                     {%- for exercise in related_exercises %}
                     <li>
@@ -74,18 +74,18 @@
             {% if previous_video %}
             <label id="prev_video">
               {% if previous_topic %}
-                <a rel=prev href="/video/{{previous_video.readable_id}}?topic={{previous_video_topic.id|urlencode}}"><b>לנושא הקודם:</b> {{ previous_topic.standalone_title }}</a>
+                <a rel=prev href="/video/{{previous_video.readable_id}}?topic={{previous_video_topic.id|urlencode}}"><b>נושא קודם:</b> {{ previous_topic.standalone_title }}</a>
               {% else %}
-                <a rel=prev href="/video/{{previous_video.readable_id}}?topic={{topic.id|urlencode}}"><b>לסרטון הקודם:</b> {{ library.video_name_and_progress(previous_video) }}</a>
+                <a rel=prev href="/video/{{previous_video.readable_id}}?topic={{topic.id|urlencode}}"><b>סרטון קודם:</b> {{ library.video_name_and_progress(previous_video) }}</a>
               {% endif %}
             </label>
             {% endif %}
             {% if next_video %}
             <label id="next_video">
               {% if next_topic %}
-                <a rel=next href="/video/{{next_video.readable_id}}?topic={{next_video_topic.id|urlencode}}"><b>לנושא הבא:</b> {{ next_topic.standalone_title }}</a>
+                <a rel=next href="/video/{{next_video.readable_id}}?topic={{next_video_topic.id|urlencode}}"><b>הנושא הבא:</b> {{ next_topic.standalone_title }}</a>
               {% else %}
-                <a rel=next href="/video/{{next_video.readable_id}}?topic={{topic.id|urlencode}}"><b>לסרטון הבא:</b> {{ library.video_name_and_progress(next_video) }}</a>
+                <a rel=next href="/video/{{next_video.readable_id}}?topic={{topic.id|urlencode}}"><b>הסרטון הבא:</b> {{ library.video_name_and_progress(next_video) }}</a>
               {% endif %}
             </label>
                 {% endif %}
@@ -99,9 +99,9 @@
             <link itemprop="thumbnailUrl" href="http://img.youtube.com/vi/{{video.youtube_id}}/hqdefault.jpg">
             {{ youtube.player_embed(video.youtube_id, mobile=is_mobile_capable, use_iframe_embed=is_ipad, http_origin=http_host) }}
             <div class="subtitles-warning desktop-only">
-                &lArr; Use this menu to view and help create subtitles for this video in many different languages.
-                You'll probably want to hide YouTube's captions if using these subtitles.
-               <a href="#" class="subtitles-link">Close subtitles</a>
+                &IArr; השתמשו בתפריט זה בשביל לראות ולעזור ליצור כתוביות בשביל הסרטון הזה בשפות שונות.
+                אתם ככל הנראה תרצו להחביא את הכותרות של YouTube אם אתם משתמשים בכתוביות.
+               <a href="#" class="subtitles-link">סגירת כתוביות</a>
             </div>
         </div>
         {% if subtitles_json %}
@@ -124,14 +124,14 @@
                 {% if video_path %}
                 <a href="{{video_path}}" title="Download this lesson" style="z-index:101;" class="simple-button action-gradient with-icon download-icon download-link">
                 <img src="/images/download-icon-small.png" />
-                         הורד
+                         הורדה
                 </a>
                 {% endif %}
 
                 {{ social.share_video_button(video.title, video.description, video.youtube_id, "Video-Page-Share") }}
 
             </div>
-            <span style="float:left;" id="points-badge-hover">
+            <span style="float:right;" id="points-badge-hover">
                 {{ user.possible_points_badge(awarded_points, video_points_base, logged_in) }}
             </span>
             </nobr>
@@ -167,8 +167,8 @@
       // replace it with a nicer link (we don't want to have to pass the url to
       // the templatetag).
       var $points = $('.video-energy-points');
-      $points.data('title', $points.attr('title').replace(/התחבר/,
-                 '<a href="{{ login_url|escape }}">התחבר</a>'))
+      $points.data('title', $points.attr('title').replace(/Sign in/,
+                 '<a href="{{ login_url|escape }}">Sign in</a>'))
              .removeAttr('title');
 
       VideoStats.tooltip('#points-badge-hover', $points.data('title'));

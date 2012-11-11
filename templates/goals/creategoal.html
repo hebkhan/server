@@ -23,10 +23,10 @@ function createGoalInitialize() {
 <div class="create-goal-page">
 <form id="create-goal" action="javascript:">
     <div class="section-headline">
-        <a id="goal-submit-button" onclick="javascript:GoalCreator.submit();" class="simple-button action-gradient green">Create New Goal</a>
-        <a class="simple-button action-gradient close goals-close-button">Cancel</a>
+        <a id="goal-submit-button" onclick="javascript:GoalCreator.submit();" class="simple-button action-gradient green">יצירת מטרה חדשה</a>
+        <a class="simple-button action-gradient close goals-close-button">ביטול</a>
         <span id="goal-commit-response" style="display:none;" class="goal-response-text"></span>
-        <input type="text" name="title" class="goal-title simple-input ui-corner-all blur-on-esc" placeholder="New Goal (click to set a title)"></input>
+        <input type="text" name="title" class="goal-title simple-input ui-corner-all blur-on-esc" placeholder="מטרה חדשה (לחצו בשביל לקבוע כותרת)"></input>
     </div>
     <div id="goal-info-section">
         <div id="create-goal-view"></div>
@@ -36,8 +36,8 @@ function createGoalInitialize() {
 
 <div id="container" class="dashboard{% if not logged_in %} unregistered{% endif %}">
     <div class="objective-type-picker clearfix">
-        <a href="javascript:GoalCreator.showExercises();" class="simple-button action-gradient" id="show-ex-btn">Choose exercises (<span id="goal-exercise-count">0</span> selected)</a>
-        <a href="javascript:GoalCreator.showVideos();" class="simple-button action-gradient" id="show-vid-btn">Choose videos (<span id="goal-video-count">0</span> selected)</a>
+        <a href="javascript:GoalCreator.showExercises();" class="simple-button action-gradient" id="show-ex-btn">בחרו תרגילים<span id="goal-exercise-count">0</span> (נבחרו)</a>
+        <a href="javascript:GoalCreator.showVideos();" class="simple-button action-gradient" id="show-vid-btn">בחרו סרטונים<span id="goal-video-count">0</span> (נבחרו)</a>
     </div>
     <div id="goal-spacer"></div>
     <div id="goal-choose-exercises">
@@ -56,7 +56,7 @@ function createGoalInitialize() {
             </div>
             <div class="dashboard-title">
                 <img src="/images/video.png" class="dashboard-icon" width=22 height=22 />
-                Videos
+                סרטונים
             </div>
         </div>
         <div class="dashboard-content-stretch">

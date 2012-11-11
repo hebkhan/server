@@ -1,13 +1,13 @@
 <div>
   <img src="/images/video-camera-icon-shadow.png" width="48" height="48" style="vertical-align: middle">
   <input type="text" name="title" class="node-title simple-input ui-corner-all blur-on-esc" value="{{ model.title }}">
-  <a href="javascript:" data-id="save" class="save-button item-action simple-button disabled action-gradient">Save</a>
+  <a href="javascript:" data-id="save" class="save-button item-action simple-button disabled action-gradient">שמירה</a>
 </div>
 
-{{#if oldValues.title }}<span class="old-value">Old value: <input type="text" disabled value="{{ oldValues.title }}" maxlength="32"/></span><br/>{{/if}}
+{{#if oldValues.title }}<span class="old-value">תנאים שיש לכלול כאשר ממיינים את הסרטון לחיפוש <input type="text" disabled value="{{ oldValues.title }}" maxlength="32"/></span><br/>{{/if}}
     
 <div>
-  <a href="javascript:" data-id="remove_item" class="item-action left-align simple-button blue action-gradient">Remove from topic</a>
+  <a href="javascript:" data-id="remove_item" class="item-action left-align simple-button blue action-gradient">הסירו מהנושא</a>
 </div>
 <div style="clear: both" />
 
@@ -16,48 +16,48 @@
     <table class="node-properties">
 
       <tr>
-        <td colspan="2">Changes are saved to the <strong>editing version</strong> of the site when you click the Save button above.</td>
+        <td colspan="2">כל השינויים נשמרו <strong>בגרסה הערוכה</strong> של האתר כאשר אתם לוחצים על כפתור "שמירה".</td>
       </tr>
 
       <tr>
-        <td style="font-weight:bold;">View</td>
+        <td style="font-weight:bold;">ראו</td>
         <td style="padding-bottom:9px;">
-          <a href="{{ model.ka_url }}" target="_blank">Open {{ model.title }} in new tab</a>
+          <a href="{{ model.ka_url }}" target="_blank">פתחו {{ model.title }} בסמנייה חדשה</a>
         </td>
       </tr>
 
       <tr>
-        <td style="font-weight:bold;">Slug</td>
+        <td style="font-weight:bold;">קבוצה</td>
         <td style="padding-bottom:9px;">
           <input type="text" name="readable_id" value="{{ model.readable_id }}" maxlength="64"/><br/>
-          {{#if oldValues.readable_id }}<span class="old-value">Old value: <input type="text" disabled value="{{ oldValues.readable_id }}" maxlength="64"/></span><br/>{{/if}}
-          <em>Short identifier used as a key for the API and in URLs linking to this video</em>
+          {{#if oldValues.readable_id }}<span class="old-value">תנאים שיש לכלול כאשר ממיינים את הסרטון לחיפוש <input type="text" disabled value="{{ oldValues.readable_id }}" maxlength="64"/></span><br/>{{/if}}
+          <em>זיהוי קצר המשומש כמפתר בשביל ה-API ובלינקים של כתובת האתר לסרטון הזה</em>
         </td>
       </tr>
 
       <tr>
-        <td style="font-weight:bold;">YouTube ID</td>
+        <td style="font-weight:bold;">משתמש YouTube</td>
         <td style="padding-bottom:9px;">
           <input type="text" name="youtube_id" value="{{ model.youtube_id }}" maxlength="11" class="short" /><br/>
-          {{#if oldValues.youtube_id }}<span class="old-value">Old value: <input type="text" disabled value="{{ oldValues.youtube_id }}" maxlength="11" class="short"/></span><br/>{{/if}}
-          <em>ID of this video on YouTube</em>
+          {{#if oldValues.youtube_id }}<span class="old-value">תנאים שיש לכלול כאשר ממיינים את הסרטון לחיפוש <input type="text" disabled value="{{ oldValues.youtube_id }}" maxlength="11" class="short"/></span><br/>{{/if}}
+          <em>תיאור</em>
         </td>
       </tr>
 
       <tr>
-        <td style="font-weight:bold;">Description</td>
+        <td style="font-weight:bold;">ערך ישן:</td>
         <td style="padding-bottom:9px;">
           <input type="text" name="description" value="{{ model.description }}" maxlength="256"/><br/>
-          {{#if oldValues.description }}<span class="old-value">Old value: <input type="text" disabled value="{{ oldValues.description }}" maxlength="256"/></span><br/>{{/if}}
-          <em>Description text visible in topic listings</em>
+          {{#if oldValues.description }}<span class="old-value">תנאים שיש לכלול כאשר ממיינים את הסרטון לחיפוש <input type="text" disabled value="{{ oldValues.description }}" maxlength="256"/></span><br/>{{/if}}
+          <em>מילות מפתח</em>
         </td>
       </tr>
 
       <tr>
-        <td style="font-weight:bold;">Keywords</td>
+        <td style="font-weight:bold;">ערך ישן:</td>
         <td style="padding-bottom:9px;">
           <input type="text" name="keywords" value="{{ model.keywords }}" maxlength="256"/><br/>
-          {{#if oldValues.keywords }}<span class="old-value">Old value: <input type="text" disabled value="{{ oldValues.keywords }}" maxlength="256"/></span><br/>{{/if}}
+          {{#if oldValues.keywords }}<span class="old-value">תנאים שיש לכלול כאשר ממיינים את הסרטון לחיפוש <input type="text" disabled value="{{ oldValues.keywords }}" maxlength="256"/></span><br/>{{/if}}
           <em>Terms to include when indexing this video for searching</em>
         </td>
       </tr>

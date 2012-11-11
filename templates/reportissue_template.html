@@ -18,30 +18,30 @@ function submitForm(value)
 	{{message}}
 	</p>
 	{% endif %}
-        <h2 class="main-headline">{% block have_an_issue %}Have an issue?{% endblock have_an_issue %}&nbsp;
-        We want to know about it!
+        <h2 class="main-headline">{% block have_an_issue %}יש בעיה?{% endblock have_an_issue %}&nbsp;
+        אנחנו רוצים לדעת על זה!
         </h2>
 				{% block exercise_warning %}{% endblock exercise_warning %}
-        <p>If you're lucky, someone has already
-        {% block submitted_the_issue %}submitted the issue{% endblock submitted_the_issue %}
-        and you can simply vote for it by turning on <b>the star next to it</b> in
+        <p>אם יש לכם מזל מישהו כבר
+        {% block submitted_the_issue %}דיווח על הבעיה{% endblock submitted_the_issue %}
+        ואתם יכולים פשוט להצביע בעבור הבעיה על ידי לחיצה על <b>הכוכב הנמצא לידו</b> בתוך
         the
-        {% block list_of_issues_link %}<a href="http://code.google.com/p/hebrewkhan/issues/list?can=2&q=Status:Accepted,Started%20Type:Defect&sort=-stars&colspec=Summary">list of known problems</a>{% endblock list_of_issues_link %}.
-        Otherwise, please use the following steps to create a new issue in our issue tracking system.
+        {% block list_of_issues_link %}<a href="http://code.google.com/p/hebrewkhan/issues/list?can=2&q=Status:Accepted,Started%20Type:Defect&sort=-stars&colspec=Summary">הרשימה של בעיות ידועות</a>{% endblock list_of_issues_link %}.
+        אחרת אנא השתמשו בצעדים הבאים בכדי ליצור בעיה חדשה במערכת לאיתור בעיות שלנו.
 	<ol>
-		<li>Go to the
-	        {% block new_issue_link %}<a href="http://code.google.com/p/hebrewkhan/issues/entry?template=Defect%20report%20from%20user&labels=Referer-{{referer|urlencode}},Type-Defect,{{issues_label|urlencode}}">new problem form</a>{% endblock new_issue_link %}.
+		<li>לכו
+	        {% block new_issue_link %}<a href="http://code.google.com/p/hebrewkhan/issues/entry?template=Defect%20report%20from%20user&labels=Referer-{{referer|urlencode}},Type-Defect,{{issues_label|urlencode}}">לפורום בעיה חדשה</a>{% endblock new_issue_link %}.
 		</li>
-		<li>Fill in the <b>Summary</b> and <b>Description</b> fields. <span style="color: red; font-size: 12px;"/>Note: The information you provide will become public, so do not include any private or confidential information.</span></li>
-		<li>Click the <b>Submit Issue</b> button.</li>
+		<li>מלאו את <b>התקציר</b> ואת <b>שדות</b> התיאור. <span style="color: red; font-size: 12px;"/>שימו לב: המידע שאתם מספקים יהפוך לציבורי, לכן אל תכללו שם מידע פרטי או מסווג.</span></li>
+		<li>לחצו על <b>הגשת מידע</b> button.</li>
 	</ol>
-        <p>Your submission will show up in the list once we've had a chance to give it a quick review.</p>
+        <p>ההגשה שלכם תופיע ברשימה ברגע שנוכל לתת לזה סקירה מהירה.</p>
         </p>
-        <p>If you vote for something or submit something new, you'll get emails as people comment on it.&nbsp;
-        When we think we've taken care of it you'll get an email saying "Status: Fixed", and you'll see the difference
-        the next time we upgrade the site. If at any point you want to stop getting the emails, just follow the
-        link in one of them and click on the star to make it dim.
+        <p>אם אתם מצביעים בשביל משהו או מגישים משהו חדש, אתם תקבלו דוא"ל כאשר אנשים יגיבו על זה.&nbsp;
+        כאשר נחשוב שטיפלנו בזה תקבלו דוא"ל בו כתוב "מצב: מתוקן", ואתם תראו את השינוי
+        בפעם הבאה בה נשדרג את האתר. אם, בכל זמן שהוא, אתם תרצו להפסיק לקבל הודעות בדוא"ל, רק תעקבו אחר
+        הקישור באחד מהם ולחצו על הכוכב בשביל להפוך אותו לכהה.
         </p>
-        <p><em>Thanks for taking the time to help us make Khan Academy better!</em></p>
+        <p><em>תודה שלקחתם את הזמן בשביל לעזור לנו להפוך את אקדמיית קהאן לטובה יותר!</em></p>
 </article>
 {% endblock pagecontent %}

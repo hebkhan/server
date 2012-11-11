@@ -45,20 +45,20 @@
 
 <div id="feedback">
 <p>
-    Showing top <strong>{{feedbacks|length}}</strong> of <strong>{{ feedback_count|escape }}</strong> posts in need of moderator attention.
+    מציג <strong>{{feedbacks|length}}</strong> מתוך <strong>{{ feedback_count|escape }}</strong> פרסומים לבדיקה.
 </p>
 
 {% if feedbacks %}
     <table style="width:100%">
         <tr>
             <th>&nbsp;</th>
-            <th>Type</th>
-            <th>Content</th>
-            <th>Votes</th>
-            <th>Author</th>
-            <th>Flags</th>
-            <th>Flagged By</th>
-            <th>Video</th>
+            <th>סוג</th>
+            <th>תוכן</th>
+            <th>הצבעות</th>
+            <th>מחבר</th>
+            <th>סימונים</th>
+            <th>סומן על ידי</th>
+            <th>סרטון</th>
         </tr>
     {% for feedback in feedbacks %}
         {% if loop.index % 2 == 0 %}
@@ -69,10 +69,10 @@
             <td style="text-align:left;width:1%;" class="mod_action_col">
                 <nobr>
                 <form method="POST" action="/discussion/clearflags?entity_key={{feedback.key()|escape}}" data-desc="Cleared flags">
-                    <input type="submit" class="simple-button action-gradient" value="Clear flags"/>
+                    <input type="submit" class="simple-button action-gradient" value="נקה סימונים"/>
                 </form>
                 <form method="POST" action="/discussion/deleteentity?entity_key={{feedback.key()|escape}}" data-desc="Deleted">
-                    <input type="submit" class="simple-button action-gradient" value="Delete post"/>
+                    <input type="submit" class="simple-button action-gradient" value="מחק תגובה"/>
                 </form>
                 </nobr>
             </td>
@@ -81,11 +81,11 @@
                 {{feedback.types.0|capitalize|escape}}
                 {% if feedback.types.0 == feedback_type_comment %}
                     <form method="POST" action="/discussion/changeentitytype?clear_flags=1&entity_key={{feedback.key()|escape}}&target_type={{feedback_type_question}}" data-desc="Changed to question">
-                        <input type="submit" class="simple-button action-gradient" value="Change to Question"/>
+                        <input type="submit" class="simple-button action-gradient" value="שנה לשאלה"/>
                     </form>
                 {% else %}
                     <form method="POST" action="/discussion/changeentitytype?clear_flags=1&entity_key={{feedback.key()|escape}}&target_type={{feedback_type_comment}}" data-desc="Changed to comment">
-                        <input type="submit" class="simple-button action-gradient" value="Change to Comment"/>
+                        <input type="submit" class="simple-button action-gradient" value="שנה להערה"/>
                     </form>
                 {% endif %}
                 </nobr>
@@ -102,7 +102,7 @@
 {% endif %}
 
 {% if has_more %}
-    <br/><a href="/discussion/flaggedfeedback">Reload this page</a> to see the next set of posts waiting for moderator attention.
+    <br/><a href="/discussion/flaggedfeedback">רענן עמוד זה</a> בכדי לבדוק את סט הפרסומים הבאים.
 {% endif %}
 
 </div>

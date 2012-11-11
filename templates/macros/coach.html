@@ -4,29 +4,29 @@
 
     <div id="empty-class">
         {% if class_is_empty %}
-        <h1>You don't have any students yet.</h1>
+        <h1>אין לכם עדיין תלמידים.</h1>
         {% endif %}
-        <h3>Each of your students needs to sign in and follow these steps:</h3>
+        <h3>כל אחד ואחד מהתלמידים שלם צריכים להרשם ולעשות את השלבים הבאים:</h3>
         <ol>
             <li>
-                <p>First, they should click on the <a href="/coaches">Add a Coach</a> link at the bottom of the page.</p>
+                <p>תחילה, הם צריכים ללחוץ על הקישור <a href="/coaches">הוסיפו מדריכים</a> בתחתית העמוד.</p>
                 <a href="/coaches"><img src="/images/add-a-coach.png" class="vertical-shadow rounded-background" /></a>
             </li>
             <li class="enter-email">
-                <p>Then, they should enter your Coach ID in the form that looks like this:</p>
+                <p>לאחר מכן, הם צריכים להכניס את שם המשתמש של המדרייכים בצורה שנראית כך:</p>
                 <div class="coach-email">{{ coach_email|escape }}</div>
                 <a href="/coaches"><img src="/images/enter-coach-email.png?{{App.version}}" class="vertical-shadow rounded-background"/></a>
                 <p>
-                    Your Coach ID is <strong>{{ coach_email|escape }}</strong>.
+                    שם המשתמש שלכם (של המדריכים) הוא <strong>{{ coach_email|escape }}</strong>.
                 </p>
             </li>
             <li class="click-register">
-                <p>Finally, they need to click the <em>Register Coach</em> button. It looks like this:</p>
+                <p>בסופו של דבר, הם צריכים ללחוץ על כפתור <em>הרשמת מדריכים</em> שנראה כך:</p>
                 <div class="coach-email">{{ coach_email|escape }}</div>
                 <a href="/coaches"><img src="/images/click-register.png?{{App.version}}" class="vertical-shadow rounded-background"/></a>
             </li>
         </ol>
-        <p>Once students make you their coach, you'll have access to all types of interesting data about their progress and achievements.</p>
-        <p>You can access that data via the <a href="/class_profile">Class Report</a>.</p>
+        <p>כאשר התלמידים הופכים אותכם להיות המדריכים שלהם, תהיה לכם גישה לכל סוג של מידע מעניין בנוגע להתקדמות וההשגים שלהם.</p>
+        <p>אתם יכולים לגשת למידע הזה דרך <a href="/class_profile">דו"ח כיתתי</a>.</p>
     </div>
 {%- endmacro %}

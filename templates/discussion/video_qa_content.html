@@ -30,11 +30,11 @@
             ">
                 <table><tr>
                 <td style="vertical-align: middle;">
-                    <a href="/video/{{video.readable_id}}?topic={{topic.id|urlencode}}&qa_expand_key={{question.key()}}#q_{{question.key()}}" onclick="return false;">{{ question.children_cache|length }} answer{{ "s" if question.children_cache.__len__() != 1 else "" }}</a>
+                    <a href="/video/{{video.readable_id}}?topic={{topic.id|urlencode}}&qa_expand_key={{question.key()}}#q_{{question.key()}}" onclick="return false;">{{ question.children_cache|length }} תשובות</a>
                 </td>
                 <td>
                     <span class="question_answer_count_add_yours">
-                        <input type="button" class="button add_yours" value="Add yours" />
+                        <input type="button" class="button add_yours" value="הוסיפו משלכם" />
                     </span>
                 </td>
                 </tr></table>
@@ -64,7 +64,7 @@
                         <input type="hidden" id="topic_key" name="topic_key" value="{{ topic.key() }}" />
                         <input type="hidden" name="question_key" value="{{ question.key() }}" />
                         <div class="answer_placeholder">
-                            <textarea name="answer_text" class="answer_text" rows="2" cols="40" placeholder="Answer this question"></textarea>
+                            <textarea name="answer_text" class="answer_text" rows="2" cols="40" placeholder="ענו על שאלה זו"></textarea>
                         </div>
                         {{ discussion.feedback_controls_answer("Answer this question") }}
                     </form>

@@ -10,7 +10,7 @@
             {% endif %}
             <div data-role="page" id="{{ topic.id }}" data-theme="b">
                 <div data-role="header" class="library-content-header">
-                    <a href="#" data-rel="back" data-icon="arrow-l" class="mobile-only">חזור</a>
+                    <a href="#" data-rel="back" data-icon="arrow-l" class="mobile-only">אחורה</a>
                     {% if topic.depth %}
                         <h2 class='subtopic-{{ topic.depth }}-heading {% if loop.first %}topic-heading-first{% endif %}'>{{topic.homepage_title|escape}}</h2>
                     {% else %}

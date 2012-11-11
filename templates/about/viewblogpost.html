@@ -4,7 +4,7 @@
     <h2 class="pulls"><a href="{{ post.local_url|escape }}">{{ post.title|escape }}</a></h2>
     <p class="pulled" style="color: #999; font-style: italic; font-family: Georgia;">{{ post.dt }}</p>
     <div id="post-content">{{ post.body }}</div>
-    <p><a class="dsq-comment-count" href="{{ post.local_url|escape }}#disqus_thread">Comments</a></p>
+    <p><a class="dsq-comment-count" href="{{ post.local_url|escape }}#disqus_thread">תגובות</a></p>
 
     <script type="text/javascript">var disqus_url = "{{post.url|escapejs}}"; var disqus_title ="{{ post.title|escapejs }}";</script><hr/><div id="disqus_thread"></div>
     <script type="text/javascript">
@@ -17,7 +17,7 @@
        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
       })();
     </script>
-    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript=bjk5">comments powered by Disqus.</a></noscript>
+    <noscript>בבקשה אפשר ל-JaveScript לראות את <a href="http://disqus.com/?ref_noscript=bjk5">התגובות המופעלות בידי Disqus.</a></noscript>
     <hr style="margin-bottom:60px;"/>
     <script type="text/javascript">
     var disqus_shortname = 'bjk5';

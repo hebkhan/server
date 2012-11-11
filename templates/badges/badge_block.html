@@ -9,15 +9,15 @@
         <div class="achievement-title">{{ badge.description|escape }}{% if frequency %} <span class="frequency">(x{{ frequency }})</span>{% endif %}</div>
         <div class="achievement-desc {% if not user_badge %}achievement-desc-no-count{% endif %}">
             {% if user_badge %}
-                Last achieved {{ user_badge.date|timesince_ago }}
+                {{ user_badge.date|timesince_ago }}
                 {% if user_badge.count > 1 %}
-                    in
+                    ב
                     {% for context_name in badges.visible_context_names(user_badge) %}
                         <strong>{{ context_name|escape }}</strong>{% if not loop.last %},{% endif %}
                     {% endfor %}
                     {% for context_name in badges.hidden_context_names(user_badge) %}
                         {% if loop.first %}
-                        <span class="badge-context-hidden-link"><a href="#" onclick="Badges.showMoreContext(this);return false;">and also in<span class="ellipsis">...</span></a></span>
+                        <span class="badge-context-hidden-link"><a href="#" onclick="Badges.showMoreContext(this);return false;">ובנוסף ב<span class="ellipsis">...</span></a></span>
                         <span class="badge-context-hidden" style="display:none;">
                         {% endif %}
                             <strong>{{ context_name|escape }}</strong>{% if not loop.last %},{% endif %}
@@ -25,7 +25,7 @@
                     {% endfor %}
                 {% else %}
                     {% for context_name in badges.visible_context_names(user_badge) %}
-                        in <strong>{{ context_name|escape }}</strong>
+                        ב <strong>{{ context_name|escape }}</strong>
                     {% endfor %}
                 {% endif %}
             {% else %}
@@ -35,7 +35,7 @@
         </div>
         {% if can_become_goal %}
         <div class="add-goal">
-          + &emsp; Goal
+           + &emsp; מטרה
         </div>
         {% endif %}
         {% if badge.points %}<div class="energy-points-badge">{{ badge.points }}</div>{% endif %}

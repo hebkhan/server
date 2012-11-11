@@ -1,20 +1,20 @@
 <div class="exercise_message">
     <a href="#" class="close-button" title="Close this notification">x</a>
-    <h2 class="pulls">Having trouble?</h2>
+    <h2 class="pulls">ישנן בעיות?</h2>
 
     {% if coaches.__len__() == 0 %}
     <span class="suggestion" id="someone-sug" style="display: none" data-weight="1">
-        Why don't you ask someone for help?
+        למה שלא תבקשו עזרה?
     </span>
     {% else %}
     <span class="suggestion" id="coach-sug" style="display: none" data-weight="3">
-        Why don't you ask
+        למה שלא תשאלו את
         {% if coaches.__len__() == 1 %}
-            your <a href="coaches">coach</a>
+            המדריכים <a href="coaches">שלכם</a>
         {% else %}
-            one of your <a href="coaches">coaches</a>
+            אחד <a href="coaches">המדרכים שלכם</a>
         {% endif %}
-        for help?
+        בשביל עזרה?
     </span>
     {% endif %}
 </div>
@@ -22,25 +22,25 @@
 <!-- poor man's templating - maybe change this to jQuery.tmpl -->
 <div id="video-sug-templates" style="display: none">
     <span class="suggestion" id="unstarted-video-sug" data-weight="4">
-        Let's take a break and watch <span></span>.
-        It's only a few minutes long and we thought it would be helpful when we made this exercise.
+        בואו ניקח הפסקה ונצפה <span></span>.
+        זה רק באורך של כמה דקות וחשבנו שזה יוכל לעזור כשהכנו את התרגיל הזה.
     </span>
 
     <span class="suggestion" id="started-video-sug" data-weight="3">
-        We know it's easy to get excited and jump into an exercise before finishing a video.
-        There's no rush, let's finish watching <span></span>. These questions will still be waiting for you.
+        אנחנו יודעים שזה קל להתרגש ולקפוץ הישר לסרטון לפני שסיימתם לצפות בסרטון
+        אין לאן למהר, בואו נסיים לצפות. <span></span>השאלות האלו עדיין יחכו לכם.
     </span>
 
     <span class="suggestion" id="complete-video-sug" data-weight="2">
-        I know you won't get any more energy points, but let's watch <span></span> again.
-        It's easy to miss something the first time and our video player loves going over things again and again. Seriously!
+        אני יודע שלא תקבלו עוד נקודות אנרגיה אבל בואו נצפה <span></span> שוב.
+        זה קל לפספס משהו בפעם הראשונה והנגן סרטונים אוהב לעבור על דברים שוב ושוב. ברצינות!
     </span>
 </div>
 
 <div id="prereq-sug-templates" style="display: none">
     <span class="suggestion" id="prereq-sug" data-weight="4">
-        Looks like you're having some trouble.
-        Let's try some <span></span> problems first.
+        נראה שנתקלתם בבעיה.
+        בואו ננסה כמה <span></span> בעיות קודם.
     </span>
 </div>
 

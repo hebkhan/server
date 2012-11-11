@@ -19,9 +19,9 @@
 
 {% block pagesubmenu %}
 <span class="breadcrumbs_nav">
-    <a href="/coaches" id="manage-coaches">Manage Coaches</a>
-    <a href="/students" id="manage-students" class="selected">Manage Students</a>
-    <a href="/class_profile" id="class-stats">Class Stats</a>
+    <a href="/coaches" id="manage-coaches">נהל מדריכים</a>
+    <a href="/students" id="manage-students" class="selected">נהל תלמידים</a>
+    <a href="/class_profile" id="class-stats">מצב כיתה</a>
 </span>
 {% endblock pagesubmenu %}
 
@@ -30,20 +30,20 @@
 
 <div id="sidebar">
     <ul class="student-list-links">
-        <li id="student-list-allstudents" data-list_id="allstudents"><a href="/students" class="bullet bullet-active">All students</a></li>
-        <li id="student-list-requests" data-list_id="requests"><a href="/students?list_id=requests" class="bullet" title="Students that appear here have not yet responded to your request to coach them">Requests</a></li>
+        <li id="student-list-allstudents" data-list_id="allstudents"><a href="/students" class="bullet bullet-active">כל התלמידים</a></li>
+        <li id="student-list-requests" data-list_id="requests"><a href="/students?list_id=requests" class="bullet" title="Students that appear here have not yet responded to your request to coach them">בקשות</a></li>
     </ul>
     <ul id="custom-lists" class="student-list-links">
         {% for list in student_lists %}
         <li data-list_id="{{list.key}}"><a href="students?list_id={{list.key}}" class="bullet">{{list.name|escape}}</a></li>
         {% endfor %}
     </ul>
-    <div id="newlist-div" style="display: none;"><div>New list name:</div>
+    <div id="newlist-div" style="display: none;"><div>שם הרשימה החדשה:</div>
     <input type="textbox" id="newlist-box" />
-    <a id="newlist-ok" class="simple-button action-gradient" href="#">OK</a>
-    <a id="newlist-cancel" class="simple-button action-gradient" href="#">Cancel</a>
+    <a id="newlist-ok" class="simple-button action-gradient" href="#">אישור</a>
+    <a id="newlist-cancel" class="simple-button action-gradient" href="#">ביטול</a>
     </div>
-    <a id="newlist-button" class="simple-button action-gradient" href="#">Create a new list</a>
+    <a id="newlist-button" class="simple-button action-gradient" href="#">יצירת רשימה חדשה</a>
 </div>
 
 <div id="students-container">
@@ -53,26 +53,26 @@
 
             <a class="delete-button" id="delete-list" href="#"><img src="images/circled_cross.png" title="Delete this list (the students will still appear in 'All students')"/></a>
         </span>
-        <h2 class="visited-no-recolor"><a href="/class_profile?student_list=allstudents" title="View the class statistics page for this set of students">All students</a></h2>
-        <span id='nstudents'>0 students</span>
+        <h2 class="visited-no-recolor"><a href="/class_profile?student_list=allstudents" title="View the class statistics page for this set of students">כל התלמידים</a></h2>
+        <span id='nstudents'>0 תלמידים</span>
     </div>
 
     <div id="textbox-container">
-        <input type="text" id="request-student" class="blur-on-esc" size="80" placeholder="Type a student's email address to propose becoming their coach"/>
-        <input type="text" id="add-to-list" class="blur-on-esc" size="80" placeholder="Type a student's name to add them to this list" style="display: none"/>
+        <input type="text" id="request-student" class="blur-on-esc" size="80" placeholder="הקלידו כתובת דוא"ל של תלמידים בשביל להציע להיות המדריכים שלהם"/>
+        <input type="text" id="add-to-list" class="blur-on-esc" size="80" placeholder="הקלידו שם של תלמידים בשביל להוסיף אותם לרשימה" style="display: none"/>
     </div>
 
     <div class="alert error" id="addstudent-error">
-        <span class="float-right close-button">(<a href="#">close</a>)</span>
-        No student was found with that ID. The student must log in at least once. Also, check that the student ID is correct. Here are some examples of student IDs:<br>
+        <span class="float-right close-button">(<a href="#">סגירה</a>)</span>
+        אף תלמידים לא נמצא בשם משתמש הזה. התלמידים חייבים להתחבר לפחות פעם אחת. בנוסף, בדוקו ששם המשתמש של התלמיד הוא נכון. הנה מספר דוגמאות של שם משתמש של תלמידים:<br>
         <ul>
             <li>student@gmail.com</li>
             <li>http://facebookid.hebrewkhan.org/123456789</li>
         </ul>
     </div>
     <div class="alert note" id="notaccepted-note">
-        <span class="float-right close-button">(<a href="#">close</a>)</span>
-        The students below have not yet accepted your request to coach them. To start coaching them, have them click 'add a coach' at the bottom of any screen, then click the 'accept coach' button.
+        <span class="float-right close-button">(<a href="#">סגירה</a>)</span>
+        התלמידים ברשימה למטה עדיין לא אישרו את הבקשה שלך להדריך אותם. בשביל להתחיל להדריך אותם, בקשו מהם ללחוץ 'הוסיפו מדריכים' בסוף כל עמוד, לאחר מכן ילחצו על כפתור 'אשרו מדריכים'.
     </div>
 
     <div id="actual-students">
@@ -81,9 +81,9 @@
             <span class="float-right">
                 <div class="css-menu lists-css-menu">
                     <ul>
-                        <li>Edit Lists
+                        <li>עריכת רשימות
                             <ul>
-                                <li class="list-option-newlist">+ Create a new list...</li>
+                                <li class="list-option-newlist"> + יצירת רשימה חדשה...</li>
                             </ul>
                         </li>
                     </ul>
