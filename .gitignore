@@ -3,6 +3,7 @@ tags
 .vimprojects
 cscope.files
 
+*.orig
 *.pyc
 *combined.js
 *compressed.js
@@ -26,3 +27,5 @@ offline/*
 compiled_templates*
 .vims
 javascript/*/*.js
+templates/*.py
+templates/*/*.py
