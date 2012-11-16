@@ -44,7 +44,7 @@
         <link itemprop="url" href="/video/{{video.readable_id}}?topic={{topic.id|urlencode}}">
         <div id="description">
             {%- if button_top_exercise %}
-            <a href="{{button_top_exercise.url}}" class="practice simple-button action-gradient green desktop-only" title="Test your understanding with an exercise">תרגלו את המושג הזה</a>
+            <a href="{{button_top_exercise.url}}" class="practice simple-button action-gradient green desktop-only" title="בדקו את הבנתכם באמצעות תרגיל">תרגלו את המושג הזה</a>
             {%- endif %}
             <h1 class="title-header">
                 <span itemprop="name" class="title desktop-only">{{video.title|escape}}</span>
@@ -116,13 +116,13 @@
 
             <div class="extra-link-bar">
 
-                <a href="#" title="Toggle subtitles and translations" style="z-index:101;" class="simple-button action-gradient with-icon subtitles-link">
+                <a href="#" title="מתג כתוביות ותרגום" style="z-index:101;" class="simple-button action-gradient with-icon subtitles-link">
                 <img src="/images/subtitles-icon-small.png" />
                         כתוביות
                 </a>
 
                 {% if video_path %}
-                <a href="{{video_path}}" title="Download this lesson" style="z-index:101;" class="simple-button action-gradient with-icon download-icon download-link">
+                <a href="{{video_path}}" title="הורד סרטון זה" style="z-index:101;" class="simple-button action-gradient with-icon download-icon download-link">
                 <img src="/images/download-icon-small.png" />
                          הורדה
                 </a>

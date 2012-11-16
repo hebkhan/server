@@ -30,7 +30,7 @@
 <span class="username_and_notification">
     {% if count %}
     <span class="user-notification">
-        <a class="notification_link" href="/discussion/videofeedbacknotificationlist" title="{{ count }} new answers to your questions"><img src="{{ "/images/email.png"|static_url }}" class="icon" style="width:16px;height:11px;"/><span class="notification_bubble">{{ count }}</span></a>
+        <a class="notification_link" href="/discussion/videofeedbacknotificationlist" title="{{ count }} תשובות חדשות לשאלותיכם"><img src="{{ "/images/email.png"|static_url }}" class="icon" style="width:16px;height:11px;"/><span class="notification_bubble">{{ count }}</span></a>
     </span>
     {% endif %}
     <a href="{{profile_root}}"><img class="user-avatar" src="{{ avatars.get_src_for_user(user_data) }}"><span class="user-name">{{username|escape}}</span></a>
@@ -44,5 +44,5 @@
 {%- endmacro %}
 
 {% macro possible_points_badge(points, possible_points, logged_in=True) -%}
-<div class="video-energy-points"{% if logged_in %} title="{{ points }} Energy Points earned for watching this video"{% else %} title="You're earning points for watching this video. Sign in to keep them"{% endif %}><span class="video-energy-points-current">{{ points }}</span> של {{ possible_points }}</div>
+<div class="video-energy-points"{% if logged_in %} title="{{ points }} Energy Points earned for watching this video"{% else %} title="You're earning points for watching this video. Sign in to keep them"{% endif %}><span class="video-energy-points-current">{{ points }}</span> מתוך {{ possible_points }}</div>
 {%- endmacro %}

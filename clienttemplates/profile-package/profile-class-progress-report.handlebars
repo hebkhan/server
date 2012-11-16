@@ -1,6 +1,6 @@
 <table id="module-progress" cellspacing="0" cellpadding="0" border="0">
     <tr>
-        <th id="firstTd" class="tableHeader">התקדמות של תלמידים</th>
+        <th id="firstTd" class="tableHeader">התקדמות התלמיד</th>
         <td>
             <div id="divHeader" class="sizeOnResize" style="overflow:hidden;width:450px; line-height: 15px;">
                 <table cellspacing="0" cellpadding="0" border="1" style="width: 100%">
@@ -50,7 +50,7 @@
                             <b>{{ exercise_display }}</b><br/>
                             <em><nobr>מצב: {{ status }}</nobr></em><br/>
                             <em>התקדמות: {{ progress }}%</em><br/>
-                            {{#if last_done_ago}}<em>עבד לאחרונה על: {{ last_done_ago }}</em></br/>{{/if}}
+                            {{#if last_done_ago}}<em>עבד לאחרונה: {{ last_done_ago }}</em></br/>{{/if}}
                             <em>בעיות שנוסו: {{ total_done }}</em>
                           </div>
                           {{/if}}

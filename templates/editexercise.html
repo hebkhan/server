@@ -190,7 +190,7 @@
                             <div id="prereqs-container"></div>
 
                             <select id="add-prereq" onchange="addPrereq();" style="width:200px;">
-                                <option value=""> - הוסיפו תרגיל מותאם - </option>
+                                <option value=""> - הוסף תרגיל מותאם - </option>
                                 {% for exercise in exercises %}
                                     <option value="{{ exercise.name|escape }}">{{ exercise.display_name|escape }}</option>
                                 {% endfor %}
@@ -209,7 +209,7 @@
                             <div id="covers-container"></div>
 
                             <select id="add-cover" onchange="addCover();" style="width:200px;">
-                                <option value=""> - הוסיפו תרגיל המכסה את החומר - </option>
+                                <option value=""> - הוסף תרגיל המכסה את החומר - </option>
                                 {% for exercise in exercises %}
                                     <option value="{{ exercise.name|escape }}">{{ exercise.display_name|escape }}</option>
                                 {% endfor %}
@@ -225,7 +225,7 @@
                         <td style="padding-bottom:9px;">
                             <div id="videos-container"></div>
 
-                            <input id="related-videos-input" style="width:200px;" type="text" placeholder="- הוסיפו סרטון קשור -" value='' class="placeholder" />
+                            <input id="related-videos-input" style="width:200px;" type="text" placeholder="- הוסף סרטון קשור -" value='' class="placeholder" />
                         </td>
                     </tr>
                     {% endif %}
@@ -244,8 +244,8 @@
                         <td style="padding-bottom:9px;">
                             <div class="tags-list"></div>
 
-                            <input class="add-tag" type="text" value="" maxlength="32" placeholder="- הוסיפו תווית" class="placeholder short" /> 
-                            <a href="javascript:" data-id="add-tag" class="item-action simple-button action-gradient">הוסיפו</a>
+                            <input class="add-tag" type="text" value="" maxlength="32" placeholder="- הוסף תווית" class="placeholder short" /> 
+                            <a href="javascript:" data-id="add-tag" class="item-action simple-button action-gradient">הוסף</a>
                         </td>
                     </tr>
 
@@ -254,14 +254,14 @@
                 </table>
 
                 <br/>
-                <input class="button" type="submit" value="Update {{ main_exercise.display_name|escape }}"/>
+                <input class="button" type="submit" value="עדכן {{ main_exercise.display_name|escape }}"/>
 
                 {% if App.is_dev_server %}
                 ...או <a href="#" onclick="showLiveInstructions();return false;">לפרוס את העדכונים האלו למאגר מידע החי של ההפקה</a>
 
                     <div id="live-instructions" style="display:none;padding:18px;margin:18px;background:#CCC;">
                         <strong style="color:red;">אזהרה:</strong>היישום ישלח את העדכונים האלו בשידור חי למאגר המידע של www.hebrewkhan.org, התרגיל הזה באופן מיידי יהפוך לזמין לפי המצב מעליו.<br/>
-                        <input id="submit-live-button" class="button" onclick="submitLive();return false;" type="button" value="Send {{ main_exercise.display_name|escape }} updates to live www.hebrewkhan.org datastore"/><br/>
+                        <input id="submit-live-button" class="button" onclick="submitLive();return false;" type="button" value="שלח עדכון של {{ main_exercise.display_name|escape }} ל-www.hebrewkhan.org"/><br/>
                         <em>יישום בחלון חדש. אם אתם לא מחוברים כמנהל ל- wwww.hebrewkhan.org, אתם תצטרכו להתחבר וללחוץ על הכפתור שוב.</em>
                     </div>
                 {% endif %}

@@ -2,12 +2,12 @@
   <b><a href="/?version={{ number }}">גרסה #{{ number }}</a>:</b>
   {{#edit}}
     <b>[עריכת גרסה]</b>
-    <a href="javascript:" class="set-default simple-button green action-gradient">פרסמו באתר</a>
+    <a href="javascript:" class="set-default simple-button green action-gradient">פרסם לאתר</a>
   {{/edit}}
-  {{#default}}<b>[גרסה חיה נוכחית]</b>{{/default}}
+  {{#default}}<b>[גרסה רשמית נוכחית]</b>{{/default}}
   <div id="topictree-queue-progress-wrapper"><div id="topictree-queue-progress-bar"></div><div id="topictree-queue-progress-text"></div></div>
-  <a href="/api/v1/topicversion/edit/topictree" class="simple-button green action-gradient">ייצאו למסמך</a>
-  <a href="javascript:" class="show-versions simple-button green action-gradient">ראו כל הגרסאות</a>
+  <a href="/api/v1/topicversion/edit/topictree" class="simple-button green action-gradient">ייצא לקובץ</a>
+  <a href="javascript:" class="show-versions simple-button green action-gradient">כל הגרסאות</a>
 </div>
 <div>
   <b>כותרת:</b> <input type="text" name="title" value="{{ title }}" {{#unless edit}}disabled{{/unless}}></input>

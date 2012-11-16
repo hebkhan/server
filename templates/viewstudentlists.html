@@ -2,7 +2,7 @@
 
 {% import 'macros/coach.html' as coach %}
 
-{% block meta_page_title %}Manage Students | {% endblock meta_page_title %}
+{% block meta_page_title %}ניהול תלמידים | {% endblock meta_page_title %}
 {% block pagecss %}
 {{ js_css_packages.css_package("studentlists") }}
 <style type="text/css" media="screen">
@@ -31,7 +31,7 @@
 <div id="sidebar">
     <ul class="student-list-links">
         <li id="student-list-allstudents" data-list_id="allstudents"><a href="/students" class="bullet bullet-active">כל התלמידים</a></li>
-        <li id="student-list-requests" data-list_id="requests"><a href="/students?list_id=requests" class="bullet" title="Students that appear here have not yet responded to your request to coach them">בקשות</a></li>
+        <li id="student-list-requests" data-list_id="requests"><a href="/students?list_id=requests" class="bullet" title="תלמידים המופיעים כאן טרם הגיבו לבקשתך להדריך אותם">בקשות</a></li>
     </ul>
     <ul id="custom-lists" class="student-list-links">
         {% for list in student_lists %}
@@ -49,36 +49,36 @@
 <div id="students-container">
 
     <div class="students-header">
-        <span class="float-right">
+        <span class="float-left">
 
-            <a class="delete-button" id="delete-list" href="#"><img src="images/circled_cross.png" title="Delete this list (the students will still appear in 'All students')"/></a>
+            <a class="delete-button" id="delete-list" href="#"><img src="images/circled_cross.png" title="מחק רשימה זו (התלמידים ימשיכו להופיע תחת 'כל התלמידים')"/></a>
         </span>
-        <h2 class="visited-no-recolor"><a href="/class_profile?student_list=allstudents" title="View the class statistics page for this set of students">כל התלמידים</a></h2>
+        <h2 class="visited-no-recolor"><a href="/class_profile?student_list=allstudents" title="הצג מצב כיתה עבור קבוצה זו של תלמידים">כל התלמידים</a></h2>
         <span id='nstudents'>0 תלמידים</span>
     </div>
 
     <div id="textbox-container">
-        <input type="text" id="request-student" class="blur-on-esc" size="80" placeholder="הקלידו כתובת דוא"ל של תלמידים בשביל להציע להיות המדריכים שלהם"/>
-        <input type="text" id="add-to-list" class="blur-on-esc" size="80" placeholder="הקלידו שם של תלמידים בשביל להוסיף אותם לרשימה" style="display: none"/>
+        <input type="text" id="request-student" class="blur-on-esc" size="76" placeholder='הקלידו כתובת דוא"ל של תלמידים בשביל להציע להיות המדריכים שלהם'/>
+        <input type="text" id="add-to-list" class="blur-on-esc" size="76" placeholder="הקלידו שמות של תלמידים בשביל להוסיף אותם לרשימה" style="display: none"/>
     </div>
 
     <div class="alert error" id="addstudent-error">
-        <span class="float-right close-button">(<a href="#">סגירה</a>)</span>
-        אף תלמידים לא נמצא בשם משתמש הזה. התלמידים חייבים להתחבר לפחות פעם אחת. בנוסף, בדוקו ששם המשתמש של התלמיד הוא נכון. הנה מספר דוגמאות של שם משתמש של תלמידים:<br>
+        <span class="float-left close-button">(<a href="#">סגור</a>)</span>
+        אף תלמיד לא נמצא בשם משתמש הזה. התלמידים חייבים להתחבר לפחות פעם אחת. בנוסף, בדקו ששם המשתמש של התלמיד הוא נכון. הנה מספר דוגמאות של שם משתמש של תלמידים:<br>
         <ul>
             <li>student@gmail.com</li>
             <li>http://facebookid.hebrewkhan.org/123456789</li>
         </ul>
     </div>
     <div class="alert note" id="notaccepted-note">
-        <span class="float-right close-button">(<a href="#">סגירה</a>)</span>
-        התלמידים ברשימה למטה עדיין לא אישרו את הבקשה שלך להדריך אותם. בשביל להתחיל להדריך אותם, בקשו מהם ללחוץ 'הוסיפו מדריכים' בסוף כל עמוד, לאחר מכן ילחצו על כפתור 'אשרו מדריכים'.
+        <span class="float-left close-button">(<a href="#">סגור</a>)</span>
+        התלמידים ברשימה למטה עדיין לא אישרו את הבקשה שלכם להדריך אותם. בשביל להתחיל להדריך אותם, בקשו מהם ללחוץ 'הוסף מדריך' בסוף כל עמוד, ולאחר מכן על כפתור 'אשרו מדריכים'.
     </div>
 
     <div id="actual-students">
         {% for student in students %}
         <div class="student-row" data-student_id="{{student.key}}">
-            <span class="float-right">
+            <span class="float-left">
                 <div class="css-menu lists-css-menu">
                     <ul>
                         <li>עריכת רשימות
@@ -88,10 +88,10 @@
                         </li>
                     </ul>
                 </div>
-                <a class="delete-button" href="#" title="Remove this student from this list"><img src="images/circled_cross.png"/></a>
+                <a class="delete-button" href="#" title="הסר תלמיד זה מהרשימה"><img src="images/circled_cross.png"/></a>
             </span>
             <div>
-                <span class="student-name visited-no-recolor"><a href="{{student.profile_root}}" title="View this student's profile page">{{ student.nickname|escape }}</a></span>
+                <span class="student-name visited-no-recolor"><a href="{{student.profile_root}}" title="הצג את הפרופיל של תלמיד">{{ student.nickname|escape }}</a></span>
                 <span class="student-email">{{ student.email|escape }}</span>
             </div>
         </div>
@@ -101,8 +101,8 @@
     <div id="requested-students">
         {% for email in coach_requests %}
         <div class="student-row" data-email="{{email}}">
-            <span class="float-right">
-                <a class="delete-button" href="#" title="Cancel the request to coach this student"><img src="images/circled_cross.png"/></a>
+            <span class="float-left">
+                <a class="delete-button" href="#" title="בטל את הבקשה להדריך תלמיד זה"><img src="images/circled_cross.png"/></a>
             </span>
             <div><span class="student-name">{{ email|escape }}</span></div>
         </div>
@@ -113,8 +113,8 @@
 
     <div id="tmpl" style="display:none">
         <div class="student-row">
-            <span class="float-right">
-                <a class="delete-button" href="#" title="Cancel the request to coach this student"><img src="images/circled_cross.png"/></a>
+            <span class="float-left">
+                <a class="delete-button" href="#" title="בטל את הבקשה להדריך תלמיד זה"><img src="images/circled_cross.png"/></a>
             </span>
             <div><span class="student-name"></span></div>
         </div>

@@ -1,5 +1,5 @@
 {% extends "page_template.html" %}
-{% block meta_page_title %}Manage Coaches | {% endblock meta_page_title %}
+{% block meta_page_title %}ניהול מדריכים | {% endblock meta_page_title %}
 {% block pagescript %}
 <style>
 #coaches {
@@ -25,9 +25,9 @@
 
 {% block pagesubmenu %}
 <span class="breadcrumbs_nav">
-    <a href="/coaches" id="manage-coaches" class="selected">נהלו מדריכים</a>
-    <a href="/students" id="manage-students">נהלו תלמידים</a>
-    <a href="/class_profile" id="class-stats">מצב כיתתי</a>
+    <a href="/coaches" id="manage-coaches" class="selected">ניהול מדריכים</a>
+    <a href="/students" id="manage-students">ניהול תלמידים</a>
+    <a href="/class_profile" id="class-stats">מצב הכיתה</a>
 </span>
 {% endblock pagesubmenu %}
 
@@ -37,7 +37,7 @@
 {% if coach_requests %}
     <h2>מדריכים חדשים מחכים</h2>
 
-    <p>המדריכים האלו ביקשו אותכם בתור התלמידים שלהם. <strong>אם אתם מקבלים אותם כהמדריכים שלכם, הם יקבלו גישה למידע שלכם באקדמיית קהאן.</strong>.</p>
+    <p>המדריכים האלו ביקשו אותכם בתור התלמידים שלהם. <strong>אם אתם מקבלים אותם כמדריכים שלכם, הם יקבלו גישה למידע שלכם באקדמיית קהאן.</strong>.</p>
 
     <table>
     {% for coach_request in coach_requests %}
@@ -47,29 +47,29 @@
             <tr class="odd_row">
             {% endif %}
                 <td>{{ coach_request.coach_requesting_data.email|escape }}</td>
-                <td><a href="/acceptcoach?accept=1&coach_email={{ coach_request.coach_requesting_data.email|urlencode|escape }}" class="simple-button action-gradient">קבלו מדריכים</a></td>
-                <td><a href="/acceptcoach?accept=0&coach_email={{ coach_request.coach_requesting_data.email|urlencode|escape }}" class="simple-button action-gradient">סרבו למדריכים</a></td>
+                <td><a href="/acceptcoach?accept=1&coach_email={{ coach_request.coach_requesting_data.email|urlencode|escape }}" class="simple-button action-gradient">אשר מדריך</a></td>
+                <td><a href="/acceptcoach?accept=0&coach_email={{ coach_request.coach_requesting_data.email|urlencode|escape }}" class="simple-button action-gradient">אל תאשר</a></td>
             </tr>
     {% endfor %}
     </table>
 {% endif %}
 
-<h2 {% if coach_requests %}class="section-headline"{% endif %}>הוסיפו מדריכים</h2>
+<h2 {% if coach_requests %}class="section-headline"{% endif %}>הוסף מדריך</h2>
 <p>
-    המדריכים שלכם יתנו לכם את שם המשתמש שלהם. הכניסו אותו פה בשביל לתת להם גישה למידע שלכם באקדמיית קהאן.
+    המדריכים שלכם יתנו לכם את שם המשתמש שלהם. הכניסו אותו פה כדי לתת להם גישה למידע שלכם באקדמיית קהאן.
 </p>
 
 <form action="/registercoach" method="post">
 <input type="text" name="coach" class="blur-on-esc">
-<input type="submit" value="Add coach" class="simple-button action-gradient">
+<input type="submit" value="הוסף מדריך" class="simple-button action-gradient">
 </form>
 
 {% if invalid_coach %}
-<p><span style="color:red;font-weight:bold;">אנחנו לא יכולים למצוא את המדריכים.</span></p>
+<p><span style="color:red;font-weight:bold;">המדרך לא נמצא.</span></p>
 
 <p style="padding-left:18px;">
-וודא שאתם מכניסים את השם המשתמש המלא של המדריכים שלכם, שהוא <em>מקרה רגיש.</em>שם המשתמש של המדריכים שלכם נראה כמו: <strong>teacher@gmail.com</strong> או <strong>http://facebookid.hebrewkhan.org/1067499349</strong>.<br/>
-        אם אתם מכניסים את שם המשתמש של המדריכים באופן נכון ועדיין נתקלים בבעיות, וודא שהמדריכים התחברו לאקדמיית קהאן לפחות פעם אחת.
+וודא שאתם מכניסים את שם המשתמש <em> המלא של המדריכים שלכם.</em>שם המשתמש של המדריך שלכם נראה כך: <strong>teacher@gmail.com</strong> או כך: <strong>http://facebookid.hebrewkhan.org/1067499349</strong>.<br/>
+        אם אתם מכניסים את שם המשתמש של המדריך בצורה נכונה ועדיין נתקלים בבעיה, וודאו שהמדריך התחבר לאקדמיית קהאן לפחות פעם אחת.
 </p>
 {% endif %}
 
@@ -85,13 +85,13 @@
             <tr class="odd_row">
             {% endif %}
                 <td>{{ coach_email|escape }}</td>
-                <td><a href="/unregistercoach?coach={{ coach_email|urlencode|escape }}" class="simple-button action-gradient">הסירו מדריכים</a></td>
+                <td><a href="/unregistercoach?coach={{ coach_email|urlencode|escape }}" class="simple-button action-gradient">הסר מדריך</a></td>
             </tr>
     {% endfor %}
     </table>
 {% endif %}
 
-<h2 class="section-headline">השם משתמש שלכם כתלמידים</h2>
-<p>אם המדריכים שלכם מבקש ממכם עבור השם משתמש שלכם, הנה הוא: {{student_id|escape}}</p>
+<h2 class="section-headline">שם המשתמש שלכם</h2>
+<p>אם המדריך שלכם מבקש מכם את שם המשתמש שלכם, הנה הוא: {{student_id|escape}}</p>
 </article>
 {% endblock pagecontent %}

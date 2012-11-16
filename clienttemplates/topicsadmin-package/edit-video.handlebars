@@ -4,7 +4,7 @@
   <a href="javascript:" data-id="save" class="save-button item-action simple-button disabled action-gradient">שמירה</a>
 </div>
 
-{{#if oldValues.title }}<span class="old-value">תנאים שיש לכלול כאשר ממיינים את הסרטון לחיפוש <input type="text" disabled value="{{ oldValues.title }}" maxlength="32"/></span><br/>{{/if}}
+{{#if oldValues.title }}<span class="old-value">ערך ישן: <input type="text" disabled value="{{ oldValues.title }}" maxlength="32"/></span><br/>{{/if}}
     
 <div>
   <a href="javascript:" data-id="remove_item" class="item-action left-align simple-button blue action-gradient">הסירו מהנושא</a>
@@ -20,45 +20,45 @@
       </tr>
 
       <tr>
-        <td style="font-weight:bold;">ראו</td>
+        <td style="font-weight:bold;">לצפיה</td>
         <td style="padding-bottom:9px;">
-          <a href="{{ model.ka_url }}" target="_blank">פתחו {{ model.title }} בסמנייה חדשה</a>
+          <a href="{{ model.ka_url }}" target="_blank">פתחו את {{ model.title }} בחלונית חדשה</a>
         </td>
       </tr>
 
       <tr>
-        <td style="font-weight:bold;">קבוצה</td>
+        <td style="font-weight:bold;">אסימון</td>
         <td style="padding-bottom:9px;">
           <input type="text" name="readable_id" value="{{ model.readable_id }}" maxlength="64"/><br/>
-          {{#if oldValues.readable_id }}<span class="old-value">תנאים שיש לכלול כאשר ממיינים את הסרטון לחיפוש <input type="text" disabled value="{{ oldValues.readable_id }}" maxlength="64"/></span><br/>{{/if}}
-          <em>זיהוי קצר המשומש כמפתר בשביל ה-API ובלינקים של כתובת האתר לסרטון הזה</em>
+          {{#if oldValues.readable_id }}<span class="old-value">ערך ישן: <input type="text" disabled value="{{ oldValues.readable_id }}" maxlength="64"/></span><br/>{{/if}}
+          <em>זיהוי קצר המשמש כמפתח בשביל ה-API ובלינקים של כתובת האתר לסרטון הזה</em>
         </td>
       </tr>
 
       <tr>
-        <td style="font-weight:bold;">משתמש YouTube</td>
+        <td style="font-weight:bold;">מזהה YouTube</td>
         <td style="padding-bottom:9px;">
           <input type="text" name="youtube_id" value="{{ model.youtube_id }}" maxlength="11" class="short" /><br/>
-          {{#if oldValues.youtube_id }}<span class="old-value">תנאים שיש לכלול כאשר ממיינים את הסרטון לחיפוש <input type="text" disabled value="{{ oldValues.youtube_id }}" maxlength="11" class="short"/></span><br/>{{/if}}
-          <em>תיאור</em>
+          {{#if oldValues.youtube_id }}<span class="old-value">ערך ישן: <input type="text" disabled value="{{ oldValues.youtube_id }}" maxlength="11" class="short"/></span><br/>{{/if}}
+          <em>מזהה לוידאו הזה ב- YouTube</em>
         </td>
       </tr>
 
       <tr>
-        <td style="font-weight:bold;">ערך ישן:</td>
+        <td style="font-weight:bold;">תיאור</td>
         <td style="padding-bottom:9px;">
           <input type="text" name="description" value="{{ model.description }}" maxlength="256"/><br/>
-          {{#if oldValues.description }}<span class="old-value">תנאים שיש לכלול כאשר ממיינים את הסרטון לחיפוש <input type="text" disabled value="{{ oldValues.description }}" maxlength="256"/></span><br/>{{/if}}
-          <em>מילות מפתח</em>
+          {{#if oldValues.description }}<span class="old-value">ערך ישן: <input type="text" disabled value="{{ oldValues.description }}" maxlength="256"/></span><br/>{{/if}}
+          <em>תיאור המוצג ברשימות הנושא</em>
         </td>
       </tr>
 
       <tr>
-        <td style="font-weight:bold;">ערך ישן:</td>
+        <td style="font-weight:bold;">מילות מפתח</td>
         <td style="padding-bottom:9px;">
           <input type="text" name="keywords" value="{{ model.keywords }}" maxlength="256"/><br/>
-          {{#if oldValues.keywords }}<span class="old-value">תנאים שיש לכלול כאשר ממיינים את הסרטון לחיפוש <input type="text" disabled value="{{ oldValues.keywords }}" maxlength="256"/></span><br/>{{/if}}
-          <em>Terms to include when indexing this video for searching</em>
+          {{#if oldValues.keywords }}<span class="old-value">ערך ישן: <input type="text" disabled value="{{ oldValues.keywords }}" maxlength="256"/></span><br/>{{/if}}
+          <em>תנאים שיש לכלול כאשר ממיינים את הסרטון לחיפוש</em>
         </td>
       </tr>
 

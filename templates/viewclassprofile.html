@@ -3,7 +3,7 @@
 {% import 'macros/coach.html' as coach %}
 {% import 'macros/profiles.html' as profile_macros %}
 
-{% block meta_page_title %}Class Profile | {% endblock meta_page_title %}
+{% block meta_page_title %}פרופיל כיתה | {% endblock meta_page_title %}
 
 {% block pagecss %}
     {{ super() }}
@@ -12,9 +12,9 @@
 
 {% block pagesubmenu %}
 <span class="breadcrumbs_nav">
-    <a href="/coaches" id="manage-coaches">נהלו מדריכים</a>
-    <a href="/students" id="manage-students">נהלו תלמידים</a>
-    <a href="/class_profile" id="class-stats" class="selected">מצב כיתה בשביל</a>
+    <a href="/coaches" id="manage-coaches">לניהול מדריכים</a>
+    <a href="/students" id="manage-students">לניהול תלמידים</a>
+    <a href="/class_profile" id="class-stats" class="selected">מצב כיתה עבור</a>
     <span id="studentlists_dropdown" style="display:none;">
         <a>{{ student_list.name|escape }}</a>
         <div id="studentlists_menu">
@@ -30,7 +30,7 @@
 </span>
 {% endblock pagesubmenu %}
 
-{% block statistics_title %}Class Statistics{% endblock statistics_title %}
+{% block statistics_title %}סטטיסטיקות כיתה{% endblock statistics_title %}
 
 {% block graph_accordion %}
 <div id="high-level-class-stats">
@@ -49,34 +49,34 @@
 
     <ul id="nav-accordion">
         <li>
-            {{ profile_macros.class_api_link(user_data_coach, "Progress Report", "progressreport", selected_graph_type, list_id) }}
+            {{ profile_macros.class_api_link(user_data_coach, "דו\"ח מצב", "progressreport", selected_graph_type, list_id) }}
             <div class="accordion-content">
                 מראה לכם אילו תרגילים הכיתה שלכם עבדה עליהם והשלימה.
                 <div class="graph-options">
-                    <span class="progress-legend exercise-color started">התחילו</span>
-                    <span class="progress-legend exercise-color proficient">מיומנים</span>
-                    <span class="progress-legend exercise-color review light">סקירה</span>
-                    <span class="progress-legend exercise-color struggling">מתקשים</span>
+                    <span class="progress-legend exercise-color started">התחיל</span>
+                    <span class="progress-legend exercise-color proficient">מיומן</span>
+                    <span class="progress-legend exercise-color review light">לבחון שוב</span>
+                    <span class="progress-legend exercise-color struggling">מתקשה</span>
                 </div>
             </div>
         </li>
         <li>
-            {{ profile_macros.class_api_link(user_data_coach, "Progress Summary", "progress/summary", selected_graph_type, list_id) }}
+            {{ profile_macros.class_api_link(user_data_coach, "סיכום מצב", "progress/summary", selected_graph_type, list_id) }}
             <p class="accordion-content">
                 מראה לכם אילו תרגילים הכיתה שלכם עבדה עליהם והשלימה.
             </p>
         </li>
         <li>
-            {{ profile_macros.class_graph_link(user_data_coach, "Daily Activity Report", "classtime", selected_graph_type, list_id) }}
+            {{ profile_macros.class_graph_link(user_data_coach, "דו\"ח פעילות יומי", "classtime", selected_graph_type, list_id) }}
             <p class="accordion-content">
                 מראה לכם סכום כולל של הפעילות הכיתתית בתאריך מסוים. <br /><br />
 
               <span class="instructions">פעילות בכחול בהיר מראה שעות ביה"ס רגילות, כחול כהה זה שעות חיצוניות רגילות.</span>
         </li>
         <li>
-            {{ profile_macros.class_graph_link(user_data_coach, "Exercise Progress Over Time", "classexercisesovertime", selected_graph_type, list_id) }}
+            {{ profile_macros.class_graph_link(user_data_coach, "התקדמות בתרגול לאורך הזמן", "classexercisesovertime", selected_graph_type, list_id) }}
             <div class="accordion-content">מראה לכם כמה תרגילים התלמידים שלכם השלימות במשך הזמן<br /><br />
-                <span class="instructions">מרקר <a href="#" class="highlight-section show-students-highlight">תלמידים מסוימים</a> או <a href="#" class="highlight-section show-exercises-highlight">תרגילים מסוימים</a>.</span><br />
+                <span class="instructions">סמן <a href="#" class="highlight-section show-students-highlight">תלמיד מסוים</a> או <a href="#" class="highlight-section show-exercises-highlight">תרגיל מסוים</a>.</span><br />
 
                 <div id="students-highlight" class="vertical-choice-container" style="display:none;">
                     <ul>
@@ -97,20 +97,20 @@
             </div>
         </li>
         <li>
-            {{ profile_macros.class_graph_link(user_data_coach, "Class Points per Minute", "classenergypointsperminute", selected_graph_type, list_id) }}
+            {{ profile_macros.class_graph_link(user_data_coach, "נקודות כיתתיות לדקה", "classenergypointsperminute", selected_graph_type, list_id) }}
             <p class="accordion-content">
-                מראה את כמות נקודות האנרגיה לדקה של הכיתה שלכם כממוצע בעדכון רציף.
+                מראה את כמות הנקודות לדקה שהכיתה צוברת כממוצע מתגלגל.
             </p>
         </li>
         <li>
-            {{ profile_macros.class_api_link(user_data_coach, "Goals", "goals", selected_graph_type, list_id) }}
+            {{ profile_macros.class_api_link(user_data_coach, "יעדים", "goals", selected_graph_type, list_id) }}
             <div class="accordion-content">
-                מראה מטרות של תלמידים וההתקדמות אל השלמת אותן מטרות.
+                מראה יעדים של תלמידים וההתקדמות אל השלמת אותם יעדים.
                 <div class="graph-options">
-                    <span class="progress-legend exercise-color started">התחילו</span>
-                    <span class="progress-legend exercise-color proficient">מיומנים</span>
-                    <span class="progress-legend goal-complete" title="Entire goal is complete">הושלמו</span>
-                    <span class="progress-legend exercise-color struggling">מתקשים</span>
+                    <span class="progress-legend exercise-color started">התחיל</span>
+                    <span class="progress-legend exercise-color proficient">מיומן</span>
+                    <span class="progress-legend goal-complete" title="Entire goal is complete">הושלם</span>
+                    <span class="progress-legend exercise-color struggling">מתקשה</span>
                 </div>
             </div>
         </li>
@@ -120,64 +120,64 @@
 {% block stats_filters %}
   <!-- the goals filter -->
   <div class="filter">
-    {{ profile_macros.class_api_link(user_data_coach, "Progress Report", "progressreport", selected_graph_type, list_id) }}
+    {{ profile_macros.class_api_link(user_data_coach, "דו\"ח מצב", "progressreport", selected_graph_type, list_id) }}
 
     <div class="filter-block">
       <h3>דו"ח התקדמות</h3>
     </div>
     <div class="filter-block">
-      <p>רק לראות
+      <p>מציג רק
         <input type="text" id="student-progressreport-search" placeholder="תלמידים או תרגיל" class="search-input simple-input ui-corner-all blur-on-esc"></input>
         <span class="coach-filter-block">
-            <input type="checkbox" class="progressreport-filter-check" id="progressreport-struggling" name="struggling" /><label for="progressreport-struggling">מתקשים</label></span>
-      <span class="coach-filter-block"><input type="checkbox" class="progressreport-filter-check" id="progressreport-recent" name="recent" /><label for="progressreport-recent">עבדן עליו ב:</label>
-            <select id="progressreport-filter-last-time"><option value="1">יום האחרון</option><option value="2">יומיים אחרונים</option><option value="3">שלושה ימים אחרונים</option><option selected value="7">שבוע אחרון</option><option value="30">חודש אחרון</option></select></span>
+            <input type="checkbox" class="progressreport-filter-check" id="progressreport-struggling" name="struggling" /><label for="progressreport-struggling">מתקשה</label></span>
+      <span class="coach-filter-block"><input type="checkbox" class="progressreport-filter-check" id="progressreport-recent" name="recent" /><label for="progressreport-recent">עבדן עליו במהלך:</label>
+            <select id="progressreport-filter-last-time"><option value="1">היום האחרון</option><option value="2">היומיים האחרונים</option><option value="3">שלושת הימים האחרונים</option><option selected value="7">השבוע אחרון</option><option value="30">החודש אחרון</option></select></span>
     </div>
   </div>
 
   <div class="filter">
-    {{ profile_macros.class_api_link(user_data_coach, "Progress Summary", "progress/summary", selected_graph_type, list_id) }}
+    {{ profile_macros.class_api_link(user_data_coach, "סיכום מצב", "progress/summary", selected_graph_type, list_id) }}
 
     <div class="filter-block">
-      <h3>תקציר התקדמות</h3>
+      <h3>סיכום מצב</h3>
     </div>
     <div class="filter-block">
-      <p>רק לראות
+      <p>מציג רק
         <input type="text" id="student-progresssummary-search" placeholder="שם התרגיל" class="search-input simple-input ui-corner-all blur-on-esc"></input>
     </div>
   </div>
 
   <div class="filter">
-    {{ profile_macros.class_graph_link(user_data_coach, "Daily Activity Report", "classtime", selected_graph_type, list_id) }}
+    {{ profile_macros.class_graph_link(user_data_coach, "דו\"ח פעילות יומי", "classtime", selected_graph_type, list_id) }}
     <div class="filter-block">
-        <h3>דו"ח פעילות יומית <small> בשביל </small></h3>
+        <h3>דו"ח פעילות יומי <small> עבור </small></h3>
         {{ profile_macros.graph_calendar_picker(user_data_coach, "classtime") }}
     </div>
   </div>
 
   <div class="filter">
-    {{ profile_macros.class_api_link(user_data_coach, "Goals", "goals", selected_graph_type, list_id) }}
+    {{ profile_macros.class_api_link(user_data_coach, "יעדים", "goals", selected_graph_type, list_id) }}
 
     <div class="filter-block">
-      <h3>מטרות</h3>
+      <h3>יעדים</h3>
       <p>ממוין לפי:
         <select id="student-goals-sort">
-          <option value="name"> תלמידים </option>
-          <option value="progress"> התקדמות </option>
+          <option value="name"> שם תלמיד </option>
+          <option value="progress"> התקדמות ליעד </option>
           <option value="created"> התחיל לאחרונה </option>
           <option value="updated"> עודכן לאחרונה </option>
         </select>
       </p>
     </div>
     <div class="filter-block">
-      <p>רק לראות
-        <input type="text" id="student-goals-search" placeholder="תלמידים או מטרה" class="search-input simple-input ui-corner-all blur-on-esc"></input>
+      <p>מציג רק
+        <input type="text" id="student-goals-search" placeholder="תלמידים או יעד" class="search-input simple-input ui-corner-all blur-on-esc"></input>
       <span class="coach-filter-block"><input type="checkbox" class="student-goals-filter-check" id="goal-most-recent-filter" name="most-recent" />
         <label for="goal-most-recent-filter">עודכן לאחרונה</label></span>
       <span class="coach-filter-block"><input type="checkbox" class="student-goals-filter-check" id="goal-in-progress-filter" name="in-progress" />
         <label for="goal-in-progress-filter">בהתקדמות</label></span>
       <span class="coach-filter-block"><input type="checkbox" class="student-goals-filter-check" id="goal-struggling-filter" name="struggling" />
-        <label for="goal-struggling-filter">מתקשים</label>
+        <label for="goal-struggling-filter">מתקשה</label>
       </span>
     </div>
   </div>

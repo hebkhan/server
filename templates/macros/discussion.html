@@ -9,9 +9,9 @@
         
         {% if logged_in %}
 
-        <a href="#" class="control comment_add"><img class="icon" src="{{ "/images/balloon-plus.png"|static_url }}" />הוסיפן תגובה</a>
+        <a href="#" class="control comment_add"><img class="icon" src="{{ "/images/balloon-plus.png"|static_url }}" />הוסף תגובה</a>
         {% else %}
-        <a href="{{ ("/video?v=%s" % video.youtube_id)|login_url }}" class="control"><img class="icon" src="{{ "/images/balloon-plus.png"|static_url }}" />התחברו והוסיפו תגובה</a>
+        <a href="{{ ("/video?v=%s" % video.youtube_id)|login_url }}" class="control"><img class="icon" src="{{ "/images/balloon-plus.png"|static_url }}" />התחברו כדי להוסיף תגובה</a>
         {% endif %}
 
         <span class="comments_show_more">
@@ -45,7 +45,7 @@
 
     <div class="video_questions requires_script">
         <a name="qa"></a>
-        <nav class="css-menu" style="float:right;">
+        <nav class="css-menu" style="float:left;">
             <ul data-role="listview" data-inset="true">
                 <li style="color:black;">
                     {% if sort_order == 2 %}
@@ -196,11 +196,11 @@
 {% macro vote_tools(target) -%}
     <div class="vote_tools">
         <div class="control vote_tools_show" >
-            <a href="#" class="control vote_for {% if target.up_voted %}voted{% endif %}" title="Vote up, this is encouraging or helpful (click again to undo)" data-key="{{ target.key()|escape }}" data-vote_type="1"><img src="{{ "/images/vote-up-gray.png"|static_url }}" class="vote_up_gray"/><img src="{{ "/images/vote-up.png"|static_url }}" class="vote_up"/></a>
+            <a href="#" class="control vote_for {% if target.up_voted %}voted{% endif %}" title="הצבע בעד, זה מעודד או תורם (לחצו שוב לביטול)" data-key="{{ target.key()|escape }}" data-vote_type="1"><img src="{{ "/images/vote-up-gray.png"|static_url }}" class="vote_up_gray"/><img src="{{ "/images/vote-up.png"|static_url }}" class="vote_up"/></a>
             {% if not target.is_type("comment") %}
                 {{ vote_sum(target) }}
             {% endif %}
-            <a href="#" class="control vote_for {% if target.down_voted %}voted{% endif %}" title="Vote down, this is not encouraging or helpful (click again to undo)" data-key="{{ target.key()|escape }}" data-vote_type="-1"><img src="{{ "/images/vote-down-gray.png"|static_url }}" class="vote_down_gray"/><img src="{{ "/images/vote-down.png"|static_url }}" class="vote_down"></a>
+            <a href="#" class="control vote_for {% if target.down_voted %}voted{% endif %}" title="הצבע נגד, זה לא מעודד או תורם (לחצו שוב לביטול)" data-key="{{ target.key()|escape }}" data-vote_type="-1"><img src="{{ "/images/vote-down-gray.png"|static_url }}" class="vote_down_gray"/><img src="{{ "/images/vote-down.png"|static_url }}" class="vote_down"></a>
         </div>
     </div>
 {%- endmacro %}
@@ -225,14 +225,14 @@
 {% macro flag_tools(target) -%}
     <span class="flag_tools">
         <span class="control flag_tools_show">
-            <a href="#" class="control flag_show" title="Flag for moderator attention"><img class="feedback_flag_gray" src="{{ "/images/flag_gray.png"|static_url }}" /><img class="feedback_flag" src="{{ "/images/flag.png"|static_url }}" /></a>
+            <a href="#" class="control flag_show" title="סמן לבדיקה"><img class="feedback_flag_gray" src="{{ "/images/flag_gray.png"|static_url }}" /><img class="feedback_flag" src="{{ "/images/flag.png"|static_url }}" /></a>
         </span>
         <span class="flag_tools_hidden tools_hidden" style="display:none;">
             סמנו כ:
-            <a href="#" class="control flag_as" title="Flag as inappropriate content" data-flag="inappropriate" data-key="{{ target.key() }}">לא הולם</a>
-            | <a href="#" class="control flag_as" title="Flag as low quality content" data-flag="lowquality" data-key="{{ target.key() }}">איכות נמוכה</a>
-            | <a href="#" class="control flag_as" title="Flag as content that does not belong here" data-flag="doesnotbelong" data-key="{{ target.key() }}">לא שייך לפה</a>
-            | <a href="#" class="control flag_as" title="Flag as spam" data-flag="spam" data-key="{{ target.key() }}">ספאם</a>
+            <a href="#" class="control flag_as" title="סמן כבלתי הולם" data-flag="inappropriate" data-key="{{ target.key() }}">לא הולם</a>
+            | <a href="#" class="control flag_as" title="סמן כאיכות ירודה" data-flag="lowquality" data-key="{{ target.key() }}">איכות נמוכה</a>
+            | <a href="#" class="control flag_as" title="סמן כתוכן לא שייך" data-flag="doesnotbelong" data-key="{{ target.key() }}">לא שייך לפה</a>
+            | <a href="#" class="control flag_as" title="סמן כזבל" data-flag="spam" data-key="{{ target.key() }}">ספאם</a>
         </span>
     </span>
 {%- endmacro %}

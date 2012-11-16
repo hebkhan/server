@@ -5,18 +5,18 @@
 </div>
 
 <div>
-  <a href="javascript:" data-id="add_new_topic" class="item-action left-align simple-button blue action-gradient">הוסיפו כותרת משנה</a>
+  <a href="javascript:" data-id="add_new_topic" class="item-action left-align simple-button blue action-gradient">הוסף כותרת משנה</a>
 
-  <a href="javascript:" data-id="add_new_video" class="item-action left-align separated simple-button blue action-gradient">הוסיפו סרטון חדש</a>
-  <a href="javascript:" data-id="add_existing_video" class="item-action left-align simple-button blue action-gradient">הוסיפו סרטון קיים</a>
+  <a href="javascript:" data-id="add_new_video" class="item-action left-align separated simple-button blue action-gradient">הוסף סרטון חדש</a>
+  <a href="javascript:" data-id="add_existing_video" class="item-action left-align simple-button blue action-gradient">הוסף סרטון קיים</a>
 
-  <a href="javascript:" data-id="add_new_exercise" class="item-action left-align separated simple-button blue action-gradient">הוסיפו תרגיל חדש</a>
-  <a href="javascript:" data-id="add_existing_exercise" class="item-action left-align simple-button blue action-gradient">הוסיפו תרגיל קיים</a>
+  <a href="javascript:" data-id="add_new_exercise" class="item-action left-align separated simple-button blue action-gradient">הוסף תרגיל חדש</a>
+  <a href="javascript:" data-id="add_existing_exercise" class="item-action left-align simple-button blue action-gradient">הוסף תרגיל קיים</a>
 
-  <a href="javascript:" data-id="add_new_url" class="item-action left-align separated simple-button blue action-gradient">הוסיפו URL חדש</a>
+  <a href="javascript:" data-id="add_new_url" class="item-action left-align separated simple-button blue action-gradient">הוסף URL חדש</a>
 
-  <a href="javascript:" data-id="delete_topic" class="item-action left-align separated simple-button blue action-gradient">מחקו נושא</a>
-  <a href="javascript:" data-id="ungroup_topic" class="item-action left-align separated simple-button blue action-gradient">הוציאו נושא מקבוצה</a>
+  <a href="javascript:" data-id="delete_topic" class="item-action left-align separated simple-button blue action-gradient">מחק נושא</a>
+  <a href="javascript:" data-id="ungroup_topic" class="item-action left-align separated simple-button blue action-gradient">הוצא נושא מקבוצה</a>
 </div>
 <div style="clear: both" />
 
@@ -51,7 +51,7 @@
         <td style="font-weight:bold;">קבוצה</td>
         <td style="padding-bottom:9px;">
           <input type="text" name="id" value="{{ model.id }}" class="short" maxlength="32"/><br/>
-          <em>זיהוי קצר המשומש כמפתר בשביל ה-API וב-URL של כתובת האתר לסרטון הזה</em>
+          <em>זיהוי קצר המשומש כמפתח ל-API ובכתובת האתר לסרטון הזה</em>
         </td>
       </tr>
 
@@ -59,7 +59,7 @@
         <td style="font-weight:bold;">מוחבא</td>
         <td style="padding-bottom:9px;">
           <input type="checkbox" name="hide" {{#if model.hide }}checked{{/if}} /><br/>
-          <em>אם יבדק, הנושא הזה לא יראה באתר.</em>
+          <em>אם מסומן, הנושא הזה לא יוצג באתר.</em>
         </td>
       </tr>
 
@@ -67,7 +67,7 @@
         <td style="font-weight:bold;">תיאור</td>
         <td style="padding-bottom:9px;">
           <input type="text" name="description" value="{{ model.description }}" maxlength="256"/><br/>
-          <em>טקסט התיאור נראה ברשימת התיאור</em>
+          <em>טקסט תיאור המוצג ברישמות הנושאים</em>
         </td>
       </tr>
 

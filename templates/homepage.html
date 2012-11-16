@@ -30,15 +30,15 @@
     </div>
     <div id="homepage-text" class="visited-no-recolor">
         <h1 class="section-headline pulls"><a href="/#browse">צפו.</a> <a href="/exercisedashboard">תרגלו.</a></h1>
-        <h1>למדו כמעט הכל - בחינם.</h1>
+        <h1>לימדו כמעט הכל - בחינם.</h1>
         <p>
             עם ספרייה של יותר מ- <a href="/#browse">{{approx_vid_count|thousands_separated}} סרטונים</a> המכסים
             נושאים מחשבון ומתמטיקה, לפיזיקה וביולוגיה, ובנוסף <a href="/exercisedashboard">{{exercise_count}} תרגילים לתרגול</a>,
-            <a href="/about">אנחנו במשימה</a> לעזור לכם ללמוד מה שאתם רוצה, מתי שאתם רוצים, בקצב שלכם.
+            <a href="/about">אנחנו כאן כדי</a> לעזור לכם ללמוד מה שאתם רוצה, מתי שאתם רוצים, בקצב שלכם.
         </p>
         <p class="call-to-action-buttons">
         	<a href="/#browse" class="call-to-action simple-button action-gradient green">צפו בסרטון</a>
-        	<a href="/exercisedashboard" class="call-to-action simple-button action-gradient blue">תרגלו עם תרגיל </a>
+        	<a href="/exercisedashboard" class="call-to-action simple-button action-gradient blue">תרגלו </a>
         </p>
         <div id="social-actions">
             <table>
@@ -64,7 +64,7 @@
         </div>
     </div>
     <h2>
-        New <span class="ampersand">&amp;</span> Noteworthy
+        חדש ומעניין
     </h2>
     {% if thumbnail_link_sets %}
     <div id="thumbnails_container">
@@ -120,7 +120,7 @@
                     </span>&nbsp; שיעורים הועברו
             </span>
         </div>
-        <h2 class="main-headline">עיין בספריה שלנו בשביל יותר מ{{approx_vid_count|thousands_separated}} סרטונים חינוכים...</h2>
+        <h2 class="main-headline">עיינו בספריה שלנו עם יותר מ-{{approx_vid_count|thousands_separated}} סרטונים...</h2>
         {% if DVD_list %}
         <ul class="menu" id="menu">
             {% for topic in DVD_list %}
@@ -133,7 +133,7 @@
         {{ templatetags.topic_browser("browse-fixed", version_number) }}
 
         {% endif %}
-        <a href="/mobilefullsite" class="mobile-only" data-role="button" data-ajax="false">ראו אתר רגיל</a>
+        <a href="/mobilefullsite" class="mobile-only" data-role="button" data-ajax="false">לאתר הרגיל</a>
     </div>
 </div>
 <div class="clear"></div>
