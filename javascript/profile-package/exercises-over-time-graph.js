@@ -32,7 +32,7 @@ var ExerciseGraphOverTime = {
         },
         xAxis: {
             title: {
-                text: "Days working on the site"
+                text: "ימי עבודה באתר"
             },
             min: 0,
             plotLines: [{
@@ -43,7 +43,7 @@ var ExerciseGraphOverTime = {
         },
         yAxis: {
             title: {
-                text: "Modules Completed"
+                text: "יחידות שהושלמו"
             },
             plotLines: [{
                 value: 0,

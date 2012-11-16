@@ -534,7 +534,7 @@ var ClassProfile = {
                 return a.goal_idx-b.goal_idx;
             });
 
-            studentGoalsViewModel.sortDesc = 'student name';
+            studentGoalsViewModel.sortDesc = 'שם תלמיד';
             show_updated = false; // started
 
         } else if (sort == 'progress') {
@@ -542,7 +542,7 @@ var ClassProfile = {
                 return b.progress_count - a.progress_count;
             });
 
-            studentGoalsViewModel.sortDesc = 'goal progress';
+            studentGoalsViewModel.sortDesc = 'התקדמות ליעד';
             show_updated = true; // updated
 
         } else if (sort == 'created') {
@@ -560,7 +560,7 @@ var ClassProfile = {
                 return 0;
             });
 
-            studentGoalsViewModel.sortDesc = 'goal creation time';
+            studentGoalsViewModel.sortDesc = 'מועד יצרית היעד';
             show_updated = false; // started
 
         } else if (sort == 'updated') {
@@ -578,7 +578,7 @@ var ClassProfile = {
                 return 0;
             });
 
-            studentGoalsViewModel.sortDesc = 'last work logged time';
+            studentGoalsViewModel.sortDesc = 'מועד פעילות אחרון';
             show_updated = true; // updated
         }
 
@@ -599,7 +599,7 @@ var ClassProfile = {
         ClassProfile.updateStudentGoalsFilterText(studentGoalsViewModel);
     },
     updateStudentGoalsFilterText: function(studentGoalsViewModel) {
-        var text = 'Sorted by ' + studentGoalsViewModel.sortDesc + '. ' + studentGoalsViewModel.filterDesc + '.';
+        var text = 'ממוין לפי ' + studentGoalsViewModel.sortDesc + '. ' + studentGoalsViewModel.filterDesc + '.';
         $('#class-goal-filter-desc').html(text);
     },
     filterStudentGoals: function(studentGoalsViewModel) {
@@ -611,24 +611,24 @@ var ClassProfile = {
 
         studentGoalsViewModel.filterDesc = '';
         if (filters['most-recent']) {
-            studentGoalsViewModel.filterDesc += 'most recently worked on goals';
+            studentGoalsViewModel.filterDesc += 'יעדים שעבדו עליהם לאחרונה';
         }
         if (filters['in-progress']) {
             if (studentGoalsViewModel.filterDesc != '') studentGoalsViewModel.filterDesc += ', ';
-            studentGoalsViewModel.filterDesc += 'goals in progress';
+            studentGoalsViewModel.filterDesc += 'יעדים בהתקדמות';
         }
         if (filters['struggling']) {
             if (studentGoalsViewModel.filterDesc != '') studentGoalsViewModel.filterDesc += ', ';
-            studentGoalsViewModel.filterDesc += 'students who are struggling';
+            studentGoalsViewModel.filterDesc += 'תלמידים מתקשים';
         }
         if (filter_text != '') {
             if (studentGoalsViewModel.filterDesc != '') studentGoalsViewModel.filterDesc += ', ';
-            studentGoalsViewModel.filterDesc += 'students/goals matching "' + filter_text + '"';
+            studentGoalsViewModel.filterDesc += 'תלמידים/יעדים תואמים "' + filter_text + '"';
         }
         if (studentGoalsViewModel.filterDesc != '')
-            studentGoalsViewModel.filterDesc = 'Showing only ' + studentGoalsViewModel.filterDesc;
+            studentGoalsViewModel.filterDesc = 'מציג רק ' + studentGoalsViewModel.filterDesc;
         else
-            studentGoalsViewModel.filterDesc = 'No filters applied';
+            studentGoalsViewModel.filterDesc = 'אין סינון';
 
         var container = $('#class-student-goal').detach();
 
@@ -887,10 +887,10 @@ var ClassProfile = {
                 }
 
                 exercise.status_css = 'transparent';
-                if (exercise.status == 'Review') exercise.status_css = 'review light';
-                else if (exercise.status.indexOf('Proficient') == 0) exercise.status_css = 'proficient';
-                else if (exercise.status == 'Struggling') exercise.status_css = 'struggling';
-                else if (exercise.status == 'Started') exercise.status_css = 'started';
+                if (exercise.status_name == 'review') exercise.status_css = 'review light';
+                else if (exercise.status_name == 'proficient') exercise.status_css = 'proficient';
+                else if (exercise.status_name == 'struggling') exercise.status_css = 'struggling';
+                else if (exercise.status_name == 'started') exercise.status_css = 'started';
                 exercise.notTransparent = (exercise.status_css != 'transparent');
 
                 exercise.idx = idx2;

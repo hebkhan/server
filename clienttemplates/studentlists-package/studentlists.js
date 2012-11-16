@@ -165,7 +165,7 @@ var StudentLists = {
         var nstudents = 0;
         var title;
         var titleHref;
-        var countstring = 'student';
+        var countstring = {true:'תלמידים', false:'תלמיד'};
 
         if(StudentLists.currentList == 'requests') {
             $('#actual-students').hide();
@@ -178,10 +178,11 @@ var StudentLists = {
             }
             $('#empty-class').hide();
 
-            title = 'Requests';
+            title = 'בקשות';
             $('.students-header h2 a').removeAttr('href');
             $('#delete-list').hide();
-            countstring = 'potential student';
+            countstring[true] += ' פוטנציאלים';
+            countstring[false] += ' פוטנציאלים';
         }
         else {
             $('#requested-students').hide();
@@ -195,7 +196,7 @@ var StudentLists = {
                 jelAll.show();
 
                 nstudents = jelAll.length;
-                title = 'All students';
+                title = 'כל התלמידים';
                 titleHref = '/class_profile';
                 $('#delete-list').hide();
                 if(StudentLists.Data.students.length === 0) {
@@ -235,9 +236,7 @@ var StudentLists = {
             AddStudentToListTextBox.jElement.show();
         }
 
-        var nstudentsStr = nstudents.toString() + ' ' +
-                                                countstring +
-                                                (nstudents==1 ? '' : 's');
+        var nstudentsStr = nstudents.toString() + ' ' + countstring[nstudents>1];
         $('#nstudents').text(nstudentsStr);
         $('.students-header h2 a').text(title).attr('href', titleHref);
     }

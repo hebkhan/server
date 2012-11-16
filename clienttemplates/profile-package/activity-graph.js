@@ -2,7 +2,7 @@ var ActivityGraph = {
     chart: null,
     videoMinutes: {
         type: "column",
-        name: "Video Minutes",
+        name: "דקות צפיה",
         color: "#0080C9",
         data: [],
         defaultPoint: {
@@ -11,7 +11,7 @@ var ActivityGraph = {
     },
     exerciseMinutes: {
         type: "column",
-        name: "Exercise Minutes",
+        name: "דקות תרגול",
         color: "#00C9AF",
         data: [],
         defaultPoint: {
@@ -20,7 +20,7 @@ var ActivityGraph = {
     },
     energyPoints: {
         type: "spline",
-        name: "Energy Points",
+        name: "נקודות אנרגיה",
         yAxis: 1,
         marker: {enabled: false},
         color: "#C9001B",
@@ -31,7 +31,7 @@ var ActivityGraph = {
     },
     badges: {
         type: "scatter",
-        name: "Badges",
+        name: "תגים",
         showInLegend: false,
         data: [],
         defaultPoint: {
@@ -41,7 +41,7 @@ var ActivityGraph = {
     },
     proficientExercises: {
         type: "scatter",
-        name: "Proficient Exercises",
+        name: "תרגילים שהושלמו",
         showInLegend: false,
         data: [],
         defaultPoint: {
@@ -84,7 +84,7 @@ var ActivityGraph = {
         yAxis: [
             {
                 title: {
-                    text: "Time Spent (Minutes)",
+                    text: "זמן שהושקע (דקות)",
                     style: {
                         color: "#0080C9"
                     }
@@ -104,7 +104,7 @@ var ActivityGraph = {
             },
             {
                 title: {
-                    text: "Energy Points Earned",
+                    text: "נקודות נארגיה שנצברו",
                     style: {
                         color: "#C9001B"
                     }
@@ -224,19 +224,19 @@ var ActivityGraph = {
         var x = {x: index},
             extra = {};
 
-        extra = this.generateBar_(this.bucketData.dictTopicBuckets[bucket], "Videos");
+        extra = this.generateBar_(this.bucketData.dictTopicBuckets[bucket], "סרטונים");
         this.videoMinutes.data.push(_.extend({}, this.videoMinutes.defaultPoint, x, extra));
 
-        extra = this.generateBar_(this.bucketData.dictExerciseBuckets[bucket], "Exercises");
+        extra = this.generateBar_(this.bucketData.dictExerciseBuckets[bucket], "תרגילים");
         this.exerciseMinutes.data.push(_.extend({}, this.exerciseMinutes.defaultPoint, x, extra));
 
         extra = this.generateSpline_(this.bucketData.dictPointsBuckets[bucket]);
         this.energyPoints.data.push(_.extend({}, this.energyPoints.defaultPoint, x, extra));
 
-        extra = this.generateScatter_(this.bucketData.dictBadgeBuckets[bucket], "Achievements");
+        extra = this.generateScatter_(this.bucketData.dictBadgeBuckets[bucket], "הישגים");
         this.badges.data.push(_.extend({}, this.badges.defaultPoint, x, extra));
 
-        extra = this.generateScatter_(this.bucketData.dictProficiencyBuckets[bucket], "Proficiencies");
+        extra = this.generateScatter_(this.bucketData.dictProficiencyBuckets[bucket], "מיומנויות");
         this.proficientExercises.data.push(_.extend({}, this.proficientExercises.defaultPoint, x, extra));
     },
 
@@ -283,7 +283,7 @@ var ActivityGraph = {
                     }
                     else if (this.points[ix].point.fEnergyPoints)
                     {
-                        sTitle += "<br/>" + this.points[ix].point.y + " energy points";
+                        sTitle += "<br/>" + this.points[ix].point.y + " נקודות אנרגיה";
                     }
                 }
                 return sTitle + s;
