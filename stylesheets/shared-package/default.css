@@ -3277,17 +3277,17 @@ div.arrow-left-shadow, div.arrow-right-shadow {
     position: absolute;
     font-weight: bold;
     font-size: 18px;
-    width: 195px;
+    width: 192px;
     overflow: hidden;
     text-align: right;
 }
 #empty-class ol li.enter-email div.coach-email {
-    top: 106px;
-    right: 115px;
+    top: 109px;
+    right: 131px;
 }
 #empty-class ol li.click-register div.coach-email {
-    top: 107px;
-    right: 110px;
+    top: 109px;
+    right: 131px;
 }
 /* End No students page styles */
 

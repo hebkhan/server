@@ -52,7 +52,7 @@ td.pad {width:100%;}
 #h:hover td {background-color:#EEE;}
 #hh td {border-bottom:1px #F1F1F1 solid;background-color:#EEE;}
 
-#copyright {font-size: .8em;}
+#copyright {font-size: .8em; float: left; padding: 8px 10px 0 0;}
 
 .highlightWhite td { background-color:#FFFFFF; }
 .highlightGrey td { background-color:#EFEFEF; }

@@ -7,7 +7,7 @@
 }
 
 .node-properties td {
-    padding-right: 9px;
+    padding-left: 9px;
 }
 
 ul.dynatree-container {
@@ -32,20 +32,20 @@ ul.dynatree-container {
 .modal.create-url,
 .modal.list-versions {
   position: fixed;
-  /* set the point on which top and left operate to the middle top edge*/
+  /* set the point on which top and right operate to the middle top edge*/
   width: 700px; /* this is redundant but here for clarity */
   margin: 0 0 0 -450px;
   top: 90px;
-  left: 50%;
+  right: 50%;
 }
 
 .modal.import-export {
   position: fixed;
-  /* set the point on which top and left operate to the middle top edge*/
+  /* set the point on which top and right operate to the middle top edge*/
   width: 700px; /* this is redundant but here for clarity */
   margin: 0 0 0 -450px;
   top: 90px;
-  left: 50%;
+  right: 50%;
 }
 
 .modal.add-existing-item .search-results {
@@ -60,17 +60,17 @@ ul.dynatree-container {
 }
 
 #details-view .item-action.left-align {
-    float: left;
-    margin-left: 1px;
+    float: right;
+    margin-right: 1px;
 }
 #details-view .item-action.separated {
-    margin-left: 10px;
+    margin-right: 10px;
 }
 
 #details-view .save-button {
-    float: right;
+    float: left;
     width: 100px;
-    margin-right: 10px;
+    margin-left: 10px;
     margin-top: 5px;
     text-align: center;
     font-size: 14px;
@@ -91,7 +91,7 @@ ul.dynatree-container {
     text-align: center;
     position: relative;
     top: 20px;
-    margin-left: -200px;
+    margin-right: -200px;
     z-index: 1;
 }
 #details-view .dialog-progress-bar .ui-progressbar-value {
@@ -109,7 +109,7 @@ ul.dynatree-container {
 #topictree-queue-progress-text {
     position: absolute;
     width: 220px;
-    left: 0;
+    right: 0;
     top: 0;
     text-align: center;
     line-height: 26px;
@@ -117,7 +117,7 @@ ul.dynatree-container {
 
 #topictree-queue-progress-bar {
     position: absolute;
-    left: 0;
+    right: 0;
     top: 0;
     width: 220px;
 }
@@ -132,16 +132,16 @@ ul.dynatree-container {
 
 #topic-search-bar .search-panel {
     background-color: #fff;
-    float: right;
+    float: left;
     width: 196px;
     height: 24px; 
 }
 
 #topic-search-bar .search-button {
     background-color: #fff;
-    float: right;
+    float: left;
     margin: 5px;
-    margin-right: 18px;
+    margin-left: 18px;
 }
 
 .character-count-over {

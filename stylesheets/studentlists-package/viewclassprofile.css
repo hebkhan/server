@@ -6,7 +6,8 @@
 }
 #studentlists_dropdown {
     text-indent: 0;
-    margin-left: -15px;
+    margin-right: -15px;
+    float: left;
 }
 #studentlists_dropdown .ui-button {
     display: block;
@@ -33,12 +34,12 @@
 #studentlists_dropdown .ui-menu-item a {
     font-weight: normal;
     line-height: inherit;
-    padding: 0px 25px 0px 1ex;
+    padding: 0px 1ex 0px 25px;
 }
 #studentlists_dropdown .ui-menu-item a {
-    padding: 1px 25px 1px 10px;
-    margin-right: 0px;
+    padding: 1px 10px 1px 25px;
     margin-left: 0px;
+    margin-right: 0px;
     text-transform: none;
 }
 #studentlists_dropdown a:link:hover,
@@ -48,8 +49,8 @@
     color: #DD6900;
 }
 
-#page_sub_nav .breadcrumbs_nav a#class-stats.selected:before {left: 54px;}
-#page_sub_nav .breadcrumbs_nav a#class-stats.selected:after {left: 55px;}
+#page_sub_nav .breadcrumbs_nav a#class-stats.selected:before {right: 54px;}
+#page_sub_nav .breadcrumbs_nav a#class-stats.selected:after {right: 55px;}
 
 #high-level-class-stats img {
     width: 50px;
@@ -61,7 +62,7 @@
 
 #high-level-class-stats > span {
     display: inline-block;
-    margin-left: 10px;
+    margin-right: 10px;
 }
 #high-level-class-stats .count {
     display: inline-block;
@@ -101,15 +102,15 @@
 
 /* For the progress summary report */
 #legend {
-  padding-left: 145px;
+  padding-right: 145px;
   padding-bottom: 20px;
 }
     #legend .segment, .filter-block .segment {
-         float: left;
+         float: right;
          width: 100px;
     }
     .filter-block .segment{
-      margin-right:2px;
+      margin-left:2px;
     }
 
 .exercise-row {
@@ -123,10 +124,10 @@
 }
     .exercise-row .exercise-name {
       width: 130px;
-      float: left;
+      float: right;
       line-height: 1.2;
-      text-align: right;
-      padding-right: 15px;
+      text-align: left;
+      padding-left: 15px;
     }
 
 .fake-row .segment {
@@ -136,25 +137,25 @@
 }
     .fake-row .segment span {
       text-transform: capitalize;
-      padding-left: 9px;
+      padding-right: 9px;
       padding-bottom: 10px;
       font-weight: bold;
     }
 
-#left-column, #right-column {
-  float: left;
+#right-column, #left-column {
+  float: right;
 }
-#left-column {
-  width: 200px;
-}
-    #left-column .float-off-spine {
-      float: right;
-    }
 #right-column {
-  width: 300px;
+  width: 200px;
 }
     #right-column .float-off-spine {
       float: left;
+    }
+#left-column {
+  width: 300px;
+}
+    #left-column .float-off-spine {
+      float: right;
     }
 
 .student-lists {
@@ -165,7 +166,7 @@
   width: 100px;
 }
     .student-list-container td {
-      padding-left: 4px;
+      padding-right: 4px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;

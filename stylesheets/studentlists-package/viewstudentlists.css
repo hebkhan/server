@@ -7,7 +7,7 @@
 }
 
 #sidebar {
-    float: left;
+    float: right;
     width: 180px;
 }
 #sidebar > ul a {
@@ -23,7 +23,7 @@
     margin-bottom: .5em;
 }
 .bullet {
-    padding-left: 15px;
+    padding-right: 15px;
 }
 .bullet:hover {
     background: url('/images/list-item-green.png');
@@ -37,11 +37,11 @@
 }
 
 #sidebar .simple-button {
-    margin-left: 15px;
+    margin-right: 15px;
 }
 
 #students-container {
-    margin-left:200px;
+    margin-right:200px;
     max-width: 640px;
 }
 .students-header {
@@ -53,14 +53,14 @@
     display: inline;
 }
 #nstudents {
-    margin-left: .5em;
+    margin-right: .5em;
 }
 #textbox-container {
     background: #eeeeee;
     padding-top: 1em;
     padding-bottom: 0.5em;
-    padding-left: .5em;
     padding-right: .5em;
+    padding-left: .5em;
     margin-bottom: 1.4em;
 }
 
@@ -72,22 +72,22 @@
     font-size: 160%;
     margin-bottom: .25em;
 }
-.float-right {
-    float: right;
+.float-left {
+    float: left;
 }
 .students-header {
-    padding-left: 0.5em;
     padding-right: 0.5em;
+    padding-left: 0.5em;
 }
 
 .lists-css-menu {
-    margin-right: 6em;
+    margin-left: 6em;
     position: relative;
     top: 4px;
 }
 .lists-css-menu > ul > li:after {
     visibility: hidden;
-    margin-left: 5px;
+    margin-right: 5px;
 }
 .lists-css-menu > ul > li.css-menu-js-hover:after {
     visibility: visible;
@@ -113,14 +113,14 @@
     background: white;
 }
 .lists-css-menu input {
-    margin-right: .5em;
+    margin-left: .5em;
 }
 .student-row .css-menu {
     z-index: auto;
 }
 
 #newlist-box {
-    margin-left: 15px;
+    margin-right: 15px;
     margin-bottom: 10px;
 }
 
@@ -140,7 +140,7 @@ a.delete-button[href="#"] {
 }
 
 .student-email {
-    margin-left: 1em;
+    margin-right: 1em;
     color: #777;
 }
 
@@ -164,13 +164,13 @@ a.delete-button[href="#"] {
     border: 1pt solid #ddd;
 }
 .close-button {
-    margin-left: 1em;
+    margin-right: 1em;
 }
 .note ul, .note li {
     list-style: circle;
     margin: .3em;
-    margin-left: .8em;
+    margin-right: .8em;
 }
 
-#page_sub_nav .breadcrumbs_nav a#manage-students.selected:before {left: 58px;}
-#page_sub_nav .breadcrumbs_nav a#manage-students.selected:after {left: 59px;}
+#page_sub_nav .breadcrumbs_nav a#manage-students.selected:before {right: 58px;}
+#page_sub_nav .breadcrumbs_nav a#manage-students.selected:after {right: 59px;}
