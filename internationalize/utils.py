@@ -11,6 +11,7 @@ import hashlib
 import urllib2
 import csv
 import itertools
+import sys
 
 APP_ROOT = path(__file__).parent.parent
 
@@ -34,8 +35,10 @@ from HTMLParser import HTMLParser
 htmlparser = HTMLParser()
 
 RE_TAGS = re.compile("<(/?)(!|\w+)(.*?)(/?)>|\n", flags=re.DOTALL)
-RE_ATTR_TAGS = {'input'     : re.compile("""(value|placeholder)=\"(.+?)\""""),
-                'textarea'  : re.compile("""(value|placeholder)=\"(.+?)\""""),
+RE_ATTR_TAGS = {'input'     : re.compile("""(value|placeholder)=(?P<qt>\"|')(.+?)(?P=qt)"""),
+                'textarea'  : re.compile("""(value|placeholder)=(?P<qt>\"|')(.+?)(?P=qt)"""),
+                'a'         : re.compile("""(title)=(?P<qt>\"|')(.+?)(?P=qt)"""),
+                'img'       : re.compile("""(title)=(?P<qt>\"|')(.+?)(?P=qt)"""),
                 }
 RE_LINEBREAK = re.compile("\n")
 def iter_translateables(html):
@@ -56,7 +59,7 @@ def iter_translateables(html):
                 if regex:
                     attrs_start = tag_start + html[tag_start:tag_end].find(attrs)
                     for match in regex.finditer(attrs):
-                        name, value = match.groups()
+                        name, qt, value = match.groups()
                         attr_start, attr_end = match.start(), match.end()
                         while attrs_start+attr_start > line_breaks[line_no-1]:
                             line_no += 1
@@ -176,7 +179,7 @@ def get_translated_data(all=False):
         elif text_digest:
             if all or (trans and trans!="IGNORE"):
                 data.setdefault(file_digest,{})[text_digest] = "NOOP" if not trans else "" if trans == "BLANK" else trans
-        if int(i) % 100 == 99:
+        if i and int(i) % 100 == 99:
             print i
     return data
 
@@ -208,10 +211,40 @@ def import_translation():
             f.write(translated_html)
             print "    %s" % len(translations)
 
+RE_CSS_ELEMENTS = re.compile("(?P<rt>right)|"
+                             "(?P<lt>left)|"
+                             "(?P<pd>\d+\w* \d+\w* \d+\w* \d+\w*)", re.DOTALL)
+
+RE_CSS_BLOCKS = re.compile("{(.*?)}", re.DOTALL)
+def _css_converter(match):
+    rt, lt, pd = match.groups()
+    if rt: return "left"
+    if lt: return "right"
+    if pd:
+        a,b,c,d = pd.split()
+        return "%s %s %s %s" % (a, d, c, b)
+
+def flip_css_layout_direction(css_file):
+    print css_file
+    orig = css_file + ".orig"
+    if not orig.isfile():
+        css_file.copyfile(orig)
+        print css_file, "->", orig
+    orig_css = open(orig).read()
+    new_css = RE_CSS_BLOCKS.sub(lambda match: RE_CSS_ELEMENTS.sub(_css_converter, match.group(0)), orig_css)
+    with open(css_file, "w") as f:
+        f.write(new_css)
+
 
 if __name__ == '__main__':
-    import_translation()
-    #extract_for_translation()
+    arg = sys.argv[1]
+    if arg.endswith(".css"):
+        flip_css_layout_direction(path(arg))
+    else:
+        if arg == "import":
+            import_translation()
+        elif arg == "export":
+            extract_for_translation()
 
 
 
