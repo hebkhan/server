@@ -211,8 +211,11 @@ def layer_cache_check_set_return(
         namespace = None
 
     if not bust_cache:
-
-        result = get_cached_result(key, namespace, expiration, layer)
+        try:
+            result = get_cached_result(key, namespace, expiration, layer)
+        except IOError:
+            logging.exception("Exception loading from %s cache", key)
+            result = None
         if result is not None:
             return result
 
