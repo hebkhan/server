@@ -112,7 +112,7 @@
     color: #444;
     font-weight: normal;
     margin: 0;
-    padding: 5px 5px 7px 1px;
+    padding: 5px 1px 7px 5px;
     width: 280px;
 
     background: transparent url(/images/profile-header-bg.png) no-repeat 0px 100%;
@@ -155,10 +155,10 @@
     #individual_report #vital-statistics #stats-nav {
         width: 280px;
         float: right;
-        margin: 0px 20px 10px 0;
+        margin: 0px 0 10px 20px;
     }
     #individual_report #vital-statistics #stats-nav ul#nav-accordion {
-        padding: 10px 0 0 3px;
+        padding: 10px 3px 0 0;
     }
     #individual_report #vital-statistics #stats-nav ul#nav-accordion .accordion-content {
         min-width: 250px;
@@ -204,7 +204,7 @@
     }
     #individual_report #vital-statistics #stats-nav ul > li > a {
         display: block;
-        padding: 7px 5px 5px 25px;
+        padding: 7px 25px 5px 5px;
         font-size: 14px;
     }
         #individual_report #vital-statistics #stats-nav ul > li > a.ui-state-default {
@@ -405,7 +405,7 @@
     }
     #individual_report #achievements #achievement-list > ul {
         margin: 0;
-        padding: 0 0 0 2%;
+        padding: 0 2% 0 0;
         list-style: none;
     }
     #individual_report #achievements #achievement-list > ul li {
@@ -508,7 +508,7 @@
         display: block;
         float: right;
         background: #EEE;
-        padding: 10px 0 10px 10px;
+        padding: 10px 10px 10px 0;
         border-radius: 5px;
         position: relative;
         width: 100%;
@@ -619,7 +619,7 @@ div.graph-notification {
 
 div.profile-notification {
     display: none;
-    padding: 20px 0 0 20px; /* should be the same as padding on tab-content */
+    padding: 20px 20px 0 0; /* should be the same as padding on tab-content */
     margin: 0 -19px 0 0; /* should be the same left margin as .profile-sheet-title */
     position: absolute;
     top: 55px;
@@ -895,9 +895,9 @@ ul.dropdown ul li {
     border: 1px solid transparent;
     border-left: none;
 
-    -webkit-border-radius: 3px 0 0 3px;
-    -moz-border-radius: 3px 0 0 3px;
-    border-radius: 3px 0 0 3px;
+    -webkit-border-radius: 3px 3px 0 0;
+    -moz-border-radius: 3px 3px 0 0;
+    border-radius: 3px 3px 0 0;
 }
 .profile-navigation .tab-link:hover {
     background-color: #eee;
@@ -942,7 +942,7 @@ li.profile-tab {
 }
 .tab-content {
     margin-right: 150px; /* must be the same as width of profile-navigation */
-    padding: 20px 0 20px 20px;
+    padding: 20px 20px 20px 0;
     min-height: 500px;
     border-right: 1px solid #ccc;
     position: relative;
@@ -1009,7 +1009,7 @@ li.profile-tab {
     right: 50%;
 }
 #username-picker-container .notification {
-    padding: 5px 5px 5px 10px;
+    padding: 5px 10px 5px 5px;
     margin: -10px 0 15px 0;
 
     -webkit-border-radius: 5px;
@@ -1057,7 +1057,7 @@ li.profile-tab {
 }
 .username-picker .inputs input {
     width: 250px;
-    margin: 0 5px 0 0;
+    margin: 0 0 0 5px;
 }
 .username-picker .input-description {
     font-size: 12px;
@@ -1133,15 +1133,15 @@ li.profile-tab {
 }
 
 .visibility-toggler {
-    padding: 0 10px 0 28px;
+    padding: 0 28px 0 10px;
 
     border: 1px solid #ccc;
     border-top: none;
     border-bottom-color: #aaa;
 
-    -webkit-border-radius: 0 0 5px 5px;
-    -moz-border-radius: 0 0 5px 5px;
-    border-radius: 0 0 5px 5px;
+    -webkit-border-radius: 0 5px 5px 0;
+    -moz-border-radius: 0 5px 5px 0;
+    border-radius: 0 5px 5px 0;
 
     box-shadow: 0 2px 2px #ddd;
 
