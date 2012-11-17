@@ -1,3 +1,4 @@
+# coding=utf8
 import datetime
 import urllib
 
@@ -106,7 +107,7 @@ class ViewClassProfile(request_handler.RequestHandler):
 
             student_lists_list = [{
                 'key': 'allstudents',
-                'name': 'All students',
+                'name': 'כל התלמידים'.decode("utf8"),
             }];
             for student_list in student_lists:
                 student_lists_list.append({

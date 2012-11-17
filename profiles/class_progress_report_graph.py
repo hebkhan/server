@@ -1,3 +1,4 @@
+# coding=utf8
 from itertools import izip
 
 from jinja2.utils import escape
@@ -43,20 +44,25 @@ def class_progress_report_graph_context(user_data, list_students):
             graph_dict = user_exercise_graph.graph_dict(exercise_name)
 
             status = ""
+            status_name = ""
 
             if graph_dict["proficient"]:
 
                 if exercise_name in student_review_exercise_names:
-                    status = "Review"
+                    status = "לבחון מחדש"
+                    status_name = "review"
                 else:
-                    status = "Proficient"
+                    status = "מנוסה"
+                    status_name = "proficient"
                     if not graph_dict["explicitly_proficient"]:
-                        status = "Proficient (due to proficiency in a more advanced module)"
+                        status = "מנוסה (עקב נסיון ביחידות מתקדמות יותר)"
 
             elif graph_dict["struggling"]:
-                status = "Struggling"
+                status = "מתקשה"
+                status_name = "struggling"
             elif graph_dict["total_done"] > 0:
-                status = "Started"
+                status = "התחיל"
+                status_name = "started"
 
             if student_email not in exercise_data:
                 exercise_data[student_email] = {
@@ -69,6 +75,7 @@ def class_progress_report_graph_context(user_data, list_students):
             if len(status) > 0:
                 exercise_data[student_email]['exercises'].append({
                     "status": status,
+                    "status_name": status_name,
                     "progress": graph_dict["progress"],
                     "total_done": graph_dict["total_done"],
                     "last_done": graph_dict["last_done"] if graph_dict["last_done"] and graph_dict["last_done"].year > 1 else '',

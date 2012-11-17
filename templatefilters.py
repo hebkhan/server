@@ -1,16 +1,25 @@
+# coding=utf8
 import re
 import os
 import math
+import functools
 
 import util
 from app import App
 
+def _to_utf8(func):
+    @functools.wraps(func)
+    def deco(*args, **kwargs):
+        return func(*args, **kwargs).decode("utf8")
+    return deco
+
+@_to_utf8
 def timesince_ago(content):
     if not content:
         return ""
-    return append_ago(seconds_to_time_string(util.seconds_since(content)))
+    return append_ago(_seconds_to_time_string(util.seconds_since(content)))
 
-def seconds_to_time_string(seconds_init, short_display = True):
+def _seconds_to_time_string(seconds_init, short_display = True):
 
     seconds = seconds_init
 
@@ -30,24 +39,57 @@ def seconds_to_time_string(seconds_init, short_display = True):
     seconds -= minutes * 60
 
     if years:
-        return "%d year%s" % (years, pluralize(years))
+        return pluralize(years,
+                         "-%d שנים",
+                         "שנה")
     elif months:
+        return pluralize(months,
+                         "-%d חודשים",
+                         "חודש")
         return "%d month%s" % (months, pluralize(months))
     elif weeks:
-        return "%d week%s" % (weeks, pluralize(weeks))
+        return pluralize(weeks,
+                         "-%d שבועות",
+                         "שבוע")
     elif days and hours and not short_display:
-        return "%d day%s and %d hour%s" % (days, pluralize(days), hours, pluralize(hours))
+        return "%s ו%s" % (
+                            pluralize(days,
+                                     "-%d ימים",
+                                     "יום"),
+                            pluralize(hours,
+                                     "-%d שעות",
+                                     "שעה"),
+                            )
     elif days:
-        return "%d day%s" % (days, pluralize(days))
+        return pluralize(days,
+                         "-%d ימים",
+                         "יום")
     elif hours:
         if minutes and not short_display:
-            return "%d hour%s and %d minute%s" % (hours, pluralize(hours), minutes, pluralize(minutes))
+            return "%s ו%s" % (
+                                pluralize(hours,
+                                          "-%d שעות",
+                                          "שעה"),
+                                pluralize(minutes,
+                                          "-%d דקות",
+                                          "דקה"),
+                                )
         else:
-            return "%d hour%s" % (hours, pluralize(hours))
+            return pluralize(hours,
+                             "-%d שעות",
+                             "שעה"),
+
     else:
         if seconds and not minutes:
-            return "%d second%s" % (seconds, pluralize(seconds))
-        return "%d minute%s" % (minutes, pluralize(minutes))
+            return pluralize(seconds,
+                             "-%d שניות",
+                             "שניה"),
+        return pluralize(minutes,
+                         "-%d דקות",
+                         "דקה"),
+
+seconds_to_time_string = _to_utf8(_seconds_to_time_string)
+
 
 def youtube_timestamp_links(content):
     dict_replaced = {}
@@ -70,12 +112,14 @@ def youtube_jump_link(content, seconds):
     return "<span class='youTube' seconds='%s'>%s</span>" % (seconds, content)
 
 def phantom_login_link(login_notifications, continue_url):
-    return login_notifications.replace("[login]", "<a href='/login?continue="+continue_url+"' class='simple-button action-gradient green'>Log in to save your progress</a>")
+    return login_notifications.replace("[login]", "<a href='/login?continue="+continue_url+"' class='simple-button action-gradient green'>התחבר כדי לשמור את ההתקדמות שלך</a>")
 
 def append_ago(s_time):
     if not s_time:
         return ""
-    return re.sub("^0 minutes ago", "just now", s_time + " ago")
+    return re.sub("^0 .*",
+                   "ממש כרגע",
+                   "לפני כ" + s_time)
 
 def in_list(content, list):
     return content in list
@@ -164,5 +208,5 @@ def linebreaksbr_ellipsis(content, ellipsis_content = "&hellip;"):
     # Join the string back up w/ its original <br />'s
     return "<br />".join(rg_s)
 
-def pluralize(i):
-    return "" if i == 1 else "s"
+def pluralize(i, fmt, singular):
+    return singular if i == 1 else fmt % i
