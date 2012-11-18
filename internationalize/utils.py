@@ -19,6 +19,8 @@ def get_htmls():
     for tmpl in (APP_ROOT + "/templates").walkfiles("*.html"):
         yield tmpl
 
+    yield APP_ROOT + "/khan-exercises/exercises/khan-exercise.html"
+
     for tmpl in (APP_ROOT + "/clienttemplates").walkfiles("*.handlebars"):
         yield tmpl
 
@@ -123,7 +125,7 @@ def iter_htmls():
         relative_path = APP_ROOT.relpathto(f)
         file_digest = hashlib.md5(relative_path).hexdigest()[:DIGEST_LEN]
         check_collision(file_digest)
-        print i, file_digest, relative_path
+        #print i, file_digest, relative_path
         yield f, file_digest, relative_path
 
 def extract_for_translation():
@@ -131,7 +133,7 @@ def extract_for_translation():
 
     counter = lambda counter=itertools.count(1): str(next(counter))
     new_items = []
-    with open("extracted_text2.tab","w") as output:
+    with open("extracted_text3.tab","w") as output:
         print >>output, "\t".join("id,file digest,line no,text digest,text,translation".split(","))
         for f, file_digest, relative_path in iter_htmls():
             if f.endswith("editexercise.html"):
@@ -171,7 +173,9 @@ def get_translated_data(all=False):
     lines = csv.reader(urllib2.urlopen(TRANSLATION_URL))
     _header = next(lines)
     data = {}
+    c = 0
     for i, file_digest, _tag, text_digest, _orig, trans in lines:
+        c+=1
         if file_digest and not text_digest and trans=="IGNORE": # ignore entire file
             data[file_digest] = "IGNORE"
         if data.get(file_digest) == "IGNORE":
@@ -179,8 +183,11 @@ def get_translated_data(all=False):
         elif text_digest:
             if all or (trans and trans!="IGNORE"):
                 data.setdefault(file_digest,{})[text_digest] = "NOOP" if not trans else "" if trans == "BLANK" else trans
-        if i and int(i) % 100 == 99:
-            print i
+        if i == "Version":
+            print "VERSION =", file_digest
+        elif i and int(i) % 100 == 99:
+            print ".",
+    print "Read %s lines" % c
     return data
 
 def import_translation():
@@ -203,26 +210,26 @@ def import_translation():
             translated_html += orig_html[cursor:st]
             translation = translations.get(text_digest)
             chunk = orig_html[st:end]
-            translated_html += chunk.replace(orig_text.strip(), translation) if translation else chunk
+            translated_html += chunk.replace(orig_text.strip(), translation) if translation is not None else chunk
             cursor = end
         translated_html += orig_html[cursor:]
 
         with open(html_file, "w") as f:
             f.write(translated_html)
-            print "    %s" % len(translations)
+            print "%s: %s" % (html_file, len(translations))
 
 RE_CSS_ELEMENTS = re.compile("(?P<rt>right)|"
                              "(?P<lt>left)|"
-                             "(?P<pd>\d+\w* \d+\w* \d+\w* \d+\w*)", re.DOTALL)
+                             "(?P<pd>-?\d+\S* -?\d+\S* -?\d+\S* -?\d+\S*)(;)", re.DOTALL)
 
 RE_CSS_BLOCKS = re.compile("{(.*?)}", re.DOTALL)
 def _css_converter(match):
-    rt, lt, pd = match.groups()
+    rt, lt, pd, e = match.groups()
     if rt: return "left"
     if lt: return "right"
     if pd:
         a,b,c,d = pd.split()
-        return "%s %s %s %s" % (a, d, c, b)
+        return "%s %s %s %s%s" % (a, d, c, b, e)
 
 def flip_css_layout_direction(css_file):
     print css_file
@@ -240,12 +247,13 @@ if __name__ == '__main__':
     arg = sys.argv[1]
     if arg.endswith(".css"):
         flip_css_layout_direction(path(arg))
+    elif arg == "import":
+        import_translation()
+    elif arg == "export":
+        extract_for_translation()
     else:
-        if arg == "import":
-            import_translation()
-        elif arg == "export":
-            extract_for_translation()
-
+        raise Exception("What??")
+    print "Done."
 
 
 #===============================================================================
@@ -280,4 +288,3 @@ def iter_translateables_soup(soup):
         digest = hashlib.md5(placeholder).hexdigest()[:DIGEST_LEN]
         yield (tag, 'placeholder'), "%s[placeholder]" % parents, digest, placeholder
 
-    
