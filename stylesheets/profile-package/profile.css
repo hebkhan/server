@@ -64,7 +64,7 @@
 .profile-sheet-title, .profile-graph-title {
     display: none;
     background: #EEE;
-    margin: 0 -19px 0 -20px;
+    margin: 0 -20px 0 -19px;
     padding: 5px 20px;
     border-top: 1px solid #CCC;
     border-bottom: 1px solid #CCC;
@@ -620,7 +620,7 @@ div.graph-notification {
 div.profile-notification {
     display: none;
     padding: 20px 20px 0 0; /* should be the same as padding on tab-content */
-    margin: 0 -19px 0 0; /* should be the same left margin as .profile-sheet-title */
+    margin: 0 0 0 -19px; /* should be the same left margin as .profile-sheet-title */
     position: absolute;
     top: 55px;
     left: 0;
@@ -914,22 +914,22 @@ ul.dropdown ul li {
     padding-right: 24px;
 }
 a[rel="vital-statistics activity"] {
-    background: transparent url(/images/profile-icons/chart.png) no-repeat 125px 50%;
+    background: transparent url(/images/profile-icons/chart.png) no-repeat right 50%;
 }
 a[rel="vital-statistics focus"] {
-    background: transparent url(/images/profile-icons/chart-pie-separate.png) no-repeat 125px 50%;
+    background: transparent url(/images/profile-icons/chart-pie-separate.png) no-repeat right 50%;
 }
 a[rel="vital-statistics exercise-progress"] {
-    background: transparent url(/images/profile-icons/color-swatch.png) no-repeat 125px 50%;
+    background: transparent url(/images/profile-icons/color-swatch.png) no-repeat right 50%;
 }
 a[rel="vital-statistics exercise-progress-over-time"] {
-    background: transparent url(/images/profile-icons/chart-up.png) no-repeat 125px 50%;
+    background: transparent url(/images/profile-icons/chart-up.png) no-repeat right 50%;
 }
 a[rel="achievements"] {
-    background: transparent url(/images/profile-icons/shield.png) no-repeat 125px 50%;
+    background: transparent url(/images/profile-icons/shield.png) no-repeat right 50%;
 }
 a[rel="goals"] {
-    background: transparent url(/images/profile-icons/tick-circle.png) no-repeat 125px 50%;
+    background: transparent url(/images/profile-icons/tick-circle.png) no-repeat right 50%;
 }
 li.profile-tab {
     margin-bottom: 10px;
@@ -1004,7 +1004,7 @@ li.profile-tab {
     position: fixed;
     /* set the point on which top and right operate to the middle top edge*/
     width: 500px; /* this is redundant but here for clarity */
-    margin: 0 0 0 -250px;
+    margin: 0 -250px 0 0;
     top: 60px;
     right: 50%;
 }
@@ -1044,7 +1044,7 @@ li.profile-tab {
 }
 .username-picker .labels{
     position: absolute;
-    width: 80px;
+    width: 84px;
     text-align: left;
 }
 .username-picker .inputs {
@@ -1071,7 +1071,7 @@ li.profile-tab {
 }
 .username-picker .sidenote {
     background-repeat: no-repeat;
-    background-position: 0 30%;
+    background-position: right 30%;
     padding-right: 13px;
 }
 .username-picker .sidenote.success {
@@ -1084,7 +1084,7 @@ li.profile-tab {
 .avatar-picker.modal {
     width: 700px;
     right: 50%;
-    margin: 0 0 0 -300px;
+    margin: 0 -300px 0 0;
     position: absolute;
 }
 .avatar-picker .modal-body {
@@ -1153,10 +1153,10 @@ li.profile-tab {
     top: -8px;
 }
 .visibility-toggler.public {
-    background: #eee url(/images/unlocked.png) no-repeat 8px 50%;
+    background: #eee url(/images/unlocked.png) no-repeat 4px 50%;
 }
 .visibility-toggler.private {
-    background: #eee url(/images/locked.png) no-repeat 8px 50%;
+    background: #eee url(/images/locked.png) no-repeat 4px 50%;
 }
 
 .ka_guider_button {

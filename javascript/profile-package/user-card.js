@@ -158,18 +158,18 @@ var ProfileModel = Backbone.Model.extend({
         } else {
             var message = "";
             if (username.length < 3) {
-                message = "Too short.";
+                message = "קצר מדי.";
             } else if (/^[^a-z]/.test(username)) {
-                message = "Start with a letter.";
+                message = "התחל באות אנגלית.";
             } else {
-                message = "Alphanumeric only.";
+                message = "אותיות אנגליות ומספרים בלבד.";
             }
             this.trigger("validate:username", message, false);
         }
     },
 
     onValidateUsernameResponse_: function(isUsernameAvailable) {
-        var message = isUsernameAvailable ? "Looks good!" : "Not available.";
+        var message = isUsernameAvailable ? "נראה טוב!" : "לא זמין.";
         this.trigger("validate:username", message, isUsernameAvailable);
     }
 });
@@ -244,9 +244,9 @@ UserCardView = Backbone.View.extend({
     bindQtip_: function() {
         this.$("#edit-visibility").qtip({
             content: {
-                text: "Making your profile public will make the information in this user card visible to anyone who visits your profile page. It will also allow your user card to show up when your friends search for you.",
+                text: "הפיכת הפרופיל שלך לציבורי יחשוף את המידע שבכרטיס זה לכל מי שמבקר בדף הפרופיל שלך. כמו כן זה יאפשר לחבריך למצוא אותך בחיפוש.",
                 title: {
-                    text: "Profile Privacy Setting"
+                    text: "הגדרות פרטיות"
                 }
             },
             style: {
@@ -254,7 +254,7 @@ UserCardView = Backbone.View.extend({
                 width: "250px"
             },
             position: {
-                my: "top right",
+                my: "top left",
                 at: "bottom center"
             },
             show: {
@@ -375,11 +375,11 @@ UserCardView = Backbone.View.extend({
         if (isPublic) {
             jel.removeClass("private")
                 .addClass("public")
-                .text("Profile is public");
+                .text("הפרופיל ציבורי");
         } else {
             jel.removeClass("public")
                 .addClass("private")
-                .text("Profile is private");
+                .text("הפרופיל פרטי");
         }
         jel.effect("bounce");
     }

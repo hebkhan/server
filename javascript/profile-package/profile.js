@@ -173,6 +173,13 @@ var Profile = {
                                             "exercise_name=" + exercise +
                                             "&" + "student_email=" + emailEncoded
                 },
+                nameLookup = {
+                    "activity": "פעילות",
+                    "focus": "התמקדות",
+                    "exercise-progress-over-time": "התקדמות בתירגול לאורך זמן",
+                    "exercise-progress": "התקדמות בתירגול",
+                    "exercise-problems": "בעיות בתרגיל",
+                },
                 timePeriodLookup = {
                     "today": "&dt_start=today",
                     "yesterday": "&dt_start=yesterday",
@@ -181,6 +188,7 @@ var Profile = {
                 },
                 timeURLParameter = timePeriod ? timePeriodLookup[timePeriod] : "",
                 href = hrefLookup[graph] + timeURLParameter;
+                niceGraphName = nameLookup[graph]
 
             // Known bug: the wrong graph-date-picker item is selected when
             // server man decides to show 30 days instead of the default 7.
@@ -194,13 +202,12 @@ var Profile = {
                 .end().siblings().hide();
 
             this.activateRelatedTab($("#tab-content-vital-statistics").attr("rel") + " " + graph);
-            var prettyGraphName = graph.replace(/-/gi, " ");
             if (graph == "exercise-problems") {
                 var prettyExName = exercise.replace(/_/gi, " ");
-                this.updateTitleBreadcrumbs([prettyGraphName, prettyExName]);
+                this.updateTitleBreadcrumbs([niceGraphName, prettyExName]);
             }
             else {
-                this.updateTitleBreadcrumbs([prettyGraphName]);
+                this.updateTitleBreadcrumbs([niceGraphName]);
             }
 
             if (Profile.profile.get("email")) {
@@ -227,7 +234,7 @@ var Profile = {
             $("#tab-content-achievements").show()
                 .siblings().hide();
             this.activateRelatedTab($("#tab-content-achievements").attr("rel"));
-            this.updateTitleBreadcrumbs(["Achievements"]);
+            this.updateTitleBreadcrumbs(["הישגים"]);
         },
 
         showGoals: function(type) {
@@ -239,7 +246,7 @@ var Profile = {
             $("#tab-content-goals").show()
                 .siblings().hide();
             this.activateRelatedTab($("#tab-content-goals").attr("rel"));
-            this.updateTitleBreadcrumbs(["Goals"]);
+            this.updateTitleBreadcrumbs(["יעדים"]);
         },
 
         activateRelatedTab: function(rel) {
@@ -259,7 +266,7 @@ var Profile = {
 
             var sheetTitle = $(".profile-sheet-title");
             if (parts && parts.length) {
-                var rootCrumb = Profile.profile.get("nickname") || "Profile";
+                var rootCrumb = Profile.profile.get("nickname") || "פרופיל";
                 parts.unshift(rootCrumb);
                 sheetTitle.text(parts.join(" » ")).show();
 
@@ -439,7 +446,7 @@ var Profile = {
 
 
         for (var i = 0, exercise; exercise = data[i]; i++) {
-            var stat = "Not started";
+            var stat = "לא התחיל";
             var color = "";
             var states = exercise["exercise_states"];
             var totalDone = exercise["total_done"];
@@ -449,18 +456,18 @@ var Profile = {
             }
 
             if (states["reviewing"]) {
-                stat = "Review";
+                stat = "לבחון מחדש";
                 color = "review light";
             } else if (states["proficient"]) {
                 // TODO: handle implicit proficiency - is that data in the API?
                 // (due to proficiency in a more advanced module)
-                stat = "Proficient";
+                stat = "מיומן";
                 color = "proficient";
             } else if (states["struggling"]) {
-                stat = "Struggling";
+                stat = "מתקשה";
                 color = "struggling";
             } else if (totalDone > 0) {
-                stat = "Started";
+                stat = "התחיל";
                 color = "started";
             }
 
@@ -603,7 +610,7 @@ var Profile = {
         Profile.populateUserCard();
 
         this.profile.bind("change:nickname", function(profile) {
-            var nickname = profile.get("nickname") || "Profile";
+            var nickname = profile.get("nickname") || "פרופיל";
             $("#profile-tab-link").text(nickname);
             $("#top-header-links .user-name a").text(nickname);
         });
@@ -670,32 +677,32 @@ var Profile = {
                         {
                             icon: "/images/badges/meteorite-medium.png",
                             className: "bronze",
-                            label: "Meteorite"
+                            label: "מטאוריט"
                         },
                         {
                             icon: "/images/badges/moon-medium.png",
                             className: "silver",
-                            label: "Moon"
+                            label: "ירח"
                         },
                         {
                             icon: "/images/badges/earth-medium.png",
                             className: "gold",
-                            label: "Earth"
+                            label: "כדור-ארץ"
                         },
                         {
                             icon: "/images/badges/sun-medium.png",
                             className: "diamond",
-                            label: "Sun"
+                            label: "שמש"
                         },
                         {
                             icon: "/images/badges/eclipse-medium.png",
                             className: "platinum",
-                            label: "Black Hole"
+                            label: "חור-שחור"
                         },
                         {
                             icon: "/images/badges/master-challenge-blue.png",
                             className: "master",
-                            label: "Challenge"
+                            label: "משימה"
                         }
                     ];
 
@@ -711,10 +718,10 @@ var Profile = {
                     var label = badgeInfo[category].label;
 
                     if (fStandardView) {
-                        if (label === "Challenge") {
-                            label += " Patches";
+                        if (label === "משימה") {
+                            label = "טלאי " + label;
                         } else {
-                            label += " Badges";
+                            label = "תג " + label;
                         }
                     }
                     return label;
@@ -828,12 +835,12 @@ var Profile = {
                                 .fail(function(err) {
                                     var error = err.responseText;
                                     button.addClass("failure")
-                                        .text("oh no!").attr("title", "This goal could not be saved.");
+                                        .text("oh no!").attr("title", "לא הצלחנו לשמור את היעד.");
                                     KAConsole.log("Error while saving new badge goal", goal);
                                     window.GoalBook.remove(goal);
                                 })
                                 .success(function() {
-                                    button.text("Goal Added!").addClass("success");
+                                    button.text("היעד התווסף!").addClass("success");
                                     badge.find(".energy-points-badge").addClass("goal-added");
                                 });
                         });

@@ -14,7 +14,7 @@
           </div>
           {{/if}}
           <div>
-              <span>מחובר <abbr class="timeago" title="{{dateJoined}}">{{dateJoined}}</abbr></span>
+              <span>הצטרף <abbr class="timeago" title="{{dateJoined}}">{{dateJoined}}</abbr></span>
           </div>
           <div class="user-profile-controls clearfix">
           {{#if isEditable}}
@@ -25,18 +25,18 @@
                         {{#if isFullyEditable}}
                         <li><a id="edit-basic-info" href="javascript:void(0)">עריכת מידע אישי</a></li>
                         {{/if}}
-                        <li><a id="edit-display-case" href="javascript:void(0)">עריכת הצגת תיק</a></li>
+                        <li><a id="edit-display-case" href="javascript:void(0)">עריכת מיצג התגים</a></li>
                         <li><a id="edit-avatar" href="javascript:void(0)">עריכת סמל אישי</a></li>
                         {{#if isFullyEditable}}
-                        <li><a id="edit-visibility" href="javascript:void(0)">לשנות הגדרות פרטיות</a></li>
+                        <li><a id="edit-visibility" href="javascript:void(0)">לשינוי הגדרות פרטיות</a></li>
                         {{/if}}
                       </ul>
                   </li>
               </ul>
           {{else}}
             <!--
-              {{#unless isSelf}}<a href="javascript:void(0)" class="add-remove-coach simple-button action-gradient" style="{{#if isCoachingLoggedInUser}} display: none;{{/if}}">Add as a coach</a>{{/unless}}
-              <a href="javascript:void(0)" class="add-remove-coach simple-button action-gradient" style="{{#unless isCoachingLoggedInUser}} display: none;{{/unless}}">Remove as a coach</a>
+              {{#unless isSelf}}<a href="javascript:void(0)" class="add-remove-coach simple-button action-gradient" style="{{#if isCoachingLoggedInUser}} display: none;{{/if}}">הוסף כמדריך</a>{{/unless}}
+              <a href="javascript:void(0)" class="add-remove-coach simple-button action-gradient" style="{{#unless isCoachingLoggedInUser}} display: none;{{/unless}}">הסר כמדריך</a>
               -->
           {{/if}}
           </div>

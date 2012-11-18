@@ -73,7 +73,7 @@ UsernamePickerView = Backbone.View.extend({
         this.setPublicAfterSave_ = setPublic;
         if (setPublic) {
             $(".notification.info").show();
-            $("#save-profile-info").val("Save and make profile public");
+            $("#save-profile-info").val("שמור והפוך פרופיל לציבורי");
         }
     },
 
@@ -88,7 +88,7 @@ UsernamePickerView = Backbone.View.extend({
         this.$(".username").val(username);
         this.$(".example-username").text(username);
         this.$(".sidenote").text("").removeClass("success").removeClass("error");
-        this.$("#save-profile-info").prop("disabled", false).val("Save");
+        this.$("#save-profile-info").prop("disabled", false).val("שמור");
     },
 
     onPickerShown_: function() {
@@ -252,7 +252,7 @@ UsernamePickerView = Backbone.View.extend({
         if (usernameChange) {
             // Keep the modal open and wait for a save success, since this
             // is an important, ocean-boiling operation.
-            $("#save-profile-info").val("Saving...");
+            $("#save-profile-info").val("שומר...");
             this.savePending_ = true;
         } else {
             this.toggle();

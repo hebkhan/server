@@ -3,7 +3,7 @@
 {% import 'macros/youtube.html' as youtube %}
 
 {% block meta_page_title %}{{ exercise.display_name|escape }} | {% endblock meta_page_title %}
-{% block meta_description %}Practice {{ exercise.display_name|escape }} with Khan Academy's free online exercises.{% endblock %}
+{% block meta_description %}תרגל {{ exercise.display_name|escape }} באמצעות מערכת התרגילים החופשית של אקדמיית קהאן.{% endblock %}
 
 {% block pagecss %}
     {{ js_css_packages.css_package("exercises") }}
@@ -124,13 +124,13 @@
             {% if is_webos %}
 
             <p>
-                אנחנו מצטערים. המכשיר שלכם לא תומך בתרגול תרגילים באקדמיית קהאן.
+                אנחנו מצטערים. המכשיר שלכם לא תומך בתרגול באקדמיית קהאן.
             </p>
 
             {% else %}
 
             <p>
-                אתם צריכים לעדכן את הדפדפן שלכם בשביל לתרגל תרגילים באקדמיית קהאן.
+                אתם צריכים לעדכן את הדפדפן שלכם בשביל לתרגל באקדמיית קהאן.
             </p>
             <p>
                 אנחנו ממליצים שתשתמש ב:
@@ -147,7 +147,7 @@
 
         <div id="cannot-render">
             <p>
-                הבעיה הספציפית הזו היא מהעבר ונוצרה וגרסה מאוד ישנה של אקדמיית קהאן, ואנחנו לא יכולים לראות לכם אותה. <strong>ההתקדמות לא אבדה.</strong> האי נוחות הזו מוגבלת רק לבעיות ישנות מאוד וזה לא ישפיע על להעבודה בהווה או בעתיד.
+                התרגיל הספציפי הזה נוצר בגרסה ישנה מאוד של אקדמיית קהאן, ואנחנו לא יכולים להציג לכם אותה. <strong>ההתקדמות לא אבדה.</strong> האי נוחות הזו מוגבלת רק לבעיות ישנות מאוד ולא תשפיע על עבודה בהווה או בעתיד.
             </p>
             <p>
                 אם אתם חושבים שזו טעות, בבקשה אל תהססו <a href="/reportissue?type=Defect">ליידע אותנו.</a>.

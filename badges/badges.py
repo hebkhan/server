@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import util
 import models_badges
 import phantom_users.util_notify
@@ -51,17 +53,17 @@ class BadgeCategory(object):
     @staticmethod
     def get_description(category):
         if category == BadgeCategory.BRONZE:
-            return "Meteorite badges are common and easy to earn when just getting started."
+            return "תגי מטאוריט הם שכיחים וקל להשיג אותם כאשר מתחילים."
         elif category == BadgeCategory.SILVER:
-            return "Moon badges are uncommon and represent an investment in learning."
+            return "תגי ירח הם פחות שכיחים ומייצגים השקעה בלימוד."
         elif category == BadgeCategory.GOLD:
-            return "Earth badges are rare. They require a significant amount of learning."
+            return "תגי כדור-ארץ הם נדירים. הם דורשים מידה ניכרת של השקעה בלימוד."
         elif category == BadgeCategory.PLATINUM:
-            return "Sun badges are epic. Earning them is a true challenge, and they require impressive dedication."
+            return "תגי שמש הם עצומים. להשיג אותם זהו אתגר אמיתי, והם דורשים התמסרות מרשימה."
         elif category == BadgeCategory.DIAMOND:
-            return "Black Hole badges are legendary and unknown. They are the most unique Khan Academy awards."
+            return "תגי חור-שחור הם אגדתיים ולא ידועים. הם הפרס הייחודי ביותר באקדמיית קהאן."
         elif category == BadgeCategory.MASTER:
-            return "Challenge Patches are special awards for completing challenge exercises."
+            return "טלאי משימה הם פרסים מיוחדים המוענקים עבור השלמת משימות תירגול."
         return ""
 
     @staticmethod
@@ -132,18 +134,18 @@ class BadgeCategory(object):
     @staticmethod
     def get_type_label(category):
         if category == BadgeCategory.BRONZE:
-            return "Meteorite"
+            return "מטאוריט"
         elif category == BadgeCategory.SILVER:
-            return "Moon"
+            return "ירח"
         elif category == BadgeCategory.GOLD:
-            return "Earth"
+            return "כדור-ארץ"
         elif category == BadgeCategory.PLATINUM:
-            return "Sun"
+            return "שמש"
         elif category == BadgeCategory.DIAMOND:
-            return "Black Hole"
+            return "חור-שחור"
         elif category == BadgeCategory.MASTER:
-            return "Challenge Patches"
-        return "Common"
+            return "טלאי משימה"
+        return "שכיח"
 
 # Badge is the base class used by various badge subclasses (ExerciseBadge, PlaylistBadge, TimedProblemBadge, etc).
 # 

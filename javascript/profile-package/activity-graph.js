@@ -84,7 +84,7 @@ var ActivityGraph = {
         yAxis: [
             {
                 title: {
-                    text: "זמן שהושקע (דקות)",
+                    text: "זמן שהושקע בדקות",
                     style: {
                         color: "#0080C9"
                     }
@@ -189,7 +189,7 @@ var ActivityGraph = {
 
             var lastIndex = this.videoMinutes.data.length - 1,
                 y = this.videoMinutes.data[lastIndex].y + this.exerciseMinutes.data[lastIndex].y,
-                symbol = (tag === "Achievements" ?
+                symbol = (tag === "הישגים" ?
                         "url(/images/badges/meteorite-small-chart.png)" :
                         "url(/images/node-complete-chart.png)"
                         );
@@ -206,7 +206,7 @@ var ActivityGraph = {
         }
         var symbol = "url(/images/node-complete-chart.png)";
 
-        if (tag === "Achievements") {
+        if (tag === "הישגים") {
             symbol = "url(" + info["badgeUrl"] + ")";
         }
 
