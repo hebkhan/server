@@ -1,3 +1,5 @@
+# coding=utf8
+
 from badges import BadgeCategory
 from exercise_badges import ExerciseBadge
 
@@ -31,14 +33,14 @@ class TimedProblemBadge(ExerciseBadge):
         return False
 
     def extended_description(self):
-        return "Quickly & correctly answer %s exercise problems in a row (time limit depends on exercise difficulty)" % str(self.problems_required)
+        return u"ענו נכון ובזריזות על %s שאלות ברצף (מסגרת הזמן תלויה בדרגת הקושי של התרגיל)" % str(self.problems_required)
 
 class NiceTimedProblemBadge(TimedProblemBadge):
 
     def __init__(self):
         TimedProblemBadge.__init__(self)
         self.problems_required = 5
-        self.description = "Picking Up Steam"
+        self.description = u"צוברים תאוצה"
         self.badge_category = BadgeCategory.BRONZE
         self.points = 100
 
@@ -47,7 +49,7 @@ class GreatTimedProblemBadge(TimedProblemBadge):
     def __init__(self):
         TimedProblemBadge.__init__(self)
         self.problems_required = 10
-        self.description = "Going Transonic"
+        self.description = u"במהירות הקול"
         self.badge_category = BadgeCategory.SILVER
         self.points = 500
 
@@ -56,7 +58,7 @@ class AwesomeTimedProblemBadge(TimedProblemBadge):
     def __init__(self):
         TimedProblemBadge.__init__(self)
         self.problems_required = 20
-        self.description = "Going Supersonic"
+        self.description = u"במהירות על-קולית"
         self.badge_category = BadgeCategory.SILVER
         self.points = 750
 
@@ -65,7 +67,7 @@ class RidiculousTimedProblemBadge(TimedProblemBadge):
     def __init__(self):
         TimedProblemBadge.__init__(self)
         self.problems_required = 42
-        self.description = "Sub-light Speed"
+        self.description = u"מהירות תת-אור"
         self.badge_category = BadgeCategory.GOLD
         self.points = 1500
 
@@ -74,6 +76,6 @@ class LudicrousTimedProblemBadge(TimedProblemBadge):
     def __init__(self):
         TimedProblemBadge.__init__(self)
         self.problems_required = 75
-        self.description = "299,792,458 Meters per Second"
+        self.description = u"299,792,458 מטרים בשניה"
         self.badge_category = BadgeCategory.GOLD
         self.points = 5000
