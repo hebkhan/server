@@ -77,16 +77,16 @@ def _seconds_to_time_string(seconds_init, short_display = True):
         else:
             return pluralize(hours,
                              "-%d שעות",
-                             "שעה"),
+                             "שעה")
 
     else:
         if seconds and not minutes:
             return pluralize(seconds,
                              "-%d שניות",
-                             "שניה"),
+                             "שניה")
         return pluralize(minutes,
                          "-%d דקות",
-                         "דקה"),
+                         "דקה")
 
 seconds_to_time_string = _to_utf8(_seconds_to_time_string)
 
@@ -111,8 +111,10 @@ def youtube_timestamp_links(content):
 def youtube_jump_link(content, seconds):
     return "<span class='youTube' seconds='%s'>%s</span>" % (seconds, content)
 
+@_to_utf8
 def phantom_login_link(login_notifications, continue_url):
-    return login_notifications.replace("[login]", "<a href='/login?continue="+continue_url+"' class='simple-button action-gradient green'>התחבר כדי לשמור את ההתקדמות שלך</a>")
+    return login_notifications.replace("[login]",
+                                        "<a href='/login?continue=%s' class='simple-button action-gradient green'>התחבר כדי לשמור את ההתקדמות שלך</a>" % continue_url)
 
 def append_ago(s_time):
     if not s_time:
@@ -208,5 +210,7 @@ def linebreaksbr_ellipsis(content, ellipsis_content = "&hellip;"):
     # Join the string back up w/ its original <br />'s
     return "<br />".join(rg_s)
 
-def pluralize(i, fmt, singular):
+def pluralize(i, fmt=None, singular=None):
+    if not (fmt or singular):
+        return "" if i == 1 else "s"
     return singular if i == 1 else fmt % i
