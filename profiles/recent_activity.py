@@ -38,6 +38,7 @@ class RecentExerciseActivity(RecentActivity):
         self.exercise = problem_log.exercise
         self.dt = problem_log.time_done
         self.c_problems = 1
+        self.multiple = False
         self.earned_proficiency = problem_log.earned_proficiency
         self.exercise_display_name = models.Exercise.to_display_name(problem_log.exercise)
 
@@ -50,6 +51,7 @@ class RecentExerciseActivity(RecentActivity):
                 if self.can_combine_dates(self.dt, recent_activity.dt):
                     self.dt = recent_activity.dt
                     self.c_problems += 1
+                    self.multiple = True
                     self.earned_proficiency = (self.earned_proficiency or
                                                recent_activity.earned_proficiency)
                     return True
