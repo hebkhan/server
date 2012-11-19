@@ -3,7 +3,7 @@
         <div class="clearfix">
             <span class="activity-image"></span>
             <div class="description">
-                נענו <span class="problem-count">{{#unless mobileView}}<a href="{{ profileRoot }}/vital-statistics/exercise-problems/{{exercise}}">{{/unless}}{{ cProblems }} בעיות{{pluralize cProblems}}{{#unless mobileView}}</a>{{/unless}}</span>{{#if earnedProficiency}} בשביל להשיג מיומנות{{/if}} ב{{exerciseDisplayName}}
+                פתרתם <span class="problem-count">{{#unless mobileView}}<a href="{{ profileRoot }}/vital-statistics/exercise-problems/{{exercise}}">{{/unless}}{{#if cProblems>1}}{{ cProblems }} שאלות{{else}}שאלה אחת{{/if}{{#unless mobileView}}</a>{{/unless}}</span>{{#if earnedProficiency}} כדי להשיג מיומנות{{/if}} ב{{exerciseDisplayName}}
             </div>
         </div>
         <div class="activity-controls">

@@ -888,7 +888,9 @@ var ClassProfile = {
 
                 exercise.status_css = 'transparent';
                 if (exercise.status_name == 'review') exercise.status_css = 'review light';
-                else exercise.status_css = exercise.status_name;
+                else if (exercise.status_name == 'proficient') exercise.status_css = 'proficient';
+                else if (exercise.status_name == 'struggling') exercise.status_css = 'struggling';
+                else if (exercise.status_name == 'started') exercise.status_css = 'started';
                 exercise.notTransparent = (exercise.status_css != 'transparent');
 
                 exercise.idx = idx2;
