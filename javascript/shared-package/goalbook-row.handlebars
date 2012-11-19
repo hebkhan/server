@@ -5,14 +5,14 @@ maintain consistency. }}
     <p class="goal-description">
         <span class="goal-title">{{title}}</span>
         <span class="summary-light">
-            {{#if complete}}Complete!{{else}}
+            {{#if complete}}הושלם!{{else}}
             <span class="objectives-complete">{{objectiveProgress}}/{{objectives.length}}</span>
             &middot;
             <span class="percent-complete">{{progressStr}}%</span>
             {{/if}}
         </span>
         <span class="goal-controls">
-            <a class="simple-button action-gradient archive" href="javascript:void(0)">Archive Completed Goal</a>
+            <a class="simple-button action-gradient archive" href="javascript:void(0)">העבר יעדים שהושלמו לארכיון</a>
         </span>
     </p>
     <ul class="inline-list objective-list">

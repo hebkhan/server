@@ -11,10 +11,10 @@
             <span id="profile-tab-link" class="profile-tab-text">{{#if profileData.nickname}}{{profileData.nickname}}{{else}}פרופיל{{/if}}</span>
         </a></li>
         <li>
-            <span class="inactive link-section-header">הישגים</span>
+            <span class="inactive link-section-header">ביצועים</span>
             <ul class="vertical-tab-list second-tier">
                 <li><a href="{{profileRoot}}/achievements" class="tab-link has-icon no-recolor" rel="achievements">הישגים</a></li>
-                <li><a href="{{profileRoot}}/goals" class="tab-link has-icon no-recolor" rel="goals">יעד (בטא)</a></li>
+                <li><a href="{{profileRoot}}/goals" class="tab-link has-icon no-recolor" rel="goals">יעדים</a></li>
             </ul>
         </li>
         <li>
@@ -23,7 +23,7 @@
                 <li><a href="{{profileRoot}}/vital-statistics/activity" class="tab-link has-icon no-recolor" rel="vital-statistics activity">פעילות</a></li>
                 <li><a href="{{profileRoot}}/vital-statistics/focus" class="tab-link has-icon no-recolor" rel="vital-statistics focus">התמקדות</a></li>
                 <li><a href="{{profileRoot}}/vital-statistics/exercise-progress" class="tab-link has-icon no-recolor" rel="vital-statistics exercise-progress">התקדמות בתרגילים</a></li>
-                <li><a href="{{profileRoot}}/vital-statistics/exercise-progress-over-time" class="tab-link has-icon no-recolor" rel="vital-statistics exercise-progress-over-time">התקדמות במשך זמן</a></li>
+                <li><a href="{{profileRoot}}/vital-statistics/exercise-progress-over-time" class="tab-link has-icon no-recolor" rel="vital-statistics exercise-progress-over-time">התקדמות לאורך זמן</a></li>
             </ul>
         </li>
     </ul>
@@ -35,7 +35,7 @@
         {{#if profileData.email}}
             <div class="empty-graph">
                 <h2><a href='/#browse'>צפו בסרטון</a> או <a href='/exercisedashboard'>נסו תרגיל</a>!</h2>
-                <p>כאשר תעשו, מידע אמיתי יופיע פה.</p>
+                <p>מידע אמיתי יופיע פה לגבי פעילותכם</p>
             </div>
             <div class="error-graph">
                 <h2>זו אשמתנו.</h2>
@@ -55,13 +55,13 @@
             {{#if profileData.email}}
             <div class="activity-column">
                 <div id="activity-loading-placeholder">
-                    <h2>טעינת פעילות...</h2>
+                    <h2>טוען פעילות...</h2>
                     <div id="recent-activity-progress-bar"></div>
                 </div>
                 <div id="activity-contents" style="display:none">
                     {{#if profileData.showSuggestedActivity}}
                     <div id="suggested-activity">
-                        <h2>פעילות מוצעת</h2>
+                        <h2>פעילות מומלצת</h2>
                     </div>
                     {{/if}}
                     <div id="recent-activity">
@@ -83,19 +83,19 @@
 
         <div id="tab-content-goals" rel="goals">
             <div class="graph-picker">
-                מראה את היעדים העכשוויות, שהושלמו ושננטשו.
+                מראה את היעדים הנוכחים, שהושלמו ושננטשו.
                 <ul class="tabrow">
                     <li class="type current">
-                        <a href="{{profileRoot}}/goals/current" class="graph-link no-recolor">עכשוויות</a>
+                        <a href="{{profileRoot}}/goals/current" class="graph-link no-recolor">נוכחים</a>
                     </li>
                     <li class="type completed">
-                        <a href="{{profileRoot}}/goals/completed" class="graph-link no-recolor">מושלמות</a>
+                        <a href="{{profileRoot}}/goals/completed" class="graph-link no-recolor">הושלמו</a>
                     </li>
                     <li class="type abandoned">
                         <a href="{{profileRoot}}/goals/abandoned" class="graph-link no-recolor">ננטשו</a>
                     </li>
                     <li>
-                        <a class="new-goal simple-button action-gradient disabled" href="javascript:void(0);" style="display: inline-block;">צרו יעד חדשה</a>
+                        <a class="new-goal simple-button action-gradient disabled" href="javascript:void(0);" style="display: inline-block;">צור יעד חדש</a>
                     </li>
                 </ul>
             </div>

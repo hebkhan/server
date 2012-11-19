@@ -81,11 +81,11 @@
 <div class="page_controls questions_page_controls">
     <span>
         {% if current_page_1_based != 1 %}
-        <a href="/video/{{video.readable_id}}?topic={{topic.id|urlencode}}&qa_page={{ prev_page_1_based }}#qa" class="button page questions_page" page="{{ prev_page_1_based }}"><img class="icon" src="{{ "/images/arrow-left.png"|static_url }}" /> {% if sort_order == 2 %}Newer questions{% else %}Q&A with higher votes{% endif %}</a>
+        <a href="/video/{{video.readable_id}}?topic={{topic.id|urlencode}}&qa_page={{ prev_page_1_based }}#qa" class="button page questions_page" page="{{ prev_page_1_based }}"><img class="icon" src="{{ "/images/arrow-left.png"|static_url }}" /> {% if sort_order == 2 %}שאלות חדשות יותר{% else %}שו"ת עם ציון גבוה{% endif %}</a>
         {% endif %}
 
         {% if current_page_1_based != pages_total %}
-        <a href="/video/{{video.readable_id}}?topic={{topic.id|urlencode}}&qa_page={{ next_page_1_based }}#qa" class="button page questions_page" page="{{ next_page_1_based }}">{% if sort_order == 2 %}Older questions{% else %}Q&A with lower votes{% endif %} <img class="icon" src="{{ "/images/arrow-right.png"|static_url }}" /></a>
+        <a href="/video/{{video.readable_id}}?topic={{topic.id|urlencode}}&qa_page={{ next_page_1_based }}#qa" class="button page questions_page" page="{{ next_page_1_based }}">{% if sort_order == 2 %}שאלות ישנות יותר{% else %}שו"ת עם ציון נמוך{% endif %} <img class="icon" src="{{ "/images/arrow-right.png"|static_url }}" /></a>
         {% endif %}
     </span>
 </div>

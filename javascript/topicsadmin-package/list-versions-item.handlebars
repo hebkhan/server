@@ -1,12 +1,12 @@
 <div>
-  <a href="javascript:" class="edit-version simple-button green action-gradient" style="float: right">View this version</a>
-  <div><strong>Version #{{ number }}:</strong> "{{ title }}"
+  <a href="javascript:" class="edit-version simple-button green action-gradient" style="float: right">ראו את גרסה זו</a>
+  <div><strong>גרסה #{{ number }}:</strong> "{{ title }}"
     {{#edit}}
-      <strong>[Editing version]</strong>
+      <strong>[עריכת גרסה]</strong>
     {{/edit}}
-    {{#default}}<strong>[Currently live version]</strong>{{/default}}
+    {{#default}}<strong>[גרסה חיה נוכחית]</strong>{{/default}}
   </div>
-  <div style="margin-left: 20px;"><strong>Description:</strong> {{ description }}</div>
-  <div style="margin-left: 20px;"><strong>Created:</strong> {{ created_on }}</div>
-  <div style="margin-left: 20px;"><strong>Updated:</strong> {{ updated_on }} by {{ last_edited_by }}</div>
+  <div style="margin-left: 20px;"><strong>תיאור:</strong> {{ description }}</div>
+  <div style="margin-left: 20px;"><strong>נוצר:</strong> {{ created_on }}</div>
+  <div style="margin-left: 20px;"><strong>עודכן:</strong> {{ updated_on }} על ידי {{ last_edited_by }}</div>
 </div>
