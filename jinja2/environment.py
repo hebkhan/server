@@ -887,10 +887,15 @@ class Template(object):
         This will return the rendered template as unicode string.
         """
         vars = dict(*args, **kwargs)
+        l = []
         try:
-            return concat(self.root_render_func(self.new_context(vars)))
+            l.extend(self.root_render_func(self.new_context(vars)))
         except Exception:
+            import logging
+            logging.exception("Error rendering (lines=%s):\n***\n%s\n***", len(l), concat(l).encode("utf8"))
             exc_info = sys.exc_info()
+        else:
+            return concat(l)
         return self.environment.handle_exception(exc_info, True)
 
     def stream(self, *args, **kwargs):
