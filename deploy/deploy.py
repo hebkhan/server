@@ -35,7 +35,7 @@ def popen_results(args):
     return proc.communicate()[0]
 
 def popen_return_code(args, input=None):
-    proc = subprocess.Popen(args, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+    proc = subprocess.Popen(args, stdin=subprocess.PIPE)
     proc.communicate(input)
     return proc.returncode
 

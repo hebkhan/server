@@ -51,9 +51,11 @@ def compile_template(root_path, rel_path, file_name):
         
         # "-m" for minified output
         # "-f" specifies output file
-        subprocess.call([handlebars_path, "-m", "-f", output_path, input_path],
+        ret = subprocess.call([handlebars_path, "-m", "-f", output_path, input_path],
                         stderr=subprocess.STDOUT,
                         stdout=subprocess.PIPE)
+        if ret:
+            raise Exception("Error compiling handlebar: %s -m -f %s/%s" % (handlebars_path, dir_path, file_name))
         os.remove(input_path)
         print "Compiled to %s" % output_path
     except subprocess.CalledProcessError:
