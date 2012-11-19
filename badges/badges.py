@@ -6,6 +6,11 @@ import phantom_users.util_notify
 from notifications import UserNotifier
 from badge_context import BadgeContextType
 
+def _to_unicode(func):
+    def decorated(*args, **kw):
+        return func(*args, **kw).decode("utf8")
+    return decorated
+
 class BadgeCategory(object):
     # Sorted by astronomical size...
     BRONZE = 0 # Meteorite, "Common"
@@ -51,6 +56,7 @@ class BadgeCategory(object):
         return BadgeCategory.get_description(self.category)
 
     @staticmethod
+    @_to_unicode
     def get_description(category):
         if category == BadgeCategory.BRONZE:
             return "תגי מטאוריט הם שכיחים וקל להשיג אותם כאשר מתחילים."
@@ -132,6 +138,7 @@ class BadgeCategory(object):
         return BadgeCategory.get_type_label(self.category)
 
     @staticmethod
+    @_to_unicode
     def get_type_label(category):
         if category == BadgeCategory.BRONZE:
             return "מטאוריט"
