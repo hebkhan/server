@@ -7,13 +7,13 @@ import functools
 import util
 from app import App
 
-def _to_utf8(func):
+def _to_unicode(func):
     @functools.wraps(func)
     def deco(*args, **kwargs):
         return func(*args, **kwargs).decode("utf8")
     return deco
 
-@_to_utf8
+@_to_unicode
 def timesince_ago(content):
     if not content:
         return ""
@@ -88,7 +88,7 @@ def _seconds_to_time_string(seconds_init, short_display = True):
                          "-%d דקות",
                          "דקה")
 
-seconds_to_time_string = _to_utf8(_seconds_to_time_string)
+seconds_to_time_string = _to_unicode(_seconds_to_time_string)
 
 
 def youtube_timestamp_links(content):
@@ -111,10 +111,10 @@ def youtube_timestamp_links(content):
 def youtube_jump_link(content, seconds):
     return "<span class='youTube' seconds='%s'>%s</span>" % (seconds, content)
 
-@_to_utf8
+@_to_unicode
 def phantom_login_link(login_notifications, continue_url):
     return login_notifications.replace("[login]",
-                                        "<a href='/login?continue=%s' class='simple-button action-gradient green'>התחבר כדי לשמור את ההתקדמות שלך</a>" % continue_url)
+                                        "<a href='/login?continue=%s' class='simple-button action-gradient green'>התחבר כדי לשמור את ההתקדמות שלך</a>" % continue_url.encode("utf8"))
 
 def append_ago(s_time):
     if not s_time:
