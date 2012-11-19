@@ -20,10 +20,10 @@ cron:
   schedule: every sunday 03:00
   timezone: US/Pacific
 
-#- description: youtube video sync
-#  url: /admin/youtubesync?start=1
-#  schedule: every day 03:00
-#  timezone: US/Pacific
+- description: youtube video sync
+  url: /admin/youtubesync?start=1
+  schedule: every day 03:00
+  timezone: US/Pacific
 
 - description: update video subtitles
   url: /admin/unisubs/import
