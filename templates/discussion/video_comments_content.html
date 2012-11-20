@@ -29,7 +29,7 @@
         {% endif %}
 
         {% if current_page_1_based != pages_total %}
-        <a href="/video/{{video.readable_id}}?topic={{topic.title|urlencode}}&comments_page={{ next_page_1_based }}#comments" class="button comments_page" page="{{ next_page_1_based }}">תגובות עםתוצאות הצבעה נמוכות <img class="icon" src="{{ "/images/arrow-right.png"|static_url }}" /></a>
+        <a href="/video/{{video.readable_id}}?topic={{topic.title|urlencode}}&comments_page={{ next_page_1_based }}#comments" class="button comments_page" page="{{ next_page_1_based }}">תגובות עם תוצאות הצבעה נמוכות <img class="icon" src="{{ "/images/arrow-right.png"|static_url }}" /></a>
         {% endif %}
     </span>
 </div>

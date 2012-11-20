@@ -4,7 +4,7 @@
 
 <h2>משתמשים מורחקים</h2>
 <br/>
-<strong>פרסומים של דיונים מידי משתמשים מורחקים מוחבאים באופן אוטומטי משאר הקהילה.</strong>
+<strong>פרסומי  יונים של משתמשים מורחקים מוסתרים באופן אוטומטי משאר הקהילה.</strong>
 <br/><br/>
 
 {% if banned_user_data_list.count() %}
@@ -30,8 +30,8 @@
 
 <br/></br>
 
-<h3>הרחקת משתמש</h3>
-הזינו כתובת דוא"ל של משתמש כדי להרחיקו ממערכת הדיונים.<br/>
+<h3>הרחק משתמש</h3>
+הזינו כתובת דוא"ל של משתמש ("user@gmail.com") cכדי להרחיקו ממערכת הדיונים.<br/>
 <form method="POST" action="/discussion/mod/bannedlist">
     <input type="hidden" name="banned" value="1" />
     <input type="text" name="user" value="" />
