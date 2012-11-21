@@ -196,6 +196,9 @@ class YouTubeSync(request_handler.RequestHandler):
                         break
 
                     for video in video_feed.entry:
+                        if not video.media.player:
+                            logging.warning("Could not parse video - skipping... (%s, %s)", video, video.media)
+                            continue
 
                         video_id = cgi.parse_qs(urlparse(video.media.player.url).query)['v'][0].decode('utf-8')
 
