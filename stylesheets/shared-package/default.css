@@ -1730,7 +1730,7 @@ ul.ui-autocomplete .ui-menu-item a span.autocomplete-exercise {
         left: 0;
         width: auto;
         top: 5px;
-        padding: 2px 0 2px 52px;
+        padding: 2px 52px 2px 0;
         font-size: 15px;
         letter-spacing: 2px;
         text-transform: uppercase;
@@ -3938,3 +3938,11 @@ div.clearFloat { overflow:hidden; height:1px; clear:both; }
     text-align: center;
 }
 
+#highchart {
+    direction: ltr;
+}
+
+.highcharts-tooltip .sub-title {
+    text-align: right;
+    direction: rtl;
+}
