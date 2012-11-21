@@ -40,52 +40,52 @@ def _seconds_to_time_string(seconds_init, short_display = True):
 
     if years:
         return pluralize(years,
-                         "-%d שנים",
+                         "%d שנים",
                          "שנה")
     elif months:
         return pluralize(months,
-                         "-%d חודשים",
+                         "%d חודשים",
                          "חודש")
         return "%d month%s" % (months, pluralize(months))
     elif weeks:
         return pluralize(weeks,
-                         "-%d שבועות",
+                         "%d שבועות",
                          "שבוע")
     elif days and hours and not short_display:
         return "%s ו%s" % (
                             pluralize(days,
-                                     "-%d ימים",
+                                     "%d ימים",
                                      "יום"),
                             pluralize(hours,
-                                     "-%d שעות",
+                                     "%d שעות",
                                      "שעה"),
                             )
     elif days:
         return pluralize(days,
-                         "-%d ימים",
+                         "%d ימים",
                          "יום")
     elif hours:
         if minutes and not short_display:
             return "%s ו%s" % (
                                 pluralize(hours,
-                                          "-%d שעות",
+                                          "%d שעות",
                                           "שעה"),
                                 pluralize(minutes,
-                                          "-%d דקות",
+                                          "%d דקות",
                                           "דקה"),
                                 )
         else:
             return pluralize(hours,
-                             "-%d שעות",
+                             "%d שעות",
                              "שעה")
 
     else:
         if seconds and not minutes:
             return pluralize(seconds,
-                             "-%d שניות",
+                             "%d שניות",
                              "שניה")
         return pluralize(minutes,
-                         "-%d דקות",
+                         "%d דקות",
                          "דקה")
 
 seconds_to_time_string = _to_unicode(_seconds_to_time_string)
@@ -121,7 +121,7 @@ def append_ago(s_time):
         return ""
     return re.sub("^0 .*",
                    "ממש כרגע",
-                   "לפני כ" + s_time)
+                   "לפני " + s_time)
 
 def in_list(content, list):
     return content in list
