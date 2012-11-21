@@ -142,19 +142,19 @@
       font-weight: bold;
     }
 
-#right-column, #left-column {
+#left-column, #right-column {
   float: right;
 }
-#right-column {
+#left-column {
   width: 200px;
 }
-    #right-column .float-off-spine {
+    #left-column .float-off-spine {
       float: left;
     }
-#left-column {
+#right-column {
   width: 300px;
 }
-    #left-column .float-off-spine {
+    #right-column .float-off-spine {
       float: right;
     }
 

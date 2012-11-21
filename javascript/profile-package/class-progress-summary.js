@@ -2,19 +2,24 @@ var ProgressSummaryView = function() {
     var fInitialized = false,
         template = Templates.get("profile.class-progress-summary"),
         statusInfo = {
-                "not-started": {
+                struggling: {
+                    display: "מתקשה",
                     fShowOnLeft: true,
                     order: 0},
-                struggling: {
+                review: {
+                    display: "לבחון מחדש",
                     fShowOnLeft: true,
                     order: 1},
-                started: {
-                    fShowOnLeft: false,
-                    order: 2},
                 proficient: {
+                    display: "מיומן",
+                    fShowOnLeft: true,
+                    order: 2},
+                started: {
+                    display: "התחיל",
                     fShowOnLeft: false,
                     order: 3},
-                review: {
+                "not-started": {
+                    display: "לא התחיל",
                     fShowOnLeft: false,
                     order: 4}
             },
@@ -59,14 +64,11 @@ var ProgressSummaryView = function() {
         });
 
         Handlebars.registerHelper("toDisplay", function(status) {
-            if (status === "not-started") {
-                return "unstarted";
-            }
-            return status;
+            return statusInfo[status].display;
         });
 
         Handlebars.registerHelper("progressColumn", function(block) {
-            this.progressSide = block.hash.side;
+            this.progressSide = block.hash.side === "left" ? "right" : "left";
             return block(this);
         });
 
