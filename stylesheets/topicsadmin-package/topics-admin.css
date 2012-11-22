@@ -22,7 +22,7 @@ ul.dynatree-container {
 
 .contextMenu {
     display: none;
-    width: 220px;
+    width: 140px;
     position: fixed;
 }
 
@@ -34,7 +34,7 @@ ul.dynatree-container {
   position: fixed;
   /* set the point on which top and right operate to the middle top edge*/
   width: 700px; /* this is redundant but here for clarity */
-  margin: 0 0 0 -450px;
+  margin: 0 -450px 0 0;
   top: 90px;
   right: 50%;
 }
@@ -43,7 +43,7 @@ ul.dynatree-container {
   position: fixed;
   /* set the point on which top and right operate to the middle top edge*/
   width: 700px; /* this is redundant but here for clarity */
-  margin: 0 0 0 -450px;
+  margin: 0 -450px 0 0;
   top: 90px;
   right: 50%;
 }

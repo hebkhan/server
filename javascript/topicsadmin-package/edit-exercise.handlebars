@@ -20,18 +20,18 @@
             <tr>
                 <td style="font-weight:bold;">ראו</td>
                 <td style="padding-bottom:9px;">
-                    <a href="{{ model.relative_url }}" target="_blank">פתחו {{ model.display_name }} בסימנייה חדשה</a>
+                    <a href="{{ model.relative_url }}" target="_blank">פתחו {{ model.display_name }} בחלונית חדשה</a>
                 </td>
             </tr>
 
             <tr>
                 <td style="font-weight:bold;">מצב</td>
                 <td style="padding-bottom:9px;">
-                    <label for="live_yes">חי&nbsp;</label><input type="radio" id="live_yes" name="live" value="true" {{#if model.live }}checked="checked"{{/if}}/>
+                    <label for="live_yes">חי&nbsp;</label><input type="radio" id="live_yes" name="live" value="נכון" {{#if model.live }}checked="checked"{{/if}}/>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <label for="live_no">מפתחים בלבד&nbsp;</label><input type="radio" id="live_no" name="live" value="false" {{#unless model.live }}checked="checked"{{/unless}}/>
+                    <label for="live_no">מפתחים בלבד&nbsp;</label><input type="radio" id="live_no" name="live" value="שגוי" {{#unless model.live }}checked="checked"{{/unless}}/>
                     <br/>
-                    {{#if oldValues.live }}<span class="old-value">Old value: <input type="text" disabled value="{{#if oldValues.live }}Live{{else}}Developers Only{{/if}}"ערך ישן: <input type="text" disabled value="{{#if oldValues.live }}Live{{else}}Developers Only{{/if}}"/></span><br/>{{/if}}
+                    {{#if oldValues.live }}<span class="old-value">Old value: <input type="text" disabled value="{{#if oldValues.live }פעיל{{else}}מפתחים בלבד{{/if}}"ערך ישן: <input type="text" disabled value="{{#if oldValues.live }}Live{{else}}Developers Only{{/if}}"/></span><br/>{{/if}}
                     <em>תרגילים שלא בשידור חי מוחבאים לחלוטין ממשתמשים רגילים.</em>
                 </td>
             </tr>

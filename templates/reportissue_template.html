@@ -10,7 +10,7 @@ function submitForm(value)
 	p { margin-bottom: 1em; }
 </style>
 {% endblock pagescript %}
-{% block pagetitle %}Report an issue{% endblock pagetitle %}
+{% block pagetitle %} דווחו על בעיה {% endblock pagetitle %}
 {% block pagecontent %}
 <article id="report-problem">
 	{% if message %}
@@ -24,24 +24,24 @@ function submitForm(value)
 				{% block exercise_warning %}{% endblock exercise_warning %}
         <p>אם יש לכם מזל מישהו כבר
         {% block submitted_the_issue %}דיווח על הבעיה{% endblock submitted_the_issue %}
-        ואתם יכולים פשוט להצביע בעבור הבעיה על ידי לחיצה על <b>הכוכב הנמצא לידו</b> בתוך
+        ואתם יכולים פשוט להצביע  על ידי לחיצה על <b>הכוכב הנמצא לידו</b> בתוך
         ה-
-        {% block list_of_issues_link %}<a href="http://code.google.com/p/hebrewkhan/issues/list?can=2&q=Status:Accepted,Started%20Type:Defect&sort=-stars&colspec=Summary">הרשימה של בעיות ידועות</a>{% endblock list_of_issues_link %}.
-        אחרת אנא השתמשו בצעדים הבאים בכדי ליצור בעיה חדשה במערכת לאיתור בעיות שלנו.
+        {% block list_of_issues_link %}<a href="http://code.google.com/p/hebrewkhan/issues/list?can=2&q=Status:Accepted,Started%20Type:Defect&sort=-stars&colspec=Summary">רשימה של בעיות ידועות</a>{% endblock list_of_issues_link %}.
+        אחרת אנא פעלו לפי צעדים הבאים בכדי לדווח על בעיה חדשה במערכת איתור הבעיות שלנו.
 	<ol>
-		<li>לכו
-	        {% block new_issue_link %}<a href="http://code.google.com/p/hebrewkhan/issues/entry?template=Defect%20report%20from%20user&labels=Referer-{{referer|urlencode}},Type-Defect,{{issues_label|urlencode}}">לפורום בעיה חדשה</a>{% endblock new_issue_link %}.
+		<li>לכו ל-
+	        {% block new_issue_link %}<a href="http://code.google.com/p/hebrewkhan/issues/entry?template=Defect%20report%20from%20user&labels=Referer-{{referer|urlencode}},Type-Defect,{{issues_label|urlencode}}">לפורום שאלה חדשה</a>{% endblock new_issue_link %}.
 		</li>
-		<li>מלאו את <b>התקציר</b> ואת <b>שדות</b> התיאור. <span style="color: red; font-size: 12px;"/>שימו לב: המידע שאתם מספקים יהפוך לציבורי, לכן אל תכללו שם מידע פרטי או מסווג.</span></li>
-		<li>לחצו על <b>הגשת מידע</b> </li>
+		<li>מלאו את <b>התקציר</b> ואת <b>שדות</b> התיאור. <span style="color: red; font-size: 12px;"/>שימו לב: המידע שאתם מספקים יהפוך לציבורי, לכן אל תכללו שום מידע פרטי או מסווג.</span></li>
+		<li>לחצו על <b>שלחו את הבעיה</b> כפתור</li>
 	</ol>
-        <p>ההגשה שלכם תופיע ברשימה ברגע שנוכל לתת לזה סקירה מהירה.</p>
+        <p>ההגשה שלכם תופיע ברשימה ברגע שנוכל לסורקה.</p>
         </p>
-        <p>אם אתם מצביעים בשביל משהו או מגישים משהו חדש, אתם תקבלו דוא"ל כאשר אנשים יגיבו על זה.&nbsp;
-        כאשר נחשוב שטיפלנו בזה תקבלו דוא"ל בו כתוב "מצב: מתוקן", ואתם תראו את השינוי
+        <p>אם אתם מצביעים בשביל משהו או מגישים משהו חדש, תקבלו דוא"ל כאשר אנשים יגיבו על זה.&nbsp;
+        כאשר נחשוב שהצלחנו לטפל בזה תקבלו דוא"ל בו נאמר "מצב: מתוקן", ואתם תווכחו בשינוי
         בפעם הבאה בה נשדרג את האתר. אם, בכל זמן שהוא, אתם תרצו להפסיק לקבל הודעות בדוא"ל, רק תעקבו אחר
-        הקישור באחד מהם ולחצו על הכוכב בשביל להפוך אותו לכהה.
+        התקשרו דרךאחד מהם ולחצו על הכוכב בשביל להפוך אותו לכהה.
         </p>
-        <p><em>תודה שלקחתם את הזמן בשביל לעזור לנו להפוך את אקדמיית קהאן לטובה יותר!</em></p>
+        <p><em>תודה שלהשקעתם מזמנכם לעזור לנו להפוך את אקדמיית קהאן לטובה יותר!</em></p>
 </article>
 {% endblock pagecontent %}

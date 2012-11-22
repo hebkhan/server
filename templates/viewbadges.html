@@ -1,7 +1,7 @@
 {% extends "page_template.html" %}
 
 {% block pagetitle %}
-    Badges
+    עיטורים
 {% endblock pagetitle %}
 
 {% block pagecontent %}
@@ -31,7 +31,7 @@
             </td>
             <td style="text-align:center;">
                 <img src="/images/badges/master-challenge-blue-small.png" /><br/>
-                <strong>טלאי אתגרי</strong> פרס מיוחד בשביל התחרות בתרגילים אתגריים
+                <strong>עיטור אתגרי</strong> פרס מיוחד בשביל התחרות בתרגילים אתגריים
             </td>
         </tr>
     </table>
@@ -39,7 +39,7 @@
 
 <article class="achievement-badges-container">
 {% if user_badges_master %}
-    <h3>טלאי האתגרים שלכם</h3>
+    <h3>עיטור האתגרים שלכם</h3>
     <div class="clear">&nbsp;</div>
     {% for user_badge in user_badges_master %}
         {% if user_badge.badge %}

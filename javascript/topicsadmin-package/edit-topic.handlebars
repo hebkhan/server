@@ -28,27 +28,27 @@
         {{#if version.edit}}
           <td colspan="2">השינויים נשמרו <strong>בגרסה הערוכה</strong> של האתר כאשר אתם לוחצים על כפתור ה"שמירה" לעיל.</td>
         {{else}}
-          <td colspan="2">לא ניתן לבצע שינויים בגרסה זו. רק הגרסה הערוכה ניתנת לעריכה.</td>
+          <td colspan="2">לא ניתן לבצע שינויים בגרסה זו. ניתן לערוך רק את גרסת העריכה.</td>
         {{/if}}
       </tr>
 
       <tr>
-        <td style="font-weight:bold;">ראו</td>
+        <td style="font-weight:bold;">פתח</td>
         <td style="padding-bottom:9px;">
-          <a href="{{ model.ka_url }}" target="_blank">פתחו {{ model.title }} בסמנייה חדשה</a>
+          <a href="{{ model.ka_url }}" target="_blank">פתח {{ model.title }} בסמנייה חדשה</a>
         </td>
       </tr>
 
       <tr>
-        <td style="font-weight:bold;">פתחו {{ model.title }} בסמנייה חדשה</td>
+        <td style="font-weight:bold;">כותרת מבודדת</td>
         <td style="padding-bottom:9px;">
           <input type="text" name="standalone_title" value="{{ model.standalone_title }}" maxlength="128"/><br/>
-          <em>הכותרת מוצאת כאשר הנושא מוצא בפני עצמו, לא באשכול נושאים.</em>
+          <em>הכותרת מוצגת כאשר הנושא מוצג בפני עצמו, לא בעץ הנושאים.</em>
         </td>
       </tr>
 
       <tr>
-        <td style="font-weight:bold;">קבוצה</td>
+        <td style="font-weight:bold;">אסימון</td>
         <td style="padding-bottom:9px;">
           <input type="text" name="id" value="{{ model.id }}" class="short" maxlength="32"/><br/>
           <em>זיהוי קצר המשומש כמפתח ל-API ובכתובת האתר לסרטון הזה</em>

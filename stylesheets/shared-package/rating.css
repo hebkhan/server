@@ -25,7 +25,7 @@
 	padding:0px;
 	margin:0px;
 	/*\*/
-	float: left;
+	float: right;
 	/* */
 	}
 	
@@ -43,30 +43,30 @@
 	}
 	
 .unit-rating li a:hover{
-	background: url('/images/starrating.gif') left center;
+	background: url('/images/starrating.gif') right center;
 	z-index: 2;
-	left: 0px;
+	right: 0px;
 	}
 
-.unit-rating a.r1-unit{left: 0px;}
+.unit-rating a.r1-unit{right: 0px;}
 .unit-rating a.r1-unit:hover{width:20px;}
-.unit-rating a.r2-unit{left:20px;}
+.unit-rating a.r2-unit{right:20px;}
 .unit-rating a.r2-unit:hover{width: 40px;}
-.unit-rating a.r3-unit{left: 40px;}
+.unit-rating a.r3-unit{right: 40px;}
 .unit-rating a.r3-unit:hover{width: 60px;}
-.unit-rating a.r4-unit{left: 60px;}	
+.unit-rating a.r4-unit{right: 60px;}	
 .unit-rating a.r4-unit:hover{width: 80px;}
-.unit-rating a.r5-unit{left: 80px;}
+.unit-rating a.r5-unit{right: 80px;}
 .unit-rating a.r5-unit:hover{width: 100px;}
-.unit-rating a.r6-unit{left: 100px;}
+.unit-rating a.r6-unit{right: 100px;}
 .unit-rating a.r6-unit:hover{width: 120px;}
-.unit-rating a.r7-unit{left: 120px;}
+.unit-rating a.r7-unit{right: 120px;}
 .unit-rating a.r7-unit:hover{width: 140px;}
-.unit-rating a.r8-unit{left: 140px;}
+.unit-rating a.r8-unit{right: 140px;}
 .unit-rating a.r8-unit:hover{width: 160px;}
-.unit-rating a.r9-unit{left: 160px;}
+.unit-rating a.r9-unit{right: 160px;}
 .unit-rating a.r9-unit:hover{width: 180px;}
-.unit-rating a.r10-unit{left: 180px;}
+.unit-rating a.r10-unit{right: 180px;}
 .unit-rating a.r10-unit:hover{width: 200px;}
 
 .unit-rating li.current-rating {
@@ -83,8 +83,9 @@
 .unit-rating li.level-label {
     display: block;
     position: absolute;
-    text-align: right;
+    text-align: left;
     cursor: default;
+    -webkit-transform: scaleX(-1);
     }
 
 .unit-rating li.best-label,
@@ -99,7 +100,7 @@
     }
 
 .unit-rating li.best-label {
-	background: url('/images/streak-meter-active.png') no-repeat left top;
+	background: url('/images/streak-meter-active.png') no-repeat right top;
   z-index: 3;
   opacity: 0.2;
   filter:alpha(opacity=20);
@@ -123,12 +124,12 @@
 }
 
 .unit-rating li.level-label {
-    background: url('/images/streak-meter-separator.png') no-repeat right top;
+    background: url('/images/streak-meter-separator.png') no-repeat left top;
     z-index: 4;
     width:2px;
     }
 .single-exercise .unit-rating li.level-label {
-    background: url('/images/streak-meter-separator.2.png') no-repeat right top;
+    background: url('/images/streak-meter-separator.2.png') no-repeat left top;
     }
 
 .unit-rating li.current-label {
@@ -142,7 +143,7 @@
   top: 6px;
   height:20px;
   width: 100%;
-  text-align: left;
+  text-align: right;
   background: none;
   font-size: 15px;
   text-indent: 5px;

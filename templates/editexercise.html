@@ -138,7 +138,7 @@
                     <tr>
                         <td style="font-weight:bold;">צפו</td>
                         <td style="padding-bottom:9px;">
-                            <a href="{{ main_exercise.relative_url|escape }}" target="_blank">פתחו {{ main_exercise.display_name|escape }} בסמנייה חדשה</a>
+                            <a href="{{ main_exercise.relative_url|escape }}" target="_blank">פתחו {{ main_exercise.display_name|escape }} בחלונית חדשה</a>
                         </td>
                     </tr>
 
@@ -169,7 +169,7 @@
                     </tr>
 
                     <tr>
-                        <td style="font-weight:bold;">מצב פשוט</td>
+                        <td style="font-weight:bold;">מיקום אופקי</td>
                         <td style="padding-bottom:9px;">
                             <input type="text" name="v_position" value="{{main_exercise.v_position}}"/></br>
                             <em>מספרים גדולים מזיזים את התרגיל הזה ימינה במפת הידע.</em>
@@ -177,7 +177,7 @@
                     </tr>
 
                     <tr>
-                        <td style="font-weight:bold;">מצב אנכי</td>
+                        <td style="font-weight:bold;">מיקום אנכי</td>
                         <td style="padding-bottom:9px;">
                             <input type="text" name="h_position" value="{{main_exercise.h_position}}"/></br>
                             <em>מספרים גדולים מזיזים את התרגיל הזה למטה במפת הידע.</em>
@@ -185,26 +185,26 @@
                     </tr>
 
                     <tr>
-                        <td style="font-weight:bold;">תנאים מותאמים</td>
+                        <td style="font-weight:bold;">תנאים מקדימים</td>
                         <td style="padding-bottom:9px;">
                             <div id="prereqs-container"></div>
 
                             <select id="add-prereq" onchange="addPrereq();" style="width:200px;">
-                                <option value=""> - הוסף תרגיל מותאם - </option>
+                                <option value=""> - הוסף תרגיל מקדים - </option>
                                 {% for exercise in exercises %}
                                     <option value="{{ exercise.name|escape }}">{{ exercise.display_name|escape }}</option>
                                 {% endfor %}
                             </select><br/>
 
-                            <em>התרגיל הזה יהיה מוצע כאשר התנאים יושלמו.</em><br/>
+                            <em>נציע תרגיל זה כאשר התנאים המקדימים יושלמו.</em><br/>
                             {% if main_exercise.summative %}
-                            <em><strong>תרגילים מסכמים</strong> יווצרו תרגילים מכל התנאים.</em></br>
+                            <em><strong>תרגילים מסכמים</strong> ייצרו תרגילים מכל התנאים המקדימים.</em></br>
                             {% endif %}
                         </td>
                     </tr>
 
                     <tr>
-                        <td style="font-weight:bold;">התרגילים המכסים את החומר</td>
+                        <td style="font-weight:bold;">תרגילים המכסים את החומר</td>
                         <td style="padding-bottom:9px;">
                             <div id="covers-container"></div>
 
