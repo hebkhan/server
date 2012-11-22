@@ -2,7 +2,7 @@ var ActivityGraph = {
     chart: null,
     videoMinutes: {
         type: "column",
-        name: "דקות צפיה",
+        name: "Video Minutes",
         color: "#0080C9",
         data: [],
         defaultPoint: {
@@ -11,7 +11,7 @@ var ActivityGraph = {
     },
     exerciseMinutes: {
         type: "column",
-        name: "דקות תרגול",
+        name: "Exercise Minutes",
         color: "#00C9AF",
         data: [],
         defaultPoint: {
@@ -20,7 +20,7 @@ var ActivityGraph = {
     },
     energyPoints: {
         type: "spline",
-        name: "נקודות אנרגיה",
+        name: "Energy Points",
         yAxis: 1,
         marker: {enabled: false},
         color: "#C9001B",
@@ -31,7 +31,7 @@ var ActivityGraph = {
     },
     badges: {
         type: "scatter",
-        name: "תגים",
+        name: "Badges",
         showInLegend: false,
         data: [],
         defaultPoint: {
@@ -41,7 +41,7 @@ var ActivityGraph = {
     },
     proficientExercises: {
         type: "scatter",
-        name: "תרגילים שהושלמו",
+        name: "Proficient Exercises",
         showInLegend: false,
         data: [],
         defaultPoint: {
@@ -84,7 +84,7 @@ var ActivityGraph = {
         yAxis: [
             {
                 title: {
-                    text: "זמן שהושקע בדקות",
+                    text: "Time Spent (Minutes)",
                     style: {
                         color: "#0080C9"
                     }
@@ -104,7 +104,7 @@ var ActivityGraph = {
             },
             {
                 title: {
-                    text: "נקודות נארגיה שנצברו",
+                    text: "Energy Points Earned",
                     style: {
                         color: "#C9001B"
                     }
@@ -189,7 +189,7 @@ var ActivityGraph = {
 
             var lastIndex = this.videoMinutes.data.length - 1,
                 y = this.videoMinutes.data[lastIndex].y + this.exerciseMinutes.data[lastIndex].y,
-                symbol = (tag === "הישגים" ?
+                symbol = (tag === "Achievements" ?
                         "url(/images/badges/meteorite-small-chart.png)" :
                         "url(/images/node-complete-chart.png)"
                         );
@@ -206,7 +206,7 @@ var ActivityGraph = {
         }
         var symbol = "url(/images/node-complete-chart.png)";
 
-        if (tag === "הישגים") {
+        if (tag === "Achievements") {
             symbol = "url(" + info["badgeUrl"] + ")";
         }
 
@@ -224,19 +224,19 @@ var ActivityGraph = {
         var x = {x: index},
             extra = {};
 
-        extra = this.generateBar_(this.bucketData.dictTopicBuckets[bucket], "סרטונים");
+        extra = this.generateBar_(this.bucketData.dictTopicBuckets[bucket], "Videos");
         this.videoMinutes.data.push(_.extend({}, this.videoMinutes.defaultPoint, x, extra));
 
-        extra = this.generateBar_(this.bucketData.dictExerciseBuckets[bucket], "תרגילים");
+        extra = this.generateBar_(this.bucketData.dictExerciseBuckets[bucket], "Exercises");
         this.exerciseMinutes.data.push(_.extend({}, this.exerciseMinutes.defaultPoint, x, extra));
 
         extra = this.generateSpline_(this.bucketData.dictPointsBuckets[bucket]);
         this.energyPoints.data.push(_.extend({}, this.energyPoints.defaultPoint, x, extra));
 
-        extra = this.generateScatter_(this.bucketData.dictBadgeBuckets[bucket], "הישגים");
+        extra = this.generateScatter_(this.bucketData.dictBadgeBuckets[bucket], "Achievements");
         this.badges.data.push(_.extend({}, this.badges.defaultPoint, x, extra));
 
-        extra = this.generateScatter_(this.bucketData.dictProficiencyBuckets[bucket], "מיומנויות");
+        extra = this.generateScatter_(this.bucketData.dictProficiencyBuckets[bucket], "Proficiencies");
         this.proficientExercises.data.push(_.extend({}, this.proficientExercises.defaultPoint, x, extra));
     },
 
@@ -283,7 +283,7 @@ var ActivityGraph = {
                     }
                     else if (this.points[ix].point.fEnergyPoints)
                     {
-                        sTitle += "<br/>" + this.points[ix].point.y + " נקודות אנרגיה";
+                        sTitle += "<br/>" + this.points[ix].point.y + " energy points";
                     }
                 }
                 return sTitle + s;

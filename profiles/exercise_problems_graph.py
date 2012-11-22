@@ -1,6 +1,5 @@
 import models
 import util
-import logging
 from templatefilters import seconds_to_time_string
 from exercises import exercise_contents
 
@@ -30,13 +29,13 @@ class ProblemPoint:
             return "<br/>".join(self.video_point.dict_titles.keys())
 
     def exercise_time(self):
-        return seconds_to_time_string(self.time_taken, False)
+        return seconds_to_time_string(self.time_taken, False, english=True)
 
     def video_time(self):
         if not self.video_point:
             return 0
         else:
-            return seconds_to_time_string(self.video_point.seconds_watched, False)
+            return seconds_to_time_string(self.video_point.seconds_watched, False, english=True)
 
 class VideoPoint:
     def __init__(self, video_log):

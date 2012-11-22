@@ -6,6 +6,7 @@ import functools
 
 import util
 from app import App
+import logging
 
 def _to_unicode(func):
     @functools.wraps(func)
@@ -17,9 +18,16 @@ def _to_unicode(func):
 def timesince_ago(content):
     if not content:
         return ""
-    return append_ago(_seconds_to_time_string(util.seconds_since(content)))
+    return _seconds_to_time_string(util.seconds_since(content), ago=True)
 
-def _seconds_to_time_string(seconds_init, short_display = True):
+
+def timesince_ago_en(content):
+    if not content:
+        return ""
+    return _seconds_to_time_string(util.seconds_since(content), ago=True, english=True)
+
+
+def _seconds_to_time_string(seconds_init, short_display = True, ago = False, english = False):
 
     seconds = seconds_init
 
@@ -38,57 +46,92 @@ def _seconds_to_time_string(seconds_init, short_display = True):
     minutes = math.floor(seconds / 60)
     seconds -= minutes * 60
 
-    if years:
-        return pluralize(years,
-                         "%d שנים",
-                         "שנה")
-    elif months:
-        return pluralize(months,
-                         "%d חודשים",
-                         "חודש")
-        return "%d month%s" % (months, pluralize(months))
-    elif weeks:
-        return pluralize(weeks,
-                         "%d שבועות",
-                         "שבוע")
-    elif days and hours and not short_display:
-        return "%s ו%s" % (
-                            pluralize(days,
-                                     "%d ימים",
-                                     "יום"),
-                            pluralize(hours,
-                                     "%d שעות",
-                                     "שעה"),
-                            )
-    elif days:
-        return pluralize(days,
-                         "%d ימים",
-                         "יום")
-    elif hours:
-        if minutes and not short_display:
-            return "%s ו%s" % (
-                                pluralize(hours,
-                                          "%d שעות",
-                                          "שעה"),
-                                pluralize(minutes,
-                                          "%d דקות",
-                                          "דקה"),
-                                )
-        else:
-            return pluralize(hours,
-                             "%d שעות",
-                             "שעה")
+    def convert():
+        if english:
+            if years:
+                return "%d year%s" % (years, pluralize(years))
+            elif months:
+                return "%d month%s" % (months, pluralize(months))
+            elif weeks:
+                return "%d week%s" % (weeks, pluralize(weeks))
+            elif days and hours and not short_display:
+                return "%d day%s and %d hour%s" % (days, pluralize(days), hours, pluralize(hours))
+            elif days:
+                return "%d day%s" % (days, pluralize(days))
+            elif hours:
+                if minutes and not short_display:
+                    return "%d hour%s and %d minute%s" % (hours, pluralize(hours), minutes, pluralize(minutes))
+                else:
+                    return "%d hour%s" % (hours, pluralize(hours))
+            else:
+                if seconds and not minutes:
+                    return "%d second%s" % (seconds, pluralize(seconds))
+                return "%d minute%s" % (minutes, pluralize(minutes))
 
-    else:
-        if seconds and not minutes:
-            return pluralize(seconds,
-                             "%d שניות",
-                             "שניה")
-        return pluralize(minutes,
-                         "%d דקות",
-                         "דקה")
+        else:
+            if years:
+                return pluralize(years,
+                                 "%d שנים",
+                                 "שנה")
+            elif months:
+                return pluralize(months,
+                                 "%d חודשים",
+                                 "חודש")
+                return "%d month%s" % (months, pluralize(months))
+            elif weeks:
+                return pluralize(weeks,
+                                 "%d שבועות",
+                                 "שבוע")
+            elif days and hours and not short_display:
+                return "%s ו%s" % (
+                                    pluralize(days,
+                                             "%d ימים",
+                                             "יום"),
+                                    pluralize(hours,
+                                             "%d שעות",
+                                             "שעה"),
+                                    )
+            elif days:
+                return pluralize(days,
+                                 "%d ימים",
+                                 "יום")
+            elif hours:
+                if minutes and not short_display:
+                    return "%s ו%s" % (
+                                        pluralize(hours,
+                                                  "%d שעות",
+                                                  "שעה"),
+                                        pluralize(minutes,
+                                                  "%d דקות",
+                                                  "דקה"),
+                                        )
+                else:
+                    return pluralize(hours,
+                                     "%d שעות",
+                                     "שעה")
+
+            else:
+                if seconds and not minutes:
+                    return pluralize(seconds,
+                                     "%d שניות",
+                                     "שניה")
+                return pluralize(minutes,
+                                 "%d דקות",
+                                 "דקה")
+    s_time = convert()
+    if not s_time:
+        return ""
+    if ago:
+        s_time = (re.sub("^0 minutes ago", "just now", s_time + " ago")
+                  if english else
+                  re.sub("^0 .*",
+                         "ממש כרגע",
+                         "לפני " + s_time)
+                  )
+    return s_time
 
 seconds_to_time_string = _to_unicode(_seconds_to_time_string)
+seconds_to_time_string_en = functools.partial(_seconds_to_time_string, english=True)
 
 
 def youtube_timestamp_links(content):
@@ -115,13 +158,6 @@ def youtube_jump_link(content, seconds):
 def phantom_login_link(login_notifications, continue_url):
     return login_notifications.replace("[login]",
                                         "<a href='/login?continue=%s' class='simple-button action-gradient green'>התחבר כדי לשמור את ההתקדמות שלך</a>" % continue_url.encode("utf8"))
-
-def append_ago(s_time):
-    if not s_time:
-        return ""
-    return re.sub("^0 .*",
-                   "ממש כרגע",
-                   "לפני " + s_time)
 
 def in_list(content, list):
     return content in list

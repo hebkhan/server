@@ -99,7 +99,7 @@ def get_exercise_activity_data(user_data, bucket_list, bucket_type, daily_activi
 
     for bucket in bucket_list:
         if dict_bucket[bucket]:
-            dict_bucket[bucket]["time_spent"] = seconds_to_time_string(dict_bucket[bucket]["seconds"], False)
+            dict_bucket[bucket]["time_spent"] = seconds_to_time_string(dict_bucket[bucket]["seconds"], False, english=True)
 
     add_bucket_html_summary(dict_bucket, "exercise_names", 5)
 
