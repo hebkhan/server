@@ -1,6 +1,6 @@
 {% extends "reportissue_template.html" %}
 {% block pagetitle %}חבר ההערה{% endblock pagetitle %}
 {% block have_an_issue %}האם משהו מטריד אותך?{% endblock have_an_issue %}
-{% block submitted_the_issue %ספרו לנו אותו סיפור{% endblock submitted_the_issue %} 
+{% block submitted_the_issue %}ספרו לנו אותו סיפור{% endblock submitted_the_issue %} 
 {% block list_of_issues_link %}<a href="http://code.google.com/p/hebrewkhan/issues/list?can=2&q=Status:Accepted,Started%20Type:Comment&sort=-stars&colspec=Summary">רשימת תגובות</a>{% endblock list_of_issues_link %}
 {% block new_issue_link %}<a href="http://code.google.com/p/hebrewkhan/issues/entry?template=Comment%20from%20user&labels=Referer-{{referer|urlencode}},Type-Comment,{{issue_labels|urlencode}}">תבנית תגובה חדשה</a>{% endblock new_issue_link %}
