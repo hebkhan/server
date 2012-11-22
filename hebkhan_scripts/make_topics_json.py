@@ -51,6 +51,7 @@ def get_topic_tree(videos):
         video = dict(
                      kind = "Video",
                      title = name,
+                     standalone_title = name,
                      description = description,
                      youtube_id = youtube_id,
                      readable_id = get_id("video", int(id)),
