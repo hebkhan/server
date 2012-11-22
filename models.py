@@ -2035,9 +2035,9 @@ class Topic(Searchable, db.Model):
         potential_id = re.sub('[^a-z0-9]', '-', potential_id);
         potential_id = re.sub('-+$', '', potential_id)  # remove any trailing dashes (see issue 1140)
         potential_id = re.sub('^-+', '', potential_id)  # remove any leading dashes (see issue 1526)
-
+        logging.info("Got %s", title)
         if not potential_id:
-            potential_id = "topic-%s" % hashlib.md5(title).hexdigest()[:6]
+            potential_id = "topic-%s" % hashlib.md5(title.encode("utf8")).hexdigest()[:6]
 
         if potential_id[0].isdigit():
             potential_id = parent.id + "-" + potential_id
