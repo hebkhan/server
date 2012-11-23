@@ -2,8 +2,8 @@
 
 {% block pagesubmenu %}
 <span class="breadcrumbs_nav">
-    <a href="/badges/custom/create" class="selected">צרו תג מותאם</a>
-    <a href="/badges/custom/award">העניקו תג מותאם</a>
+    <a href="/badges/custom/create" class="selected">צרו מדליה מותאמת</a>
+    <a href="/badges/custom/award">העניקו מדליה מותאמת</a>
 </span>
 {% endblock pagesubmenu %}
 
@@ -17,7 +17,7 @@
     <div style="padding: 9px 23px;">
 
         {% if failed %}
-        <div style="color:red;padding-bottom:9px;">יצירת תא נכשלה. או שהתג כבר קיים או ששדות המידע למטה היו חסרים.</div>
+        <div style="color:red;padding-bottom:9px;">יצירת תא נכשלה. או שהמדליה כבר קיימת או ששדות המידע למטה היו חסרים.</div>
         {% endif %}
 
         <div>
@@ -28,18 +28,16 @@
                     <tr>
                         <td style="font-weight:bold;">שם</td>
                         <td style="padding-bottom:9px;">
-                            <input type="text" name="name" value="" אורך מירבי=
-"30"/><br/>
-                            <em>שם מיוחד בשביל התג. לא יכול להשתנות ולא נראה על ידי המשתמש.</em>
+                            <input type="text" name="name" value="" maxlength="30"/><br/>
+                            <em>שם ייחודי למדליה. לא יכול להשתנות ולא נראה על ידי המשתמש.</em>
                         </td>
                     </tr>
 
                     <tr>
                         <td style="font-weight:bold;">תיאור</td>
                         <td style="padding-bottom:9px;">
-                            <input type="text" name="description" value="" אורך מירבי=
-"30"/><br/>
-                            <em>תיאור קצר של התג, כמו "רצף טוב" או "התמדה". זה נראה למשתמש.</em>
+                            <input type="text" name="description" value="" maxlength="30"/><br/>
+                            <em>תיאור קצר של המדליה, כמו "רצף טוב" או "התמדה". זה נראה למשתמש.</em>
                         </td>
                     </tr>
 
@@ -55,12 +53,12 @@
                         <td style="font-weight:bold;">נקודות</td>
                         <td style="padding-bottom:9px;">
                             <input type="text" name="points" value="0"/><br/>
-                            <em>כמה נקודות כדאי לתת לאלו אשר מרוויחים את התג?</em>
+                            <em>כמה נקודות כדאי לתת לאלו אשר מרוויחים את המדליה?</em>
                         </td>
                     </tr>
 
                     <tr>
-                        <td style="font-weight:bold;">קטגורית התגים</td>
+                        <td style="font-weight:bold;">קטגורית המדליה</td>
                         <td style="padding-bottom:9px;">
                             <select name="badge_category" style="width:200px;">
                                 <option value="-1"></option>
@@ -72,11 +70,11 @@
                     </tr>
 
                     <tr>
-                        <td style="font-weight:bold;">דרך איקון מותאם</td>
+                        <td style="font-weight:bold;">איקון מותאם</td>
                         <td style="padding-bottom:9px;">
                             <input type="text" name="icon_src" value=""/><br/>
-                            <em>השאר ריק לשימוש באיקון סטנדרטי בשביל קטגורית התגים.<br/>
-                                השתמש ב-URL רלוונטי כמו "/images/your-icon.png" לאיקון מותאם ספציפי שיכול להיות משומש בתג זה.</em>
+                            <em>השאר ריק לשימוש באיקון סטנדרטי בשביל קטגורית המדליות.<br/>
+                                השתמש ב-URL רלוונטי כמו "/images/your-icon.png" לאיקון מותאם ספציפי שיכול להיות משומש במדליה זו.</em>
                         </td>
                     </tr>
 

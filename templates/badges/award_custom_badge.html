@@ -2,8 +2,8 @@
 
 {% block pagesubmenu %}
 <span class="breadcrumbs_nav">
-    <a href="/badges/custom/create">צרו תג מותאם</a>
-    <a href="/badges/custom/award" class="selected">העניקו תג מותאם</a>
+    <a href="/badges/custom/create">צרו מדליה מותאמת</a>
+    <a href="/badges/custom/award" class="selected">העניקו מדליה מותאמת</a>
 </span>
 {% endblock pagesubmenu %}
 
@@ -30,10 +30,10 @@
                 <table>
 
                     <tr>
-                        <td style="font-weight:bold;">תג מותאם</td>
+                        <td style="font-weight:bold;">מדליה מותאמת</td>
                         <td style="padding-bottom:9px;">
                             <select name="name" style="width:200px;">
-                                <option value="-1"> - בחרו תג - </option>
+                                <option value="-1"> - בחרו מדליה - </option>
                                 {% for custom_badge in custom_badges %}
                                     <option value="{{ custom_badge.name|escape }}">{{ custom_badge.description|escape }}</option>
                                 {% endfor %}
@@ -46,7 +46,7 @@
                         <td style="padding-bottom:9px;">
                             <textarea name="emails" rows="5" cols="40"></textarea><br/>
                             <em>
-                                ציינו את כל שמות המשתמשים של התלמידים שהתג מוענק להם, מופרדים בשורה חדשה.
+                                ציינו את כל שמות המשתמשים של התלמידים שהמדליה מוענקת להם, מופרדים בשורה חדשה.
                             </em>
                         </td>
                     </tr>
@@ -54,7 +54,7 @@
                 </table>
 
                 <br/>
-                <input class="button" type="submit" value="צור עיטור"/>
+                <input class="button" type="submit" value="צרו עיטור"/>
 
             </form>
         </div>

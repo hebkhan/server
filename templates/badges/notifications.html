@@ -1,7 +1,7 @@
 <div id="badge-notification-container" class="badge-award-container" style="display:none;">
 {% block badge_notification_block %}
     {% if user_badges %}
-        <h3 class="ui-corner-top">תג חדש <span style="font-weight:normal; float: left; font-size: 12px;">(<a href="#" onclick="Badges.hide();return false;">סגור</a>)</span></h3>
+        <h3 class="ui-corner-top">מדליה חדש <span style="font-weight:normal; float: left; font-size: 12px;">(<a href="#" onclick="Badges.hide();return false;">סגור</a>)</span></h3>
         {% for user_badge in user_badges %}
             {% if user_badge.badge %}
 			<div class="badge-container" style="margin-bottom:5px;">

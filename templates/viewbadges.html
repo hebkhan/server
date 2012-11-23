@@ -11,23 +11,23 @@
         <tr>
             <td style="text-align:center;">
                 <img src="/images/badges/meteorite-small.png" /><br/>
-                <strong>מטאוריט</strong> קל לזכות בתגים שכיחים כאשר רק מתחילים.
+                <strong>מטאוריט</strong> קל לזכות במדליות שכיחים כאשר רק מתחילים.
             </td>
             <td style="text-align:center;">
                 <img src="/images/badges/moon-small.png" /><br/>
-                <strong>ירח</strong> תגים נדירים ומייצגים השקעה בלמידה.
+                <strong>ירח</strong> מדליות נדירים ומייצגים השקעה בלמידה.
             </td>
             <td style="text-align:center;">
                 <img src="/images/badges/earth-small.png" /><br/>
-                <strong>כדור הארץ</strong> תגים נדירים. הם דורשים כמות משמעותית של למידה. 
+                <strong>כדור הארץ</strong> מדליות נדירים. הם דורשים כמות משמעותית של למידה. 
             </td>
             <td style="text-align:center;">
                 <img src="/images/badges/sun-small.png" /><br/>
-                <strong>שמש</strong> תגים אדירים. לזכות בהם הוא אתגר אמיתי, הם דורשים מסירות מרשימה. 
+                <strong>שמש</strong> מדליות אדירים. לזכות בהם הוא אתגר אמיתי, הם דורשים מסירות מרשימה. 
             </td>
             <td style="text-align:center;">
                 <img src="/images/badges/eclipse-small.png" /><br/>
-                <strong>חור שחור</strong> תגים אגדיים ולנעלמים. הם המיוחדים ביותר באקדמיית קהאן.
+                <strong>חור שחור</strong> מדליות אגדיים ולנעלמים. הם המיוחדים ביותר באקדמיית קהאן.
             </td>
             <td style="text-align:center;">
                 <img src="/images/badges/master-challenge-blue-small.png" /><br/>
@@ -39,7 +39,7 @@
 
 <article class="achievement-badges-container">
 {% if user_badges_master %}
-    <h3>עיטור האתגרים שלכם</h3>
+    <h3>העיטורים שלכם</h3>
     <div class="clear">&nbsp;</div>
     {% for user_badge in user_badges_master %}
         {% if user_badge.badge %}
@@ -50,7 +50,7 @@
 {% endif %}
 
 {% if user_badges_normal %}
-    <h3>התגים שלכם</h3>
+    <h3>המדליות שלכם</h3>
     <div class="clear">&nbsp;</div>
     {% for user_badge in user_badges_normal %}
         {% if user_badge.badge %}
@@ -61,7 +61,7 @@
 {% endif %}
 
 
-<br/><h2>כל התגים</h2>
+<br/><h2>כל המדליות</h2>
 {% for badge_collection in badge_collections %}
     {% for badge in badge_collection %}
         {% if loop.first %}
