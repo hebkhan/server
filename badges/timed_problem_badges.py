@@ -40,7 +40,7 @@ class NiceTimedProblemBadge(TimedProblemBadge):
     def __init__(self):
         TimedProblemBadge.__init__(self)
         self.problems_required = 5
-        self.description = u"צוברים תאוצה"
+        self.description = ""+u"צוברים תאוצה"
         self.badge_category = BadgeCategory.BRONZE
         self.points = 100
 
@@ -49,7 +49,7 @@ class GreatTimedProblemBadge(TimedProblemBadge):
     def __init__(self):
         TimedProblemBadge.__init__(self)
         self.problems_required = 10
-        self.description = u"במהירות הקול"
+        self.description = ""+u"במהירות הקול"
         self.badge_category = BadgeCategory.SILVER
         self.points = 500
 
@@ -58,7 +58,7 @@ class AwesomeTimedProblemBadge(TimedProblemBadge):
     def __init__(self):
         TimedProblemBadge.__init__(self)
         self.problems_required = 20
-        self.description = u"במהירות על-קולית"
+        self.description = ""+u"במהירות על-קולית"
         self.badge_category = BadgeCategory.SILVER
         self.points = 750
 
@@ -67,7 +67,7 @@ class RidiculousTimedProblemBadge(TimedProblemBadge):
     def __init__(self):
         TimedProblemBadge.__init__(self)
         self.problems_required = 42
-        self.description = u"מהירות תת-אור"
+        self.description = ""+u"מהירות תת-אור"
         self.badge_category = BadgeCategory.GOLD
         self.points = 1500
 
@@ -76,6 +76,6 @@ class LudicrousTimedProblemBadge(TimedProblemBadge):
     def __init__(self):
         TimedProblemBadge.__init__(self)
         self.problems_required = 75
-        self.description = u"299,792,458 מטרים בשניה"
+        self.description = ""+u"299,792,458 מטרים בשניה"
         self.badge_category = BadgeCategory.GOLD
         self.points = 5000

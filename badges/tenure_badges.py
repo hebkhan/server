@@ -1,3 +1,5 @@
+# coding=utf8
+
 import util
 from badges import Badge, BadgeCategory
 from templatefilters import seconds_to_time_string
@@ -18,13 +20,13 @@ class TenureBadge(Badge):
         return True
 
     def extended_description(self):
-        return "Remain a member of the Khan Academy for %s" % seconds_to_time_string(self.seconds_required)
+        return u"היו חברים באקדמיית קהאן ל-%s" % seconds_to_time_string(self.seconds_required)
 
 class YearOneBadge(TenureBadge):
     def __init__(self):
         TenureBadge.__init__(self)
         self.seconds_required = 60 * 60 * 24 * 365
-        self.description = "Cypress"
+        self.description = ""+u"ברוש"
         self.badge_category = BadgeCategory.BRONZE
         self.points = 0
 
@@ -32,7 +34,7 @@ class YearTwoBadge(TenureBadge):
     def __init__(self):
         TenureBadge.__init__(self)
         self.seconds_required = 60 * 60 * 24 * 365 * 2
-        self.description = "Redwood"
+        self.description = ""+u"אלון"
         self.badge_category = BadgeCategory.SILVER
         self.points = 0
 
@@ -40,7 +42,7 @@ class YearThreeBadge(TenureBadge):
     def __init__(self):
         TenureBadge.__init__(self)
         self.seconds_required = 60 * 60 * 24 * 365 * 3
-        self.description = "Sequoia"
+        self.description = ""+u"אשוח"
         self.badge_category = BadgeCategory.GOLD
         self.points = 0
 

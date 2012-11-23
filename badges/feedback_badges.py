@@ -1,3 +1,5 @@
+# coding=utf8
+
 from badges import Badge, BadgeCategory, BadgeContextType
 from discussion.models_discussion import FeedbackType
 
@@ -47,7 +49,7 @@ class AnswerVoteCountBadge(FeedbackVoteCountBadge):
         return FeedbackType.Answer
 
     def extended_description(self):
-        return "Answer a question beneath a video and receive a score of %s or more from others' votes" % self.required_votes
+        return u"ענו על שאלה לגבי לסרטון וקבלו ניקוד של %s או יותר מקולותיהם של אחרים" % self.required_votes
 
 class QuestionVoteCountBadge(FeedbackVoteCountBadge):
 
@@ -55,13 +57,13 @@ class QuestionVoteCountBadge(FeedbackVoteCountBadge):
         return FeedbackType.Question
 
     def extended_description(self):
-        return "Ask a question beneath a video and receive a score of %s or more from others' votes" % self.required_votes
+        return u"שאלו שאלה על לסרטון וקבלו ניקוד של %s או יותר מקולותיהם של אחרים" % self.required_votes
 
 class LevelOneAnswerVoteCountBadge(AnswerVoteCountBadge):
     def __init__(self):
         AnswerVoteCountBadge.__init__(self)
         self.required_votes = 10
-        self.description = "Good Answer"
+        self.description = ""+u"תשובה טובה"
         self.badge_category = BadgeCategory.SILVER
         self.points = 0
 
@@ -69,7 +71,7 @@ class LevelTwoAnswerVoteCountBadge(AnswerVoteCountBadge):
     def __init__(self):
         AnswerVoteCountBadge.__init__(self)
         self.required_votes = 25
-        self.description = "Great Answer"
+        self.description = ""+u"תשובה מצוינת"
         self.badge_category = BadgeCategory.GOLD
         self.points = 0
 
@@ -77,7 +79,7 @@ class LevelThreeAnswerVoteCountBadge(AnswerVoteCountBadge):
     def __init__(self):
         AnswerVoteCountBadge.__init__(self)
         self.required_votes = 50
-        self.description = "Incredible Answer"
+        self.description = ""+u"תשובה מדהימה"
         self.badge_category = BadgeCategory.GOLD
         self.points = 0
 
@@ -85,7 +87,7 @@ class LevelOneQuestionVoteCountBadge(QuestionVoteCountBadge):
     def __init__(self):
         QuestionVoteCountBadge.__init__(self)
         self.required_votes = 10
-        self.description = "Good Question"
+        self.description = ""+u"שאלה טובה"
         self.badge_category = BadgeCategory.SILVER
         self.points = 0
 
@@ -93,7 +95,7 @@ class LevelTwoQuestionVoteCountBadge(QuestionVoteCountBadge):
     def __init__(self):
         QuestionVoteCountBadge.__init__(self)
         self.required_votes = 25
-        self.description = "Great Question"
+        self.description = ""+u"שאלה מצוינת"
         self.badge_category = BadgeCategory.GOLD
         self.points = 0
 
@@ -101,7 +103,7 @@ class LevelThreeQuestionVoteCountBadge(QuestionVoteCountBadge):
     def __init__(self):
         QuestionVoteCountBadge.__init__(self)
         self.required_votes = 50
-        self.description = "Incredible Question"
+        self.description = ""+u"שאלה מדהימה"
         self.badge_category = BadgeCategory.GOLD
         self.points = 0
 

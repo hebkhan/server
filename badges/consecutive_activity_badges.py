@@ -1,3 +1,5 @@
+# coding=utf8
+
 from badges import Badge, BadgeCategory
 
 # All badges awarded for consecutively performing activity on the site inherit from ConsecutiveActivityBadge
@@ -11,13 +13,13 @@ class ConsecutiveActivityBadge(Badge):
         return user_data.current_consecutive_activity_days() >= self.days_required
 
     def extended_description(self):
-        return "Watch part of any video or work on any exercise each day for %s consecutive days" % self.days_required
+        return u"צפו בחלק מסרטון כלשהוא או עבדו על תרגיל כלשהוא כל יום במשך %s ימים רצופים" % self.days_required
 
 class FiveDayConsecutiveActivityBadge(ConsecutiveActivityBadge):
     def __init__(self):
         ConsecutiveActivityBadge.__init__(self)
         self.days_required = 5
-        self.description = "Good Habits"
+        self.description = ""+u"הרגלים טובים"
         self.badge_category = BadgeCategory.BRONZE
         self.points = 0
 
@@ -25,7 +27,7 @@ class FifteenDayConsecutiveActivityBadge(ConsecutiveActivityBadge):
     def __init__(self):
         ConsecutiveActivityBadge.__init__(self)
         self.days_required = 15
-        self.description = "Like Clockwork"
+        self.description = ""+u"כמו שעון"
         self.badge_category = BadgeCategory.SILVER
         self.points = 0
 
@@ -33,7 +35,7 @@ class ThirtyDayConsecutiveActivityBadge(ConsecutiveActivityBadge):
     def __init__(self):
         ConsecutiveActivityBadge.__init__(self)
         self.days_required = 30
-        self.description = "Atomic Clockwork"
+        self.description = ""+u"כמו שעון אטומי"
         self.badge_category = BadgeCategory.SILVER
         self.points = 0
 
@@ -41,7 +43,7 @@ class HundredDayConsecutiveActivityBadge(ConsecutiveActivityBadge):
     def __init__(self):
         ConsecutiveActivityBadge.__init__(self)
         self.days_required = 100
-        self.description = "10,000 Year Clock"
+        self.description = ""+u"כמו שעון עשרת אלפים השנים"
         self.badge_category = BadgeCategory.GOLD
         self.points = 0
 

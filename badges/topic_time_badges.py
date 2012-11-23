@@ -1,3 +1,5 @@
+# coding=utf8
+
 from badges import BadgeCategory
 from topic_badges import TopicBadge
 from templatefilters import seconds_to_time_string
@@ -21,13 +23,13 @@ class TopicTimeBadge(TopicBadge):
         return user_topic.seconds_watched >= self.seconds_required
 
     def extended_description(self):
-        return "Watch %s of video in a single topic" % seconds_to_time_string(self.seconds_required)
+        return u"צפו ב-%s סרטונים בנושא אחד" % seconds_to_time_string(self.seconds_required)
 
 class NiceTopicTimeBadge(TopicTimeBadge):
     def __init__(self):
         TopicTimeBadge.__init__(self)
         self.seconds_required = 60 * 15
-        self.description = "Nice Listener"
+        self.description = ""+u"מאזין נחמד"
         self.badge_category = BadgeCategory.BRONZE
         self.points = 0
 
@@ -35,7 +37,7 @@ class GreatTopicTimeBadge(TopicTimeBadge):
     def __init__(self):
         TopicTimeBadge.__init__(self)
         self.seconds_required = 60 * 30
-        self.description = "Great Listener"
+        self.description = ""+u"מאזין גדול"
         self.badge_category = BadgeCategory.BRONZE
         self.points = 0
 
@@ -43,7 +45,7 @@ class AwesomeTopicTimeBadge(TopicTimeBadge):
     def __init__(self):
         TopicTimeBadge.__init__(self)
         self.seconds_required = 60 * 60
-        self.description = "Awesome Listener"
+        self.description = ""+u"מאזין מרשים"
         self.badge_category = BadgeCategory.SILVER
         self.points = 0
 
@@ -51,7 +53,7 @@ class RidiculousTopicTimeBadge(TopicTimeBadge):
     def __init__(self):
         TopicTimeBadge.__init__(self)
         self.seconds_required = 60 * 60 * 4
-        self.description = "Ridiculous Listener"
+        self.description = ""+u"מאזין מדהים"
         self.badge_category = BadgeCategory.GOLD
         self.points = 0
 
@@ -59,6 +61,6 @@ class LudicrousTopicTimeBadge(TopicTimeBadge):
     def __init__(self):
         TopicTimeBadge.__init__(self)
         self.seconds_required = 60 * 60 * 10
-        self.description = "Ludicrous Listener"
+        self.description = ""+u"מאזין מטורף"
         self.badge_category = BadgeCategory.PLATINUM
         self.points = 0

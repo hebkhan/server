@@ -1,3 +1,5 @@
+# coding=utf8
+
 from badges import BadgeCategory
 from exercise_badges import ExerciseBadge
 
@@ -58,14 +60,14 @@ class UnfinishedExerciseBadge(ExerciseBadge):
         return True
 
     def extended_description(self):
-        return "Answer more than %d problems mostly correctly in an exercise before becoming proficient" % self.problems_required
+        return u"ענו על יותר מ-%d שאלות נכונה בתרגיל כדי להשיג מיומנות" % self.problems_required
 
 class SoCloseBadge(UnfinishedExerciseBadge):
 
     def __init__(self):
         UnfinishedExerciseBadge.__init__(self)
         self.problems_required = 30
-        self.description = "Perseverance"
+        self.description = ""+u"התמדה"
         self.badge_category = BadgeCategory.BRONZE
         self.points = 0
 
@@ -74,7 +76,7 @@ class KeepFightingBadge(UnfinishedExerciseBadge):
     def __init__(self):
         UnfinishedExerciseBadge.__init__(self)
         self.problems_required = 40
-        self.description = "Steadfastness"
+        self.description = ""+u"שקדנות"
         self.badge_category = BadgeCategory.SILVER
         self.points = 0
 
@@ -83,7 +85,7 @@ class UndeterrableBadge(UnfinishedExerciseBadge):
     def __init__(self):
         UnfinishedExerciseBadge.__init__(self)
         self.problems_required = 50
-        self.description = "Tenacity"
+        self.description = ""+u"כוח רצון"
         self.badge_category = BadgeCategory.SILVER
         self.points = 0
 

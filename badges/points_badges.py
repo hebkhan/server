@@ -1,3 +1,5 @@
+# coding=utf8
+
 import util
 from badges import Badge, BadgeCategory
 
@@ -12,13 +14,13 @@ class PointBadge(Badge):
         return user_data.points >= self.required_points
 
     def extended_description(self):
-        return "Earn %s energy points" % util.thousands_separated_number(self.required_points)
+        return u"צבור %s נקודות אנרגיה" % util.thousands_separated_number(self.required_points)
 
 class TenThousandaireBadge(PointBadge):
     def __init__(self):
         PointBadge.__init__(self)
         self.required_points = 10000
-        self.description = "Ten to the Fourth"
+        self.description = ""+u"עשר ברביעית"
         self.badge_category = BadgeCategory.BRONZE
         self.points = 0
 
@@ -26,7 +28,7 @@ class HundredThousandaireBadge(PointBadge):
     def __init__(self):
         PointBadge.__init__(self)
         self.required_points = 100000
-        self.description = "Ten to the Fifth"
+        self.description = ""+u"עשר בחמישית"
         self.badge_category = BadgeCategory.SILVER
         self.points = 0
 
@@ -34,7 +36,7 @@ class FiveHundredThousandaireBadge(PointBadge):
     def __init__(self):
         PointBadge.__init__(self)
         self.required_points = 500000
-        self.description = "Five Times Ten to the Fifth"
+        self.description = ""+u"חמש פעמים עשר בחמישית"
         self.badge_category = BadgeCategory.GOLD
         self.points = 0
 
@@ -42,7 +44,7 @@ class MillionaireBadge(PointBadge):
     def __init__(self):
         PointBadge.__init__(self)
         self.required_points = 1000000
-        self.description = "Millionaire"
+        self.description = ""+u"מיליונר"
         self.badge_category = BadgeCategory.PLATINUM
         self.points = 0
 
@@ -50,7 +52,7 @@ class TenMillionaireBadge(PointBadge):
     def __init__(self):
         PointBadge.__init__(self)
         self.required_points = 10000000
-        self.description = "Tesla"
+        self.description = ""+u"טסלה"
         self.badge_category = BadgeCategory.DIAMOND
         self.points = 0
         self.is_teaser_if_unknown = True

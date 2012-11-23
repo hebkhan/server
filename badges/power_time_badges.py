@@ -1,3 +1,5 @@
+# coding=utf8
+
 import datetime
 
 from badges import Badge, BadgeCategory
@@ -50,7 +52,7 @@ class PowerTimeBadge(Badge):
         return True
 
     def extended_description(self):
-        return "Correctly answer %s problems and watch %s of video in %s" % (self.problems_required, seconds_to_time_string(self.video_seconds_required), seconds_to_time_string(self.seconds_allotted))
+        return u"ענו נכון על %s תרגילים וצפו ב%s של סרטונים ב%s" % (self.problems_required, seconds_to_time_string(self.video_seconds_required), seconds_to_time_string(self.seconds_allotted))
 
 class PowerFifteenMinutesBadge(PowerTimeBadge):
 
@@ -59,7 +61,7 @@ class PowerFifteenMinutesBadge(PowerTimeBadge):
         self.problems_required = 10
         self.video_seconds_required = 60 * 10
         self.seconds_allotted = 60 * 15
-        self.description = "Inspired 15 Minutes"
+        self.description = ""+u"15 דקות של השראה"
         self.badge_category = BadgeCategory.BRONZE
         self.points = 0
 
@@ -70,7 +72,7 @@ class PowerHourBadge(PowerTimeBadge):
         self.problems_required = 90
         self.video_seconds_required = 15 * 60
         self.seconds_allotted = 3600
-        self.description = "Power Hour"
+        self.description = ""+u"שעה חזקה"
         self.badge_category = BadgeCategory.SILVER
         self.points = 0
 
@@ -81,7 +83,7 @@ class DoublePowerHourBadge(PowerTimeBadge):
         self.problems_required = 90 * 2
         self.video_seconds_required = 30 * 60
         self.seconds_allotted = 3600 * 2
-        self.description = "Double Power Hour"
+        self.description = ""+u"שעה חזקה כפולה"
         self.badge_category = BadgeCategory.GOLD
         self.points = 0
 

@@ -1,3 +1,5 @@
+# coding=utf8
+
 from badges import BadgeCategory
 from exercise_badges import ExerciseBadge
 
@@ -42,7 +44,7 @@ class RecoveryProblemBadge(ExerciseBadge):
         return False
 
     def extended_description(self):
-        return "Answer an exercise problem correctly after having some trouble with %s and sticking with the exercise." % self.s_problems_description
+        return u"ענו נכונה על שאלה לאחר קושי עם %s והתמדה בתרגיל." % self.s_problems_description
 
 class RecoveryBadge(RecoveryProblemBadge):
 
@@ -50,7 +52,7 @@ class RecoveryBadge(RecoveryProblemBadge):
         RecoveryProblemBadge.__init__(self)
         self.problems_wrong = 5
         self.problems_wrong_out_of = 10
-        self.description = "Persistence"
+        self.description = ""+u"התמדה"
         self.s_problems_description = "a few problems"
         self.badge_category = BadgeCategory.BRONZE
         self.points = 0
@@ -61,7 +63,7 @@ class ResurrectionBadge(RecoveryProblemBadge):
         RecoveryProblemBadge.__init__(self)
         self.problems_wrong = 10
         self.problems_wrong_out_of = 20
-        self.description = "Sticktoitiveness"
+        self.description = ""+u"הצמדותיות"
         self.s_problems_description = "many problems"
         self.badge_category = BadgeCategory.SILVER
         self.points = 0

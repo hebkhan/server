@@ -1,3 +1,5 @@
+# coding=utf8
+
 from badges import Badge, BadgeCategory
 from templatefilters import seconds_to_time_string
 
@@ -13,12 +15,12 @@ class VideoTimeBadge(Badge):
         return user_data.total_seconds_watched >= self.seconds_required
 
     def extended_description(self):
-        return "Watch %s of video" % seconds_to_time_string(self.seconds_required)
+        return u"צפו ב-%s של סרטונים" % seconds_to_time_string(self.seconds_required)
 
 class ActOneSceneOneBadge(VideoTimeBadge):
     def __init__(self):
         VideoTimeBadge.__init__(self)
         self.seconds_required = 60 * 20
-        self.description = "Act I Scene I"
+        self.description = ""+u"מערכה ראשונה סצינה ראשונה"
         self.badge_category = BadgeCategory.BRONZE
         self.points = 0

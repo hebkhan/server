@@ -1,15 +1,10 @@
-# -*- coding: utf-8 -*-
+# coding=utf8
 
 import util
 import models_badges
 import phantom_users.util_notify
 from notifications import UserNotifier
 from badge_context import BadgeContextType
-
-def _to_unicode(func):
-    def decorated(*args, **kw):
-        return func(*args, **kw).decode("utf8")
-    return decorated
 
 class BadgeCategory(object):
     # Sorted by astronomical size...
@@ -56,20 +51,19 @@ class BadgeCategory(object):
         return BadgeCategory.get_description(self.category)
 
     @staticmethod
-    @_to_unicode
     def get_description(category):
         if category == BadgeCategory.BRONZE:
-            return "תגי מטאוריט הם שכיחים וקל להשיג אותם כאשר מתחילים."
+            return ""+u"מדליות מטאוריט הן שכיחות וקל להשיג אותן כאשר מתחילים."
         elif category == BadgeCategory.SILVER:
-            return "תגי ירח הם פחות שכיחים ומייצגים השקעה בלימוד."
+            return ""+u"מדליות ירח הן פחות שכיחות ומייצגות השקעה בלימוד."
         elif category == BadgeCategory.GOLD:
-            return "תגי כדור-ארץ הם נדירים. הם דורשים מידה ניכרת של השקעה בלימוד."
+            return ""+u"מדליות כדור-ארץ הן נדירות. הן דורשות מידה ניכרת של השקעה בלימוד."
         elif category == BadgeCategory.PLATINUM:
-            return "תגי שמש הם עצומים. להשיג אותם זהו אתגר אמיתי, והם דורשים התמסרות מרשימה."
+            return ""+u"מדליות שמש הן עצומות. להשיג אותן זהו אתגר אמיתי, והן דורשות התמסרות מרשימה."
         elif category == BadgeCategory.DIAMOND:
-            return "תגי חור-שחור הם אגדתיים ולא ידועים. הם הפרס הייחודי ביותר באקדמיית קהאן."
+            return ""+u"מדליות חור-שחור הן אגדתיות. הן הפרס המיוחד ביותר באקדמיית קהאן."
         elif category == BadgeCategory.MASTER:
-            return "טלאי משימה הם פרסים מיוחדים המוענקים עבור השלמת משימות תירגול."
+            return ""+u"עיטורי משימה הם פרסים מיוחדים המוענקים עבור השלמת משימות תירגול."
         return ""
 
     @staticmethod
@@ -138,21 +132,20 @@ class BadgeCategory(object):
         return BadgeCategory.get_type_label(self.category)
 
     @staticmethod
-    @_to_unicode
     def get_type_label(category):
         if category == BadgeCategory.BRONZE:
-            return "מטאוריט"
+            return ""+u"מטאוריט"
         elif category == BadgeCategory.SILVER:
-            return "ירח"
+            return ""+u"ירח"
         elif category == BadgeCategory.GOLD:
-            return "כדור-ארץ"
+            return ""+u"כדור-ארץ"
         elif category == BadgeCategory.PLATINUM:
-            return "שמש"
+            return ""+u"שמש"
         elif category == BadgeCategory.DIAMOND:
-            return "חור-שחור"
+            return ""+u"חור-שחור"
         elif category == BadgeCategory.MASTER:
-            return "טלאי משימה"
-        return "שכיח"
+            return ""+u"עיטור משימה"
+        return ""+u"שכיח"
 
 # Badge is the base class used by various badge subclasses (ExerciseBadge, PlaylistBadge, TimedProblemBadge, etc).
 # 
