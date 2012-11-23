@@ -337,8 +337,8 @@ class ViewAllExercises(request_handler.RequestHandler):
         }
 
         if show_review_drawer:
-            template_values['review_statement'] = 'השג שליטה'
-            template_values['review_call_to_action'] = "לך על זה"
+            template_values['review_statement'] = u"לשלוט בחומר"
+            template_values['review_call_to_action'] = u"לך על זה"
 
         bingo('suggested_activity_exercises_landing')
 
