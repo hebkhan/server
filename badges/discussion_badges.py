@@ -1,15 +1,17 @@
+# coding=utf8
+
 from badges import Badge, BadgeCategory
 
 class FirstFlagBadge(Badge):
 
     def __init__(self):
         Badge.__init__(self)
-        self.description = "Flag Duty"
+        self.description = ""+u"סמן תורן"
         self.badge_category = BadgeCategory.BRONZE
         self.points = 0
 
     def extended_description(self):
-        return "Flag your first question, comment, or answer beneath a video for a moderator's attention"
+        return ""+u"סמן לראשונה שאלה, תשובה או תגובה לסרטון המצריכה תשומת-לב של מפקח"
 
     def is_manually_awarded(self):
         return True
@@ -18,12 +20,12 @@ class FirstUpVoteBadge(Badge):
 
     def __init__(self):
         Badge.__init__(self)
-        self.description = "Thumbs Up"
+        self.description = ""+u"חיזוק חיובי"
         self.badge_category = BadgeCategory.BRONZE
         self.points = 0
 
     def extended_description(self):
-        return "Cast your first up vote for a helpful question, answer, or comment beneath a video"
+        return ""+u"הצביעו לראשונה בעד שאלה, תשובה או תגובה מועילה לסרטון"
 
     def is_manually_awarded(self):
         return True
@@ -32,12 +34,12 @@ class FirstDownVoteBadge(Badge):
 
     def __init__(self):
         Badge.__init__(self)
-        self.description = "Thumbs Down"
+        self.description = ""+u"חיזוק שלילי"
         self.badge_category = BadgeCategory.BRONZE
         self.points = 0
 
     def extended_description(self):
-        return "Cast your first down vote for an unhelpful question, answer, or comment beneath a video"
+        return ""+u"הצביעו לראשונה כנגד שאלה, תשובה או תגובה לא מועילה לסרטון"
 
     def is_manually_awarded(self):
         return True
@@ -46,7 +48,7 @@ class ModeratorBadge(Badge):
 
     def __init__(self):
         Badge.__init__(self)
-        self.description = "Moderator"
+        self.description = ""+u"מפקח"
         self.badge_category = BadgeCategory.SILVER
         self.points = 0
 
@@ -54,7 +56,7 @@ class ModeratorBadge(Badge):
         self.is_hidden_if_unknown = True
 
     def extended_description(self):
-        return "Become a moderator of questions, answers, and comments beneath videos"
+        return ""+u"הפכו למפקחים על תשובות, שאלות ותגובות לסרטונים"
 
     def is_manually_awarded(self):
         return True

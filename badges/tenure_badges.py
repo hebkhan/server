@@ -20,7 +20,7 @@ class TenureBadge(Badge):
         return True
 
     def extended_description(self):
-        return u"היו חברים באקדמיית קהאן ל-%s" % seconds_to_time_string(self.seconds_required)
+        return u"היו חברים באקדמיית קהאן למשך %s" % seconds_to_time_string(self.seconds_required)
 
 class YearOneBadge(TenureBadge):
     def __init__(self):
