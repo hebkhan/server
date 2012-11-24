@@ -69,7 +69,7 @@ class LevelOneArithmeticianBadge(ExerciseCompletionBadge):
     def __init__(self):
         ExerciseCompletionBadge.__init__(self)
         self.exercise_names_required = ['addition_1', 'subtraction_1', 'multiplication_1', 'division_1']
-        self.description = ""+u"שוליה אריטמטיקאי"
+        self.description = ""+u"שולית חישוב"
         self.badge_category = BadgeCategory.SILVER
         self.points = 100
 
@@ -77,7 +77,7 @@ class LevelTwoArithmeticianBadge(ExerciseCompletionBadge):
     def __init__(self):
         ExerciseCompletionBadge.__init__(self)
         self.exercise_names_required = ['addition_4', 'subtraction_4', 'multiplication_4', 'division_4']
-        self.description = ""+u"אומן אריטמטיקאי"
+        self.description = ""+u"אומן חשבון"
         self.badge_category = BadgeCategory.SILVER
         self.points = 500
 
@@ -85,7 +85,7 @@ class LevelThreeArithmeticianBadge(ExerciseCompletionBadge):
     def __init__(self):
         ExerciseCompletionBadge.__init__(self)
         self.exercise_names_required = ['multiplying_decimals', 'dividing_decimals', 'multiplying_fractions', 'dividing_fractions']
-        self.description = ""+u"אמן אריטמטיקאי"
+        self.description = ""+u"אמן חישוב"
         self.badge_category = BadgeCategory.SILVER
         self.points = 750
 
@@ -93,7 +93,7 @@ class TopLevelArithmeticianBadge(ChallengeCompletionBadge):
     def __init__(self):
         ChallengeCompletionBadge.__init__(self)
         self.exercise_names_required = ['arithmetic_challenge']
-        self.description = ""+u"רב-אמן אריטמטיקאי"
+        self.description = ""+u"רב-אמן חישוב"
         self.badge_category = BadgeCategory.MASTER
         self.points = 10000
     
@@ -141,7 +141,7 @@ class LevelOnePrealgebraistBadge(ExerciseCompletionBadge):
     def __init__(self):
         ExerciseCompletionBadge.__init__(self)
         self.exercise_names_required = ['exponents_1', 'adding_and_subtracting_negative_numbers', 'adding_and_subtracting_fractions']
-        self.description = ""+u"שוליה קדם-אלגבראי"
+        self.description = ""+u"שולית קדם-אלגברה"
         self.badge_category = BadgeCategory.SILVER
         self.points = 100
 
@@ -149,7 +149,7 @@ class LevelTwoPrealgebraistBadge(ExerciseCompletionBadge):
     def __init__(self):
         ExerciseCompletionBadge.__init__(self)
         self.exercise_names_required = ['exponents_2', 'multiplying_and_dividing_negative_numbers', 'multiplying_fractions', 'dividing_fractions']
-        self.description = ""+u"אומן קדם-אלגבראי"
+        self.description = ""+u"אומן קדם-אלגברה"
         self.badge_category = BadgeCategory.SILVER
         self.points = 500
 
@@ -157,7 +157,7 @@ class LevelThreePrealgebraistBadge(ExerciseCompletionBadge):
     def __init__(self):
         ExerciseCompletionBadge.__init__(self)
         self.exercise_names_required = ['exponents_3', 'order_of_operations', 'ordering_numbers', 'scientific_notation', 'units', 'simplifying_radicals']
-        self.description = ""+u"אמן קדם-אלגבראי"
+        self.description = ""+u"אמן קדם-אלגברה"
         self.badge_category = BadgeCategory.SILVER
         self.points = 750
 
@@ -165,7 +165,7 @@ class TopLevelPrealgebraistBadge(ChallengeCompletionBadge):
     def __init__(self):
         ChallengeCompletionBadge.__init__(self)
         self.exercise_names_required = ['pre-algebra_challenge']
-        self.description = ""+u"רב-אמן קדם-אלגבראי"
+        self.description = ""+u"רב-אמן קדם-אלגברה"
         self.badge_category = BadgeCategory.MASTER
         self.points = 10000
     
@@ -177,7 +177,7 @@ class LevelOneAlgebraistBadge(ExerciseCompletionBadge):
     def __init__(self):
         ExerciseCompletionBadge.__init__(self)
         self.exercise_names_required = ['exponents_3', 'exponent_rules', 'logarithms_1', 'linear_equations_1', 'percentage_word_problems_1', 'functions_1']
-        self.description = ""+u"שוליה אלגבראי"
+        self.description = ""+u"שולית קדם-אלגברה"
         self.badge_category = BadgeCategory.SILVER
         self.points = 100
 
@@ -185,7 +185,7 @@ class LevelTwoAlgebraistBadge(ExerciseCompletionBadge):
     def __init__(self):
         ExerciseCompletionBadge.__init__(self)
         self.exercise_names_required = ['linear_equations_2', 'percentage_word_problems_2', 'functions_2', 'domain_of_a_function', 'even_and_odd_functions', 'shifting_and_reflecting_functions']
-        self.description = ""+u"אומן אלגבראי"
+        self.description = ""+u"אומן קדם-אלגברה"
         self.badge_category = BadgeCategory.SILVER
         self.points = 500
 
@@ -193,7 +193,7 @@ class LevelThreeAlgebraistBadge(ExerciseCompletionBadge):
     def __init__(self):
         ExerciseCompletionBadge.__init__(self)
         self.exercise_names_required = ['linear_equations_3', 'systems_of_equations', 'multiplying_expressions_1', 'even_and_odd_functions', 'inverses_of_functions', 'slope_of_a_line', 'midpoint_formula', 'line_relationships', 'functions_3']
-        self.description = ""+u"אמן אלגבראי ראשוני"
+        self.description = ""+u"אמן קדם-אלגברה ראשוני"
         self.badge_category = BadgeCategory.SILVER
         self.points = 750
 
@@ -201,7 +201,7 @@ class LevelFourAlgebraistBadge(ExerciseCompletionBadge):
     def __init__(self):
         ExerciseCompletionBadge.__init__(self)
         self.exercise_names_required = ['linear_equations_4', 'linear_inequalities', 'average_word_problems', 'equation_of_a_line', 'solving_quadratics_by_factoring', 'quadratic_equation', 'solving_for_a_variable', 'expressions_with_unknown_variables']
-        self.description = ""+u"אמן אלגבראי מתקדם"
+        self.description = ""+u"אמן קדם-אלגברה מתקדם"
         self.badge_category = BadgeCategory.SILVER
         self.points = 1000
         
@@ -209,7 +209,7 @@ class LevelFiveAlgebraistBadge(ExerciseCompletionBadge):
     def __init__(self):
         ExerciseCompletionBadge.__init__(self)
         self.exercise_names_required = ['new_definitions_1', 'new_definitions_2', 'expressions_with_unknown_variables_2', 'absolute_value_equations', 'radical_equations', 'rate_problems_1']
-        self.description = ""+u"אמן אלגבראי מוביל"
+        self.description = ""+u"אמן קדם-אלגברה מוביל"
         self.badge_category = BadgeCategory.SILVER
         self.points = 1000
 
@@ -217,7 +217,7 @@ class TopLevelAlgebraistBadge(ChallengeCompletionBadge):
     def __init__(self):
         ChallengeCompletionBadge.__init__(self)
         self.exercise_names_required = ['algebra_challenge']
-        self.description = ""+u"רב-אמן אלגבראי"
+        self.description = ""+u"רב-אמן אלגברה"
         self.badge_category = BadgeCategory.MASTER
         self.points = 10000
     
