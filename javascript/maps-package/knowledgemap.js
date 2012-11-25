@@ -527,8 +527,9 @@ function KnowledgeMapDrawer(container, knowledgeMap) {
 function KnowledgeMap(params) {
 
     if (typeof google === "undefined") {
-        alert("Please make sure you're not using any browser extensions or addons that may be blocking google.com,\n" +
-                "which is needed to display the Khan Academy exercises.\n\nOnce you've done that, restart your browser and reload this page.");
+        alert("אנא וודאו שאינכם משתמשים בתוסף כלשהוא שחוסם את google.com,\n" +
+              "שנדרש כדי להציג את התרגילים של אקדמיית קהאן.\n\n" +
+              "לאחר מכן, אתחלו את הדפדפן וטענו דף זה מחדש.");
         return;
     }
 
@@ -1165,14 +1166,14 @@ function KnowledgeMap(params) {
             self.getElement("hide-on-dashboard-filter").hide();
             if (!self.admin)
                 self.getElement("exercise-all-exercises").hide();
-            self.getElement("dashboard-all-exercises").find(".exercise-filter-count").html("(Showing " + counts.all + " of " + graph_dict_data.length + ")").show();
+            self.getElement("dashboard-all-exercises").find(".exercise-filter-count").html("(מציג " + counts.all + " מתוך " + graph_dict_data.length + ")").show();
         } else {
             self.getElement("dashboard-filter-clear").hide();
             self.getElement("hide-on-dashboard-filter").show();
             self.getElement("dashboard-all-exercises").find(".exercise-filter-count").hide();
             if (!self.admin) {
                 self.getElement("exercise-all-exercises").show();
-                self.getElement("exercise-all-exercises-text").html(self.filterSettings.get("userShowAll") ? "Hide All" : "Show All");
+                self.getElement("exercise-all-exercises-text").html(self.filterSettings.get("userShowAll") ? "הסתר הכל" : "הצג הכל");
             }
         }
     };
