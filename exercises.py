@@ -835,14 +835,15 @@ class SyncExercises(request_handler.RequestHandler):
 
     def syncExercises(self):
         khan_url = "http://www.khanacademy.org/api/v1/exercises"
+        re_html_title = re.compile("<title>(.*)</title>")
         logging.info("Fetching from: %s", khan_url)
         try:
-            result = urlfetch.fetch(khan_url, deadline=30)
-            khan_exercises = json.loads(result.content)
+            result = urlfetch.fetch(khan_url, deadline=10)
         except:
-            logging.exception("Failed fetching smarthistory video list")
+            logging.exception("Failed fetching exercises list")
             return
 
+        khan_exercises = json.loads(result.content)
         exercises_dir = os.path.join(os.path.dirname(__file__), "khan-exercises/exercises")
 
         available_exercises = set(os.path.basename(p)[:-5] for p in os.listdir(exercises_dir) if p.endswith(".html"))
@@ -851,7 +852,8 @@ class SyncExercises(request_handler.RequestHandler):
         #existing_exercises = set(e.name for e in models.Exercise.all())
 
         keys = ["name", "summative", "live", "v_position", "h_position",
-                "short_display_name", "covers", "description", "prerequisites"]
+                "short_display_name", "covers", "description", "prerequisites",
+                "display_name"]
         c = 0
         for exercise in khan_exercises:
             name = exercise['name']
@@ -862,12 +864,13 @@ class SyncExercises(request_handler.RequestHandler):
             d['user'] = None
             try:
                 contents = raw_exercise_contents("%s.html" % name)
-                title = re.search("<title>(.*)</title>", contents).groups()[0]
-                d['display_name'] = title.decode("utf-8")
+                title = re_html_title.search(contents).group(1)
+                d['display_name'] = title = title.decode("utf-8")
             except:
                 logging.exception("Could not get title for '%s'", name)
+                title = d['display_name']
             else:
-                logging.info("Updating '%s'", name)
+                logging.info("Updating '%s': %s", name, title)
             UpdateExercise.do_update(d)
             c+=1
         logging.info("Added %s exercises", c)
