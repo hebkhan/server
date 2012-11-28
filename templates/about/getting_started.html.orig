@@ -12,12 +12,12 @@
         padding: 9px;
         max-width: 31%;
         min-width: 31%;
-        margin-right: 3%;
+        margin-left: 3%;
         margin-bottom: 90px;
     }
     #faq-nav ul {
         list-style: outside decimal;
-        margin-left: 18px;
+        margin-right: 18px;
     }
     #faq-nav li {
         margin-bottom: 5px;
@@ -48,14 +48,14 @@
                 <li><a href="#schools">I'm a school administrator considering a pilot in my school, where do I begin?</a></li>
             </ul>
         </div>
-        <div id="nav-placeholder" class="col1 forty-sixty" style="height: 1px; padding: 0 9px; max-width: 31%; min-width: 31%; margin-right: 3%;">
+        <div id="nav-placeholder" class="col1 forty-sixty" style="height: 1px; padding: 0 9px; max-width: 31%; min-width: 31%; margin-left: 3%;">
             &nbsp;
         </div>
     </div>
     <div class="col2 forty-sixty" style="text-align: justify; padding-top: 9px;">
     
     <a name="students"><h2>How do I start using the site?</h2></a>
-    <a href="/about" style="float: right; margin: 0 0 20px 20px; min-width: 320px;">
+    <a href="/about" style="float: left; margin: 0 0 20px 20px; min-width: 320px;">
         <img src="/images/exercise-dashboard-medium.png" height="250" width="320" class="rounded-background">
     </a>
     <p>
@@ -69,7 +69,7 @@
     <p>
     <a name="under-13">If you are under the age of 13:</a>
     </p>
-    <p style="margin-left:23px;">
+    <p style="margin-right:23px;">
         You are going to need to ask your parents to create an account for you first, sorry!
     </p>
     <div class="clear"></div>
@@ -84,14 +84,14 @@
     </p>
     <p>If your students are under 13:</p>
     
-    <p style="margin-left:23px;">You currently have two options: 
+    <p style="margin-right:23px;">You currently have two options: 
     you can sign your school up for <a href="http://www.google.com/a/help/intl/en/edu/">Google Apps for Education</a>, which will help you provide each student with a Google account that can be used with Khan Academy, or you can have your students' parents individually create accounts for each student on either <a href="https://www.google.com/accounts/NewAccount">Google</a> or <a href="http://www.facebook.com/r.php">Facebook</a>. We are constantly working to improve this situation, but that's the best we've got at the moment (sorry!).
     </p>
-    <p style="margin-left:23px;">
+    <p style="margin-right:23px;">
         If you already have Google Apps for Education accounts but aren't able to use them to sign in on the Khan Academy, 
         <a href="#" onclick="$('#google-upgrade').slideDown('fast');return false;">you might need to upgrade your account</a>.
     </p>
-    <div id="google-upgrade" class="vertical-shadow rounded-background" style="display: none; margin-left:23px; padding: 0 18px; background: #eee; text-shadow: 0 1px 0 #fff;">
+    <div id="google-upgrade" class="vertical-shadow rounded-background" style="display: none; margin-right:23px; padding: 0 18px; background: #eee; text-shadow: 0 1px 0 #fff;">
         <p>
             Google Apps is in the process of unifying their accounts such that Google Apps users will be able to take advantage of all services that 
             normal Google accounts have access to. Log in to your account and click on "Manage this domain" in the upper right of your Google Apps account.
@@ -132,7 +132,7 @@
     </p>
     <p><a href="http://khanacademy.wufoo.com/forms/khan-academy-school-implementation-application/" class="simple-button action-gradient">Apply to become a pilot school</a></p>
     <p>We won't be able to work with everyone that applies, and there's no reason you can't start using the Khan Academy right now. If you're interested, we recommend checking out the following resources:</p>
-    <ol style="list-style: decimal outside; font-size: 15px; margin-left: 23px;">
+    <ol style="list-style: decimal outside; font-size: 15px; margin-right: 23px;">
         <li>Sign up to get updated on our progress via our <a href="/about/blog">blog and mailing lists</a>.</li>
         <li>
             Read and learn more about what we are doing in Los Altos. Everything they are using is free for any school to use. <br/><br/>
