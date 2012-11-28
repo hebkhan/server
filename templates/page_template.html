@@ -118,8 +118,10 @@
                             {% else %}
                                 <a class="badge-target" href="{{ login_url|escape }}">התחברות</a>
                             {% endif %}
+                            {#
                             <span class="separator"></span>
                             <a href="/contribute" id="donate-link">תרומה</a>
+                            #}
                         </span>
                         <div class="clear"></div>
                         <div id="nav-and-search">
@@ -129,7 +131,7 @@
                                       <a href="/#browse" {% if selected_nav_link == "watch" %}class="selected watch-link"{% else %}class="watch-link"{% endif %}>לצפיה</a>
                                     <a href="/exercisedashboard" {% if selected_nav_link == "practice" %}class="selected practice-link"{% endif %}>לתרגול</a>
                                     <a href="/class_profile" {% if selected_nav_link == "coach" %}class="selected coach-link"{% endif %}>להדרכה</a>
-                                    <a href="/contribute" {% if selected_nav_link == "contribute" %}class="selected contribute-link"{% endif %}>להתנדבות</a>
+                                    {# <a href="/contribute" {% if selected_nav_link == "contribute" %}class="selected contribute-link"{% endif %}>להתנדבות</a> #}
                                     <a href="/about" {% if selected_nav_link == "about" %}class="selected about-link"{% endif %}>אודות</a>
                                     </span>
                                 </nav>
