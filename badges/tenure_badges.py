@@ -26,7 +26,7 @@ class YearOneBadge(TenureBadge):
     def __init__(self):
         TenureBadge.__init__(self)
         self.seconds_required = 60 * 60 * 24 * 365
-        self.description = ""+u"ברוש"
+        self.description = ""+u"עץ אורן"
         self.badge_category = BadgeCategory.BRONZE
         self.points = 0
 
@@ -34,7 +34,7 @@ class YearTwoBadge(TenureBadge):
     def __init__(self):
         TenureBadge.__init__(self)
         self.seconds_required = 60 * 60 * 24 * 365 * 2
-        self.description = ""+u"אלון"
+        self.description = ""+u"עץ ארז"
         self.badge_category = BadgeCategory.SILVER
         self.points = 0
 
@@ -42,7 +42,7 @@ class YearThreeBadge(TenureBadge):
     def __init__(self):
         TenureBadge.__init__(self)
         self.seconds_required = 60 * 60 * 24 * 365 * 3
-        self.description = ""+u"אשוח"
+        self.description = ""+u"עץ אלון"
         self.badge_category = BadgeCategory.GOLD
         self.points = 0
 
