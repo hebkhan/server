@@ -3,7 +3,6 @@ tags
 .vimprojects
 cscope.files
 
-*.orig
 *.pyc
 *combined.js
 *compressed.js
