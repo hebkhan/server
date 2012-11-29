@@ -70,12 +70,15 @@ def flatten_tree(tree, parent_topics=[], depth=0):
 
 def add_next_topic(topics, next_topic=None):
     topic_prev = None
+    topics = topics + [None]
     for i, topic in enumerate(topics):
+        if not topic:
+            continue
         if topic.subtopics:
             topic.next = topic.subtopics[0]
             topic.next_is_subtopic = True
-            for subtopic in topic.subtopics:
-                add_next_topic(topic.subtopics, next_topic=topics[i+1])
+            #for subtopic in topic.subtopics:
+            add_next_topic(topic.subtopics, next_topic=topics[i+1])
         else:
             if i+1 == len(topics):
                 topic.next = next_topic
