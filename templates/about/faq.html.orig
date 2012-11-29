@@ -9,12 +9,12 @@
         padding: 9px;
         max-width: 31%;
         min-width: 31%;
-        margin-right: 3%;
+        margin-left: 3%;
         margin-bottom: 90px;
     }
     #faq-nav ul {
         list-style: outside decimal;
-        margin-left: 18px;
+        margin-right: 18px;
     }
     #faq-nav li {
         margin-bottom: 5px;
@@ -59,7 +59,7 @@
                 <li><a href="#help">How can I/you help?</a></li>
             </ul>
         </div>
-        <div id="nav-placeholder" class="col1 forty-sixty" style="height: 1px; padding: 0 9px; max-width: 31%; min-width: 31%; margin-right: 3%;">
+        <div id="nav-placeholder" class="col1 forty-sixty" style="height: 1px; padding: 0 9px; max-width: 31%; min-width: 31%; margin-left: 3%;">
             &nbsp;
         </div>
     </div>
@@ -76,7 +76,7 @@
     </p>
 
     <a name="what"><h2>What do you think makes the Khan Academy different than all of the other educational resources out there?</h2></a>
-    <img class="rounded-background" src="/images/sal_faq.png" style="float:right;height:228px;width:341px;margin-left:20px;"/>
+    <img class="rounded-background" src="/images/sal_faq.png" style="float:left;height:228px;width:341px;margin-right:20px;"/>
     <p>
     There are some obvious distinctions.  With over {{ approx_vid_count|escape }} videos, it is easily the most exhaustive collection of instruction on the
         internet allowing learners to know that they can fill in almost any of their "gaps" with the content on this site.  The content
@@ -125,8 +125,8 @@
 
     <a name="effective"><h2>How do you know that the Khan Academy is effective?</h2></a>
     <p>
-        <img class="rounded-background" style="float:right;margin-left:20px;margin-bottom:10px;width:350px;" src="/images/attention.GIF">
-        <img class="rounded-background" style="float:right;clear:both;margin-left:20px;;width:350px;" src="/images/averagechart.GIF">
+        <img class="rounded-background" style="float:left;margin-right:20px;margin-bottom:10px;width:350px;" src="/images/attention.GIF">
+        <img class="rounded-background" style="float:left;clear:both;margin-right:20px;;width:350px;" src="/images/averagechart.GIF">
         My background is in math, computer science, and investment management, so I think you can
         imagine that no one is more obsessed with data and analytics than me.  The chart to the right is provided by YouTube.  It can be
         used to determine if and/or when viewers' attention falls off at a certain point of a video.  I can then go back and try to identify
@@ -151,7 +151,7 @@
         of the text):
     </p>
 
-    <blockquote style="padding-left:40px;">
+    <blockquote style="padding-right:40px;">
         Mr. Khan,
         <br/><br/>
         No teacher has ever done me any good--this may sound harsh but I mean it quite literally.
