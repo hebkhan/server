@@ -26,7 +26,7 @@ def print_topics(topics):
             print " "
         print " "
 
-def flatten_tree(tree, parent_topics=[]):
+def flatten_tree(tree, parent_topics=[], depth=0):
     homepage_topics=[]
     tree.content = []
     tree.subtopics = []
