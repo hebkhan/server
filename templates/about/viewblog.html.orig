@@ -62,7 +62,7 @@
                 anyone else for any reason.
             </p>
             <p>
-                {{ mailing_lists.signup_form(1, "Sign me up", "Enter your email address") }}
+                {{ mailing_lists.signup_form(1, "להירשם", "הזן כתובת דוא\"ל") }}
             </p>
         </div>
         <div id="pilot-list">
@@ -73,7 +73,7 @@
                 can be used in schools.
             </p>
             <p>
-                {{ mailing_lists.signup_form(2, "Sign me up", "Enter your email address") }}
+                {{ mailing_lists.signup_form(2, "להירשם", "הזן כתובת דוא\"ל") }}
             </p>
         </div>
     </div>
