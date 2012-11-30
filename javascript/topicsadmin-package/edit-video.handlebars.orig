@@ -47,8 +47,8 @@
       <tr>
         <td style="font-weight:bold;">Description</td>
         <td style="padding-bottom:9px;">
-          <input type="text" name="description" value="{{ model.description }}" maxlength="256"/><br/>
-          {{#if oldValues.description }}<span class="old-value">Old value: <input type="text" disabled value="{{ oldValues.description }}" maxlength="256"/></span><br/>{{/if}}
+          <textarea name="description">{{ model.description }}</textarea><br/>
+          {{#if oldValues.description }}<span class="old-value">Old value: <textarea disabled>{{ oldValues.description }}</textarea></span><br/>{{/if}}
           <em>Description text visible in topic listings</em>
         </td>
       </tr>

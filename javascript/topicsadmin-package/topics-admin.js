@@ -663,6 +663,9 @@ function stringArraysEqual(ar1, ar2) {
                 .find("input")
                     .change(this.handleChange)
                     .end()
+                .find("textarea")
+                    .change(this.handleChange)
+                    .end()
                 .find("a.item-action")
                     .click(function() { self.handleAction($(this).attr("data-id")); })
                     .end()
@@ -700,6 +703,7 @@ function stringArraysEqual(ar1, ar2) {
         var self = this;
         unsavedChanges = this.hasUnsavedChanges();
         $("input[type=\"text\"]", this.el)
+            .add("textarea", this.el)
             .add("input[type=\"radio\"]:checked", this.el)
             .add("input[type=\"checkbox\"]", this.el)
             .each(function() {
@@ -756,6 +760,7 @@ function stringArraysEqual(ar1, ar2) {
         if (action == "save") {
             var attrs = {};
             $("input[type=\"text\"]", this.el)
+                .add("textarea", this.el)
                 .add("input[type=\"radio\"]:checked", this.el)
                 .add("input[type=\"checkbox\"]", this.el)
                 .each(function() {
