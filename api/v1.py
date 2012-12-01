@@ -582,7 +582,11 @@ def topic_versions():
 @jsonify
 def topic_version_unused_content(version_id = None):
     version = models.TopicVersion.get_by_id(version_id)
-    return version.get_unused_content()
+    def get_key(m):
+        kind = m.kind()
+        name = getattr(m, dict(Video="title", Exercise="display_name", Url="title")[kind])
+        return kind, name
+    return sorted(version.get_unused_content(), key = get_key)
 
 @route("/api/v1/topicversion/<version_id>/url/<int:url_id>", methods=["GET"])
 @route("/api/v1/url/<int:url_id>", methods=["GET"])   

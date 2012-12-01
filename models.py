@@ -1585,10 +1585,11 @@ class TopicVersion(db.Model):
         return content
 
     def get_unused_content(self):
-        topics = Topic.all().filter("version =", self).run()
-        used_content_keys = set()
-        for t in topics:
-            used_content_keys.update([c for c in t.child_keys if c.kind() != "Topic"])
+        topics = Topic.all().filter("version =", self)
+        used_content_keys = set(c
+                                for t in topics
+                                for c in t.child_keys
+                                if c.kind() != "Topic")
 
         content_keys = set(TopicVersion.get_all_content_keys())
 
