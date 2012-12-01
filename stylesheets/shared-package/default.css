@@ -3946,3 +3946,7 @@ div.clearFloat { overflow:hidden; height:1px; clear:both; }
     text-align: right;
     direction: rtl;
 }
+
+.g-m-p {
+    direction: ltr;
+}
