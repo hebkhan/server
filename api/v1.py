@@ -391,12 +391,14 @@ def put_topic(topic_id, version_id = "edit"):
     topic = models.Topic.get_by_id(topic_id, version)
 
     if not topic:
-        kwargs = dict((str(key), value) for key, value in topic_json.iteritems() if key in ['standalone_title', 'description', 'tags'])
+        attrs = ['standalone_title', 'description', 'tags']
+        kwargs = dict((key, topic_json[key]) for key in attrs if key in topic_json)
         kwargs["version"] = version
         topic = models.Topic.insert(title = topic_json['title'], parent = None, **kwargs)
     else:
-        kwargs = dict((str(key), value) for key, value in topic_json.iteritems() if key in ['id', 'title', 'standalone_title', 'description', 'tags', 'hide'])
-        kwargs["version"]=version
+        modifiables = ['id', 'title', 'standalone_title', 'description', 'tags', 'hide', 'is_super']
+        kwargs = dict((key, topic_json[key]) for key in modifiables if key in topic_json)
+        kwargs["version"] = version
         topic.update(**kwargs)
 
     return {

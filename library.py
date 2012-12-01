@@ -43,8 +43,7 @@ def flatten_tree(tree, parent_topics=[], depth=0):
 
     child_parent_topics = parent_topics[:]
 
-    if tree.id in Topic._super_topic_ids:
-        tree.is_super = True
+    if tree.is_super:
         child_parent_topics.append(tree)
     elif parent_topics:
         child_parent_topics.append(tree)
@@ -60,7 +59,7 @@ def flatten_tree(tree, parent_topics=[], depth=0):
     if tree.content:
         tree.height = math.ceil(len(tree.content)/3.0) * 18
 
-    if hasattr(tree, "is_super") or (not parent_topics and tree.content):
+    if tree.is_super or (not parent_topics and tree.content):
         homepage_topics.append(tree)
 
     for subtopic in tree.subtopics:

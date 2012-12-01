@@ -139,7 +139,7 @@ def topic_browser_tree(tree, level=0):
     s = ""
     class_name = "topline"
     for child in tree.children:
-        if not child.children or child.id in models.Topic._super_topic_ids:
+        if not child.children or child.is_super:
             # special cases
             if child.id == "new-and-noteworthy":
                 continue

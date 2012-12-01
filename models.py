@@ -1951,6 +1951,7 @@ class Topic(Searchable, db.Model):
     version = db.ReferenceProperty(TopicVersion, required = True)
     tags = db.StringListProperty()
     hide = db.BooleanProperty(default = False)
+    is_super = db.BooleanProperty(default = False) # the topic on the homepage in which we will display their first level child topics
     created_on = db.DateTimeProperty(indexed=False, auto_now_add=True)
     updated_on = db.DateTimeProperty(indexed=False, auto_now=True)
     last_edited_by = db.UserProperty(indexed=False)
@@ -1959,9 +1960,6 @@ class Topic(Searchable, db.Model):
     INDEX_USES_MULTI_ENTITIES = False
 
     _serialize_blacklist = ["child_keys", "version", "parent_keys", "ancestor_keys", "created_on", "updated_on", "last_edited_by"]
-    # the ids of the topic on the homepage in which we will display their first
-    # level child topics
-    _super_topic_ids = ["root_010",]
 
     @property
     def relative_url(self):
@@ -2573,7 +2571,7 @@ class Topic(Searchable, db.Model):
         layer=layer_cache.Layers.Memcache) 
     def get_super_topics(version=None):
         topics = Topic.get_visible_topics()
-        return [t for t in topics if t.id in Topic._super_topic_ids]
+        return [t for t in topics if t.is_super]
 
     @staticmethod
     @layer_cache.cache_with_key_fxn(

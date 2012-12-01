@@ -90,8 +90,8 @@ class ContentCountsCSV(request_handler.RequestHandler):
         tree = root.make_tree()
 
         def stats(tree, parent):
-            title = (tree.title 
-                     if parent.id not in models.Topic._super_topic_ids 
+            title = (tree.title
+                     if not parent.is_super
                      else parent.title + " : " + tree.title)
 
             topic_stats = {"title" : title,                           
