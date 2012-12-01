@@ -38,6 +38,10 @@ class TranslatableFile(object):
             with open(self.orig, "w") as f:
                 f.write(self.text)
             print self.relative_path, "->", self.orig
+        if translations == "IGNORE":
+            print self.relative_path, "<-", self.orig
+            self.orig.copy(self.path)
+            return
         translated_text = self.HEADER
         cursor = 0
         for orig_text, (st, end), line_no, text_digest in self.iter_translatables():
@@ -275,7 +279,7 @@ def import_translation():
 
     for f in iter_files():
         translations = data.get(f.file_digest)
-        if not translations or translations == "IGNORE":
+        if not translations:
             continue
         f.translate(translations)
 
