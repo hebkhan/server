@@ -172,6 +172,7 @@ def topics_library_compact():
         elif item.kind() == "Url":
             trimmed_item_dict['url'] = item.url
         trimmed_item_dict['title'] = item.title
+        trimmed_item_dict['description'] = item.description
         return trimmed_item_dict
 
     topic_dict = {}
