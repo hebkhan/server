@@ -3204,6 +3204,7 @@ class Url(db.Model):
 
 class Video(Searchable, db.Model):
     youtube_id = db.StringProperty()
+    youtube_id_en = db.StringProperty()
     url = db.StringProperty()
     title = db.StringProperty()
     description = db.TextProperty()

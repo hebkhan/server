@@ -45,6 +45,15 @@
       </tr>
 
       <tr>
+        <td style="font-weight:bold;">Source YouTube ID</td>
+        <td style="padding-bottom:9px;">
+          <input type="text" name="youtube_id_en" value="{{ model.youtube_id_en }}" maxlength="11" class="short" /><br/>
+          {{#if oldValues.youtube_id_en }}<span class="old-value">Old value: <input type="text" disabled value="{{ oldValues.youtube_id_en }}" maxlength="11" class="short"/></span><br/>{{/if}}
+          <em>ID of the original Khan Academy video on YouTube</em>
+        </td>
+      </tr>
+
+      <tr>
         <td style="font-weight:bold;">Description</td>
         <td style="padding-bottom:9px;">
           <textarea name="description">{{ model.description }}</textarea><br/>
