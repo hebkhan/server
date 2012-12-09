@@ -182,9 +182,13 @@ def topics_library_compact():
             (topic.standalone_title == "California Standards Test: Geometry" and topic.id != "geometry-2")):
             continue
 
+        children = [trimmed_item(v, topic) for v in topic.children]
+        if not children:
+            continue
+
         trimmed_info = {}
         trimmed_info['id'] = topic.id
-        trimmed_info['children'] = [trimmed_item(v, topic) for v in topic.children]
+        trimmed_info['children'] = children
         topic_dict[topic.id] = trimmed_info
 
     return topic_dict
