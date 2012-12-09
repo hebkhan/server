@@ -41,7 +41,7 @@ class AwesomeStreakBadge(StreakBadge):
     def __init__(self):
         StreakBadge.__init__(self)
         self.streak_required = 60
-        self.description = ""+u"רצף מרשים"
+        self.description = ""+u"רצף מדהים"
         self.badge_category = BadgeCategory.BRONZE
         self.points = 0
 
@@ -49,7 +49,7 @@ class RidiculousStreakBadge(StreakBadge):
     def __init__(self):
         StreakBadge.__init__(self)
         self.streak_required = 80
-        self.description = ""+u"רצף מדהים"
+        self.description = ""+u"רצף מגוחך"
         self.badge_category = BadgeCategory.SILVER
         self.points = 0
 
@@ -57,6 +57,6 @@ class LudicrousStreakBadge(StreakBadge):
     def __init__(self):
         StreakBadge.__init__(self)
         self.streak_required = 100
-        self.description = ""+u"רצף מטורף"
+        self.description = ""+u"רצף מטריף"
         self.badge_category = BadgeCategory.SILVER
         self.points = 0

@@ -45,7 +45,7 @@ class AwesomeTopicTimeBadge(TopicTimeBadge):
     def __init__(self):
         TopicTimeBadge.__init__(self)
         self.seconds_required = 60 * 60
-        self.description = ""+u"מאזין מרשים"
+        self.description = ""+u"מאזין מדהים"
         self.badge_category = BadgeCategory.SILVER
         self.points = 0
 
@@ -53,7 +53,7 @@ class RidiculousTopicTimeBadge(TopicTimeBadge):
     def __init__(self):
         TopicTimeBadge.__init__(self)
         self.seconds_required = 60 * 60 * 4
-        self.description = ""+u"מאזין מדהים"
+        self.description = ""+u"מאזין מגוחך"
         self.badge_category = BadgeCategory.GOLD
         self.points = 0
 
@@ -61,6 +61,6 @@ class LudicrousTopicTimeBadge(TopicTimeBadge):
     def __init__(self):
         TopicTimeBadge.__init__(self)
         self.seconds_required = 60 * 60 * 10
-        self.description = ""+u"מאזין מטורף"
+        self.description = ""+u"מאזין מטריף"
         self.badge_category = BadgeCategory.PLATINUM
         self.points = 0

@@ -35,7 +35,7 @@ class ThirtyDayConsecutiveActivityBadge(ConsecutiveActivityBadge):
     def __init__(self):
         ConsecutiveActivityBadge.__init__(self)
         self.days_required = 30
-        self.description = ""+u"כמו שעון אטומי"
+        self.description = ""+u"שעון אטומי"
         self.badge_category = BadgeCategory.SILVER
         self.points = 0
 
@@ -43,7 +43,7 @@ class HundredDayConsecutiveActivityBadge(ConsecutiveActivityBadge):
     def __init__(self):
         ConsecutiveActivityBadge.__init__(self)
         self.days_required = 100
-        self.description = ""+u"כמו שעון עשרת אלפים השנים"
+        self.description = ""+u"שעון עשרת אלפים שנים"
         self.badge_category = BadgeCategory.GOLD
         self.points = 0
 

@@ -21,6 +21,6 @@ class ActOneSceneOneBadge(VideoTimeBadge):
     def __init__(self):
         VideoTimeBadge.__init__(self)
         self.seconds_required = 60 * 20
-        self.description = ""+u"מערכה ראשונה סצינה ראשונה"
+        self.description = ""+u"מערכה ראשונה ,תמונה ראשונה"
         self.badge_category = BadgeCategory.BRONZE
         self.points = 0

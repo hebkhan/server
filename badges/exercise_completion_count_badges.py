@@ -35,7 +35,7 @@ class ProductiveBadge(ExerciseCompletionCountBadge):
     def __init__(self):
         ExerciseCompletionCountBadge.__init__(self)
         self.required_exercises = 15
-        self.description = ""+u"פרודוקטיבי"
+        self.description = ""+u"יצרני"
         self.badge_category = BadgeCategory.SILVER
         self.points = 2000
 
@@ -83,7 +83,7 @@ class AtlasBadge(ExerciseCompletionCountBadge):
     def __init__(self):
         ExerciseCompletionCountBadge.__init__(self)
         self.required_exercises = 500
-        self.description = ""+u"אטלאס"
+        self.description = ""+u"אטלס"
         self.badge_category = BadgeCategory.DIAMOND
         self.points = 200000
         self.is_teaser_if_unknown = True
