@@ -1313,7 +1313,7 @@ a:link.google-analytics-link-track
             }
 			#library-content .library-content-header h2.subtopic-2-heading {
                 font-size: 14px;
-                margin-top: 6px;
+                margin-top: 20px;
                 margin-bottom: 0;
                 line-height: 16px;
                 font-style: italic;
