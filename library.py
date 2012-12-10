@@ -4,6 +4,7 @@ import request_handler
 import shared_jinja
 import time
 import math
+import logging
 
 # helpful function to see topic structure from the console.  In the console:
 # import library
@@ -26,16 +27,16 @@ def print_topics(topics):
             print " "
         print " "
 
-def flatten_tree(tree, parent_topics=[], depth=0):
-    homepage_topics=[]
+def flatten_tree(tree, parent_topics=[]):
+    homepage_topics = []
     tree.content = []
     tree.subtopics = []
 
-    tree.depth = len(parent_topics)
+    tree.depth = min(len(parent_topics), 2) # our css only handles down-to subtopic2
 
     if parent_topics:
-        if tree.depth == 1:
-            tree.homepage_title = parent_topics[0].standalone_title + ": " + tree.title
+        if tree.depth == 2:
+            tree.homepage_title = ": ".join([parent_topics[-1].standalone_title, tree.title])
         else:
             tree.homepage_title = tree.title
     else:
@@ -43,9 +44,7 @@ def flatten_tree(tree, parent_topics=[], depth=0):
 
     child_parent_topics = parent_topics[:]
 
-    if tree.is_super:
-        child_parent_topics.append(tree)
-    elif parent_topics:
+    if tree.is_super or parent_topics:
         child_parent_topics.append(tree)
 
     for child in tree.children:
