@@ -309,7 +309,7 @@ def exercise_graph_dict_json(user_data, admin=False):
             'goal_req': (graph_dict["name"] in goal_exercises),
 
             # get_by_name returns only exercises visible to current user
-            'prereqs': [prereq["name"] for prereq in graph_dict["prerequisites"] if models.Exercise.get_by_name(prereq["name"])],
+            'prereqs': [prereq for prereq in graph_dict["prerequisites"] if models.Exercise.get_by_name(prereq)],
         }
 
         if admin:
@@ -818,59 +818,12 @@ class UpdateExercise(request_handler.RequestHandler):
         self.redirect('/editexercise?saved=1&name=' + dict["name"])
 
 
-
-class SyncExercises(request_handler.RequestHandler):
-
-    def get(self):
-
-        if self.request_bool("start", default = False):
-            taskqueue.add(url='/admin/exercisesync', queue_name='slow-background-queue')
-            self.response.out.write("Sync started")
-        else:
-            self.response.out.write("<br/><a href='/admin/exercisesync?start=1'>Start New Sync</a>")
-
-    def post(self):
-        # Protected for admins only by app.yaml so taskqueue can hit this URL
-        self.syncExercises()
-
-    def syncExercises(self):
-        khan_url = "http://www.khanacademy.org/api/v1/exercises"
-        re_html_title = re.compile("<title>(.*)</title>")
-        logging.info("Fetching from: %s", khan_url)
-        try:
-            result = urlfetch.fetch(khan_url, deadline=10)
-        except:
-            logging.exception("Failed fetching exercises list")
-            return
-
-        khan_exercises = json.loads(result.content)
-        exercises_dir = os.path.join(os.path.dirname(__file__), "khan-exercises/exercises")
-
-        available_exercises = set(os.path.basename(p)[:-5] for p in os.listdir(exercises_dir) if p.endswith(".html"))
-        logging.debug("Found exercise files:\n%s", "\n".join(sorted(available_exercises)))
-
-        #existing_exercises = set(e.name for e in models.Exercise.all())
-
-        keys = ["name", "summative", "live", "v_position", "h_position",
-                "short_display_name", "covers", "description", "prerequisites",
-                "display_name"]
-        c = 0
-        for exercise in khan_exercises:
-            name = exercise['name']
-            if not (exercise['summative'] or name in available_exercises):
-                logging.warning("We don't have exercise '%s'", name)
-                continue
-            d = dict((k, exercise[k]) for k in keys if k in exercise)
-            d['user'] = None
-            try:
-                contents = raw_exercise_contents("%s.html" % name)
-                title = re_html_title.search(contents).group(1)
-                d['display_name'] = title = title.decode("utf-8")
-            except:
-                logging.exception("Could not get title for '%s'", name)
-                title = d['display_name']
-            else:
-                logging.info("Updating '%s': %s", name, title)
-            UpdateExercise.do_update(d)
-            c+=1
-        logging.info("Added %s exercises", c)
+RE_HTML_TITLE = re.compile("<title>(.*)</title>")
+def get_title_from_html(exercise_name):
+    try:
+        contents = raw_exercise_contents("%s.html" % exercise_name)
+        title = RE_HTML_TITLE.search(contents).group(1)
+        return title.decode("utf-8")
+    except:
+        logging.exception("Could not get title for '%s'", exercise_name)
+        return exercise_name.replace("_"," ").capitalize()

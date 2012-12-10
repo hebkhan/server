@@ -2925,7 +2925,8 @@ class Topic(Searchable, db.Model):
             return progress_tree
 
 def topictree_import_task(version_id, topic_id, publish, data_compressed, hard=True):
-    from api.v1 import exercise_save_data 
+    from api.v1 import exercise_save_data
+    from exercises import get_title_from_html
     import zlib
 
     tree_json, mapping = pickle.loads(zlib.decompress(data_compressed))
@@ -2935,21 +2936,25 @@ def topictree_import_task(version_id, topic_id, publish, data_compressed, hard=T
     parent = Topic.get_by_id(topic_id, version)
 
     topics = Topic.get_all_topics(version, True)
-    logging.info("got all topics")
-
+    logging.info("got all topics: %s", len(topics))
     topic_dict = dict((topic.id, topic) for topic in topics)
     topic_keys_dict = dict((topic.key(), topic) for topic in topics)
+
     videos = Video.get_all()
-    logging.info("got all videos")
-
+    logging.info("got all videos: %s", len(videos))
     video_dict = dict((video.youtube_id, video) for video in videos)
-    exercises = Exercise.get_all_use_cache()
-    logging.info("got all exercises")
 
+    exercises = Exercise.get_all_use_cache()
+    logging.info("got all exercises: %s", len(exercises))
     exercise_dict = dict((exercise.name, exercise) for exercise in exercises)
+
+    exercises_dir = os.path.join(os.path.dirname(__file__), "khan-exercises/exercises")
+    available_exercises = set(os.path.basename(p)[:-5] for p in os.listdir(exercises_dir) if p.endswith(".html"))
+    logging.info("Found exercise files: %s", len(available_exercises))
+
     urls = Url.all()
     url_dict = dict((url.id, url) for url in urls)
-    logging.info("got all urls")
+    logging.info("got all urls: %s", len(url_dict))
 
     all_entities_dict = {}
     new_content_keys = set()
@@ -3000,8 +3005,22 @@ def topictree_import_task(version_id, topic_id, publish, data_compressed, hard=T
                     old_parent.id, parent.id))
                 old_parent.move_child(topic, parent, 0)
 
+            # Add a 'summative' exercise to represent this topic
+            if tree.get("in_knowledge_map"):
+                summative_exercise = dict(
+                                          kind = "Exercise",
+                                          name = topic.id,
+                                          display_name = topic.title,
+                                          h_position = tree["y_pos"],
+                                          v_position = tree["x_pos"],
+                                          summative = True,
+                                          live = True,
+                                          )
+                tree["children"].append(summative_exercise)
+
+
             all_entities_dict[tree["key"]] = topic
-        
+
         elif tree["kind"] == "Video":
             youtube_id = tree["youtube_id_en"] = tree["youtube_id"]
             tree["youtube_id"] = mapping.get(youtube_id, youtube_id)
@@ -3026,6 +3045,8 @@ def topictree_import_task(version_id, topic_id, publish, data_compressed, hard=T
             all_entities_dict[tree["key"]] = video
 
         elif tree["kind"] == "Exercise":
+            if not tree["summative"]:
+                tree["display_name"] = get_title_from_html(tree["name"])
             if tree["name"] in exercise_dict:
                 exercise = exercise_dict[tree["name"]]
                 tree["key"] = exercise.key()
@@ -3134,7 +3155,7 @@ def topictree_import_task(version_id, topic_id, publish, data_compressed, hard=T
             exercise = all_entities_dict[node["key"]]
             logging.info("%i/%i Updating any changes to Exercise %s" % (i, len(nodes), exercise.name))
 
-            node['related_videos'] = node['related_video_readable_ids']
+            node['related_videos'] = node.get('related_video_readable_ids',[])
             change = exercise_save_data(version, node, exercise)
             if change:
                 logging.info("changed")
@@ -4720,7 +4741,7 @@ class UserExerciseGraph(object):
                 "proficient": None,
                 "explicitly_proficient": None,
                 "suggested": None,
-                "prerequisites": map(lambda exercise_name: {"name": exercise_name, "display_name": Exercise.to_display_name(exercise_name)}, exercise.prerequisites),
+                "prerequisites": exercise.prerequisites,
                 "covers": exercise.covers,
             }
 
@@ -4773,6 +4794,8 @@ class UserExerciseGraph(object):
         boundary_graph_dicts = []
         for exercise_name in graph:
             graph_dict = graph[exercise_name]
+            if graph_dict["summative"]:
+                continue
             if is_boundary(graph_dict):
                 boundary_graph_dicts.append(graph_dict)
 
@@ -4792,15 +4815,14 @@ class UserExerciseGraph(object):
         """
         progress_threshold = 0.5
 
-        attempted_graph_dicts = filter(
-                                    lambda graph_dict:
-                                        (graph_dict["progress"] > progress_threshold
-                                            and not graph_dict["proficient"]),
-                                    graph.values())
+        attempted_graph_dicts = filter(lambda graph_dict: (graph_dict["progress"] > progress_threshold
+                                                           and not graph_dict["proficient"]
+                                                           and not graph_dict["summative"]),
+                                       graph.itervalues())
 
         attempted_graph_dicts = sorted(attempted_graph_dicts,
-                            reverse=True,
-                            key=lambda graph_dict: graph_dict["progress"])
+                                       reverse=True,
+                                       key=lambda graph_dict: graph_dict["progress"])
 
         return [graph_dict["name"] for graph_dict in attempted_graph_dicts]
 
@@ -4856,7 +4878,7 @@ class UserExerciseGraph(object):
                 graph[graph_dict["name"]] = graph_dict
 
         # Cache coverers and prereqs for later
-        for graph_dict in graph.values():
+        for graph_dict in graph.itervalues():
             # Cache coverers
             for covered_exercise_name in graph_dict["covers"]:
                 covered_graph_dict = graph.get(covered_exercise_name)
@@ -4865,7 +4887,7 @@ class UserExerciseGraph(object):
 
             # Cache prereqs
             for prerequisite_exercise_name in graph_dict["prerequisites"]:
-                prerequisite_graph_dict = graph.get(prerequisite_exercise_name["name"])
+                prerequisite_graph_dict = graph.get(prerequisite_exercise_name)
                 if prerequisite_graph_dict:
                     graph_dict["prerequisite_dicts"].append(prerequisite_graph_dict)
 
