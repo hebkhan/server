@@ -3094,16 +3094,12 @@ def topictree_import_task(version_id, topic_id, publish, data_compressed, hard=T
 
     def add_child_keys_json_tree(tree, prefix=""):
         if tree["kind"] == "Topic":
-            tree["child_keys"]=[]
+            tree["child_keys"] = [] if hard else all_entities_dict[tree["key"]].child_keys
+            child_set = set(tree["child_keys"])
             if "children" in tree:
                 for i, child in enumerate(tree["children"]):
-                    '''
-                    if child["kind"] == "Video":
-                        logging.info(child["title"])
-                    else:
-                        logging.info(child["name"])
-                    '''
-                    tree["child_keys"].append(child["key"])
+                    if child["key"] not in child_set:
+                        tree["child_keys"].append(child["key"])
                     add_child_keys_json_tree(child, "%s.%s" % (prefix, i))
 
     add_child_keys_json_tree(tree_json)
