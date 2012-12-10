@@ -132,7 +132,9 @@ var Homepage = {
             }
 
             var container = $("#" + topic["id"] + " ol").get(0);
-            container.innerHTML = template(topic);
+            if (container) {
+                container.innerHTML = template(topic);
+            }
         });
 
         topics = null;
