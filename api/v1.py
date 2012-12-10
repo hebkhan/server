@@ -169,10 +169,10 @@ def topics_library_compact():
         if item.kind() == "Video":
             trimmed_item_dict['url'] = "/video/%s?topic=%s" %(item.readable_id, topic.id)
             trimmed_item_dict['key_id'] = item.key().id()
+            trimmed_item_dict['description'] = item.description
         elif item.kind() == "Url":
             trimmed_item_dict['url'] = item.url
         trimmed_item_dict['title'] = item.title
-        trimmed_item_dict['description'] = item.description
         return trimmed_item_dict
 
     topic_dict = {}
