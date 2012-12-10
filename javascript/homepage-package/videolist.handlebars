@@ -1,6 +1,6 @@
 {{#each children}}
 <li class="m{{col}}"{{#if firstInCol}} style="margin-top:-{{../../colHeight}}px"{{/if}}>
-<a href="{{url}}" class="vl" title="{{description}}">
+<a href="{{url}}" class="vl {{#if translated}}translated{{else}}untranslated{{/if}}" title="{{description}}">
 <span class="vid-progress{{#if key_id}} v{{key_id}}{{/if}}">{{title}}</span>
 </a>
 </li>

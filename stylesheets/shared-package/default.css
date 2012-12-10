@@ -349,12 +349,16 @@ a:link, header a:visited, footer a:visited, .visited-no-recolor a:visited {
 }
 
 a:visited {
-    color: #678D00;
+    color: #005987;
 }
 
 a:link:hover, a:link:focus, a:visited:hover, a:visited:focus {
     color: #678D00;
     text-decoration: underline;
+}
+
+a.untranslated, a:visited.untranslated {
+    color: #BCCBD3;
 }
 
 /*
