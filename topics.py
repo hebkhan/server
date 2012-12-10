@@ -25,6 +25,7 @@ import models
 from models import Topic, TopicVersion, Video, Url
 from models import Playlist
 import csv
+from google.appengine.api import urlfetch
 
 class EditContent(request_handler.RequestHandler):
 
@@ -76,15 +77,8 @@ class EditContent(request_handler.RequestHandler):
         topics = set(topics)
         logging.info("Importing topics from khanacademy.org: %s", ", ".join(sorted(topics)))
 
-        request = urllib2.Request("http://www.khanacademy.org/api/v1/topictree")
-        try:
-            opener = urllib2.build_opener()
-            f = opener.open(request)
-        except urllib2.URLError, e:
-            logging.exception("Failed to fetch content from khanacademy.org")
-            return
-
-        topictree = simplejson.load(f)
+        result = urlfetch.fetch("http://www.khanacademy.org/api/v1/topictree", deadline=30)
+        topictree = simplejson.loads(result.content)
 
         def filter_unwanted(branch):
             if not branch["kind"] == "Topic":
@@ -105,28 +99,23 @@ class EditContent(request_handler.RequestHandler):
             logging.warning("Couldn't find any of these topics in the live topictree: %s", ", ".join(sorted(topics)))
             return
 
-        request = urllib2.Request("https://docs.google.com/spreadsheet/pub?key=0Ar9qC6olVsMedDNma0hkWUdvRUJPZVhrRmR2T0VfWkE&single=true&gid=0&output=csv")
-        try:
-            opener = urllib2.build_opener()
-            f = opener.open(request)
-        except urllib2.URLError, e:
-            logging.exception("Failed to fetch content from heb-khan video mapping spreadsheet")
-
         mapping = {}
-        for row in csv.reader(f):
+        result = urlfetch.fetch("https://docs.google.com/spreadsheet/pub?key=0Ar9qC6olVsMedDNma0hkWUdvRUJPZVhrRmR2T0VfWkE&single=true&gid=0&output=csv", deadline=30)
+        reader = csv.reader(csv.StringIO(result.content))
+        for row in reader:
             if set(map(str.lower, row)) & set(["serial","subject","english","hebrew"]):
                 header = [re.sub("\W","_",r.lower()) for r in row]
-                mapped_vids = (dict(zip(header, row)) for row in csv.reader(f))
+                mapped_vids = (dict(zip(header, row)) for row in reader)
                 mapping = dict((m["english"], m["hebrew"]) for m in mapped_vids if m["hebrew"])
                 logging.info("Loaded %s mapped videos", len(mapping))
                 break
-        else:
-            logging.error("Unrecognized spreadsheet format")
+        if not mapping:
+            raise Exception("Unrecognized spreadsheet format")
 
         logging.info("calling /_ah/queue/deferred_import")
 
         # importing the full topic tree can be too large so pickling and compressing
-        deferred.defer(models.topictree_import_task, "edit", "root", True,
+        deferred.defer(models.topictree_import_task, "edit", "root", False,
                        zlib.compress(pickle.dumps((topictree, mapping))),
                        hard=False,
                        _queue="import-queue",
