@@ -25,8 +25,7 @@ import models
 from models import Topic, TopicVersion, Video, Url
 from models import Playlist
 import csv
-import collections
-        
+
 class EditContent(request_handler.RequestHandler):
 
     @ensure_xsrf_cookie
@@ -116,10 +115,9 @@ class EditContent(request_handler.RequestHandler):
         mapping = {}
         for row in csv.reader(f):
             if set(map(str.lower, row)) & set(["serial","subject","english","hebrew"]):
-                row = [re.sub("\W","_",r.lower()) for r in row]
-                MappedVideo = collections.namedtuple("MappedVideo", row)
-                mapped_vids = (MappedVideo(*row) for row in csv.reader(f))
-                mapping = dict((m.english, m.hebrew) for m in mapped_vids if m.hebrew)
+                header = [re.sub("\W","_",r.lower()) for r in row]
+                mapped_vids = (dict(zip(header, row)) for row in csv.reader(f))
+                mapping = dict((m["english"], m["hebrew"]) for m in mapped_vids if m["hebrew"])
                 logging.info("Loaded %s mapped videos", len(mapping))
                 break
         else:
