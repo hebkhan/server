@@ -109,10 +109,8 @@ def library_content_html(ajax=False, version_number=None):
     #topics.sort(key = lambda topic: topic.standalone_title)
 
     # special case the duplicate topics for now, eventually we need to either make use of multiple parent functionality (with a hack for a different title), or just wait until we rework homepage
-    topics = [topic for topic in topics 
-              if not topic.id == "new-and-noteworthy" and not
-              (topic.standalone_title == "California Standards Test: Geometry" 
-              and not topic.id == "geometry-2")] 
+    topics = [topic for topic in topics
+              if (not topic.id == "new-and-noteworthy")]
 
     # print_topics(topics)
 

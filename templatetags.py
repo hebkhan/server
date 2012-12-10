@@ -139,14 +139,10 @@ def topic_browser_tree(tree, level=0):
     s = ""
     class_name = "topline"
     for child in tree.children:
-        if not child.children or child.is_super:
+        if not child.children or level>=1:
             # special cases
             if child.id == "new-and-noteworthy":
                 continue
-            elif child.standalone_title == "California Standards Test: Algebra I" and child.id != "algebra-i":
-                child.id = "algebra-i"
-            elif child.standalone_title == "California Standards Test: Geometry" and child.id != "geometry-2":
-                child.id = "geometry-2"
 
             # show leaf node as a link
             href = "#%s" % escape(slugify(child.id))

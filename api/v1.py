@@ -179,8 +179,7 @@ def topics_library_compact():
     topic_dict = {}
     for topic in topics:
         # special cases
-        if ((topic.id == "new-and-noteworthy") or 
-            (topic.standalone_title == "California Standards Test: Geometry" and topic.id != "geometry-2")):
+        if (topic.id == "new-and-noteworthy"):
             continue
 
         children = [trimmed_item(v, topic) for v in topic.children]
