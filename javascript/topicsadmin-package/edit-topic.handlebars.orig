@@ -74,7 +74,7 @@
       <tr>
         <td style="font-weight:bold;">Description</td>
         <td style="padding-bottom:9px;">
-          <textarea name="description" value="{{ model.description }}"/><br/>
+          <textarea name="description">{{ model.description }}</textarea><br/>
           <em>Description text visible in topic listings</em>
         </td>
       </tr>

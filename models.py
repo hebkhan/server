@@ -1984,12 +1984,13 @@ class Topic(Searchable, db.Model):
         self.children = []
         for child in children:
             self.children.append({
-				"kind": child.__class__.__name__,
-				"id": getattr(child, "id", getattr(child, "readable_id", getattr(child, "name", child.key().id()) ) ),
-				"title": getattr(child, "title", getattr(child, "display_name", "")),
-				"hide": getattr(child, "hide", False),
-				"url": getattr(child, "ka_url", getattr(child, "url", ""))
-			})
+                "kind": child.__class__.__name__,
+                "id": getattr(child, "id", getattr(child, "readable_id", getattr(child, "name", child.key().id()) ) ),
+                "title": getattr(child, "title", getattr(child, "display_name", "")),
+                "hide": getattr(child, "hide", False),
+                "url": getattr(child, "ka_url", getattr(child, "url", "")),
+                "description": getattr(child, "description", ""),
+            })
         return self
 
     def get_child_order(self, child_key):
