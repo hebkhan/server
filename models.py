@@ -2923,12 +2923,11 @@ class Topic(Searchable, db.Model):
         else:
             return progress_tree
 
-def topictree_import_task(version_id, topic_id, publish, tree_json_compressed):
+def topictree_import_task(version_id, topic_id, publish, data_compressed, hard=True):
     from api.v1 import exercise_save_data 
     import zlib
-    import pickle
 
-    tree_json = pickle.loads(zlib.decompress(tree_json_compressed))
+    tree_json, mapping = pickle.loads(zlib.decompress(data_compressed))
  
     logging.info("starting import")
     version = TopicVersion.get_by_id(version_id)
@@ -2952,7 +2951,7 @@ def topictree_import_task(version_id, topic_id, publish, tree_json_compressed):
     logging.info("got all urls")
 
     all_entities_dict = {}
-    new_content_keys = []
+    new_content_keys = set()
 
     # on dev server dont record new items in ContentVersionChanges
     if App.is_dev_server:
@@ -2961,7 +2960,7 @@ def topictree_import_task(version_id, topic_id, publish, tree_json_compressed):
         put_change = True
 
     # delete all subtopics of node we are copying over the same topic
-    if tree_json["id"] == parent.id:
+    if hard and tree_json["id"] == parent.id:
         parent.delete_descendants() 
 
     # adds key to each entity in json tree, if the node is not in the tree then add it
@@ -2972,6 +2971,7 @@ def topictree_import_task(version_id, topic_id, publish, tree_json_compressed):
             if tree["id"] in topic_dict:
                 topic = topic_dict[tree["id"]]
                 tree["key"] = topic.key()
+                logging.info("%s: using Topic %s" % (pos, topic.title))
             else:
                 kwargs = dict((str(key), value) for key, value in tree.iteritems() if key in ['standalone_title', 'description', 'tags'])
                 kwargs["version"] = version
@@ -3002,12 +3002,15 @@ def topictree_import_task(version_id, topic_id, publish, tree_json_compressed):
             all_entities_dict[tree["key"]] = topic
         
         elif tree["kind"] == "Video":
+            youtube_id = tree["youtube_id_en"] = tree["youtube_id"]
+            tree["youtube_id"] = mapping.get(youtube_id, youtube_id)
             if tree["youtube_id"] in video_dict:
                 video = video_dict[tree["youtube_id"]]
                 tree["key"] = video.key()
-            else:                    
-                changeable_props = ["youtube_id", "url", "title", "description",
-                                    "keywords", "duration", "readable_id", 
+                logging.info("%s: using video %s" % (pos, video.title))
+            else:
+                changeable_props = ["youtube_id", "youtube_id_en", "url", "title", "description",
+                                    "keywords", "duration", "readable_id",
                                     "views"]
                 video = VersionContentChange.add_new_content(Video, 
                                                                 version,
@@ -3015,19 +3018,21 @@ def topictree_import_task(version_id, topic_id, publish, tree_json_compressed):
                                                                 changeable_props,
                                                                 put_change)
                 logging.info("%s: added video %s" % (pos, video.title))
-                new_content_keys.append(video.key())
+                new_content_keys.add(video.key())
                 tree["key"] = video.key()
                 video_dict[tree["youtube_id"]] = video
-          
+
             all_entities_dict[tree["key"]] = video
 
         elif tree["kind"] == "Exercise":
             if tree["name"] in exercise_dict:
-                tree["key"] = exercise_dict[tree["name"]].key() if tree["name"] in exercise_dict else None
+                exercise = exercise_dict[tree["name"]]
+                tree["key"] = exercise.key()
+                logging.info("%s: using Exercise %s (%s)" % (pos, exercise.name, exercise.display_name))
             else:
                 exercise = exercise_save_data(version, tree, None, put_change)
                 logging.info("%s: added Exercise %s" % (pos, exercise.name))
-                new_content_keys.append(exercise.key())
+                new_content_keys.add(exercise.key())
                 tree["key"] = exercise.key()
                 exercise_dict[tree["name"]] = exercise
             
@@ -3037,6 +3042,7 @@ def topictree_import_task(version_id, topic_id, publish, tree_json_compressed):
             if tree["id"] in url_dict:
                 url = url_dict[tree["id"]]
                 tree["key"] = url.key() 
+                logging.info("%s: using URL %s" % (pos, url.title))
             else:    
                 changeable_props = ["tags", "title", "url"]
                 url = VersionContentChange.add_new_content(Url, 
@@ -3045,7 +3051,7 @@ def topictree_import_task(version_id, topic_id, publish, tree_json_compressed):
                                                            changeable_props,
                                                            put_change)
                 logging.info("%s: added Url %s" % (pos, url.title))
-                new_content_keys.append(url.key())
+                new_content_keys.add(url.key())
                 tree["key"] = url.key()
                 url_dict[tree["id"]] = url
 
@@ -3053,19 +3059,22 @@ def topictree_import_task(version_id, topic_id, publish, tree_json_compressed):
 
         i = 0
         # recurse through the tree's children
-        if "children" in tree:
-            for child in tree["children"]:
+        children = tree.get("children")
+        if children:
+            children[:] = [child for child in children
+                           if child["kind"] in set("Url Exercise Video Topic".split())]
+            for child in children:
                 add_keys_json_tree(child, topic_dict[tree["id"]], i, pos)
                 i += 1
    
     add_keys_json_tree(tree_json, parent)
     logging.info("added keys to nodes")
 
-    def add_child_keys_json_tree(tree):
+    def add_child_keys_json_tree(tree, prefix=""):
         if tree["kind"] == "Topic":
             tree["child_keys"]=[]
             if "children" in tree:
-                for child in tree["children"]:
+                for i, child in enumerate(tree["children"]):
                     '''
                     if child["kind"] == "Video":
                         logging.info(child["title"])
@@ -3073,7 +3082,7 @@ def topictree_import_task(version_id, topic_id, publish, tree_json_compressed):
                         logging.info(child["name"])
                     '''
                     tree["child_keys"].append(child["key"])
-                    add_child_keys_json_tree(child)
+                    add_child_keys_json_tree(child, "%s.%s" % (prefix, i))
 
     add_child_keys_json_tree(tree_json)
     logging.info("added children keys")
@@ -3096,30 +3105,35 @@ def topictree_import_task(version_id, topic_id, publish, tree_json_compressed):
         if node["kind"] == "Topic":
             topic = all_entities_dict[node["key"]]
             logging.info("%i/%i Updating any change to Topic %s" % (i, len(nodes), topic.title))
-
-            kwargs = (dict((str(key), value) for key, value in node.iteritems() 
-                    if key in ['id', 'title', 'standalone_title', 'description',
-                    'tags', 'hide', 'child_keys']))
+            keys = ['id', 'child_keys']
+            if hard:
+                keys += ['title', 'standalone_title', 'description', 'tags', 'hide']
+            kwargs = dict((key, node[key])
+                          for key in keys
+                          if key in node)
             kwargs["version"] = version
             kwargs["put"] = False
             if topic.update(**kwargs):
                 changed_nodes.append(topic)
-        
+
         elif node["kind"] == "Video" and node["key"] not in new_content_keys:
             video = all_entities_dict[node["key"]]
             logging.info("%i/%i Updating any change to Video %s" % (i, len(nodes), video.title))
-            
+            keys = ["readable_id", "youtube_id", "youtube_id_en"]
+            if hard:
+                keys += ["title", "description", "keywords"]
             change = VersionContentChange.add_content_change(video, 
                 version, 
                 node, 
-                ["readable_id", "title", "youtube_id", "description", "keywords"])
+                keys)
             if change:
                 logging.info("changed")
-        
+
         elif node["kind"] == "Exercise" and node["key"] not in new_content_keys:
             exercise = all_entities_dict[node["key"]]
             logging.info("%i/%i Updating any changes to Exercise %s" % (i, len(nodes), exercise.name))
 
+            node['related_videos'] = node['related_video_readable_ids']
             change = exercise_save_data(version, node, exercise)
             if change:
                 logging.info("changed")
@@ -3128,7 +3142,9 @@ def topictree_import_task(version_id, topic_id, publish, tree_json_compressed):
             url = all_entities_dict[node["key"]]
             logging.info("%i/%i Updating any changes to Url %s" % (i, len(nodes), url.title))
 
-            changeable_props = ["tags", "title", "url"]
+            changeable_props = ["url"]
+            if hard:
+                changeable_props += ["tags", "title"]
 
             change = VersionContentChange.add_content_change(
                 url, 

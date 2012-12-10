@@ -24,6 +24,8 @@ from google.appengine.ext import db
 import models
 from models import Topic, TopicVersion, Video, Url
 from models import Playlist
+import csv
+import collections
         
 class EditContent(request_handler.RequestHandler):
 
@@ -32,6 +34,7 @@ class EditContent(request_handler.RequestHandler):
     def get(self):
 
         version_name = self.request.get('version', 'edit')
+        topics = map(str, self.request.get_all("topic") or self.request.get_all("topic[]"))
 
         edit_version = TopicVersion.get_by_id(version_name)
         if edit_version is None:
@@ -46,10 +49,13 @@ class EditContent(request_handler.RequestHandler):
                 raise Exception("Wait for setting default version to finish making an edit version.")
 
         if self.request.get('autoupdate', False):
-            self.render_jinja2_template('autoupdate_in_progress.html', {"edit_version": edit_version})
+            self.render_jinja2_template('autoupdate_in_progress.html',
+                                        {"edit_version": edit_version,
+                                         "topics": topics}
+                                        )
             return
         if self.request.get('autoupdate_begin', False):
-            return self.topic_update_from_live(edit_version)
+            return self.topic_update_from_live(edit_version, topics)
         if self.request.get('migrate', False):
             return self.topic_migration()
         if self.request.get('fixdupes', False):
@@ -67,23 +73,67 @@ class EditContent(request_handler.RequestHandler):
         self.render_jinja2_template('topics-admin.html', template_values)
         return
 
-    def topic_update_from_live(self, edit_version):
+    def topic_update_from_live(self, edit_version, topics):
+        topics = set(topics)
+        logging.info("Importing topics from khanacademy.org: %s", ", ".join(sorted(topics)))
+
         request = urllib2.Request("http://www.khanacademy.org/api/v1/topictree")
         try:
             opener = urllib2.build_opener()
             f = opener.open(request)
-            topictree = simplejson.load(f)
-
-            logging.info("calling /_ah/queue/deferred_import")
-
-            # importing the full topic tree can be too large so pickling and compressing
-            deferred.defer(models.topictree_import_task, "edit", "root", True,
-                        zlib.compress(pickle.dumps(topictree)),
-                        _queue="import-queue",
-                        _url="/_ah/queue/deferred_import")
-
         except urllib2.URLError, e:
             logging.exception("Failed to fetch content from khanacademy.org")
+            return
+
+        topictree = simplejson.load(f)
+
+        def filter_unwanted(branch):
+            if not branch["kind"] == "Topic":
+                return None
+            if branch["id"] in topics:
+                return True
+            wanted_children = []
+            wanted = False
+            for child in branch["children"]:
+                ret = filter_unwanted(child)
+                if ret in (None, True):
+                    wanted_children.append(child)
+                wanted |= (ret or False)
+            branch["children"][:] = wanted_children
+            return wanted
+
+        if filter_unwanted(topictree) is False:
+            logging.warning("Couldn't find any of these topics in the live topictree: %s", ", ".join(sorted(topics)))
+            return
+
+        request = urllib2.Request("https://docs.google.com/spreadsheet/pub?key=0Ar9qC6olVsMedDNma0hkWUdvRUJPZVhrRmR2T0VfWkE&single=true&gid=0&output=csv")
+        try:
+            opener = urllib2.build_opener()
+            f = opener.open(request)
+        except urllib2.URLError, e:
+            logging.exception("Failed to fetch content from heb-khan video mapping spreadsheet")
+
+        mapping = {}
+        for row in csv.reader(f):
+            if set(map(str.lower, row)) & set(["serial","subject","english","hebrew"]):
+                row = [re.sub("\W","_",r.lower()) for r in row]
+                MappedVideo = collections.namedtuple("MappedVideo", row)
+                mapped_vids = (MappedVideo(*row) for row in csv.reader(f))
+                mapping = dict((m.english, m.hebrew) for m in mapped_vids if m.hebrew)
+                logging.info("Loaded %s mapped videos", len(mapping))
+                break
+        else:
+            logging.error("Unrecognized spreadsheet format")
+
+        logging.info("calling /_ah/queue/deferred_import")
+
+        # importing the full topic tree can be too large so pickling and compressing
+        deferred.defer(models.topictree_import_task, "edit", "root", True,
+                       zlib.compress(pickle.dumps((topictree, mapping))),
+                       hard=False,
+                       _queue="import-queue",
+                       _url="/_ah/queue/deferred_import")
+
 
     def topic_migration(self):
         logging.info("deleting all existing topics")

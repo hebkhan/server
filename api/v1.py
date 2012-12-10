@@ -763,8 +763,8 @@ def exercise_save_data(version, data, exercise=None, put_change=True):
     data["h_position"] = int(data["h_position"])
     data["seconds_per_fast_problem"] = (
         float(data["seconds_per_fast_problem"]))
-
-    changeable_props = ["name", "covers", "h_position", "v_position", "live",
+    data.setdefault("display_name", data["name"])
+    changeable_props = ["name", "display_name", "covers", "h_position", "v_position", "live",
                         "summative", "prerequisites", "covers", 
                         "related_videos", "short_display_name"]
     if exercise:
