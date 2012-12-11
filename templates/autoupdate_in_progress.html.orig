@@ -33,6 +33,7 @@ function checkAutoUpdateComplete() {
 $(function() {
     $.ajax({
         url: "/devadmin/content?autoupdate_begin=1",
+        data: { topic: {{ topics }} },
         success: function() {
             $("#autoupdate-status").html("Process started. Waiting for process to complete...");
             window.setTimeout(checkAutoUpdateComplete, 5*60*1000); // Initial wait of 5 minutes

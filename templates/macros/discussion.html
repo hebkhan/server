@@ -24,7 +24,7 @@
                 <input type="hidden" id="video_key" name="video_key" value="{{ video.key() }}" />
                 <input type="hidden" id="topic_key" name="topic_key" value="{{ topic.key() }}" />
                 <textarea name="comment_text" class="comment_text" rows="3" cols="40"></textarea><br/>
-                {{ feedback_controls_comment("Comment") }}
+                {{ feedback_controls_comment("הוסף") }}
             </form>
         </div>
 
@@ -90,7 +90,7 @@
                     <tr>
                         <td class="cell left-cell">
                             <ul>
-                                <li class="question-example"><img class="vote-example" src="/images/vote-up-gray.png"> "בזמן הליקוי סאל מדבר עליו ב-5:28, למה הירח בדיוק בגודל של השמש, מציע כיסוי של 1 על 1?"</li>
+                                <li class="question-example"><img class="vote-example" src="/images/vote-up-gray.png"> "בזמן הליקוי עליו סאל מדבר בדקה ה-5:28, למה הירח בדיוק בגודל השמש, ומכסה אותה 1 ל-1?"</li>
                             </ul>
                         </td>
                         <td class="cell">
@@ -130,15 +130,15 @@
 
         <div class="info_note note" style="display:none;">
             <span class="note_desc"></span>
-            <a href="#" class="close_note">לסגור</a>
+            <a href="#" class="close_note">סגור</a>
         </div>
 
         {% if not logged_in %}
 
             <div class="login_note note" style="display:none;">
-                <a class="login_link" href="{{ ("/video?v=%s" % video.youtube_id )|login_url }}"><img class="icon" src="{{ "/images/key-plus.png"|static_url }}"/ >התחבר קודם</a>
+                <a class="login_link" href="{{ ("/video?v=%s" % video.youtube_id )|login_url }}"><img class="icon" src="{{ "/images/key-plus.png"|static_url }}"/ >התחברו קודם</a>
                 <span class="note_desc"></span>
-                <a href="#" class="close_note">לסגור</a>
+                <a href="#" class="close_note">סגור</a>
             </div>
         {% endif %}
 
@@ -172,12 +172,12 @@
                 {% endif %}
 
                 <input class="button {{ feedback_type }}_submit" type="button" value="{{ button_label }}"/>
-                או <a href="#" class="{{ feedback_type }}_cancel control">בטלו</a>
+                או <a href="#" class="{{ feedback_type }}_cancel control">בטל</a>
             </div>
 
             {% if show_chars_remaining %}
                 <div class="chars_remaining">
-                    <span class="chars_remaining_count">500</span> תווים שנותרו
+                    <span class="chars_remaining_count">500</span> תווים נותרו
                 </div>
             {% endif %}
             <div class="clearFloat">&nbsp;</div>
@@ -239,9 +239,9 @@
 
 {% macro mod_tools(target) -%}
     <span class="mod_tools">
-        <span class="control mod_tools_show">(<a href="#" class="control mod_show">מוד</a>)</span>
+        <span class="control mod_tools_show">(<a href="#" class="control mod_show">פיקוח</a>)</span>
         <span class="mod_tools_hidden tools_hidden" style="display:none;">
-            כלי מוד:
+            כלי פיקוח:
             <a href="#" class="control mod_edit" data-key="{{ target.key() }}">עריכה</a>
             | <a href="#" class="control mod_delete" data-key="{{ target.key() }}">מחיקה</a>
 

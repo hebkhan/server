@@ -24,7 +24,7 @@
                 <input type="hidden" id="video_key" name="video_key" value="{{ video.key() }}" />
                 <input type="hidden" id="topic_key" name="topic_key" value="{{ topic.key() }}" />
                 <textarea name="comment_text" class="comment_text" rows="3" cols="40"></textarea><br/>
-                {{ feedback_controls_comment("Comment") }}
+                {{ feedback_controls_comment("הוסף") }}
             </form>
         </div>
 
