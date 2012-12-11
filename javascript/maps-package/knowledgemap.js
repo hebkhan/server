@@ -545,6 +545,11 @@ function KnowledgeMap(params) {
     // This handler exists as a hook to override what happens when an
     // exercise node is clicked. By default, it does nothing.
     this.nodeClickHandler = function(exercise, evt) {
+        if (exercise.get("summative")) {
+            self.map.setZoom(self.map.getZoom() + 1);
+            self.panToNode(exercise.get("name"));
+            evt.preventDefault();
+        }
         return true;
     };
     this.updateFilterTimout = null;
