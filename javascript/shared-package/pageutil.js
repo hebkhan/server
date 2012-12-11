@@ -195,7 +195,7 @@ var Badges = {
 
         setTimeout(function() {
             jel.css("visibility", "hidden").css("display", "");
-            jel.css("left", jelContainer.offset().left + (jelContainer.width() / 2) - (jel.width() / 2)).css("top", -1 * jel.height());
+            jel.css("right", jelContainer.offset().left + (jelContainer.width() / 2) - (jel.width() / 2)).css("top", -1 * jel.height());
             var topBounce = top + 10;
             jel.css("display", "").css("visibility", "visible");
             jel.animate({top: topBounce}, 300, function() {jel.animate({top: top}, 100);});
@@ -519,7 +519,7 @@ FacebookHook.init();
 var Throbber = {
     jElement: null,
 
-    show: function(jTarget, fOnLeft) {
+    show: function(jTarget, fOnRight) {
         if (!Throbber.jElement)
         {
             Throbber.jElement = $("<img style='display:none;' src='/images/throbber.gif' class='throbber'/>");
@@ -531,9 +531,9 @@ var Throbber = {
         var offset = jTarget.offset();
 
         var top = offset.top + (jTarget.height() / 2) - 8;
-        var left = fOnLeft ? (offset.left - 16 - 4) : (offset.left + jTarget.width() + 4);
+        var right = fOnRight ? (offset.right - 16 - 4) : (offset.right + jTarget.width() + 4);
 
-        Throbber.jElement.css("top", top).css("left", left).css("display", "");
+        Throbber.jElement.css("top", top).css("right", right).css("display", "");
     },
 
     hide: function() {
