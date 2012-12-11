@@ -1,7 +1,6 @@
 <div class="exercise-edit" data-id="{{ name }}">
-  <a href="{{ url }}" style="color: {{#if live}}#069{{else}}red{{/if}}; display: block">{{ name }}</a><br/>
-  {{ display_name }}
-  <span class="exercise-show simple-button action-gradient" data-id="name" style="display:none;">
-  	<img src="/images/map-target.png" title="Show in map" alt="Show in map">
+  <a href="{{ url }}" title="{{ name }}" style="color: {{#if live}}#069{{else}}red{{/if}}; {{#if summative}}font-weight: bold;{{/if}}display: block">{{ display_name }}</a>
+  <span class="exercise-show simple-button action-gradient admin" data-id="name" style="display:none;">
+    <img src="/images/map-target.png" title="Show in map" alt="Show in map">
   </span>
 </div>

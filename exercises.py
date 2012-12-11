@@ -637,9 +637,9 @@ class EditExercise(request_handler.RequestHandler):
     def get(self):
         exercise_name = self.request.get('name')
         if exercise_name:
-            query = models.Exercise.all().order('name')
+            query = models.Exercise.all()
             exercises = query.fetch(1000)
-
+            exercises.sort(key=lambda e: (e.h_position, e.v_position))
             main_exercise = None
             for exercise in exercises:
                 if exercise.name == exercise_name:
