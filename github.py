@@ -8,10 +8,13 @@ import logging
 import app
 import request_handler
 
-_USER = 'KhanBugz'
-_PASSWD = app.App.khanbugz_passwd
-_AUTH_HEADER = "Basic %s" % base64.encodestring("%s:%s" % (_USER, _PASSWD)).strip()
-HEADERS = { "Authorization": _AUTH_HEADER, "Content-Type": "application/json" }
+
+#_AUTH_HEADER = "Basic %s" % base64.encodestring("%s:%s" % (_USER, _PASSWD)).strip()
+HEADERS = {"X-Api-Key": app.App.assembla_key,
+           "X-Api-Secret": app.App.assembla_secret,
+           "Content-Type": "application/json",
+            }
+ASSEMBLA_URL = "https://api.assembla.com/v1/spaces/hebrew-khan/tickets.json"
 
 class BetterHTTPErrorProcessor(urllib2.BaseHandler):
     # a substitute/supplement to urllib2.HTTPErrorProcessor
@@ -67,8 +70,7 @@ class NewPost(request_handler.RequestHandler):
         # cross-domain requests.
 
         data = self.request.get('json')
-        url = "https://api.github.com/repos/Khan/khan-exercises/issues" + \
-              "?callback=" + self.request.get('callback')
+        url = ASSEMBLA_URL + "?callback=" + self.request.get('callback')
 
         self.response.headers.add_header("Content-Type", "text/javascript")
 
@@ -78,18 +80,16 @@ class NewPost(request_handler.RequestHandler):
         # the POST method will be the standard means of communication.
 
         data = self.request.body
-        url = "https://api.github.com/repos/Khan/khan-exercises/issues"
 
         self.response.headers.add_header("Content-Type", "application/json")
 
-        gh_post(self, url, data, HEADERS)
+        gh_post(self, ASSEMBLA_URL, data, HEADERS)
 
 class NewComment(request_handler.RequestHandler):
     def post(self):
 
         data = json.loads(self.request.body)
-        url = ("https://api.github.com/repos/Khan/khan-exercises/issues/%d/comments" %
-               data['id'])
+        url = ("%s/%d/comments" % (ASSEMBLA_URL, data['id']))
 
         self.response.headers.add_header("Content-Type", "application/json")
 

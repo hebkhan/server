@@ -33,7 +33,8 @@ for attr in [
     'constant_contact_password',
     'flask_secret_key',
     'dashboard_secret',
-    'khanbugz_passwd',
+    'assembla_key',
+    'assembla_secret',
     'paypal_token_id',
 ]:
     # These secrets are optional in development but not in production
