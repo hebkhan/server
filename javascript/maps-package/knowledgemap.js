@@ -546,8 +546,8 @@ function KnowledgeMap(params) {
     // exercise node is clicked. By default, it does nothing.
     this.nodeClickHandler = function(exercise, evt) {
         if (exercise.get("summative")) {
-            self.map.setZoom(self.map.getZoom() + 1);
             self.panToNode(exercise.get("name"));
+            self.map.setZoom(self.map.getZoom() + 1);
             evt.preventDefault();
         }
         return true;
