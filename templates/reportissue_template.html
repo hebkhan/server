@@ -1,11 +1,5 @@
 {% extends "page_template.html" %}
 {% block pagescript %}
-<script type="text/javascript">
-function submitForm(value)
-{
-        document.forms['reportissue'].submit();
-}
-</script>
 <style>
 	p { margin-bottom: 1em; }
 </style>
@@ -22,26 +16,10 @@ function submitForm(value)
         אנחנו רוצים לדעת על זה!
         </h2>
 				{% block exercise_warning %}{% endblock exercise_warning %}
-        <p>אם יש לכם מזל מישהו כבר
-        {% block submitted_the_issue %}דיווח על הבעיה{% endblock submitted_the_issue %}
-        ואתם יכולים פשוט להצביע  על ידי לחיצה על <b>הכוכב הנמצא לידו</b> בתוך
-        ה-
-        {% block list_of_issues_link %}<a href="http://code.google.com/p/hebrewkhan/issues/list?can=2&q=Status:Accepted,Started%20Type:Defect&sort=-stars&colspec=Summary">רשימה של בעיות ידועות</a>{% endblock list_of_issues_link %}.
-        אחרת אנא פעלו לפי צעדים הבאים בכדי לדווח על בעיה חדשה במערכת איתור הבעיות שלנו.
-	<ol>
-		<li>לכו ל-
-	        {% block new_issue_link %}<a href="http://code.google.com/p/hebrewkhan/issues/entry?template=Defect%20report%20from%20user&labels=Referer-{{referer|urlencode}},Type-Defect,{{issues_label|urlencode}}">לפורום שאלה חדשה</a>{% endblock new_issue_link %}.
-		</li>
-		<li>מלאו את <b>התקציר</b> ואת <b>שדות</b> התיאור. <span style="color: red; font-size: 12px;"/>שימו לב: המידע שאתם מספקים יהפוך לציבורי, לכן אל תכללו שום מידע פרטי או מסווג.</span></li>
-		<li>לחצו על <b>שלחו את הבעיה</b> כפתור</li>
-	</ol>
-        <p>ההגשה שלכם תופיע ברשימה ברגע שנוכל לסורקה.</p>
-        </p>
-        <p>אם אתם מצביעים בשביל משהו או מגישים משהו חדש, תקבלו דוא"ל כאשר אנשים יגיבו על זה.&nbsp;
-        כאשר נחשוב שהצלחנו לטפל בזה תקבלו דוא"ל בו נאמר "מצב: מתוקן", ואתם תווכחו בשינוי
-        בפעם הבאה בה נשדרג את האתר. אם, בכל זמן שהוא, אתם תרצו להפסיק לקבל הודעות בדוא"ל, רק תעקבו אחר
-        התקשרו דרך אחד מהם ולחצו על הכוכב בשביל להכהות אותו.
-        </p>
-        <p><em>תודה שלהשקעתם מזמנכם לעזור לנו להפוך את אקדמיית קהאן לטובה יותר!</em></p>
+
+        <iframe width="350px" height="336px" frameborder="0" scrolling="no" allowtransparency="true" src="//webengage.com/f/14507c71c?src=about" style="background-color:transparent;">
+        </iframe>
+
+        <p><em>שיחקת אותה! עזרת לנו לשפר את אקדמיית קהאן</em></p>
 </article>
 {% endblock pagecontent %}
