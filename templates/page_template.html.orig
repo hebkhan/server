@@ -86,11 +86,11 @@
     </script>
     {%- endif -%}
     </head>
-<!--[if lt IE 7]>  <body class="ie ie6 lte9 lte8 lte7"> <![endif]-->
-<!--[if IE 7]>     <body class="ie ie7 lte9 lte8 lte7"> <![endif]-->
-<!--[if IE 8]>     <body class="ie ie8 lte9 lte8"> <![endif]-->
-<!--[if IE 9]>     <body class="ie ie9 lte9"> <![endif]-->
-<!--[if gt IE 9]>  <body> <![endif]-->
+<!--[if lt IE 7]>  <body dir="rtl" class="ie ie6 lte9 lte8 lte7"> <![endif]-->
+<!--[if IE 7]>     <body dir="rtl" class="ie ie7 lte9 lte8 lte7"> <![endif]-->
+<!--[if IE 8]>     <body dir="rtl" class="ie ie8 lte9 lte8"> <![endif]-->
+<!--[if IE 9]>     <body dir="rtl" class="ie ie9 lte9"> <![endif]-->
+<!--[if gt IE 9]>  <body dir="rtl"> <![endif]-->
 <!--[if !IE]><!--> <body dir="rtl"> <!--<![endif]-->
     <div id="outer-wrapper">
     {{ phantom_users.login_notifications(user_data, continue) }}

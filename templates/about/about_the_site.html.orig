@@ -91,7 +91,7 @@
     <br/><hr class="thin"/><br/>
 
     <div class="col1 sixty-forty right">
-        <h2>הסטטיסטיקות שלכם, במיידי</h2>
+        <h2>הסטטיסטיקות שלכם - במיידי</h2>
         <p class="justify">
             בכל פעם שאתם פותרים בעיה או צופים בסרטון, אקדמית "קהאן" קולטת את מה למדתם ובמה התקשיתם.
             אנו שומרים את כל הנתונים רבי העוצמה הללו כחסויים, אך עם זאת חשופים לחלוטין למשתמש ולסגל המקצועי.
@@ -135,17 +135,14 @@
     <br/><hr class="thin"/><br/>
 
     <div class="col1 sixty-forty right">
-        <h2>Your classroom data...finally</h2>
+        <h2>נתוני הכיתה שלכם...סוף סוף</h2>
         <p class="justify">
-        Teachers and coaches can access all of their students' data.
-        You can <strong>get a summary of class performance as a whole or dive into a particular student's profile</strong>
-        to figure out exactly which topics are problematic.
-        <a href="/class_profile">The class profile</a>
-        lets coaches glance at their dashboard and quickly figure out how to best spend their time teaching.
+        למורים ולמדריכים יש גישה לנתוני כל התלמידים שלהם.
+        תוכלו <strong>לקבל את הסיכום של ביצועי הכיתה כולה או לצלול לתוך הפרופיל של תלמיד ספציפי</strong>, כדי להבין בדיוק באילו נושאים הוא מתקשה.
+        <a href="/class_profile">פרופיל הכיתה</a> מאפשר למאמנים להבין במהירות על מה להתמקד במהלך הלימוד וכיצד.
         <br/><br/>
-        We've put a lot of energy into making sure that the Khan Academy empowers teachers by giving them access to the data they should've had for years.
-        You'll <strong>know instantly if a student is struggling in multiplying fractions</strong>...
-        or if she hit a streak and is now far ahead of the class. 
+        השקענו את מיטב מאמצינו בדאגה שאקדמית קהאן תעניק למורים גישה לנתונים שהיו צריכים להיות בידם כבר לפני שנים.
+        אתם <strong>תדעו לזהות מיד אם תלמיד נאבק בהכפלת שברים</strong>... או אם הוא רץ עם החומר ומקדים את הכיתה בהרבה.
         </p>
     </div>
     <div class="col2 sixty-forty screenshot">
@@ -158,25 +155,26 @@
         <img class="rounded-background" src="/images/screenshot-tour/badges-small.png" style="width:400px;" />
     </div>
     <div class="col2 forty-sixty left">
-        <h2>Badges worth bragging about</h2>
+        <h2>מדליות לתפארת</h2>
         <p class="justify">
             <img class="rounded-background" src="/images/screenshot-tour/badges-3.png" style="width:228px;float:right;margin-left:20px;"/>
-            We're full of game mechanics. As soon as you login, you'll start earning badges and points for learning.
-            The more you challenge yourself, the more bragging rights you'll get.
+            אנחנו מלאים בטכניקות משחקים.
+            ברגע שתתחברו, תוכלו להתחיל להרוויח מדליות ונקודות ללמידה.
+            ככל שתאתגרו את עצמכם יותר, כך תגדל זכות "ההתרברבות" שלכם. (אבל אל תתרברבו...)
             <br/><br/>
-            We've heard of students spending hour after hour watching physics videos and 5th graders relentlessly tackling college-level math to earn Khan Academy badges.
-            Some of the smaller badges are very easy, but <a href="/badges/view">the most legendary badges</a> might require years of work.
+            שמענו על תלמידים המבלים שעות על גבי שעות בצפייה בסרטונים בפיסיקה ותלמדי 5 יחידות במתמטיקה מתמודדים עם מתמטיקה ברמת מכללה, רק בכדי לזכות במדליות האקדמיה.
+            כמה מן המדליות הקטנות הן קלות מאוד להשגה, אך ה<a href="/badges/view">"מדליות האגדיות"</a> עשויות לדרוש שנים של עבודה.
         </p>
     </div>
     <div class="clear"></div>
     <br/><hr class="thin"/><br/>
 
     <div class="center">
-        <h2>A global classroom</h2>
+        <h2>כיתה גלובאלית</h2>
         <p>
-            You're joining millions of Khan Academy students from all over the world who learn at their own pace every single day.<br/>
-            Feel free to <a href="/stories">read some of the inspirational stories</a> shared by our global community,
-            and we'd love if you shared yours.
+            הנכם מצטרפים אל מיליוני תלמידי אקדמיית "קהאן" מכל רחבי העולם, אשר לומדים בקצב שלהם בכל יום.
+            <br/>
+            אתה מוזמן <a href="/stories">לקרוא כמה מהסיפורים מעוררי ההשראה</a> המשותפים לקהילה הבין-לאומית שלנו, ואנו נשמח אם תשתפו את שלכם.
         </p>
     </div>
     <div class="clear"></div>
