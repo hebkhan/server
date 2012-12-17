@@ -27,7 +27,7 @@
 <span class="breadcrumbs_nav">
     <a href="/coaches" id="manage-coaches" class="selected">ניהול מדריכים</a>
     <a href="/students" id="manage-students">ניהול תלמידים</a>
-    <a href="/class_profile" id="class-stats">מצב הכיתה</a>
+    <a href="/class_profile" id="class-stats">הסטטוס של הכיתה</a>
 </span>
 {% endblock pagesubmenu %}
 
@@ -35,9 +35,9 @@
 
 <article id="coaches">
 {% if coach_requests %}
-    <h2>מדריכים חדשים מחכים</h2>
+    <h2>מדריכים חדשים בהמתנה</h2>
 
-    <p>המדריכים האלו ביקשו אותכם בתור התלמידים שלהם. <strong>אם אתם מקבלים אותם כמדריכים שלכם, הם יקבלו גישה למידע שלכם באקדמיית קהאן.</strong>.</p>
+    <p>יש כאן מדריכים שרוצים שתהיו תלמידים שלהם <strong>אם אתם מאשרים אותם כמדריכים שלכם, הם יקבלו גישה למידע שלכם באקדמיית קהאן.</strong>.</p>
 
     <table>
     {% for coach_request in coach_requests %}
