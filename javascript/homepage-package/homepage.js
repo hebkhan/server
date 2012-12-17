@@ -17,9 +17,9 @@ var Homepage = {
             // Before any playing, unveil and play the real youtube player
             $(VideoControls).one("beforeplay", function() {
 
-                // Use .left to unhide the player without causing any
+                // Use .right to unhide the player without causing any
                 // re-rendering or "pop"-in of the player.
-                $(".player-loading-wrapper").css("left", 0);
+                $(".player-loading-wrapper").css("right", 0);
 
                 jelPlaceholder.find(".youtube-play").css("visibility", "hidden");
 
