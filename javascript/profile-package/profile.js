@@ -721,7 +721,7 @@ var Profile = {
                         if (label === "משימה") {
                             label = "טלאי " + label;
                         } else {
-                            label = "תג " + label;
+                            label = "מדליית " + label;
                         }
                     }
                     return label;
@@ -835,7 +835,7 @@ var Profile = {
                                 .fail(function(err) {
                                     var error = err.responseText;
                                     button.addClass("failure")
-                                        .text("oh no!").attr("title", "לא הצלחנו לשמור את היעד.");
+                                        .text("אופס!").attr("title", "לא הצלחנו לשמור את היעד.");
                                     KAConsole.log("Error while saving new badge goal", goal);
                                     window.GoalBook.remove(goal);
                                 })
