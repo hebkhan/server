@@ -1,0 +1,42 @@
+{% extends "devpanel/panel_template.html" %}
+
+{% block panelcontent %}
+
+<h2>Sync with Khan Academy</h2>
+
+{% if sync_error %}
+<p style="color:red;"> {{ sync_error|escape }}</p>
+{% endif %}
+
+{% if syncing %}
+    <p style="color:green;">
+        Sync in progress: <span>{{ last_sync }}</span>
+        <br>
+        Topics: {{ topics }}
+    </p>
+{% else %}
+    {% if last_sync %}
+    <p>
+        Last sync: <span>{{ last_sync }}</span>.
+    </p>
+    {% endif %}
+{% endif %}
+
+<form action="/devadmin/sync" method="POST">
+    <p>
+        Topics to Synchronize:
+        <br>
+        <input style="width: 100%" type="text" name="topics" value="{{ topics }}">
+        <br><br>
+
+        Video remapping spreadsheet (Google-Drive ID):
+        <br>
+        <input style="width: 100%" type="text" name="remap_doc_id" value="{{ remap_doc_id }}">
+        <br><br>
+
+        <input type="submit" class="simple-button action-gradient" value="I know what I'm doing. Let's do it!">
+    </p>
+</form>
+
+{% endblock panelcontent %}
+

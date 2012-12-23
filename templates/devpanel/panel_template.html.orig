@@ -9,6 +9,7 @@
         <a href="/devadmin/managedevs" {% if "devs" == selected_id %}class="selected"{% endif %}>Developers</a>
         <a href="/devadmin/managecoworkers" {% if "coworkers" == selected_id %}class="selected"{% endif %}>Coworkers</a>
         <a href="/devadmin/managecommoncore" {% if "commoncore" == selected_id %}class="selected"{% endif %}>Common Core</a>
+        <a href="/devadmin/sync" {% if "sync" == selected_id %}class="selected"{% endif %}>Sync</a>
     </span>
 {% endblock pagesubmenu %}
 

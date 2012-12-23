@@ -1,7 +1,7 @@
 import os, logging
 
 from google.appengine.ext import db, deferred
-from google.appengine.api import users
+from google.appengine.api import users, urlfetch
 import util
 from app import App
 from models import UserData
@@ -17,12 +17,145 @@ import gdata.youtube.service
 import urllib
 import csv
 import StringIO
+import simplejson
+import re
+import models
+import zlib
+import pickle
 
 class Panel(request_handler.RequestHandler):
 
     @user_util.developer_only
     def get(self):
         self.render_jinja2_template('devpanel/panel.html', { "selected_id": "panel" })
+
+class KhanSyncStepLog(db.Model):
+    dt = db.DateTimeProperty(auto_now_add = True)
+    topics = db.StringProperty()
+    remap_doc_id = db.StringProperty()
+
+    error = db.TextProperty()
+    done = db.BooleanProperty()
+
+class Sync(request_handler.RequestHandler):
+
+    @user_util.developer_only
+    def get(self):
+        latest_log = KhanSyncStepLog.all().order("-dt").get()
+
+        template_values = {
+                "selected_id": "sync",
+                "syncing" : latest_log and not latest_log.done,
+                "last_sync" : latest_log.dt if latest_log else None,
+                "topics": latest_log.topics if latest_log else "math, physics, biology",
+                "remap_doc_id": latest_log.remap_doc_id if latest_log else "",
+                "sync_error": latest_log.error if latest_log else "",
+        }
+        self.render_jinja2_template('devpanel/sync.html', template_values)
+
+    @user_util.developer_only
+    def post(self):
+        topics = self.request_string("topics")
+        topics = set(str(s).strip() for s in topics.split(","))
+        remap_doc_id = self.request_string("remap_doc_id")
+
+        try:
+            self.topic_update_from_live(topics, remap_doc_id)
+        except Exception, e:
+            logging.exception("Error initiating sync (%s, %s)", topics, remap_doc_id)
+            sync_error = "Error initiating sync: %s" % e
+
+            template_values = {
+                    "selected_id": "sync",
+                    "last_sync" : None,
+                    "topics": ", ".join(topics),
+                    "remap_doc_id": remap_doc_id,
+                    "sync_error": sync_error,
+            }
+
+            self.render_jinja2_template('devpanel/sync.html', template_values)
+        else:
+            self.redirect('/devadmin/sync')
+
+    def topic_update_from_live(self, topics, remap_doc_id):
+
+        step_log = KhanSyncStepLog(topics=", ".join(sorted(topics)),
+                                   remap_doc_id=remap_doc_id)
+
+        logging.info("Importing topics from khanacademy.org: %s", ", ".join(sorted(topics)))
+
+        url = "http://www.khanacademy.org/api/v1/topictree"
+        try:
+            result = urlfetch.fetch(url, deadline=30)
+        except Exception, e:
+            raise Exception("%s (%s)" % (e, url))
+        topictree = simplejson.loads(result.content)
+
+        url = "https://docs.google.com/spreadsheet/pub?key=%s&single=true&gid=0&output=csv" % remap_doc_id
+        try:
+            result = urlfetch.fetch(url, deadline=30)
+        except Exception, e:
+            raise Exception("%s (%s)" % (e, url))
+
+
+        def filter_unwanted(branch):
+            if not branch["kind"] == "Topic":
+                return None
+            if branch["id"] in topics:
+                topics.remove(branch["id"]) # so we can tell if any topics weren't found
+                return True
+            wanted_children = []
+            wanted = False
+            for child in branch["children"]:
+                ret = filter_unwanted(child)
+                if ret in (None, True):
+                    wanted_children.append(child)
+                wanted |= (ret or False)
+            branch["children"][:] = wanted_children
+            return wanted
+
+        filter_unwanted(topictree)
+        if topics:
+            raise Exception("These topics were not found in the live topictree: %s", ", ".join(sorted(topics)))
+
+        mapping = {}
+        reader = csv.reader(csv.StringIO(result.content))
+        for row in reader:
+            if set(map(str.lower, row)) & set(["serial","subject","english","hebrew"]):
+                header = [re.sub("\W","_",r.lower()) for r in row]
+                mapped_vids = (dict(zip(header, row)) for row in reader)
+                mapping = dict((m["english"], m["hebrew"]) for m in mapped_vids if m["hebrew"])
+                logging.info("Loaded %s mapped videos", len(mapping))
+                break
+
+        if not mapping:
+            raise Exception("Unrecognized spreadsheet format")
+
+        logging.info("calling /_ah/queue/deferred_import")
+        step_log.put()
+
+        # importing the full topic tree can be too large so pickling and compressing
+        deferred.defer(khan_import_task, step_log,
+                       zlib.compress(pickle.dumps((topictree, mapping))),
+                       _queue="import-queue",
+                       _url="/_ah/queue/deferred_import")
+
+def khan_import_task(step_log, data):
+
+    try:
+        models.topictree_import_task("edit", "root", False,
+                                     data,
+                                     hard=False,
+                                     )
+    except Exception, e:
+        step_log.error = "Error in task: %s" % e
+        step_log.put()
+        raise
+
+    step_log.done = True
+    step_log.put()
+
+    return True
 
 class MergeUsers(request_handler.RequestHandler):
 

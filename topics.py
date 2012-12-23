@@ -48,14 +48,6 @@ class EditContent(request_handler.RequestHandler):
             else:
                 raise Exception("Wait for setting default version to finish making an edit version.")
 
-        if self.request.get('autoupdate', False):
-            self.render_jinja2_template('autoupdate_in_progress.html',
-                                        {"edit_version": edit_version,
-                                         "topics": topics}
-                                        )
-            return
-        if self.request.get('autoupdate_begin', False):
-            return self.topic_update_from_live(edit_version, topics)
         if self.request.get('migrate', False):
             return self.topic_migration()
         if self.request.get('fixdupes', False):
@@ -72,55 +64,6 @@ class EditContent(request_handler.RequestHandler):
  
         self.render_jinja2_template('topics-admin.html', template_values)
         return
-
-    def topic_update_from_live(self, edit_version, topics):
-        topics = set(topics)
-        logging.info("Importing topics from khanacademy.org: %s", ", ".join(sorted(topics)))
-
-        result = urlfetch.fetch("http://www.khanacademy.org/api/v1/topictree", deadline=30)
-        topictree = simplejson.loads(result.content)
-
-        def filter_unwanted(branch):
-            if not branch["kind"] == "Topic":
-                return None
-            if branch["id"] in topics:
-                return True
-            wanted_children = []
-            wanted = False
-            for child in branch["children"]:
-                ret = filter_unwanted(child)
-                if ret in (None, True):
-                    wanted_children.append(child)
-                wanted |= (ret or False)
-            branch["children"][:] = wanted_children
-            return wanted
-
-        if filter_unwanted(topictree) is False:
-            logging.warning("Couldn't find any of these topics in the live topictree: %s", ", ".join(sorted(topics)))
-            return
-
-        mapping = {}
-        result = urlfetch.fetch("https://docs.google.com/spreadsheet/pub?key=0Ar9qC6olVsMedDNma0hkWUdvRUJPZVhrRmR2T0VfWkE&single=true&gid=0&output=csv", deadline=30)
-        reader = csv.reader(csv.StringIO(result.content))
-        for row in reader:
-            if set(map(str.lower, row)) & set(["serial","subject","english","hebrew"]):
-                header = [re.sub("\W","_",r.lower()) for r in row]
-                mapped_vids = (dict(zip(header, row)) for row in reader)
-                mapping = dict((m["english"], m["hebrew"]) for m in mapped_vids if m["hebrew"])
-                logging.info("Loaded %s mapped videos", len(mapping))
-                break
-        if not mapping:
-            raise Exception("Unrecognized spreadsheet format")
-
-        logging.info("calling /_ah/queue/deferred_import")
-
-        # importing the full topic tree can be too large so pickling and compressing
-        deferred.defer(models.topictree_import_task, "edit", "root", False,
-                       zlib.compress(pickle.dumps((topictree, mapping))),
-                       hard=False,
-                       _queue="import-queue",
-                       _url="/_ah/queue/deferred_import")
-
 
     def topic_migration(self):
         logging.info("deleting all existing topics")

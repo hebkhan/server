@@ -351,7 +351,7 @@ def topictree_import(version_id = "edit", topic_id="root", publish=False):
 
     # importing the full topic tree can be too large so pickling and compressing
     deferred.defer(models.topictree_import_task, version_id, topic_id, publish,
-                zlib.compress(pickle.dumps(request.json)),
+                zlib.compress(pickle.dumps(request.json), {}),
                 _queue = "import-queue",
                 _url = "/_ah/queue/deferred_import")
 
