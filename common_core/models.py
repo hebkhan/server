@@ -9,58 +9,6 @@ from google.appengine.ext import db
 from models import Exercise, Video
 
 COMMON_CORE_SEPARATOR = '.'
-COMMON_CORE_BASE_URL = 'http://www.corestandards.org/the-standards/mathematics/'
-COMMON_CORE_GRADE_URLS = {
-        "K": "kindergarten/",
-        "0": "kindergarten/",
-        "1": "grade-1/",
-        "2": "grade-2/",
-        "3": "grade-3/",
-        "4": "grade-4/",
-        "5": "grade-5/",
-        "6": "grade-6/",
-        "7": "grade-7/",
-        "8": "grade-8/",
-        "9-12": ""
-    }
-
-COMMON_CORE_DOMAIN_URLS = {
-        "A-APR": "high-school-algebra/arithmetic-with-polynomials-and-rational-functions/",
-        "A-CED": "high-school-algebra/creating-equations/",
-        "A-REI": "high-school-algebra/reasoning-with-equations-and-inequalities/",
-        "A-SSE": "high-school-algebra/seeing-structure-in-expressions/",
-        "CC": "counting-and-cardinality/",
-        "EE": "expressions-and-equations/",
-        "F": "functions/",
-        "F-BF": "high-school-functions/building-functions/",
-        "F-IF": "high-school-functions/interpreting-functions/",
-        "F-LE": "high-school-functions/linear-quadratic-and-exponential-models/",
-        "F-TF": "high-school-functions/trigonometric-functions/",
-        "G": "geometry/",
-        "G-C": "high-school-geometry/circles/",
-        "G-CO": "high-school-geometry/congruence/",
-        "G-GMD": "high-school-geometry/geometric-measurement-and-dimension/",
-        "G-GPE": "high-school-geometry/expressing-geometric-properties-with-equations/",
-        "G-MG": "high-school-geometry/modeling-with-geometry/",
-        "G-SRT": "high-school-geometry/similarity-right-triangles-and-trigonometry/",
-        "MD": "measurement-and-data/",
-        "MP": "standards-for-mathematical-practice/",
-        "N-CN": "hs-number-and-quantity/the-complex-number-system/",
-        "N-Q": "hs-number-and-quantity/quantities/",
-        "N-RN": "hs-number-and-quantity/the-real-number-system/",
-        "N-VM": "hs-number-and-quantity/vector-and-matrix-quantities/",
-        "NBT": "number-and-operations-in-base-ten/",
-        "NF": "number-and-operations-fractions/",
-        "NS": "the-number-system/",
-        "OA": "operations-and-algebraic-thinking/",
-        "RP": "ratios-and-proportional-relationships/",
-        "S": "using-probability-to-make-decisions/",
-        "S-CP": "hs-statistics-and-probability/conditional-probability-and-the-rules-of-probability/",
-        "S-IC": "hs-statistics-and-probability/making-inferences-and-justifying-conclusions/",
-        "S-ID": "hs-statistics-and-probability/interpreting-categorical-and-quantitative-data/",
-        "S-MD": "hs-statistics-and-probability/using-probability-to-make-decisions/",
-        "SP": "statistics-and-probability"
-    }
 
 COMMON_CORE_DOMAINS = {
         "A-APR": "Arithmetic with Polynomials and Rational Expressions",
@@ -108,7 +56,6 @@ class CommonCoreMap(db.Model):
     level = db.StringProperty(indexed=False)
     cc_description = db.TextProperty(indexed=False)
     cc_cluster = db.StringProperty(indexed=False)
-    cc_url = db.StringProperty(indexed=False)
     exercises = db.ListProperty(db.Key, indexed=False)
     videos = db.ListProperty(db.Key, indexed=False)
 
@@ -121,7 +68,6 @@ class CommonCoreMap(db.Model):
         entry['level'] = self.level
         entry['cc_description'] = self.cc_description
         entry['cc_cluster'] = self.cc_cluster
-        entry['cc_url'] = self.cc_url
         entry['exercises'] = []
         entry['videos'] = []
         for key in self.exercises:
@@ -182,7 +128,6 @@ class CommonCoreMap(db.Model):
             if e.standard not in standards_dict:
                 standard = {}
                 standard['standard'] = e.standard
-                standard['cc_url'] = e.cc_url
                 standard['cc_description'] = e.cc_description
                 standard['cc_cluster'] = e.cc_cluster
                 standard['exercises'] = []
@@ -244,10 +189,6 @@ class CommonCoreMap(db.Model):
         self.level = cc_components[2]
         if len(cc_components) == 4:
             self.level += "." + cc_components[3]
-        self.cc_url = COMMON_CORE_BASE_URL + COMMON_CORE_GRADE_URLS[self.grade] + COMMON_CORE_DOMAIN_URLS[self.domain_code] + "#"
-        if self.grade != "9-12":
-            self.cc_url += self.grade.lower() + "-"
-        self.cc_url += self.domain_code.lower() + "-" + self.level.split('.')[0]
 
         return
 
