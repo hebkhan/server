@@ -119,7 +119,7 @@ class Sync(request_handler.RequestHandler):
             raise Exception("These topics were not found in the live topictree: %s", ", ".join(sorted(topics)))
 
         mapping = {}
-        reader = csv.reader(csv.StringIO(result.content))
+        reader = csv.reader(StringIO.StringIO(result.content))
         for row in reader:
             if set(map(str.lower, row)) & set(["serial","subject","english","hebrew"]):
                 header = [re.sub("\W","_",r.lower()) for r in row]
@@ -145,7 +145,7 @@ def khan_import_task(step_log, data):
     try:
         models.topictree_import_task("edit", "root", False,
                                      data,
-                                     hard=False,
+                                     replace=False,
                                      )
     except Exception, e:
         step_log.error = "Error in task: %s" % e

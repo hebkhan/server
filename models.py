@@ -2924,7 +2924,7 @@ class Topic(Searchable, db.Model):
         else:
             return progress_tree
 
-def topictree_import_task(version_id, topic_id, publish, data_compressed, hard=True):
+def topictree_import_task(version_id, topic_id, publish, data_compressed, replace=True):
     from api.v1 import exercise_save_data
     from exercises import get_title_from_html
     import zlib
@@ -2966,7 +2966,7 @@ def topictree_import_task(version_id, topic_id, publish, data_compressed, hard=T
         put_change = True
 
     # delete all subtopics of node we are copying over the same topic
-    if hard and tree_json["id"] == parent.id:
+    if replace and tree_json["id"] == parent.id:
         parent.delete_descendants() 
 
     # adds key to each entity in json tree, if the node is not in the tree then add it
@@ -3094,7 +3094,8 @@ def topictree_import_task(version_id, topic_id, publish, data_compressed, hard=T
 
     def add_child_keys_json_tree(tree, prefix=""):
         if tree["kind"] == "Topic":
-            tree["child_keys"] = [] if hard else all_entities_dict[tree["key"]].child_keys
+            clean = replace or tree["id"] != "root"
+            tree["child_keys"] = [] if clean else all_entities_dict[tree["key"]].child_keys
             child_set = set(tree["child_keys"])
             if "children" in tree:
                 for i, child in enumerate(tree["children"]):
@@ -3124,7 +3125,7 @@ def topictree_import_task(version_id, topic_id, publish, data_compressed, hard=T
             topic = all_entities_dict[node["key"]]
             logging.info("%i/%i Updating any change to Topic %s" % (i, len(nodes), topic.title))
             keys = ['id', 'child_keys']
-            if hard:
+            if replace:
                 keys += ['title', 'standalone_title', 'description', 'tags', 'hide']
             kwargs = dict((key, node[key])
                           for key in keys
@@ -3138,7 +3139,7 @@ def topictree_import_task(version_id, topic_id, publish, data_compressed, hard=T
             video = all_entities_dict[node["key"]]
             logging.info("%i/%i Updating any change to Video %s" % (i, len(nodes), video.title))
             keys = ["readable_id", "youtube_id", "youtube_id_en"]
-            if hard:
+            if replace:
                 keys += ["title", "description", "keywords"]
             change = VersionContentChange.add_content_change(video, 
                 version, 
@@ -3161,7 +3162,7 @@ def topictree_import_task(version_id, topic_id, publish, data_compressed, hard=T
             logging.info("%i/%i Updating any changes to Url %s" % (i, len(nodes), url.title))
 
             changeable_props = ["url"]
-            if hard:
+            if replace:
                 changeable_props += ["tags", "title"]
 
             change = VersionContentChange.add_content_change(
