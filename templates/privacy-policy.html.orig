@@ -15,7 +15,7 @@ $(function(){
 {% endblock pagescript %}
 {% block pagetitle %}Privacy Policy{% endblock pagetitle %}
 {% block pagecontent %}
-<article id="privacy-policy">
+<article id="privacy-policy" dir="ltr">
 <h1 class="main-headline">Khan Academy Privacy Policy</h1>
 <p>Last Updated: December 12, 2011</p>
 <p>Welcome to the web site and online services (the “Website”) operated by Khan Academy, Inc., a 501(c)(3) organization (“Khan Academy”).  Khan Academy values the privacy of our members and others who visit and use the Website (individually, “You” or collectively, “Users”). We take your privacy seriously and make it a priority to protect personally identifiable information that we obtain from and about individuals both online and off-line.</p>

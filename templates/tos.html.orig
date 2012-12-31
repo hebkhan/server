@@ -15,7 +15,7 @@ $(function(){
 {% endblock pagescript %}
 {% block pagetitle %}Terms of Service{% endblock pagetitle %}
 {% block pagecontent %}
-<article id="tos"> 
+<article id="tos" dir="ltr"> 
 <h1 class="main-headline">Khan Academy Terms of Service</h1>
 <p>Last Updated: December 12, 2011</p>
 <h2>Introduction: Your Agreement to the Terms of Service.</h2>
