@@ -6,10 +6,11 @@
   <div>
       <h2>Upload common core map</h2>
       {% if not done %}
-          Upload a TSV (tab-separated) file which maps common core standards to KA exercises and videos (need admin access)
-          <form id="upload" method="POST" action="/devadmin/managecommoncore" enctype="multipart/form-data" style="display: block; margin: 22px 0">
-          <input id="commoncore" name="commoncore" type="file" /><br><br>
-          <input id="upload" type="submit" value="Update common core mapping" />
+          <form id="upload" method="POST" action="/devadmin/managecommoncore" style="display: block; margin: 22px 0">
+            Common-Core mapping spreadsheet (Google-Drive ID):
+            <input style="width: 100%" type="text" name="remap_doc_id" value="{{ remap_doc_id }}">
+            <br><br>
+            <input type="submit" class="simple-button action-gradient" value="I know what I'm doing. Let's do it!">
           </form>
       {% else %}
           Updating common core mapping (takes 5-10 mins to <a href="/commoncore">reflect changes</a>)

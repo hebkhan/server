@@ -251,7 +251,7 @@ class ManageCoworkers(request_handler.RequestHandler):
         
 def update_common_core_map(cc_file):
     logging.info("Deferred job <update_common_core_map> started")
-    reader = csv.reader(cc_file, delimiter='\t')
+    reader = csv.reader(cc_file)
     headerline = reader.next()
     cc_list = []
     cc_standards = {}
@@ -279,6 +279,7 @@ def update_common_core_map(cc_file):
             cc_list.append(cc)
 
         cc.update_standard(cc_standard, cc_cluster, cc_description)
+        logging.info("Updated: %s", cc_standard)
 
         if len(exercise_name) > 0:
             cc.update_exercise(exercise_name)
@@ -312,7 +313,14 @@ class ManageCommonCore(request_handler.RequestHandler):
 
         logging.info("Accessing %s" % self.request.path)
 
-        cc_file = StringIO.StringIO(self.request_string('commoncore'))
+        remap_doc_id = self.request_string("remap_doc_id")
+        url = "http://docs.google.com/spreadsheet/pub?key=%s&single=true&output=csv" % remap_doc_id
+        try:
+            result = urlfetch.fetch(url, deadline=30)
+        except Exception, e:
+            raise Exception("%s (%s)" % (e, url))
+
+        cc_file = StringIO.StringIO(result.content)
         deferred.defer(update_common_core_map, cc_file)
 
         self.redirect("/devadmin")

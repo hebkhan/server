@@ -15,14 +15,14 @@
 	<style type="text/css">
 	
 	#sidebar {
-		margin-right:10px;
+		margin-left:10px;
 		overflow: auto;
 	}
 	
 	#sidebar-wrapper {
-		padding-right:24px;
+		padding-left:24px;
 		padding-bottom:48px;
-		border-right: 1px solid #d1d1d1;
+		border-left: 1px solid #d1d1d1;
 	}
 	
 	table {
@@ -36,8 +36,8 @@
 		color: #fff;
 		font-weight: bold;
 		padding: 8px 11px;
-		text-align: left;
-		border-right: 1px solid #fff;
+		text-align: right;
+		border-left: 1px solid #fff;
 		line-height: 1.2;
 		width: 217px;
 		z-index: 99;
@@ -95,7 +95,7 @@
 	
 	.standards ul {
 		list-style: disc;
-		margin-left: 1.5em;
+		margin-right: 1.5em;
 	}
 	
 	.standards li {
@@ -132,7 +132,7 @@
 	}
 	
 	.domain-link ul {
-		margin-left: 2em;
+		margin-right: 2em;
 	}
 	
 	.hidden-videos {
@@ -198,8 +198,8 @@
 	
 	
 	<div id="cc-header">
-		<h1 class="section-headline" style="float:left;">Common Core Map</h1>
-		<!--a href="#" class="simple-button action-gradient" style="float:right; margin-top:22px;">Submit a Common Core Tag</a>
+		<h1 class="section-headline" style="float:right;">Common Core Map</h1>
+		<!--a href="#" class="simple-button action-gradient" style="float:left; margin-top:22px;">Submit a Common Core Tag</a>
 		<div style="clear:both;"></div-->
 	</div>
 		
