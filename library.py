@@ -27,6 +27,14 @@ def print_topics(topics):
             print " "
         print " "
 
+def walk_children(children):
+    for child in children:
+        if child.key().kind() == "Topic":
+            for elem in walk_children(child.children):
+                yield elem
+        else:
+            yield child
+
 def flatten_tree(tree, parent_topics=[]):
     homepage_topics = []
     tree.content = []
@@ -47,11 +55,15 @@ def flatten_tree(tree, parent_topics=[]):
     if tree.is_super or parent_topics:
         child_parent_topics.append(tree)
 
-    for child in tree.children:
-        if child.key().kind() == "Topic":
-            tree.subtopics.append(child)
-        else:
-            tree.content.append(child)
+    if len(parent_topics) >= 2:
+        #logging.info("Cutting tree depth at: %s - %s", tree.depth, tree.title)
+        tree.content.extend(walk_children(tree.children))
+    else:
+        for child in tree.children:
+            if child.key().kind() == "Topic":
+                tree.subtopics.append(child)
+            else:
+                tree.content.append(child)
 
     del tree.children
 
