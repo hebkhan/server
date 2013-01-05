@@ -2460,7 +2460,9 @@ class Topic(Searchable, db.Model):
         contentItems = db.get(contentKeys)
         # add the content to the node dict
         for content in contentItems:
-            node_dict[content.key()]=content
+            if content.kind() == "Video":
+                content.translated = content.youtube_id != content.youtube_id_en
+            node_dict[content.key()] = content
 
         # cycle through the nodes adding each to its parent's children list
         for key, descendant in node_dict.iteritems():
