@@ -175,9 +175,9 @@ class ViewHomePage(request_handler.RequestHandler):
         elif version_number:
             layer_cache.disable()
             library_content = library.library_content_html(version_number=int(version_number))
-        elif not self.is_mobile_capable():
-            # Only running ajax version of homepage for non-mobile clients
-            library_content = library.library_content_html(ajax = True)
+#        elif not self.is_mobile_capable():
+#            # Only running ajax version of homepage for non-mobile clients
+#            library_content = library.library_content_html(ajax = True)
         else:
             library_content = library.library_content_html()
             
