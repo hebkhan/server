@@ -56,7 +56,7 @@
                 <li><a href="#long-term">What is the long-term goal for the Khan Academy?</a></li>
                 <li><a href="#equipment">What equipment do you use to make your videos?</a></li>
                 <li><a href="#where-from">Where are you from? What ethnicity/religion are you?</a></li>
-                <li><a href="#help">How can I/you help?</a></li>
+                {#<li><a href="#help">How can I/you help?</a></li>#}
             </ul>
         </div>
         <div id="nav-placeholder" class="col1 forty-sixty" style="height: 1px; padding: 0 9px; max-width: 31%; min-width: 31%; margin-left: 3%;">
@@ -310,10 +310,12 @@
     mystery of the Universe, then I'm the same religion as you.
     </p>
 
+    {#
     <a name="help"><h2>How can I/you help?</h2></a>
     <p>
     See the <a href="/contribute">How to help</a> page.
     </p>
+    #}
     </div>
     <div class="clear"></div>
     <p>&nbsp;</p>
