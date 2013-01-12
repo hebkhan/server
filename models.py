@@ -2772,8 +2772,13 @@ class Topic(Searchable, db.Model):
     def reindex(version):
         import search
         items = search.StemmedIndex.all().filter("parent_kind", "Topic").run()
-        for i in xrange(0, len(items), 500):
-            db.delete(i.key() for i in items[i:i+500])
+
+        while True:
+            batch = [a for a,_ in itertools.izip(items, xrange(250))]
+            if batch:
+                db.delete(batch)
+            else:
+                break
 
         topics = Topic.get_content_topics(version)
         for topic in topics:
