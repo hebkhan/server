@@ -1,6 +1,6 @@
 {% macro empty_class_instructions(class_is_empty=True) -%}
 
-    {% set coach_email = UserData.current().email if UserData.current() else "Not signed in. Please sign in to see your Coach ID." %}
+    {% set coach_email = UserData.current().email if UserData.current() else "(עליכם להתחבר!)" %}
 
     <div id="empty-class">
         {% if class_is_empty %}

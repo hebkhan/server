@@ -1,6 +1,6 @@
 {% macro empty_class_instructions(class_is_empty=True) -%}
 
-    {% set coach_email = UserData.current().email if UserData.current() else "Not signed in. Please sign in to see your Coach ID." %}
+    {% set coach_email = UserData.current().email if UserData.current() else "(עליכם להתחבר!)" %}
 
     <div id="empty-class">
         {% if class_is_empty %}
@@ -13,7 +13,7 @@
                 <a href="/coaches"><img src="/images/add-a-coach.png" class="vertical-shadow rounded-background" /></a>
             </li>
             <li class="enter-email">
-                <p>לאחר מכן, הם צריכים להכניס את שם המשתמש של המדרייך בצורה הנראית כך:</p>
+                <p>לאחר מכן, הם צריכים להכניס את שם המשתמש של המדריך בצורה הנראית כך:</p>
                 <div class="coach-email">{{ coach_email|escape }}</div>
                 <a href="/coaches"><img src="/images/enter-coach-email.png?{{App.version}}" class="vertical-shadow rounded-background"/></a>
                 <p>

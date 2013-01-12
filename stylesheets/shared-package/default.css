@@ -2792,13 +2792,28 @@ a.proficient-badge.disabled {
 #the-team .general-contact ul li {
     margin-bottom: 10px;
 }
-#the-team .team-photo {
-    width: 95%;
-    display: block;
+#the-team .logo-image {
+    height: 100px;
+    /*display: block;*/
     margin: 0 auto;
     padding: 9px;
     background: #f7f7f7;
 }
+
+#the-team .logo-table {
+    margin: 0 auto;
+    padding: 9px;
+    //background: #f7f7f7;
+}
+    #the-team .logo-table td {
+        width: 110px;
+        height: 110px;
+        background-size: 110px 110px;
+        background-repeat: no-repeat;
+        text-align: center;
+    }
+
+
 #the-team .team-card {
     width: 47%;
     float: right;
