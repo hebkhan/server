@@ -24,6 +24,7 @@
         <table class="logo-table">
             <tr>
                 <td background="/images/logos/logo-arei-hinuch.png"></td>
+                <td background="/images/logos/logo-ort.jpg"></td>
                 <td background="/images/logos/logo-andromedia.jpg"></td>
             </tr>
         </table>
@@ -158,7 +159,7 @@
     <div class="clear"></div>
 
     <div style="text-align:center;">
-        <p>כמו כן עזרו בתרגום ובדיבוב האנשים היקרים האלה:
+        <p>כמו כן עזרו בקידום הפרויקט האנשים היקרים האלה:
         </p>
         <ul>
             <li>
@@ -180,6 +181,12 @@
             מילה קידר
             </li>
             <li>
+            אור כהן
+            </li>
+            <li>
+            זוהר שינדלמן
+            </li>
+            <li>
             שרון בר-נטע
             </li>
             <li>
@@ -187,6 +194,9 @@
             </li>
             <li>
             ויקטור פינקלשטיין
+            </li>
+            <li>
+            יגאל ספיר
             </li>
         </ul>
     </div>

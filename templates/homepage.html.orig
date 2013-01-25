@@ -121,6 +121,12 @@
             </span>
         </div>
         <h2 class="main-headline">Browse our library of over {{approx_vid_count|thousands_separated}} educational videos...</h2>
+        <p>
+        הקטלוג מכיל את הסרטונים של אקדמיית קהאן באותם נושאים העוברים עתה הסבה לעברית.
+        הקישורים בצבע אפור הם הסרטונים המקוריים באנגלית,
+        כאשר הם מוחלפים בהדרגה בסרטונים העבריים המופיעים בצבע כחול.
+        עם התקדמות פרויקט ההסבה, יצטרפו במשך הזמן נושאים נוספים לקטלוג.
+        </p>
         {% if DVD_list %}
         <ul class="menu" id="menu">
             {% for topic in DVD_list %}

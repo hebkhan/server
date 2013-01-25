@@ -34,7 +34,7 @@
         <p>
             עם ספרייה של יותר מ- <a href="/#browse">{{approx_vid_count|thousands_separated}} סרטונים</a> בהמון 
             נושאים - מחשבון ומתמטיקה, לפיזיקה וביולוגיה, ובנוסף <a href="/exercisedashboard">{{exercise_count}} תרגילים לשיפור ההבנה (וגם אוסף מדליות)</a>,
-            <a href="/about">אנחנו כאן כדי</a> לעזור לכם ללמוד מה שמעניין אתכם, מתי שאתם רוצים. ושלא ילחיצו אותכם
+            <a href="/about">אנחנו כאן כדי</a> לעזור לכם ללמוד מה שמעניין אתכם, מתי שאתם רוצים. ושלא ילחיצו אותכם.
         </p>
         <p class="call-to-action-buttons">
         	<a href="/#browse" class="call-to-action simple-button action-gradient green">צפו בסרטון</a>
@@ -121,6 +121,12 @@
             </span>
         </div>
         <h2 class="main-headline">עיינו בספריה שלנו עם יותר מ-{{approx_vid_count|thousands_separated}} סרטונים...</h2>
+        <p>
+        הקטלוג מכיל את הסרטונים של אקדמיית קהאן באותם נושאים העוברים עתה הסבה לעברית.
+        הקישורים בצבע אפור הם הסרטונים המקוריים באנגלית,
+        כאשר הם מוחלפים בהדרגה בסרטונים העבריים המופיעים בצבע כחול.
+        עם התקדמות פרויקט ההסבה, יצטרפו במשך הזמן נושאים נוספים לקטלוג.
+        </p>
         {% if DVD_list %}
         <ul class="menu" id="menu">
             {% for topic in DVD_list %}
