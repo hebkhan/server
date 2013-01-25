@@ -55,15 +55,24 @@ def flatten_tree(tree, parent_topics=[]):
     if tree.is_super or parent_topics:
         child_parent_topics.append(tree)
 
-    if len(parent_topics) >= 2:
-        #logging.info("Cutting tree depth at: %s - %s", tree.depth, tree.title)
-        tree.content.extend(walk_children(tree.children))
-    else:
-        for child in tree.children:
-            if child.key().kind() == "Topic":
-                tree.subtopics.append(child)
+    # Cutting tree depth
+    leaf_topic = len(parent_topics) >= 2
+
+    def add_once(child, _dups=set()):
+        if child.key() not in _dups:
+            _dups.add(child.key())
+            tree.content.append(child)
+        else:
+            logging.debug("Dup: %s (%s)", child.readable_id, tree.id)
+
+    for child in tree.children:
+        if child.key().kind() == "Topic":
+            if leaf_topic:
+                map(add_once, walk_children(child.children))
             else:
-                tree.content.append(child)
+                tree.subtopics.append(child)
+        else:
+            add_once(child)
 
     del tree.children
 
