@@ -85,65 +85,80 @@ class EditContent(request_handler.RequestHandler):
 
     def fix_duplicates(self):
         dry_run = self.request.get('dry_run', False)
-        video_list = [v for v in models.Video.all()]
-        video_dict = dict()
+
+        logging.info("Fixing duplicates (video count: %s, dry-run: %s)", models.Video.all().count(limit=None), dry_run)
+        video_dict = {}
+        tube_dict = {}
 
         version = models.TopicVersion.get_by_id("edit")
 
         videos_to_update = []
-        
-        for video in video_list:
-            if not video.readable_id in video_dict:
-                video_dict[video.readable_id] = []
-            video_dict[video.readable_id].append(video)
+        videos_to_delete = []
+
+        for video in models.Video.all():
+            if not video.readable_id:
+                videos_to_delete.append(video)
+            else:
+                video_dict.setdefault(video.readable_id, []).append(video)
+                tube_dict.setdefault(video.youtube_id, []).append(video)
 
         video_idx = 0
+        def print_video(video, action, dup_idx):
+            topic_strings = "|".join(topic.id
+                                     for topic in models.Topic.all()
+                                                    .filter("version = ", version)
+                                                    .filter("child_keys =", video.key()).run())
+            msg = "%d,%s,%d,%s,%s,%s,%s,%s" % (video_idx, action, dup_idx, video.key(), video.readable_id, video.youtube_id, video.title, topic_strings)
+            print msg.encode("utf8")
+
         print "IDX,Canon,DUP,Key,ID,YTID,Title,Topics"
 
-        for readable_id, videos in video_dict.iteritems():
+        for canonical_readable_id, videos in video_dict.iteritems():
+            logging.info("%s: %s", canonical_readable_id, len(videos))
             if len(videos) > 1:
                 canonical_key_id = 0
-                canonical_readable_id = None
                 for video in videos:
                     if models.Topic.all().filter("version = ", version).filter("child_keys =", video.key()).get():
                         canonical_key_id = video.key().id()
-                    if not canonical_readable_id or len(video.readable_id) < len(canonical_readable_id):
-                        canonical_readable_id = video.readable_id
-                
-                def print_video(video, is_canonical, dup_idx):
-                    canon_str = "CANONICAL" if is_canonical else "DUPLICATE"
-                    topic_strings = "|".join([topic.id for topic in models.Topic.all().filter("version = ", version).filter("child_keys =", video.key()).run()])
-                    print "%d,%s,%d,%s,%s,%s,%s,%s" % (video_idx, canon_str, dup_idx, str(video.key()), video.readable_id, video.youtube_id, video.title, topic_strings)
+                    else:
+                        videos_to_delete.append(video)
+                        video.readable_id = None
+                        print_video(video, "DELETE", 0)
 
+                dup_idx = 1
                 for video in videos:
+                    if not video.readable_id:
+                        continue
+
                     if video.key().id() == canonical_key_id:
                         if video.readable_id != canonical_readable_id:
                             video.readable_id = canonical_readable_id
                             videos_to_update.append(video)
-
-                        print_video(video, True, 0)
-
-                dup_idx = 1
-                for video in videos:
-                    if video.key().id() != canonical_key_id:
+                        print_video(video, "CANONICAL", 0)
+                    else:
                         new_readable_id = canonical_readable_id + "_DUP_" + str(dup_idx)
 
                         if video.readable_id != new_readable_id:
                             video.readable_id = new_readable_id
                             videos_to_update.append(video)
 
-                        print_video(video, False, dup_idx)
-
+                        print_video(video, "DUPLICATE", dup_idx)
                         dup_idx += 1
 
                 video_idx += 1
 
-        if len(videos_to_update) > 0:
-            logging.info("Writing " + str(len(videos_to_update)) + " videos with duplicate IDs")
+        if len(videos_to_update) or len(videos_to_delete):
+            logging.info("Writing %s videos with duplicate IDs", len(videos_to_update))
             if not dry_run:
                 db.put(videos_to_update)
             else:
-                logging.info("Just kidding! This is a dry run.")
+                logging.info("...Just kidding! This is a dry run.")
+
+            logging.info("Removing %s videos with no IDs", len(videos_to_delete))
+            if not dry_run:
+                db.delete(videos_to_delete)
+            else:
+                logging.info("...Just kidding! This is a dry run.")
         else:
             logging.info("No videos to update.")
 
