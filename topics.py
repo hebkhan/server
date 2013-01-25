@@ -97,6 +97,8 @@ class EditContent(request_handler.RequestHandler):
 
         for video in models.Video.all():
             if not video.readable_id:
+                for topic in models.Topic.all().filter("version = ", version).filter("child_keys =", video.key()).run():
+                    topic.delete_child(video)
                 videos_to_delete.append(video)
             else:
                 video_dict.setdefault(video.readable_id, []).append(video)
