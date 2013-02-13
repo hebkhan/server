@@ -2459,11 +2459,19 @@ class Topic(Searchable, db.Model):
         # get all content that belongs in this tree
         contentItems = db.get(contentKeys)
         # add the content to the node dict
-        for content in contentItems:
+        topics_to_update = []
+        for key, content in itertools.izip(contentKeys, contentItems):
+            if not content:
+                for topic in Topic.all().filter("version = ", self.version).filter("child_keys =", key).run():
+                    logging.warning("%s: removed child (%s)", topic.id, key)
+                    topic.child_keys = [c for c in topic.child_keys if c != key]
+                    topics_to_update.append(topic)
+                continue
             if content.kind() == "Video":
                 content.translated = content.youtube_id != content.youtube_id_en
             node_dict[content.key()] = content
 
+        db.put(topics_to_update)
         # cycle through the nodes adding each to its parent's children list
         for key, descendant in node_dict.iteritems():
             if hasattr(descendant, "child_keys"):
