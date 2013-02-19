@@ -352,6 +352,11 @@ class RequestHandler(webapp2.RequestHandler, RequestInputHandler):
             if goals_data:
                 template_values['global_goals'] = jsonify(goals_data)
 
+        app_host = self.request.host.split(":")[0]
+        if app_host[0].isdigit():
+            app_host = app_host.partition(".")[2]
+        template_values['webengage_id'] = App.webengage_id.get(app_host, app_host) if App.webengage_id else ""
+
         return template_values
 
     def render_jinja2_template(self, template_name, template_values):

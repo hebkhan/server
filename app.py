@@ -36,6 +36,7 @@ for attr in [
     'assembla_key',
     'assembla_secret',
     'paypal_token_id',
+    'webengage_id',
 ]:
     # These secrets are optional in development but not in production
     if App.is_dev_server and not hasattr(secrets, attr):
