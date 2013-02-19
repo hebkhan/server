@@ -199,7 +199,7 @@
     <script id="_webengage_script_tag" type="text/javascript">
       window.webengageWidgetInit = window.webengageWidgetInit || function(){
         webengage.init({
-          licenseCode: {%- if App.is_dev_server -%}"14507c71c"{%- else -%}"d3a49bb8"{%- endif -%}
+          licenseCode: {%- if App.is_dev_server -%}"14507c71c"{%- else -%}"82617202"{%- endif -%}
         }).onReady(function(){
           webengage.render();
         });
