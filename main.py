@@ -802,6 +802,7 @@ application = webapp2.WSGIApplication([
     ('/admin/realtimeentitycount', RealtimeEntityCount),
     ('/admin/unisubs', unisubs.ReportHandler),
     ('/admin/unisubs/import', unisubs.ImportHandler),
+    ('/admin/exercisesync', exercises.SyncExercises),
 
     ('/devadmin', devpanel.Panel),
     ('/devadmin/sync', devpanel.Sync),

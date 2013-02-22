@@ -8,7 +8,7 @@ import logging
 
 from google.appengine.ext import db
 from google.appengine.ext import deferred
-from google.appengine.api import taskqueue, urlfetch
+from google.appengine.api import taskqueue
 
 import datetime
 import models
@@ -828,3 +828,43 @@ def get_title_from_html(exercise_name):
     except:
         logging.exception("Could not get title for '%s'", exercise_name)
         return exercise_name.replace("_"," ").capitalize()
+
+class SyncExercises(request_handler.RequestHandler):
+
+    def get(self):
+
+        if self.request_bool("start", default = False):
+            taskqueue.add(url='/admin/exercisesync', queue_name='slow-background-queue')
+            self.response.out.write("Sync started")
+        else:
+            self.response.out.write("<br/><a href='/admin/exercisesync?start=1'>Start New Sync</a>")
+
+    def post(self):
+        # Protected for admins only by app.yaml so taskqueue can hit this URL
+        self.syncExerciseTitles()
+
+    def syncExerciseTitles(self):
+        exercises = models.Exercise.get_all_use_cache()
+        logging.info("got all exercises: %s", len(exercises))
+        exercise_dict = dict((exercise.name, exercise) for exercise in exercises)
+
+        exercises_dir = os.path.join(os.path.dirname(__file__), "khan-exercises/exercises")
+        available_exercises = set(os.path.basename(p)[:-5] for p in os.listdir(exercises_dir) if p.endswith(".html"))
+        logging.info("Found exercise files: %s", len(available_exercises))
+
+        c = 0
+        exercises_to_update = []
+        for name, exercise in exercise_dict.iteritems():
+            if exercise.summative:
+                continue
+            if name not in available_exercises:
+                logging.warning("We don't have exercise '%s'", name)
+                continue
+            title = get_title_from_html(name)
+            if title != exercise.display_name:
+                exercise.display_name = title
+                exercises_to_update.append(exercise)
+                logging.info("Updating %s (%s)", name, title)
+                c+=1
+        db.put(exercises_to_update)
+        logging.info("Updated %s exercises", c)
