@@ -195,7 +195,7 @@
     </script>
     {%- endif -%}
 
-    {%- if not hide_feedback -%}
+    {%- if not (hide_feedback or is_mobile) -%}
     <script id="_webengage_script_tag" type="text/javascript">
       window.webengageWidgetInit = window.webengageWidgetInit || function(){
         webengage.init({
