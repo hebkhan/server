@@ -107,7 +107,7 @@
         font-weight: normal;
         position: relative;
         top: -1px;
-        white-space: nowrap;
+        white-space: normal;
         text-overflow: ellipsis;
     }
 #page_sub_nav .breadcrumbs_nav a {

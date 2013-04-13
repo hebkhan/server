@@ -49,7 +49,10 @@
             <h1 class="title-header">
                 <span itemprop="name" class="title desktop-only">{{video.title|escape}}</span>
             {% if video.description %}
-                <span class="long-description"><span class="desktop-only">: </span><span itemprop="description">{{video.description|escape}}</span></span>
+                <span class="long-description"><span class="desktop-only">: </span>
+                    <br>
+                        <span itemprop="description">{{video.description|escape}}</span>
+                </span>
             {% endif %}
             </h1>
 
