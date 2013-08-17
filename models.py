@@ -2467,8 +2467,6 @@ class Topic(Searchable, db.Model):
                     topic.child_keys = [c for c in topic.child_keys if c != key]
                     topics_to_update.append(topic)
                 continue
-            if content.kind() == "Video":
-                content.translated = content.youtube_id != content.youtube_id_en
             node_dict[content.key()] = content
 
         db.put(topics_to_update)
@@ -3260,6 +3258,7 @@ class Video(Searchable, db.Model):
     title = db.StringProperty()
     description = db.TextProperty()
     keywords = db.StringProperty()
+    source = db.StringProperty()
     duration = db.IntegerProperty(default = 0)
 
     # Human readable, unique id that can be used in URLS.

@@ -54,6 +54,15 @@
       </tr>
 
       <tr>
+        <td style="font-weight:bold;">Video Source</td>
+        <td style="padding-bottom:9px;">
+          <input type="text" name="source" value="{{ model.source }}" maxlength="11"/><br/>
+          {{#if oldValues.source }}<span class="old-value">Old value: <input type="text" disabled value="{{ oldValues.source }}" maxlength="11"/></span><br/>{{/if}}
+          <em>Short identification of the video source - (khan, hebkhan, ani10)</em>
+        </td>
+      </tr>
+
+      <tr>
         <td style="font-weight:bold;">Description</td>
         <td style="padding-bottom:9px;">
           <textarea name="description">{{ model.description }}</textarea><br/>

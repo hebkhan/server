@@ -1,5 +1,6 @@
 import datetime
 import random
+import logging
 
 from jinja2.utils import escape
 
@@ -173,6 +174,7 @@ class ViewHomePage(request_handler.RequestHandler):
         if App.is_dev_server and default is None:
             library_content = "<h1>Content not initialized. <a href=\"/devadmin/content?autoupdate=1\">Click here</a> to autoupdate from khanacademy.org."
         elif version_number:
+            logging.info("Library for version = %s", version_number)
             layer_cache.disable()
             library_content = library.library_content_html(version_number=int(version_number))
 #        elif not self.is_mobile_capable():

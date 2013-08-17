@@ -357,8 +357,17 @@ a:link:hover, a:link:focus, a:visited:hover, a:visited:focus {
     text-decoration: underline;
 }
 
-a.untranslated, a:visited.untranslated {
-    color: #BCCBD3;
+.source-khan, a:visited.source-khan,
+.source-None, a:visited.source-None {
+    color: #ACC3BB;
+}
+
+.source-hebkhan, a:visited.source-hebkhan {
+    color: #557303;
+}
+
+.source-ani10, a:visited.source-ani10 {
+    color: #005987;
 }
 
 /*

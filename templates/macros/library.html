@@ -20,6 +20,6 @@
 {%- endmacro %}
 
 {% macro video_name_and_progress(video) -%}
-    <span class='vid-progress v{{ video.key().id() }}'>{{ video.title|escape }}</span>
+    <span class='vid-progress v{{ video.key().id() }} source-{{ video.source }}'>{{ video.title|escape }}</span>
 {%- endmacro %}
 

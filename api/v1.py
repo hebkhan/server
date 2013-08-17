@@ -169,7 +169,7 @@ def topics_library_compact():
         if item.kind() == "Video":
             trimmed_item_dict['url'] = "/video/%s?topic=%s" %(item.readable_id, topic.id)
             trimmed_item_dict['key_id'] = item.key().id()
-            trimmed_item_dict['translated'] = item.youtube_id != item.youtube_id_en
+            trimmed_item_dict['source'] = item.source
             trimmed_item_dict['description'] = item.description
         elif item.kind() == "Url":
             trimmed_item_dict['url'] = item.url
@@ -938,7 +938,7 @@ def save_video(video_id="", version_id = "edit"):
         return models.VersionContentChange.add_content_change(video, 
             version, 
             request.json, 
-            ["readable_id", "title", "youtube_id", "description", "keywords"])
+            ["readable_id", "title", "youtube_id", "description", "keywords", "source"])
 
     # handle making a new video
     else:
