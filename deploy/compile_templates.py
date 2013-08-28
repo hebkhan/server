@@ -18,7 +18,7 @@ def append_paths():
         
     if not gae_path:
         # Default to Mac's default location
-        gae_path = "/Applications/GoogleAppEngineLauncher.app/Contents/Resources/GoogleAppEngine-default.bundle/Contents/Resources/google_appengine"
+        gae_path = "../google_appengine/"
 
     extra_paths = [
         os.path.abspath("."),
