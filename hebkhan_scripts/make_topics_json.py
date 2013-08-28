@@ -7,7 +7,11 @@ import json
 import sys
 import fileinput
 import itertools
-import urllib2
+import requests
+import gevent
+from collections import namedtuple
+import logging
+
 ILLEGAL_CHARS_IN_ID = re.compile("[-:,\"]")
 
 def make_id(title):
@@ -20,81 +24,129 @@ def get_id(prefix, id=None):
 def log(msg, *args):
     sys.stderr.write(msg % args + "\n")
 
-def get_topic_tree(videos):
+def get_topic_tree(videos, root_topic_id='root'):
 
     class Topic(dict):
         all = {}
 
-        def __init__(self, title, id=None, parent=None):
-            if not id:
-                id = "%s_%03d" % (parent["id"], next(parent.counter)*10)
-            self.counter = itertools.count(1)
-            self['id'] = id
-            self['title'] = title
+        def __init__(self, readable_id, title, parent=None):
+            self.__class__.all[readable_id] = self
+            self['id'] = readable_id
+            self['title'] = title.decode("utf-8")
             self['children'] = []
+            self['videos'] = set()
             self['kind'] = "Topic"
-            self.__class__.all[title] = self
-            log(" Topic: %s / %s -- %s", parent and parent['id'], self['id'], self['title'])
+            logging.info(" Topic: %s -- %s", "--".join(readable_id), self['title'])
             if parent:
                 parent['children'].append(self)
 
-        @classmethod
-        def get_or_create(cls, key, parent_key=None):
+        def get_or_create(self, readable_id, title):
+            readable_id = (readable_id,)
+            if self != root_topic:
+                readable_id = self['id'] + readable_id
             try:
-                return cls.all[key]
+                return self.all[readable_id]
             except KeyError:
-                parent = cls.get_or_create(parent_key) if parent_key else ROOT
-                return cls(key, parent=parent)
+                return self.__class__(readable_id, title, parent=self)
 
+    def to_id(ids):
+        ids = list(ids)
+        parts = (p0 for p0, p1 in zip(ids, ids[1:] + [""]) if p0 not in p1)
+        return "--".join(parts).lower().replace(" ","-")
 
-    def process((id, name, description, topics, youtube_id)):
+    root_topic = Topic((root_topic_id,), "")
+    for i, vid in enumerate(videos):
+        topic_ids = [vid[k] for k in sorted(vid) if k.startswith("topic_id")]
+        topic_names = [vid[k] for k in sorted(vid) if k.startswith("topic_name")]
+        assert len(topic_ids) == len(topic_names), "topic_id columns must match topic_name columns"
+
+        if vid['readable_id']:
+            readable_id = vid['readable_id']
+        else:
+            readable_id = to_id(topic_ids + [("L%s" % vid['line'])])
+        description = "\n".join(vid['description'].split("\\n"))
+        if vid['source'] == "ani10":
+            title = vid['orig_name'].split("-")[-1].strip()
+            description += "\n(%s)" % vid['orig_name']
         video = dict(
                      kind = "Video",
-                     title = name,
-                     standalone_title = name,
-                     description = description,
-                     youtube_id = youtube_id,
-                     readable_id = get_id("video", int(id)),
+                     source = vid['source'],
+                     title = title.decode("utf-8"),
+                     standalone_title = title.decode("utf-8"),
+                     description = description.decode("utf-8"),
+                     youtube_id = vid['youtube_id'],
+                     readable_id = readable_id,
                      )
+        video = {k:v for k,v in video.iteritems() if v!=""}
 
-        t1 = topics[0]
-        for t2 in topics[1:]:
-            topic = Topic.get_or_create(t2, t1)
-            t1 = t2
-        topic['children'].append(video)
-        log("    Video: %s -- %s", video['readable_id'], video['title'])
+        topic = root_topic
+        for key, title in zip(topic_ids, topic_names):
+            if key and title:
+                topic = topic.get_or_create(key or "unnamed", title or "unnamed")
 
-    ROOT = Topic('שורש כל הידע', "root")
+        if video['youtube_id'] not in topic['videos']:
+            topic['children'].append(video)
+            topic['videos'].add(video['youtube_id'])
+        logging.debug("    Video: %s -- %s", video['readable_id'], video.get('title'))
 
-    for video in videos:
-        process(video)
+    def to_dict(d):
+        if d['kind'] == "Topic":
+            d['id'] = to_id(d['id'])
+            d['children'] = [to_dict(sd) for sd in d['children']]
+            del d['videos']
+        return dict(d)
 
-    return ROOT
+    return to_dict(root_topic)
 
+VIDEOS_URL = "https://docs.google.com/spreadsheet/pub?key=0Ap8djBdeiIG7dEg2blg1YlNLbUdBTnJYb1lFUU1fZlE&single=true&gid=1&output=csv"
 
-VIDEOS_URL = "https://docs.google.com/spreadsheet/pub?key=0Ap8djBdeiIG7dFlFbElFRmxKclBIaFdfN3FhcWFnUHc&single=true&gid=1&output=csv"
+#http://www.hebrewkhan.org/api/v1/videos/prime-numbers
 
-RE_YOUTUBE_ID = re.compile("\?v=([-\w]+)|\.be/([-\w]+)")
+def get_videos():
 
-def iter_videos():
-    lines = csv.reader(urllib2.urlopen(VIDEOS_URL))
-    _header = next(lines)
+    lines = csv.reader(requests.get(VIDEOS_URL).iter_lines())
+    header = next(lines)
+    Video = lambda line: dict(zip(header, line))
 
-    c = 0
-    for id, name, description, originalName, url, subtopic, topic in lines:
-        description += " (%s)" % originalName
-        youtube_id, = filter(None, RE_YOUTUBE_ID.search(url).groups())
-        topics = map(str.strip, ":".join((topic, subtopic)).split(":"))
-        yield (id, name, description, topics, youtube_id)
-        c+=1
-    print "Read %s lines" % c
+    videos = []
+    def get_video(video):
+        if video['source'] == "khan":
+            khan_info = requests.get("http://www.hebrewkhan.org/api/v1/videos/" + video['readable_id']).json()
+            if not khan_info:
+                raise Exception("No video for %r" % (video,))
+            video['youtube_id'] = khan_info['youtube_id']
+        logging.info("got %s", video['youtube_id'])
+        videos.append(video)
+
+    from gevent.pool import Pool
+    video_getters = Pool(size=100)
+    for line in lines:
+        if not any(line):
+            break
+        video = Video(line)
+        video_getters.spawn_link_exception(get_video, video)
+    video_getters.join()
+
+    return videos
 
 if __name__ == '__main__':
-    with open("tree_of_knowledge.json", "w") as f:
-        f.write(json.dumps(get_topic_tree(iter_videos()),
-                           indent=4,
-                           ensure_ascii=False,
-                           ) + "\n")
+    import gevent.monkey
+    gevent.monkey.patch_all()
+
+    logging.basicConfig(level=logging.INFO, format="%(levelname)-10s|%(name)-30s|%(message)s")
+    logging.getLogger("requests").setLevel(logging.WARNING)
+
+    root = get_topic_tree(get_videos())
+    for tree in root['children']:
+        all_children = tree['children']
+        for i in xrange(0, len(all_children), 3):
+            tree['children'] = all_children[i:i+3]
+            logging.info("Writing %s - %s", tree['id'], i)
+            with open("tree_of_knowledge-%s-%s.json" % (tree['id'], i), "w") as f:
+                f.write(json.dumps(tree,
+                                   indent=4,
+                                   ensure_ascii=False,
+                                   ).encode("utf8") + "\n")
 
 def convert():
     f = fileinput.input()
