@@ -1,0 +1,2215 @@
+[
+    {
+        "id": 1,
+        "description": "מה הם מספרים שלילים",
+        "title": "מבוא למספרים שלילים",
+        "youtube_id": "DqsTNvJ2F38",
+        "subtopic": "חשבון יסודי וקדם אלגברה: חיבור וחיסור",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "מבוא-למספרים-שלילים"
+    },
+    {
+        "id": 2,
+        "description": "כיצד מחברים וכיצד מחסרים מספרים שלילים",
+        "title": "חיבור וחיסור מספרים שלילים",
+        "youtube_id": "8egUQUqJpMg",
+        "subtopic": "חשבון יסודי וקדם אלגברה: חיבור וחיסור",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "חיבור-וחיסור-מספרים-שלילים"
+    },
+    {
+        "id": 3,
+        "description": "ועכשיו לאחר שאנו יודעים כיצד לחבר ולחסר מספרים שלילים הגיע הזמן ללמוד כיצד להכפילם ולחלקם",
+        "title": "כפל וחילוק מספרים שלילים",
+        "youtube_id": "caPEfOo9Urc",
+        "subtopic": "חשבון יסודי וקדם אלגברה: כפל וחילוק",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "כפל-וחילוק-מספרים-שלילים"
+    },
+    {
+        "id": 4,
+        "description": "אנו שולטים בפעולות על מספרים שלמים. הגיע הזמן ללמוד על שברים: כיצד לחברם וכיצד לחסרם",
+        "title": "חיבור וחיסור שברים",
+        "youtube_id": "eZh3hIPjD_s",
+        "subtopic": "חשבון יסודי וקדם אלגברה: שברים",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "חיבור-וחיסור-שברים"
+    },
+    {
+        "id": 5,
+        "description": "כיצד מכפילים שברים",
+        "title": "הכפלת שברים",
+        "youtube_id": "-L-Dn1MI5tI",
+        "subtopic": "חשבון יסודי וקדם אלגברה: שברים",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "הכפלת-שברים"
+    },
+    {
+        "id": 6,
+        "description": "הפעולה הנוספת לשברים בארבעת הפעולות היסודיות: חלוקת שברים",
+        "title": "חלוקת שברים",
+        "youtube_id": "lNNdutAfKRs",
+        "subtopic": "חשבון יסודי וקדם אלגברה: שברים",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "חלוקת-שברים"
+    },
+    {
+        "id": 7,
+        "description": "מה עושים קודם - חיבור או כפל, חיסור או חזקה ומה חשיבות הסוגריים",
+        "title": "מבוא לסדר הפעולות",
+        "youtube_id": "qJIj8aoCkCI",
+        "subtopic": "חשבון יסודי וקדם אלגברה: סדר הפעולות",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "מבוא-לסדר-הפעולות"
+    },
+    {
+        "id": 8,
+        "description": "שיקולים וכללים נוספים בסדר פעולות החשבון",
+        "title": "הרחבה של סדר פעולות החשבון",
+        "youtube_id": "LSBh5nu3CHg",
+        "subtopic": "חשבון יסודי וקדם אלגברה: סדר הפעולות",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "הרחבה-של-סדר-פעולות-החשבון"
+    },
+    {
+        "id": 9,
+        "description": "נעבור עתה מארבעת הפעולות היסודיות לדיון בחזקות",
+        "title": "חזקות רמה ראשונה",
+        "youtube_id": "-8cB2R7cmu4",
+        "subtopic": "חשבון יסודי וקדם אלגברה: חזקות-בסיסי",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "חזקות-רמה-ראשונה"
+    },
+    {
+        "id": 10,
+        "description": "המשך הדיון בחזקות",
+        "title": "חזקות רמה שניה",
+        "youtube_id": "gF_DBoIV_N0",
+        "subtopic": "חשבון יסודי וקדם אלגברה: חזקות-בסיסי",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "חזקות-רמה-שניה"
+    },
+    {
+        "id": 11,
+        "description": "נקנח את הדיון בחזקות בדוגמאות נוספות",
+        "title": "חזקות רמה שלישית",
+        "youtube_id": "wdl1VwUu5jg",
+        "subtopic": "חשבון יסודי וקדם אלגברה: חזקות-בסיסי",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "חזקות-רמה-שלישית"
+    },
+    {
+        "id": 12,
+        "description": "סיום הדיון בחזקות - הצגת החזקות השליליות",
+        "title": "הבנת חזקות שליליות",
+        "youtube_id": "-ZfkYX8Zfco",
+        "subtopic": "אלגברה: חזקות ושורשים",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "הבנת-חזקות-שליליות"
+    },
+    {
+        "id": 13,
+        "description": "המשכת הדיון בחזקות - חלק ראשון",
+        "title": "חוקי חזקות חלק  1",
+        "youtube_id": "1scg0uEKhgY",
+        "subtopic": "אלגברה: חזקות ושורשים",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "חוקי-חזקות-חלק-1"
+    },
+    {
+        "id": 14,
+        "description": "המשך חוקי החזקות",
+        "title": "חוקי חזקות חלק  2",
+        "youtube_id": "d7ornMJb8GA",
+        "subtopic": "אלגברה: חזקות ושורשים",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "חוקי-חזקות-חלק-2"
+    },
+    {
+        "id": 15,
+        "description": "האם ידעתם כי ניתן להביע שורשים בצורוה שונה מסימן השורש",
+        "title": "פישוט שורשים",
+        "youtube_id": "KUopX5VquII",
+        "subtopic": "אלגברה: חזקות ושורשים",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "פישוט-שורשים"
+    },
+    {
+        "id": 16,
+        "description": "בשעור זה נדון בכלי החשוב הקרוי לוגריתמים",
+        "title": "מבוא ללוגריתמים",
+        "youtube_id": "JHuuk7hsArc",
+        "subtopic": "אלגברה: לוגריתמים",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "מבוא-ללוגריתמים"
+    },
+    {
+        "id": 18,
+        "description": "תכונות נוספות ושימושים נוספים בלוגריתמים",
+        "title": "הקדמה לחוקי הלוגריתמים חלק 2",
+        "youtube_id": "y-4wzc-g1Vg",
+        "subtopic": "אלגברה: לוגריתמים",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "הקדמה-לחוקי-הלוגריתמים-חלק-2"
+    },
+    {
+        "id": 19,
+        "description": "בשיעור זה נלמד כיצד ניתן לרשום ערכים באמצעות שברים עשרוניים וחזקות",
+        "title": "ייצוג מדעי",
+        "youtube_id": "XfMQkJo3Bzo",
+        "subtopic": "אלגברה: חזקות ושורשים",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "ייצוג-מדעי"
+    },
+    {
+        "id": 20,
+        "description": "בשיעור זה נתרגל שימושים במספרים בייצוג מדעי",
+        "title": "דוגמאות לייצוג מדעי",
+        "youtube_id": "aGYBc1f4hkM",
+        "subtopic": "אלגברה: חזקות ושורשים",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "דוגמאות-לייצוג-מדעי"
+    },
+    {
+        "id": 22,
+        "description": "מהו יחס? מה השימוש בו ואיך פותרים בעיות בעזרתו",
+        "title": "הקדמה ליחסים",
+        "youtube_id": "lgESqIdQMOc",
+        "subtopic": "אלגברה: יחסים ופרופורציות",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "הקדמה-ליחסים"
+    },
+    {
+        "id": 23,
+        "description": "כיצד מסיבים בין מידות שונות של משקל ושל נפח",
+        "title": "דוגמה להסבת יחידות - מנות  של רפואות",
+        "youtube_id": "vRLh4CE-T64",
+        "subtopic": "אלגברה: יחסים ופרופורציות",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "דוגמה-להסבת-יחידות-מנות-של-רפואות"
+    },
+    {
+        "id": 24,
+        "description": "דוגמאות ותרגלים במציאת מחלקים משותפים",
+        "title": "מחלקים משותפים - דוגמאות",
+        "youtube_id": "1-MYgDgFYOU",
+        "subtopic": "חשבון יסודי וקדם אלגברה: גורמים וכפולות",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "מחלקים-משותפים-דוגמאות"
+    },
+    {
+        "id": 25,
+        "description": "ניתן למנות לא רק בשיטה העשרונית. במצגת זאת נדון במערכת הבינארית",
+        "title": "מספרים בינארים",
+        "youtube_id": "GF3b4DKPYSE",
+        "subtopic": "מחשבים",
+        "topic": "מדעים והנדסה",
+        "kind": "Video",
+        "readable_id": "מספרים-בינארים"
+    },
+    {
+        "id": 26,
+        "description": "פה נדון לא רק במערכות עשרוניות וניהאריות אלא גם במערכות הקסהדצימליות - כלומר לפי בסיס 16",
+        "title": "מערכות מספרים בינאריות, עשרוניות והקסהדצימאליות",
+        "youtube_id": "os1bR9OOsEU",
+        "subtopic": "מחשבים",
+        "topic": "מדעים והנדסה",
+        "kind": "Video",
+        "readable_id": "מערכות-מספרים-בינאריות,-עשרוניות-והקסהדצימאליות"
+    },
+    {
+        "id": 27,
+        "description": "לאחר שלמדנו על בסיסים שונים נתרגל בהסבה בין הבסיסים",
+        "title": "תרגול בהסבה בין בסיסים שונים",
+        "youtube_id": "YNTCOLgKaTY",
+        "subtopic": "מחשבים",
+        "topic": "מדעים והנדסה",
+        "kind": "Video",
+        "readable_id": "תרגול-בהסבה-בין-בסיסים-שונים"
+    },
+    {
+        "id": 28,
+        "description": "דיון בספרות ערך (ספרות משמעותיות) וחשיבותן",
+        "title": "ספרות ערך",
+        "youtube_id": "1_mztDL3UVI",
+        "subtopic": "אלגברה: חזקות ושורשים",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "ספרות-ערך"
+    },
+    {
+        "id": 29,
+        "description": "הרחבת הדיון בשימוש בספרות ערך",
+        "title": "עוד על ספרות ערך",
+        "youtube_id": "-Jnuig8iXts",
+        "subtopic": "אלגברה: חזקות ושורשים",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "עוד-על-ספרות-ערך"
+    },
+    {
+        "id": 30,
+        "description": "נלמד כיצד קובעים את כמןו ספרות הערך כאשר מכפילים או מחלקים ערכים",
+        "title": "כפל וחילוק עם ספרות ערך",
+        "youtube_id": "CBlYayl7YAE",
+        "subtopic": "אלגברה: חזקות ושורשים",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "כפל-וחילוק-עם-ספרות-ערך"
+    },
+    {
+        "id": 31,
+        "description": "מהו האיבר הניגודי של החיבור",
+        "title": "תכונת הניגוד של חיבור",
+        "youtube_id": "mzZE-PsY0wk",
+        "subtopic": "חשבון יסודי וקדם אלגברה: תכונות המספרים",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "תכונת-הניגוד-של-חיבור"
+    },
+    {
+        "id": 32,
+        "description": "הבנת גרפים לינאריים",
+        "title": "ניתוח גרפים לינארים",
+        "youtube_id": "zKAFh-kl3_0",
+        "subtopic": "אלגברה: שרטוט משוואות ואי-שיוויונים לינארים",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "ניתוח-גרפים-לינארים"
+    },
+    {
+        "id": 34,
+        "description": "הבהרת מושג הגבול בחדו\"א",
+        "title": "מבוא לגבולות",
+        "youtube_id": "a8S1L3e-PIA",
+        "subtopic": "קדם חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "מבוא-לגבולות"
+    },
+    {
+        "id": 36,
+        "description": "הבהרת מושג הגבול בחדו\"א",
+        "title": "מבוא לגבולות_חדש",
+        "youtube_id": "sSatfpfsEoc",
+        "subtopic": "קדם חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "מבוא-לגבולות_חדש"
+    },
+    {
+        "id": 38,
+        "description": "דוגמאות שונות בגבולות",
+        "title": "גבולות - דוגמאות חלק 1",
+        "youtube_id": "XR62N0ZPIu8",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "גבולות-דוגמאות-חלק-1"
+    },
+    {
+        "id": 40,
+        "description": "דוגמאות שונות בגבולות",
+        "title": "גבולות - דוגמאות חלק 2",
+        "youtube_id": "KC_cHphswS8",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "גבולות-דוגמאות-חלק-2"
+    },
+    {
+        "id": 42,
+        "description": "דוגמאות שונות בגבולות",
+        "title": "גבולות - דוגמאות חלק 3",
+        "youtube_id": "nJFxz-IwpfE",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "גבולות-דוגמאות-חלק-3"
+    },
+    {
+        "id": 44,
+        "description": "דוגמאות שונות בגבולות",
+        "title": "גבולות - דוגמאות חלק 4",
+        "youtube_id": "ph30K8JCYAM",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "גבולות-דוגמאות-חלק-4"
+    },
+    {
+        "id": 46,
+        "description": "נלמד את כללהסנדוויץ שהוא כלי חזק בניתוח יחסים",
+        "title": "כלל הסנדוויץ",
+        "youtube_id": "HYFpaSH_06I",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "כלל-הסנדוויץ"
+    },
+    {
+        "id": 48,
+        "description": "הוכחת הגבול של סינוס x חלקי x",
+        "title": "הגבול של סינוס  x  חלקי x",
+        "youtube_id": "T2f1yn_XIL4",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "הגבול-של-סינוס-x-חלקי-x"
+    },
+    {
+        "id": 49,
+        "description": "כיצד ממירים מיחידות בשיטה אחת ליחידות בשיטה אחרת",
+        "title": "המרת יחידות",
+        "youtube_id": "rGqbHZJmMiA",
+        "subtopic": "אלגברה: יחסים ופרופורציות",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "המרת-יחידות"
+    },
+    {
+        "id": 50,
+        "description": "חזרנו לדון בלוגריתמים ונציג כמה מתכונותיהם ושימושם",
+        "title": "מבוא לחוקי הלוגריתמים",
+        "youtube_id": "KEmVA0o1_9I",
+        "subtopic": "אלגברה: לוגריתמים",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "מבוא-לחוקי-הלוגריתמים"
+    },
+    {
+        "id": 51,
+        "description": "כיצד קובעים את מספר ספרות הערך כאשר מבצעים חיבור או חיבור",
+        "title": "חיבור וחיסור עם ספרות ערך",
+        "youtube_id": "am72uk-MvWU",
+        "subtopic": "אלגברה: חזקות ושורשים",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "חיבור-וחיסור-עם-ספרות-ערך"
+    },
+    {
+        "id": 52,
+        "description": "איך קובעים את ספרות הערך כאשר מכפילים מדידה במספר טיהור",
+        "title": "מספרים טהורים וספרות ערך",
+        "youtube_id": "dFFxwjk8yPk",
+        "subtopic": "אלגברה: חזקות ושורשים",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "מספרים-טהורים-וספרות-ערך"
+    },
+    {
+        "id": 53,
+        "description": "מהי הדרך הנכונה למיין מספרים שלילים",
+        "title": "מיון מספרים שלילים",
+        "youtube_id": "Sj-9Qkf68dA",
+        "subtopic": "חשבון יסודי וקדם אלגברה: מספרים שלילים",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "מיון-מספרים-שלילים"
+    },
+    {
+        "id": 54,
+        "description": "כיצד משווים ערכים מוחלטים",
+        "title": "השוואת ערכים מוחלטים",
+        "youtube_id": "txwht6Nob20",
+        "subtopic": "אלגברה: ערכים מוחלטים",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "השוואת-ערכים-מוחלטים"
+    },
+    {
+        "id": 55,
+        "description": "כיצד ממינים שברים בעלי מכנה זהה ושונה",
+        "title": "מיון שברים",
+        "youtube_id": "DwflyLltPpc",
+        "subtopic": "חשבון יסודי וקדם אלגברה: שברים",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "מיון-שברים"
+    },
+    {
+        "id": 56,
+        "description": "מהו האיבר ההופכי של הכפל",
+        "title": "תכונת ההיפוך של כפל",
+        "youtube_id": "_0I6WL6S4UE",
+        "subtopic": "חשבון יסודי וקדם אלגברה: תכונות המספרים",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "תכונת-ההיפוך-של-כפל"
+    },
+    {
+        "id": 58,
+        "description": "דיונים נוספים בגבולות",
+        "title": "עוד על גבולות",
+        "youtube_id": "4UeTslSOC_8",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "עוד-על-גבולות"
+    },
+    {
+        "id": 59,
+        "description": "פה אנו מתחילים בפתרון משוואות פשוטות באלגברה",
+        "title": "משוואות פשוטות",
+        "youtube_id": "GryUZ0UU1jc",
+        "subtopic": "אלגברה: פתרון משוואות לינאריות",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "משוואות-פשוטות"
+    },
+    {
+        "id": 60,
+        "description": "פתרון מספר משוואות קצת יותר מתקדמות",
+        "title": "משוואות 2",
+        "youtube_id": "NFffoQoDjRI",
+        "subtopic": "אלגברה: פתרון משוואות לינאריות",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "משוואות-2"
+    },
+    {
+        "id": 61,
+        "description": "ואנו מתקדמים במשוואות שאנו פותרים",
+        "title": "משוואות  3",
+        "youtube_id": "Cn2PMVqrdU4",
+        "subtopic": "אלגברה: פתרון משוואות לינאריות",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "משוואות-3"
+    },
+    {
+        "id": 62,
+        "description": "פתרון אי-שווינות",
+        "title": "פתרון אי-שוויונות",
+        "youtube_id": "a9Lvla2U1xY",
+        "subtopic": "אלגברה: פתרון אי-שיוויונים לינארים",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "פתרון-אישוויונות"
+    },
+    {
+        "id": 63,
+        "description": "צעדים ראשונים בסרטוט גרפים לינארים",
+        "title": "גרפים לינאריים 1",
+        "youtube_id": "qmc1U4NjOew",
+        "subtopic": "אלגברה: שרטוט משוואות ואי-שיוויונים לינארים",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "גרפים-לינאריים-1"
+    },
+    {
+        "id": 64,
+        "description": "הנפשה של התנהגות קו לינארי לאור שינויי שיפוע ולכיד",
+        "title": "הבנת שיפוע ולכיד",
+        "youtube_id": "3r1jLlZ5Wf4",
+        "subtopic": "אלגברה: שרטוט משוואות ואי-שיוויונים לינארים",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "הבנת-שיפוע-ולכיד"
+    },
+    {
+        "id": 65,
+        "description": "שיפוע קו לינארי - שיעור ראשון",
+        "title": "שיפוע קו לינארי",
+        "youtube_id": "o2TsUKnZL9U",
+        "subtopic": "אלגברה: שרטוט משוואות ואי-שיוויונים לינארים",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "שיפוע-קו-לינארי"
+    },
+    {
+        "id": 66,
+        "description": "שיפוע קו לינארי - שיעור שני",
+        "title": "שיפוע קו לינארי  2",
+        "youtube_id": "rgCzeiM8VnM",
+        "subtopic": "אלגברה: שרטוט משוואות ואי-שיוויונים לינארים",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "שיפוע-קו-לינארי-2"
+    },
+    {
+        "id": 67,
+        "description": "שיפוע קו לינארי שיעור שלישי",
+        "title": "שיפוע קו לינארי  3",
+        "youtube_id": "6icLggDL84A",
+        "subtopic": "אלגברה: שרטוט משוואות ואי-שיוויונים לינארים",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "שיפוע-קו-לינארי-3"
+    },
+    {
+        "id": 68,
+        "description": "משואות לינאריות - שיעור רביעי",
+        "title": "משוואות לינאריות  4",
+        "youtube_id": "CCS8WensQrE",
+        "subtopic": "אלגברה: פתרון משוואות לינאריות",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "משוואות-לינאריות-4"
+    },
+    {
+        "id": 69,
+        "description": "בעיות יחס מתקדמות",
+        "title": "בעיות יחס מתקדמות",
+        "youtube_id": "slrWBsB6HtE",
+        "subtopic": "אלגברה: יחסים ופרופורציות",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "בעיות-יחס-מתקדמות"
+    },
+    {
+        "id": 70,
+        "description": "פתרון משוואות ריבועיות על ידי פרוק לגורמים",
+        "title": "פתרון משוואות ריבועיות על ידי פרוק לגורמים",
+        "youtube_id": "wqBjUtW5NTA",
+        "subtopic": "אלגברה: פולינומים",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "פתרון-משוואות-ריבועיות-על-ידי-פרוק-לגורמים"
+    },
+    {
+        "id": 71,
+        "description": "בעיות גיל מילוליות - חלק 1",
+        "title": "בעיות גיל מילוליות - חלק 1",
+        "youtube_id": "P7QrYVjW1c0",
+        "subtopic": "אלגברה: פתרון משוואות לינאריות",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "בעיות-גיל-מילוליות-חלק-1"
+    },
+    {
+        "id": 72,
+        "description": "בעיות גיל מילוליות - חלק 2",
+        "title": "בעיות גיל מילוליות - חלק 2",
+        "youtube_id": "Btu0YYwFH58",
+        "subtopic": "אלגברה: פתרון משוואות לינאריות",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "בעיות-גיל-מילוליות-חלק-2"
+    },
+    {
+        "id": 73,
+        "description": "בעיות גיל מילוליות - חלק 3",
+        "title": "בעיות גיל מילוליות - חלק 3",
+        "youtube_id": "MWcEsUXNFYg",
+        "subtopic": "אלגברה: פתרון משוואות לינאריות",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "בעיות-גיל-מילוליות-חלק-3"
+    },
+    {
+        "id": 74,
+        "description": "דרך נוספת לפתרון בעיית היחס -גרסת HD",
+        "title": "דרך נוספת לפתרון בעיית היחס -גרסת HD",
+        "youtube_id": "VKYTJ_legjA",
+        "subtopic": "אלגברה: יחסים ופרופורציות",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "דרך-נוספת-לפתרון-בעיית-היחס-גרסת-HD"
+    },
+    {
+        "id": 75,
+        "description": "השלמה לריבוע",
+        "title": "השלמה לריבוע",
+        "youtube_id": "Fj8gb6_B6Fw",
+        "subtopic": "אלגברה: תבניות ריבועיות",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "השלמה-לריבוע"
+    },
+    {
+        "id": 76,
+        "description": "תחום הפונקציות",
+        "title": "תחום הפונקציות",
+        "youtube_id": "Nhsqw8o4Vtw",
+        "subtopic": "אלגברה: פונקציות",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "תחום-הפונקציות"
+    },
+    {
+        "id": 77,
+        "description": "תחילת הטיפול בפונקציות",
+        "title": "הקדמה לפונקציות - חלק 1",
+        "youtube_id": "wrVlKDClHYk",
+        "subtopic": "אלגברה: פונקציות",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "הקדמה-לפונקציות-חלק-1"
+    },
+    {
+        "id": 78,
+        "description": "פונקציות - חלק 2",
+        "title": "פונקציות - חלק 2",
+        "youtube_id": "iI7anYWVCXk",
+        "subtopic": "אלגברה: פונקציות",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "פונקציות-חלק-2"
+    },
+    {
+        "id": 79,
+        "description": "פונקציות - חלק 3",
+        "title": "פונקציות - חלק 3",
+        "youtube_id": "fdWeaK32PDE",
+        "subtopic": "אלגברה: פונקציות",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "פונקציות-חלק-3"
+    },
+    {
+        "id": 80,
+        "description": "פונקציות - חלק 4",
+        "title": "פונקציות - חלק 4",
+        "youtube_id": "JEtn3dClAIc",
+        "subtopic": "אלגברה: פונקציות",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "פונקציות-חלק-4"
+    },
+    {
+        "id": 81,
+        "description": "היכרות עם המספר i - היחידה המדומה",
+        "title": "היכרות עם המספר i - היחידה המדומה ",
+        "youtube_id": "hNmzOzVKwXY",
+        "subtopic": "אלגברה: מספרים מרוכבים",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "היכרות-עם-המספר-i-היחידה-המדומה"
+    },
+    {
+        "id": 82,
+        "description": "יחס - הקדמה",
+        "title": "יחס - הקדמה",
+        "youtube_id": "6FJhI1MRI70",
+        "subtopic": "חשבון יסודי וקדם אלגברה: יחסים ופרופורציות -בסיסי",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "יחס-הקדמה"
+    },
+    {
+        "id": 83,
+        "description": "משוואה ריבועית - הקדמה",
+        "title": "משוואה ריבועית - הקדמה",
+        "youtube_id": "WW3DYWvXERo",
+        "subtopic": "אלגברה: תבניות ריבועיות",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "משוואה-ריבועית-הקדמה"
+    },
+    {
+        "id": 84,
+        "description": "מכפלות של ביטויים",
+        "title": "מכפלות של ביטויים",
+        "youtube_id": "wYqfuJtP-Qc",
+        "subtopic": "אלגברה: פולינומים",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "מכפלות-של-ביטויים"
+    },
+    {
+        "id": 85,
+        "description": "בעיית יחס מתקדמת נוספת עם אלגברה",
+        "title": "בעיית יחס מתקדמת נוספת עם אלגברה",
+        "youtube_id": "i7LjB3OzEkE",
+        "subtopic": "אלגברה: יחסים ופרופורציות",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "בעיית-יחס-מתקדמת-נוספת-עם-אלגברה"
+    },
+    {
+        "id": 86,
+        "description": "בעיות יחס מסובכות עם אלגברה בסיסית - גרסת HD",
+        "title": "בעיות יחס מסובכות עם אלגברה בסיסית - גרסת HD",
+        "youtube_id": "kM-ENfi3EAM",
+        "subtopic": "אלגברה: יחסים ופרופורציות",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "בעיות-יחס-מסובכות-עם-אלגברה-בסיסית-גרסת-HD"
+    },
+    {
+        "id": 87,
+        "description": "מספרים מרוכבים - חלק 1",
+        "title": "מספרים מרוכבים - חלק 1",
+        "youtube_id": "Nm88fY2LXWE",
+        "subtopic": "אלגברה: מספרים מרוכבים",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "מספרים-מרוכבים-חלק-1"
+    },
+    {
+        "id": 88,
+        "description": "מספרים מרוכבים - חלק 2",
+        "title": "מספרים מרוכבים - חלק 2",
+        "youtube_id": "T-Iqx8uiS6k",
+        "subtopic": "אלגברה: מספרים מרוכבים",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "מספרים-מרוכבים-חלק-2"
+    },
+    {
+        "id": 91,
+        "description": "חילוק אלגברי (חילוק ארוך)",
+        "title": "חילוק אלגברי (חילוק ארוך)",
+        "youtube_id": "BAeMd0CTvwk",
+        "subtopic": "אלגברה: פולינומים",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "חילוק-אלגברי-(חילוק-ארוך)"
+    },
+    {
+        "id": 92,
+        "description": "חתכי חרוט או חתך קוני",
+        "title": "חתכי חרוט או חתך קוני",
+        "youtube_id": "YZr2JBma1vs",
+        "subtopic": "אלגברה: חתכים חרוטיים",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "חתכי-חרוט-או-חתך-קוני"
+    },
+    {
+        "id": 93,
+        "description": "חתכים חרוטיים - מעגלים",
+        "title": "חתכים חרוטיים: מעגלים",
+        "youtube_id": "PouUnebN3lA",
+        "subtopic": "אלגברה: חתכים חרוטיים",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "חתכים-חרוטיים:-מעגלים"
+    },
+    {
+        "id": 94,
+        "description": "חתכים חרוטיים - אליפסות",
+        "title": "חתכים חרוטיים: אליפסות",
+        "youtube_id": "pG5WMY7AUKs",
+        "subtopic": "אלגברה: חתכים חרוטיים",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "חתכים-חרוטיים:-אליפסות"
+    },
+    {
+        "id": 95,
+        "description": "Conic Sections Intro to Hyperbolas",
+        "title": "חתכים חרוטיים: היפרבולות חלק 2",
+        "youtube_id": "2IvGHL9Cu2Q",
+        "subtopic": "אלגברה: חתכים חרוטיים",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "חתכים-חרוטיים:-היפרבולות-חלק-2"
+    },
+    {
+        "id": 96,
+        "description": "הוכחה: log a + log b = log ab\n\nProof log a + log b = log ab",
+        "title": "הוכחה:  log a + log b = log ab",
+        "youtube_id": "vW-2X7eG_N8",
+        "subtopic": "אלגברה: לוגריתמים",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "הוכחה:-log-a-+-log-b-=-log-ab"
+    },
+    {
+        "id": 97,
+        "description": "הוכחה: A(log B) = log (B^A),log A - log B = log(A_B)\n\nProof A(log B) = log (B^A),log A - log B = log(A_B).mp4",
+        "title": "הוכחה: A(log B) = log (B^A),log A - log B = log(A_B)",
+        "youtube_id": "QPTAnqw4Pkg",
+        "subtopic": "אלגברה: לוגריתמים",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "הוכחה:-A(log-B)-=-log-(B^A),log-A-log-B-=-log(A_B)"
+    },
+    {
+        "id": 98,
+        "description": "הוכחה: log a (B) = (log x (B)) (log x (A))\n\nProof log a (B) = (log x (B)) (log x (A))",
+        "title": "הוכחה: log a (B) = (log x (B)) (log x (A))",
+        "youtube_id": "raxCSFvfJv0",
+        "subtopic": "אלגברה: לוגריתמים",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "הוכחה:-log-a-(B)-=-(log-x-(B))-(log-x-(A))"
+    },
+    {
+        "id": 99,
+        "description": "המשך הטיפול במשוואות ריבועיות",
+        "title": "משוואות ריבועיות - חלק  2",
+        "youtube_id": "iOE1cnYOQCI",
+        "subtopic": "אלגברה: תבניות ריבועיות",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "משוואות-ריבועיות-חלק-2"
+    },
+    {
+        "id": 100,
+        "description": "חקירת הסיבה לכינוי פונקציות כזוגיות ואי זוגיות",
+        "title": "הקשר בין מספרים זוגיים ואי זוגיים והפונקציות",
+        "youtube_id": "WYFqFr2pwxM",
+        "subtopic": "אלגברה: פונקציות",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "הקשר-בין-מספרים-זוגיים-ואי-זוגיים-והפונקציות"
+    },
+    {
+        "id": 101,
+        "description": "המשך הדיון בפוקוס ובמדריך של פרבולה",
+        "title": "פוקוס ומדריך לפרבולה חלק  2",
+        "youtube_id": "-sapIK4p724",
+        "subtopic": "אלגברה: חתכים חרוטיים",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "פוקוס-ומדריך-לפרבולה-חלק-2"
+    },
+    {
+        "id": 103,
+        "description": "כיצד ניתן להגדיר פעולות חשבון חדשות",
+        "title": "הגדרות פעולות חדשות",
+        "youtube_id": "8Eb7JRJ7rdM",
+        "subtopic": "אלגברה: פתרון משוואות לינאריות",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "הגדרות-פעולות-חדשות"
+    },
+    {
+        "id": 104,
+        "description": "דוגמאות נוספות לאי שיוויונים ריבועיים",
+        "title": "אי שיוויונים ריבועיים - הסבר גרפי",
+        "youtube_id": "m3HS-PRPx-o",
+        "subtopic": "אלגברה: תבניות ריבועיות",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "אי-שיוויונים-ריבועיים-הסבר-גרפי"
+    },
+    {
+        "id": 105,
+        "description": "דיון במה הן פונקציות זוגיות ואי זוגיות",
+        "title": "זיהוי פונקציות זוגיות ואי זוגיות",
+        "youtube_id": "nFesXeWsj6w",
+        "subtopic": "אלגברה: פונקציות",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "זיהוי-פונקציות-זוגיות-ואי-זוגיות"
+    },
+    {
+        "id": 106,
+        "description": "כיצד מחשבים אותם",
+        "title": "ממוצעים",
+        "youtube_id": "bHy7TPdIfv0",
+        "subtopic": "אלגברה: פתרון משוואות לינאריות",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "ממוצעים"
+    },
+    {
+        "id": 107,
+        "description": "כיצד מחברים מספרים שלמים",
+        "title": "סיכום מספרים שלמים",
+        "youtube_id": "jzxzhOVkKNc",
+        "subtopic": "אלגברה: פתרון משוואות לינאריות",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "סיכום-מספרים-שלמים"
+    },
+    {
+        "id": 108,
+        "description": "מהי המשוואה של קו ישר",
+        "title": "משוואת קו",
+        "youtube_id": "_MzlWbvfcgk",
+        "subtopic": "אלגברה: שרטוט משוואות ואי-שיוויונים לינארים",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "משוואת-קו"
+    },
+    {
+        "id": 109,
+        "description": "החלק הראשון המטפל במדריך ופוקוס של פרבולה",
+        "title": "פוקוס ומדריך לפרבולה חלק  1",
+        "youtube_id": "LgdBkqhAXLg",
+        "subtopic": "אלגברה: חתכים חרוטיים",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "פוקוס-ומדריך-לפרבולה-חלק-1"
+    },
+    {
+        "id": 110,
+        "description": "איך מטפלים בהם",
+        "title": "אי שיוויונים ריבועיים",
+        "youtube_id": "YYHRuP0hoZ8",
+        "subtopic": "אלגברה: תבניות ריבועיות",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "אי-שיוויונים-ריבועיים"
+    },
+    {
+        "id": 111,
+        "description": "החלק השלישי בזיהוי חתכים חרוטיים",
+        "title": "זיהוי חתכים חרוטיים חלק 3",
+        "youtube_id": "VHIxw4YbBYs",
+        "subtopic": "אלגברה: חתכים חרוטיים",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "זיהוי-חתכים-חרוטיים-חלק-3"
+    },
+    {
+        "id": 112,
+        "description": "החלק השני של הדיון בחתכים חרוטים היוצרים היפרבולה",
+        "title": "חתכים חרוטים: היפרבולה חלק 2",
+        "youtube_id": "t_HtKyZRXLo",
+        "subtopic": "אלגברה: חתכים חרוטיים",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "חתכים-חרוטים:-היפרבולה-חלק-2"
+    },
+    {
+        "id": 113,
+        "title": "חתכים חרוטיים: היפרבולה חלק 3",
+        "youtube_id": "MgrLgKxE-H0",
+        "subtopic": "אלגברה: חתכים חרוטיים",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "חתכים-חרוטיים:-היפרבולה-חלק-3"
+    },
+    {
+        "id": 114,
+        "title": "זיהוי חתכים חרוטיים חלק 1",
+        "youtube_id": "G8TQNSp9klI",
+        "subtopic": "אלגברה: חתכים חרוטיים",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "זיהוי-חתכים-חרוטיים-חלק-1"
+    },
+    {
+        "id": 115,
+        "title": "זיהוי חתכים חרוטיים חלק 2",
+        "youtube_id": "klIJzILwDkg",
+        "subtopic": "אלגברה: חתכים חרוטיים",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "זיהוי-חתכים-חרוטיים-חלק-2"
+    },
+    {
+        "id": 116,
+        "title": "פירוק לשברים חלקיים - חלק 1",
+        "youtube_id": "VF8YkEaiFHA",
+        "subtopic": "אלגברה: פולינומים",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "פירוק-לשברים-חלקיים-חלק-1"
+    },
+    {
+        "id": 117,
+        "title": "פירוק לשברים חלקיים - חלק 2",
+        "youtube_id": "LDJtQiG5B30",
+        "subtopic": "אלגברה: פולינומים",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "פירוק-לשברים-חלקיים-חלק-2"
+    },
+    {
+        "id": 118,
+        "title": "פירוק לשברים חלקיים - חלק 3",
+        "youtube_id": "3sh8QlzAwI8",
+        "subtopic": "אלגברה: פולינומים",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "פירוק-לשברים-חלקיים-חלק-3"
+    },
+    {
+        "id": 119,
+        "description": "זיהוי יחסים ישרים, משתנים או הופכיים",
+        "title": "זיהוי יחסים ישרים, משתנים או הופכיים",
+        "youtube_id": "f3MrQjTU9hM",
+        "subtopic": "אלגברה: פונקציות",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "זיהוי-יחסים-ישרים,-משתנים-או-הופכיים"
+    },
+    {
+        "id": 120,
+        "description": "אחוזים",
+        "title": "אחוזים",
+        "youtube_id": "wvtDL03yF_Y",
+        "subtopic": "אלגברה: פתרון משוואות לינאריות",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "אחוזים"
+    },
+    {
+        "id": 121,
+        "description": "הוכחה על-ידי אינדוקציה",
+        "title": "הוכחה על-ידי אינדוקציה",
+        "youtube_id": "QteBkWArvcg",
+        "subtopic": "חשבון יסודי וקדם אלגברה: טכניקות הוכחה",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "הוכחה-עלידי-אינדוקציה"
+    },
+    {
+        "id": 122,
+        "description": "כתיבת יחסים",
+        "title": "כתיבת יחסים",
+        "youtube_id": "byccTst7pew",
+        "subtopic": "אלגברה: פתרון משוואות לינאריות",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "כתיבת-יחסים"
+    },
+    {
+        "id": 123,
+        "description": "הקדמה לריבית דריבית ולמספר e",
+        "title": "הקדמה לריבית דריבית ולמספר e",
+        "youtube_id": "8zxlbILp0N4",
+        "subtopic": "קדם חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "הקדמה-לריבית-דריבית-ולמספר-e"
+    },
+    {
+        "id": 124,
+        "description": "משוואות פרמטריות 1",
+        "title": "משוואות פרמטריות 1",
+        "youtube_id": "eCy1t6isOmQ",
+        "subtopic": "קדם חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "משוואות-פרמטריות-1"
+    },
+    {
+        "id": 126,
+        "description": "Polar Coordinates 1",
+        "title": "קואורדינטות קוטביות 1",
+        "youtube_id": "NliLzkNFMXE",
+        "subtopic": "חשבון יסודי וקדם אלגברה: חזקות-בסיסי",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "קואורדינטות-קוטביות-1"
+    },
+    {
+        "id": 127,
+        "description": "Polar Coordinates 2",
+        "title": "קואורדינטות קוטביות 2",
+        "youtube_id": "5v4t-XICSUU",
+        "subtopic": "קדם חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "קואורדינטות-קוטביות-2"
+    },
+    {
+        "id": 128,
+        "description": "משפט הבינום חלק 2",
+        "title": "משפט הבינום חלק 2",
+        "youtube_id": "a3VpaqspJhU",
+        "subtopic": "קדם חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "משפט-הבינום-חלק-2"
+    },
+    {
+        "id": 129,
+        "description": "ריבית דריבית למספר e - חלק 2",
+        "title": "ריבית דריבית למספר e - חלק 2 ",
+        "youtube_id": "IHCGQ4SEMfs",
+        "subtopic": "קדם חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "ריבית-דריבית-למספר-e-חלק-2"
+    },
+    {
+        "id": 130,
+        "description": "ריבית דריבית למספר e - חלק 4",
+        "title": "ריבית דריבית למספר e - חלק 4",
+        "youtube_id": "NMJY3r_tkpc",
+        "subtopic": "קדם חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "ריבית-דריבית-למספר-e-חלק-4"
+    },
+    {
+        "id": 131,
+        "description": "טיפול בפונקציות הופכיות",
+        "title": "דוגמה לפונקציה הופכית 1",
+        "youtube_id": "fn-yyOPKJ7c",
+        "subtopic": "קדם חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "דוגמה-לפונקציה-הופכית-1"
+    },
+    {
+        "id": 133,
+        "description": "דוגמאות נוספות לפונקציה הופכית",
+        "title": "דוגמה לפונקציה הופכית חלק  2",
+        "youtube_id": "lKcDHOfJ38k",
+        "subtopic": "קדם חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "דוגמה-לפונקציה-הופכית-חלק-2"
+    },
+    {
+        "id": 135,
+        "description": "מהן פונקציות הופכיות ואיך מוצאים אותן",
+        "title": "מבוא להיפוך פונקציות",
+        "youtube_id": "cQsq-GopvMM",
+        "subtopic": "קדם חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "מבוא-להיפוך-פונקציות"
+    },
+    {
+        "id": 136,
+        "description": "דיון בחוק השרשרת השימושי במיוחד",
+        "title": "חוק השרשרת",
+        "youtube_id": "yzuWjzi10AY",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "חוק-השרשרת"
+    },
+    {
+        "id": 137,
+        "description": "מערכות של משוואות לינאריות",
+        "title": "מערכות של משוואות",
+        "youtube_id": "rrHdv1ul5VY",
+        "subtopic": "אלגברה: מערכות משוואות ואי--שוויוניים ",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "מערכות-של-משוואות"
+    },
+    {
+        "id": 138,
+        "title": "משוואות דיפרנציאליות פשוטות",
+        "youtube_id": "22TmqBHM5eA",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "משוואות-דיפרנציאליות-פשוטות"
+    },
+    {
+        "id": 139,
+        "title": "נגזרות חלק 9",
+        "youtube_id": "Tr9RoIWaV-Q",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "נגזרות-חלק-9"
+    },
+    {
+        "id": 140,
+        "description": "Optimization with Calculus 1",
+        "title": "אופטימזציה באמצעות חדו\"א 1",
+        "youtube_id": "5jRr00COtV0",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "אופטימזציה-באמצעות-חדו\"א-1"
+    },
+    {
+        "id": 141,
+        "title": "אופטימזציה באמצעות חדו\"א 2 ",
+        "youtube_id": "TUZMSdsl1pA",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "אופטימזציה-באמצעות-חדו\"א-2"
+    },
+    {
+        "id": 142,
+        "description": "Optimization with Calculus 3",
+        "title": "אופטימזציה באמצעות חדו\"א 3 ",
+        "youtube_id": "_KjB13PIuNg",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "אופטימזציה-באמצעות-חדו\"א-3"
+    },
+    {
+        "id": 143,
+        "description": "Calculus Graphing Using Derivatives",
+        "title": "שרטוט גרפים עם נגזרות  ",
+        "youtube_id": "VavXBCQfsls",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "שרטוט-גרפים-עם-נגזרות"
+    },
+    {
+        "id": 144,
+        "description": "Parametric Equations 2",
+        "title": "משוואות פרמטריות 2",
+        "youtube_id": "vFtU8RIb0KI",
+        "subtopic": "קדם חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "משוואות-פרמטריות-2"
+    },
+    {
+        "id": 145,
+        "description": "Parametric Equations 3",
+        "title": "משוואות פרמטריות 3",
+        "youtube_id": "aBPDUH8tVUI",
+        "subtopic": "קדם חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "משוואות-פרמטריות-3"
+    },
+    {
+        "id": 146,
+        "description": "Parametric Equations 4",
+        "title": "משוואות פרמטריות 4",
+        "youtube_id": "opUN_WUgELE",
+        "subtopic": "קדם חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "משוואות-פרמטריות-4"
+    },
+    {
+        "id": 147,
+        "title": "שירטוט באמצעות חדו\"א ",
+        "youtube_id": "--YSZ4in88k",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "שירטוט-באמצעות-חדו\"א"
+    },
+    {
+        "id": 148,
+        "title": "נגזרות  1",
+        "youtube_id": "G5kTFA6NFvY",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "נגזרות-1"
+    },
+    {
+        "id": 149,
+        "title": "נגזרות 3",
+        "youtube_id": "eATuv-80dqo",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "נגזרות-3"
+    },
+    {
+        "id": 150,
+        "title": "נגזרות 1 מהדורה חדשה ",
+        "youtube_id": "28_pTwDJii0",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "נגזרות-1-מהדורה-חדשה"
+    },
+    {
+        "id": 256,
+        "description": "משפט גרין - דוגמא 1 ",
+        "title": "משפט גרין - דוגמא 1 ",
+        "youtube_id": "tURiqIbPnFk",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "משפט-גרין-דוגמא-1"
+    },
+    {
+        "id": 257,
+        "title": "סדרה גיאומטרית לחישוביי משכנתא",
+        "youtube_id": "SZdElkJErQs",
+        "subtopic": " שיעורים בודדים",
+        "topic": "שונות",
+        "kind": "Video",
+        "readable_id": "סדרה-גיאומטרית-לחישוביי-משכנתא"
+    },
+    {
+        "id": 258,
+        "description": "נקודות מפנה של קעירות",
+        "title": "נקודות מפנה של קעירות",
+        "youtube_id": "Bg6Kw93n-eE",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "נקודות-מפנה-של-קעירות"
+    },
+    {
+        "id": 259,
+        "description": "ריבית - הקדמה",
+        "title": "ריבית - הקדמה",
+        "youtube_id": "bFKlpfKjBLg",
+        "subtopic": "קדם חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "ריבית-הקדמה"
+    },
+    {
+        "id": 260,
+        "description": "חוק לופיטל - הקדמה",
+        "title": "חוק לופיטל - הקדמה",
+        "youtube_id": "1VwTLpbA_ak",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "חוק-לופיטל-הקדמה"
+    },
+    {
+        "id": 261,
+        "description": "בעיות קצב של שינוי - הקדמה ( חוק השרשרת)",
+        "title": "בעיות קצב של שינוי - הקדמה ( חוק השרשרת) ",
+        "youtube_id": "1aXTh4lDsWo",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "בעיות-קצב-של-שינוי-הקדמה-(-חוק-השרשרת)"
+    },
+    {
+        "id": 262,
+        "description": "בעיית קצב שינוי של סולם",
+        "title": "בעיית קצב שינוי של סולם ",
+        "youtube_id": "pwNTszJtnzk",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "בעיית-קצב-שינוי-של-סולם"
+    },
+    {
+        "id": 263,
+        "description": "בעיות אחוזים נוספות",
+        "title": "בעיות אחוזים נוספות",
+        "youtube_id": "XICP4WNRHv8",
+        "subtopic": "אלגברה: פתרון משוואות לינאריות",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "בעיות-אחוזים-נוספות"
+    },
+    {
+        "id": 264,
+        "description": "טור טיילור ומשפט טיילור",
+        "title": "טור טיילור ומשפט טיילור",
+        "youtube_id": "85YvvOtuY68",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "טור-טיילור-ומשפט-טיילור"
+    },
+    {
+        "id": 265,
+        "description": "מציאת נפחים של גופים סיבוביים - חלק 1",
+        "title": "מציאת נפחים של גופים סיבוביים - חלק 1",
+        "youtube_id": "U-ukx07JkyY",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "מציאת-נפחים-של-גופים-סיבוביים-חלק-1"
+    },
+    {
+        "id": 266,
+        "description": "מציאת נפחים של גופים סיבוביים - חלק 2",
+        "title": "מציאת נפחים של גופים סיבוביים - חלק 2",
+        "youtube_id": "xrAY_JPBkDQ",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "מציאת-נפחים-של-גופים-סיבוביים-חלק-2"
+    },
+    {
+        "id": 267,
+        "description": "מציאת נפחים של גופים סיבוביים - חלק 3",
+        "title": "מציאת נפחים של גופים סיבוביים - חלק 3",
+        "youtube_id": "Jmtmy-wZqkY",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "מציאת-נפחים-של-גופים-סיבוביים-חלק-3"
+    },
+    {
+        "id": 268,
+        "description": "מציאת נפחים של גופים סיבוביים - חלק 4",
+        "title": "מציאת נפחים של גופים סיבוביים - חלק 4",
+        "youtube_id": "qSI3-qvOOhQ",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "מציאת-נפחים-של-גופים-סיבוביים-חלק-4"
+    },
+    {
+        "id": 269,
+        "description": "Solid of Revolution part 5",
+        "title": "מציאת נפחים של גופים סיבוביים - חלק 5",
+        "youtube_id": "QGMdUBxy_1U",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "מציאת-נפחים-של-גופים-סיבוביים-חלק-5"
+    },
+    {
+        "id": 270,
+        "description": "Solid of Revolution part 6",
+        "title": "מציאת נפחים של גופים סיבוביים - חלק 6",
+        "youtube_id": "1KzZKUYjORg",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "מציאת-נפחים-של-גופים-סיבוביים-חלק-6"
+    },
+    {
+        "id": 271,
+        "description": "Solid of Revolution part 7",
+        "title": "מציאת נפחים של גופים סיבוביים - חלק 7",
+        "youtube_id": "Ttw1QRce3j8",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "מציאת-נפחים-של-גופים-סיבוביים-חלק-7"
+    },
+    {
+        "id": 272,
+        "description": "Solid of Revolution part 8",
+        "title": "מציאת נפחים של גופים סיבוביים - חלק 8",
+        "youtube_id": "RC083-ijAJ4",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "מציאת-נפחים-של-גופים-סיבוביים-חלק-8"
+    },
+    {
+        "id": 273,
+        "description": "Rates-of-change part 2",
+        "title": " בעיות קצב של שינוי - חלק 2",
+        "youtube_id": "FUUM2cvkgzg",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "בעיות-קצב-של-שינוי-חלק-2"
+    },
+    {
+        "id": 275,
+        "description": "Sequences and Series part2",
+        "title": "סדרות וטורים - חלק 2",
+        "youtube_id": "Cuhc_TR-udY",
+        "subtopic": "קדם חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "סדרות-וטורים-חלק-2"
+    },
+    {
+        "id": 276,
+        "title": "רוטור 1",
+        "youtube_id": "A_bkz_TRDN0",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "רוטור-1"
+    },
+    {
+        "id": 277,
+        "title": "רוטור 2",
+        "youtube_id": "W8NTa381MO0",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "רוטור-2"
+    },
+    {
+        "id": 278,
+        "title": "רוטור 3",
+        "youtube_id": "BRtsAcaxzps",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "רוטור-3"
+    },
+    {
+        "id": 279,
+        "title": "דיוורגנס 1",
+        "youtube_id": "UzBhZ7Dtves",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "דיוורגנס-1"
+    },
+    {
+        "id": 280,
+        "title": "דיוורגנס 2",
+        "youtube_id": "JKGzgqP1hp4",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "דיוורגנס-2"
+    },
+    {
+        "id": 281,
+        "title": "דיוורגנס 3",
+        "youtube_id": "1hEtWJ4HU8k",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "דיוורגנס-3"
+    },
+    {
+        "id": 282,
+        "title": "אינטגרל כפול 1",
+        "youtube_id": "yeV5Uag3NFY",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "אינטגרל-כפול-1"
+    },
+    {
+        "id": 283,
+        "title": "אינטגרל כפול 2",
+        "youtube_id": "CKxiHNY5S8w",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "אינטגרל-כפול-2"
+    },
+    {
+        "id": 284,
+        "title": "אינטגרל כפול 3",
+        "youtube_id": "T5wP9hBc1BU",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "אינטגרל-כפול-3"
+    },
+    {
+        "id": 285,
+        "title": "אינטגרל כפול 4",
+        "youtube_id": "JXKRdr2Agr0",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "אינטגרל-כפול-4"
+    },
+    {
+        "id": 286,
+        "title": "אינטגרל כפול 5",
+        "youtube_id": "lQPP52pt54E",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "אינטגרל-כפול-5"
+    },
+    {
+        "id": 287,
+        "title": "אינטגרל כפול 6",
+        "youtube_id": "X70WB2_0MHU",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "אינטגרל-כפול-6"
+    },
+    {
+        "id": 288,
+        "title": "3 קירוב פונקציות בעזרת פולינומים ",
+        "youtube_id": "8PUOtsVlOFE",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "3-קירוב-פונקציות-בעזרת-פולינומים"
+    },
+    {
+        "id": 289,
+        "title": "קירוב פונקציות בעזרת פולינומים  2",
+        "youtube_id": "uZg3bdmVbLU",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "קירוב-פונקציות-בעזרת-פולינומים-2"
+    },
+    {
+        "id": 290,
+        "title": "קירוב פונקציות בעזרת פולינומים 1",
+        "youtube_id": "4P7fGEtBtWs",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "קירוב-פונקציות-בעזרת-פולינומים-1"
+    },
+    {
+        "id": 291,
+        "title": "קירוב פונקציות בעזרת פולינומים  4",
+        "youtube_id": "50c_8Hs2lyI",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "קירוב-פונקציות-בעזרת-פולינומים-4"
+    },
+    {
+        "id": 292,
+        "title": "קירוב פונקציות בעזרת פולינומים 5",
+        "youtube_id": "matkXlSvDyU",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "קירוב-פונקציות-בעזרת-פולינומים-5"
+    },
+    {
+        "id": 293,
+        "title": "קירוב פונקציות בעזרת פולינומים  6",
+        "youtube_id": "BSZ6Yjs46Fk",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "קירוב-פונקציות-בעזרת-פולינומים-6"
+    },
+    {
+        "id": 294,
+        "title": "קירוב פונקציות בעזרת פולינומים 7",
+        "youtube_id": "MLVpdoe8oes",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "קירוב-פונקציות-בעזרת-פולינומים-7"
+    },
+    {
+        "id": 296,
+        "title": "פתירת אינטגרלים בהצבות טריגונומטריות 1",
+        "youtube_id": "y8cOr3CFemM",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "פתירת-אינטגרלים-בהצבות-טריגונומטריות-1"
+    },
+    {
+        "id": 297,
+        "title": "פתירת אינטגרלים בהצבות טריגונומטריות 2",
+        "youtube_id": "ielPa367OT0",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "פתירת-אינטגרלים-בהצבות-טריגונומטריות-2"
+    },
+    {
+        "id": 298,
+        "title": "פתירת אינטגרלים בהצבות טריגונומטריות 3",
+        "youtube_id": "KE-NcyKw-a8",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "פתירת-אינטגרלים-בהצבות-טריגונומטריות-3"
+    },
+    {
+        "id": 299,
+        "title": "כלל המכפלה",
+        "youtube_id": "E7oYBwMyDWw",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "כלל-המכפלה"
+    },
+    {
+        "id": 300,
+        "title": "כלל המנות",
+        "youtube_id": "Z2R_TgdZjhg",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "כלל-המנות"
+    },
+    {
+        "id": 301,
+        "title": "אינטגרל משולש 1",
+        "youtube_id": "2s4cH14bR_k",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "אינטגרל-משולש-1"
+    },
+    {
+        "id": 302,
+        "title": "אינטגרל משולש 2",
+        "youtube_id": "7_Fpygmh478",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "אינטגרל-משולש-2"
+    },
+    {
+        "id": 303,
+        "title": "אינטגרל משולש 3",
+        "youtube_id": "2VPlqu3Du3c",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "אינטגרל-משולש-3"
+    },
+    {
+        "id": 304,
+        "description": "Position Vector Valued Function",
+        "title": "פונקציה בעלת ערך וקטורי",
+        "youtube_id": "XY-NKR5ieIY",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "פונקציה-בעלת-ערך-וקטורי"
+    },
+    {
+        "id": 305,
+        "description": "Growing by a percentage",
+        "title": "בעיה עם אחוז ההולך וגדל",
+        "youtube_id": "G7H6UU2K61w",
+        "subtopic": "אלגברה: פתרון משוואות לינאריות",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "בעיה-עם-אחוז-ההולך-וגדל"
+    },
+    {
+        "id": 306,
+        "description": "Direct and Inverse Variation",
+        "title": "השתנות ישרה והשתנות הפוכה",
+        "youtube_id": "CPrqIdoPoF8",
+        "subtopic": "אלגברה: פונקציות",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "השתנות-ישרה-והשתנות-הפוכה"
+    },
+    {
+        "id": 307,
+        "description": "Derivative of a position vector valued function",
+        "title": "גזירת נגזרת של פונקציה וקטורית",
+        "youtube_id": "oEXs4IIUwNE",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "גזירת-נגזרת-של-פונקציה-וקטורית"
+    },
+    {
+        "id": 308,
+        "title": "מוקד האליפסה",
+        "youtube_id": "0CpcOGi81K8",
+        "subtopic": "אלגברה: חתכים חרוטיים",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "מוקד-האליפסה"
+    },
+    {
+        "id": 309,
+        "title": "מוקד ההיפרבולה",
+        "youtube_id": "zl4bn2YSy8c",
+        "subtopic": "אלגברה: חתכים חרוטיים",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "מוקד-ההיפרבולה"
+    },
+    {
+        "id": 310,
+        "description": "Optimization Example 4",
+        "title": "אופטימיזציה דוגמא 4",
+        "youtube_id": "Zk7ZrIel6fE",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "אופטימיזציה-דוגמא-4"
+    },
+    {
+        "id": 311,
+        "description": "Calculus: Derivatives 2",
+        "title": "נגזרות 2",
+        "youtube_id": "F4bQTZNP618",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "נגזרות-2"
+    },
+    {
+        "id": 312,
+        "description": "i as the Principal Root of -1_a little technical",
+        "title": " השורש הראשי של מינוס 1",
+        "youtube_id": "tML2PVQ_-Ig",
+        "subtopic": "אלגברה: מספרים מרוכבים",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "השורש-הראשי-של-מינוס-1"
+    },
+    {
+        "id": 313,
+        "description": "Periodic Definite Integral",
+        "title": "אינטגרל מסויים מחזורי",
+        "youtube_id": "18S2M2RHu6s",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "אינטגרל-מסויים-מחזורי"
+    },
+    {
+        "id": 314,
+        "description": "Calculating i Raised to Arbitrary Exponents",
+        "title": "חישוב חזקות גבוהות ושרירותיות של המספר i",
+        "youtube_id": "91c11e0aVEw",
+        "subtopic": "אלגברה: מספרים מרוכבים",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "חישוב-חזקות-גבוהות-ושרירותיות-של-המספר-i"
+    },
+    {
+        "id": 315,
+        "description": "Interesting Polynomial Coefficient_Problem",
+        "title": "בעיית מקדם פולינום מעניינת",
+        "youtube_id": "RaAprSklgbU",
+        "subtopic": "אלגברה: פולינומים",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "בעיית-מקדם-פולינום-מעניינת"
+    },
+    {
+        "id": 316,
+        "title": "תמורות",
+        "youtube_id": "vNLPES_TadI",
+        "subtopic": "קדם חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "תמורות"
+    },
+    {
+        "id": 318,
+        "title": "צירופים",
+        "youtube_id": "zUkr2Kbmxs",
+        "subtopic": "קדם חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "צירופים"
+    },
+    {
+        "id": 319,
+        "title": "דוגמאות לכלל השרשרת",
+        "youtube_id": "T_56F7C6umw",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "דוגמאות-לכלל-השרשרת"
+    },
+    {
+        "id": 320,
+        "title": "עוד על כלל השרשרת",
+        "youtube_id": "tj_ccUAl9-M",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "עוד-על-כלל-השרשרת"
+    },
+    {
+        "id": 321,
+        "title": "גרדיינט 1",
+        "youtube_id": "xcgSB9E7yzQ",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "גרדיינט-1"
+    },
+    {
+        "id": 322,
+        "title": "גרדיינט של שדה סקלארי",
+        "youtube_id": "rR63ud5YnUM",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "גרדיינט-של-שדה-סקלארי"
+    },
+    {
+        "id": 323,
+        "title": "הקבצת איברים בתלת איבר  2",
+        "youtube_id": "avCvVRQS6dw",
+        "subtopic": "אלגברה: פולינומים",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "הקבצת-איברים-בתלת-איבר-2"
+    },
+    {
+        "id": 324,
+        "title": "הקבצת איברים בתלת איבר  1",
+        "youtube_id": "Sf1vJoh3US8",
+        "subtopic": "אלגברה: פולינומים",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "הקבצת-איברים-בתלת-איבר-1"
+    },
+    {
+        "id": 325,
+        "title": "הקבצת איברים בתלת איבר 3",
+        "youtube_id": "TvQRagOjXu8",
+        "subtopic": "אלגברה: פולינומים",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "הקבצת-איברים-בתלת-איבר-3"
+    },
+    {
+        "id": 326,
+        "title": "הקבצת איברים בתלת איבר 4",
+        "youtube_id": "CP7dKkT2vqk",
+        "subtopic": "אלגברה: פולינומים",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "הקבצת-איברים-בתלת-איבר-4"
+    },
+    {
+        "id": 327,
+        "title": "הקבצת איברים בתלת איבר 5",
+        "youtube_id": "JIh06myeHsc",
+        "subtopic": "אלגברה: פולינומים",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "הקבצת-איברים-בתלת-איבר-5"
+    },
+    {
+        "id": 328,
+        "description": "Exponential Growth",
+        "title": "גדילה מעריכית",
+        "youtube_id": "VZTDP9MvqLw",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "גדילה-מעריכית"
+    },
+    {
+        "id": 330,
+        "description": "Introduction to the Line Integral",
+        "title": "הקדמה לאינטגרל קוי",
+        "youtube_id": "N1fRbfsQp0Q",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "הקדמה-לאינטגרל-קוי"
+    },
+    {
+        "id": 331,
+        "description": "Equation of a tangent line",
+        "title": "משוואה של קו משיק",
+        "youtube_id": "ByDbN-qSX8E",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "משוואה-של-קו-משיק"
+    },
+    {
+        "id": 332,
+        "description": "Calculus Graphing with Derivatives Example",
+        "title": "חישוב ושרטוט נגזרות -דוגמא",
+        "youtube_id": "7huzQ3Z1JY4",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "חישוב-ושרטוט-נגזרות-דוגמא"
+    },
+    {
+        "id": 333,
+        "title": "לברון שואל על סיכויי הפגיעה שלו ב 10 קליעות עונשין",
+        "youtube_id": "YkQhQAMOLLk",
+        "subtopic": "הסתברות",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "לברון-שואל-על-סיכויי-הפגיעה-שלו-ב-10-קליעות-עונשין"
+    },
+    {
+        "id": 334,
+        "title": "אינטגרל קווי דוגמה  1",
+        "youtube_id": "55ER7YNo5bI",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "אינטגרל-קווי-דוגמה-1"
+    },
+    {
+        "id": 335,
+        "title": "אינטגרל קווי דוגמה  2 חלק 1",
+        "youtube_id": "g4a8R7F3OoI",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "אינטגרל-קווי-דוגמה-2-חלק-1"
+    },
+    {
+        "id": 336,
+        "title": "הגדרת אפסילון-דלתא של הגבול 1",
+        "youtube_id": "Fu5aEMzM50M",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "הגדרת-אפסילוןדלתא-של-הגבול-1"
+    },
+    {
+        "id": 337,
+        "title": "הגדרת אפסילון-דלתא של הגבול 2",
+        "youtube_id": "RGyVpRID8jk",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "הגדרת-אפסילוןדלתא-של-הגבול-2"
+    },
+    {
+        "id": 338,
+        "title": "הוכחת משפט גרין חלק 2",
+        "youtube_id": "XU2SZ9c4JNE",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "הוכחת-משפט-גרין-חלק-2"
+    },
+    {
+        "id": 339,
+        "title": "משפט הבינום חלק 1",
+        "youtube_id": "TCNjESXtWQs",
+        "subtopic": "קדם חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "משפט-הבינום-חלק-1"
+    },
+    {
+        "id": 340,
+        "title": "משפט הבינום חלק 3",
+        "youtube_id": "RHUlx9G6rsY",
+        "subtopic": "קדם חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "משפט-הבינום-חלק-3"
+    },
+    {
+        "id": 341,
+        "title": " דוגמה לאנטי-נגזרת  2 לוג א חלקי א",
+        "youtube_id": "Uee9Mr5zXU4",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "דוגמה-לאנטינגזרת-2-לוג-א-חלקי-א"
+    },
+    {
+        "id": 344,
+        "title": "שימוש באינטגרל קווי למציאת העבודה בשדה וקטורי",
+        "youtube_id": "ZeOffgtsafo",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "שימוש-באינטגרל-קווי-למציאת-העבודה-בשדה-וקטורי"
+    },
+    {
+        "id": 345,
+        "title": "תלות אינטגרל קווי בשדה וקטורי בכיוון התנועה",
+        "youtube_id": "YxA_ueB--Bk",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "תלות-אינטגרל-קווי-בשדה-וקטורי-בכיוון-התנועה"
+    },
+    {
+        "id": 346,
+        "title": "ערכי מקסימום ומינימום ברוח",
+        "youtube_id": "m2Zv2MDruTQ",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "ערכי-מקסימום-ומינימום-ברוח"
+    },
+    {
+        "id": 347,
+        "title": "נגזרות 2.5 - מהדורה חדשה",
+        "youtube_id": "FMdy7IjXKF8",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "נגזרות-2.5-מהדורה-חדשה"
+    },
+    {
+        "id": 348,
+        "description": "Vector valued function derivative example",
+        "title": "משמעות נגזרת של וקטור איות",
+        "youtube_id": "taLo5YpXnsc",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "משמעות-נגזרת-של-וקטור-איות"
+    },
+    {
+        "id": 349,
+        "description": "Scalar Field Line Integra Independent of Path Direction",
+        "title": "חישוב אינטגרל קווי בשדה סקלרי בכיוון הפוך",
+        "youtube_id": "atloctkE_os",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "חישוב-אינטגרל-קווי-בשדה-סקלרי-בכיוון-הפוך"
+    },
+    {
+        "id": 350,
+        "description": "Parametrization of a Reverse Path",
+        "title": "אינטגרל קווי במסלול הפוך",
+        "youtube_id": "WcvsCj28s3w",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "אינטגרל-קווי-במסלול-הפוך"
+    },
+    {
+        "id": 352,
+        "description": "Function Inverses Example 3",
+        "title": "מבוא להיפוך פונקציות דוגמא 3",
+        "youtube_id": "FALIunXI5cs",
+        "subtopic": "קדם חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "מבוא-להיפוך-פונקציות-דוגמא-3"
+    },
+    {
+        "id": 353,
+        "description": "Another Percent Word Problem",
+        "title": "בעיית אחוזים מילולית נוספת",
+        "youtube_id": "b7biadhrYCs",
+        "subtopic": "אלגברה: פתרון משוואות לינאריות",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "בעיית-אחוזים-מילולית-נוספת"
+    },
+    {
+        "id": 354,
+        "description": "Differential of a vector valued function",
+        "title": "ערך השינוי בוקטור המקום",
+        "youtube_id": "c-ds2LDzF0s",
+        "subtopic": "חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "ערך-השינוי-בוקטור-המקום"
+    },
+    {
+        "id": 355,
+        "description": "Alternate Proof to Induction for Integer Sum",
+        "title": "הוכחה אלגברית לסכום מספרים שלמים חיוביים ללא אינדוקציה ",
+        "youtube_id": "WaM1KiI3xHU",
+        "subtopic": "חשבון יסודי וקדם אלגברה: טכניקות הוכחה",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "הוכחה-אלגברית-לסכום-מספרים-שלמים-חיוביים-ללא-אינדוקציה"
+    },
+    {
+        "id": 357,
+        "description": "Converting Repeating Decimals to Fractions 2",
+        "title": "הסבת ספרה החוזרת על עצמה לשבר 2",
+        "youtube_id": "Mc2-ws4PARc",
+        "subtopic": "חשבון יסודי וקדם אלגברה: שברים",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "הסבת-ספרה-החוזרת-על-עצמה-לשבר-2"
+    },
+    {
+        "id": 359,
+        "description": "Compound Interest and e part 3",
+        "title": "ריבית דריבית למספר e - חלק 3 ",
+        "youtube_id": "luZXSP8qNBQ",
+        "subtopic": "קדם חדו\"א",
+        "topic": "מתמטיקה",
+        "kind": "Video",
+        "readable_id": "ריבית-דריבית-למספר-e-חלק-3"
+    }
+]
