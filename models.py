@@ -2458,8 +2458,15 @@ class Topic(Searchable, db.Model):
 
         # get all content that belongs in this tree
         contentItems = db.get(contentKeys)
+
         # add the content to the node dict
         topics_to_update = []
+
+        if self.version.default:
+            updates = {}
+        else:
+            updates = VersionContentChange.get_updated_content_dict(self.version)
+
         for key, content in itertools.izip(contentKeys, contentItems):
             if not content:
                 for topic in Topic.all().filter("version = ", self.version).filter("child_keys =", key).run():
@@ -2467,9 +2474,12 @@ class Topic(Searchable, db.Model):
                     topic.child_keys = [c for c in topic.child_keys if c != key]
                     topics_to_update.append(topic)
                 continue
+            content = updates.get(key, content)
             node_dict[content.key()] = content
 
-        db.put(topics_to_update)
+        if topics_to_update:
+            logging.info("Updating %s topics...", len(topics_to_update))
+            db.put(topics_to_update)
         # cycle through the nodes adding each to its parent's children list
         for key, descendant in node_dict.iteritems():
             if hasattr(descendant, "child_keys"):
