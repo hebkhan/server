@@ -9,6 +9,7 @@ import fileinput
 import itertools
 import requests
 import gevent
+import shelve
 from collections import namedtuple
 import logging
 
@@ -58,24 +59,29 @@ def get_topic_tree(videos, root_topic_id='root'):
     for i, vid in enumerate(videos):
         topic_ids = [vid[k] for k in sorted(vid) if k.startswith("topic_id")]
         topic_names = [vid[k] for k in sorted(vid) if k.startswith("topic_name")]
+        assert len(set(filter(None, topic_ids))) == len(filter(None, topic_ids)), "can't repeat topic_ids: [%s]" % topic_ids
         assert len(topic_ids) == len(topic_names), "topic_id columns must match topic_name columns"
 
         if vid['readable_id']:
             readable_id = vid['readable_id']
         else:
             readable_id = to_id(topic_ids + [("L%s" % vid['line'])])
+        # split using special escape-sequece "\n"
         description = "\n".join(vid['description'].split("\\n"))
         if vid['source'] == "ani10":
-            title = vid['orig_name'].split("-")[-1].strip()
+            title = vid['orig_name'].split("-")[-1].strip().decode("utf-8")
             description += "\n(%s)" % vid['orig_name']
+        else:
+            title = vid['title']
         video = dict(
                      kind = "Video",
                      source = vid['source'],
-                     title = title.decode("utf-8"),
-                     standalone_title = title.decode("utf-8"),
+                     title = title,
                      description = description.decode("utf-8"),
                      youtube_id = vid['youtube_id'],
+                     youtube_id_en = vid.get('youtube_id_en'),
                      readable_id = readable_id,
+                     update = True,
                      )
         video = {k:v for k,v in video.iteritems() if v!=""}
 
@@ -100,32 +106,62 @@ def get_topic_tree(videos, root_topic_id='root'):
 
 VIDEOS_URL = "https://docs.google.com/spreadsheet/pub?key=0Ap8djBdeiIG7dEg2blg1YlNLbUdBTnJYb1lFUU1fZlE&single=true&gid=1&output=csv"
 
-#http://www.hebrewkhan.org/api/v1/videos/prime-numbers
+from contextlib import contextmanager
+@contextmanager
+def video_cache():
+    cache = shelve.open("video_cache")
+    stats = dict(hits=0, misses=0)
+    def _get_video(readable_id):
+        if readable_id not in cache:
+            for i in xrange(5):
+                try:
+                    cache[readable_id]  = requests.get("http://www.hebrewkhan.org/api/v1/videos/" + readable_id).json()
+                    break
+                except Exception, e:
+                    logging.error(e)
+                    gevent.sleep(2)
+            else:
+                raise
+            stats['misses'] += 1
+        else:
+            stats['hits'] += 1
+        return cache[readable_id]
+    try:
+        yield _get_video
+    finally:
+        logging.info("Hits: %(hits)s, Misses: %(misses)s", stats)
+        cache.close()
 
 def get_videos():
 
+    logging.info("Fetching from %s", VIDEOS_URL)
     lines = csv.reader(requests.get(VIDEOS_URL).iter_lines())
     header = next(lines)
     Video = lambda line: dict(zip(header, line))
 
     videos = []
-    def get_video(video):
-        if video['source'] == "khan":
-            khan_info = requests.get("http://www.hebrewkhan.org/api/v1/videos/" + video['readable_id']).json()
-            if not khan_info:
-                raise Exception("No video for %r" % (video,))
-            video['youtube_id'] = khan_info['youtube_id']
-        logging.info("got %s", video['youtube_id'])
-        videos.append(video)
+    with video_cache() as _get_video:
+        def get_video(video):
+            if video['source'] == "khan":
+                khan_info = _get_video(video['readable_id'])
+                if not khan_info:
+                    raise Exception("No video for %r" % (video,))
+                video['youtube_id'] = id1 = khan_info['youtube_id']
+                video['youtube_id_en'] = id2 = khan_info['youtube_id_en']
+                video['source'] = "khan" if id1==id2 else "hebkhan"
+                video['title'] = khan_info['title']
 
-    from gevent.pool import Pool
-    video_getters = Pool(size=100)
-    for line in lines:
-        if not any(line):
-            break
-        video = Video(line)
-        video_getters.spawn_link_exception(get_video, video)
-    video_getters.join()
+            logging.info("got %(youtube_id)s (%(source)s)", video)
+            videos.append(video)
+
+        from gevent.pool import Pool
+        video_getters = Pool(size=50)
+        for line in lines:
+            if not any(line):
+                break
+            video = Video(line)
+            video_getters.spawn_link_exception(get_video, video)
+        video_getters.join()
 
     return videos
 
@@ -139,8 +175,8 @@ if __name__ == '__main__':
     root = get_topic_tree(get_videos())
     for tree in root['children']:
         all_children = tree['children']
-        for i in xrange(0, len(all_children), 3):
-            tree['children'] = all_children[i:i+3]
+        for i in xrange(0, len(all_children), 5):
+            tree['children'] = all_children[i:i+5]
             logging.info("Writing %s - %s", tree['id'], i)
             with open("tree_of_knowledge-%s-%s.json" % (tree['id'], i), "w") as f:
                 f.write(json.dumps(tree,
