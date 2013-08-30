@@ -2983,11 +2983,11 @@ def topictree_import_task(version_id, topic_id, publish, data_compressed, replac
     all_entities_dict = {}
     new_content_keys = set()
 
-    # on dev server dont record new items in ContentVersionChanges
-    if App.is_dev_server:
-        put_change = False
-    else:
-        put_change = True
+    ## on dev server dont record new items in ContentVersionChanges
+    # if App.is_dev_server:
+    #     put_change = False
+    # else:
+    put_change = True
 
     # delete all subtopics of node we are copying over the same topic
     if replace and tree_json["id"] == parent.id:
