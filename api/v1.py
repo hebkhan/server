@@ -938,7 +938,7 @@ def save_video(video_id="", version_id = "edit"):
         return models.VersionContentChange.add_content_change(video, 
             version, 
             request.json, 
-            ["readable_id", "title", "youtube_id", "description", "keywords", "source"])
+            ["readable_id", "title", "youtube_id", "youtube_id_en", "description", "keywords", "source"])
 
     # handle making a new video
     else:
