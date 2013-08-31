@@ -2685,7 +2685,8 @@ class Topic(Searchable, db.Model):
             (str(version.number)+str(version.updated_on))  if version 
             else Setting.topic_tree_version(),
             include_hidden),
-        layer=layer_cache.Layers.Memcache) 
+        bigdata=True,
+        layer=layer_cache.Layers.Memcache)
     def get_content_topics(version = None, include_hidden = False):
         topics = Topic.get_all_topics(version, include_hidden)
 
@@ -2706,6 +2707,7 @@ class Topic(Searchable, db.Model):
             (str(version.number)+str(version.updated_on)) if version 
             else Setting.topic_tree_version(),
             include_hidden),
+        bigdata=True,
         layer=layer_cache.Layers.Blobstore) 
     def get_filled_content_topics(types=None, version=None, include_hidden=False):
         if types is None:

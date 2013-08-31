@@ -116,11 +116,13 @@ def is_disabled():
 def cache(
         expiration = DEFAULT_LAYER_CACHE_EXPIRATION_SECONDS,
         layer = Layers.Memcache | Layers.InAppMemory,
-        persist_across_app_versions = False):
+        persist_across_app_versions = False,
+        bigdata = False,
+        ):
     def decorator(target):
         key = "__layer_cache_%s.%s__" % (target.__module__, target.__name__)
         def wrapper(*args, **kwargs):
-            return layer_cache_check_set_return(target, lambda *args, **kwargs: key, expiration, layer, persist_across_app_versions, None, *args, **kwargs)
+            return layer_cache_check_set_return(target, lambda *args, **kwargs: key, expiration, layer, persist_across_app_versions, None, bigdata, *args, **kwargs)
         return wrapper
     return decorator
 
@@ -129,12 +131,32 @@ def cache_with_key_fxn(
         expiration = DEFAULT_LAYER_CACHE_EXPIRATION_SECONDS,
         layer = Layers.Memcache | Layers.InAppMemory,
         persist_across_app_versions = False,
-        permanent_key_fxn = None):
+        permanent_key_fxn = None,
+        bigdata = False,
+        ):
     def decorator(target):
         def wrapper(*args, **kwargs):
-            return layer_cache_check_set_return(target, key_fxn, expiration, layer, persist_across_app_versions, permanent_key_fxn, *args, **kwargs)
+            return layer_cache_check_set_return(target, key_fxn, expiration, layer, persist_across_app_versions, permanent_key_fxn, bigdata, *args, **kwargs)
         return wrapper
     return decorator
+
+import cPickle
+def big_memcache_set(key, value, chunksize=950000, **kw):
+    serialized = cPickle.dumps(value, cPickle.HIGHEST_PROTOCOL)
+    size = len(serialized)
+    if size//chunksize>32:
+        raise Exception("value is way too big for memcache (%s)", size)
+    values = {}
+    for i, offset in enumerate(xrange(0, size, chunksize)):
+        values[str(i)] = serialized[offset:offset+chunksize]
+    return memcache.set_multi(values, key_prefix=key, **kw)
+
+def big_memcache_get(key, **kw):
+    result = memcache.get_multi([str(i) for i in xrange(32)], key_prefix=key, **kw).items()
+    result.sort()
+    serialized = ''.join([v for (k,v) in result if v is not None])
+    if serialized:
+        return cPickle.loads(serialized)
 
 def layer_cache_check_set_return(
         target,
@@ -143,8 +165,17 @@ def layer_cache_check_set_return(
         layer = Layers.Memcache | Layers.InAppMemory,
         persist_across_app_versions = False,
         permanent_key_fxn = None,
+        bigdata = False,
         *args,
         **kwargs):
+
+    if bigdata:
+        import pdb; pdb.set_trace()
+        get_from_memcache = big_memcache_get
+        set_to_memcache = big_memcache_set
+    else:
+        get_from_memcache = memcache.get
+        set_to_memcache = memcache.set
 
     def get_cached_result(key, namespace, expiration, layer):
 
@@ -154,7 +185,7 @@ def layer_cache_check_set_return(
                 return result
 
         if layer & Layers.Memcache:
-            result = memcache.get(key, namespace=namespace)
+            result = get_from_memcache(key, namespace=namespace)
             if result is not None:
                 # Found in memcache, fill upward layers
                 if layer & Layers.InAppMemory:
@@ -168,7 +199,7 @@ def layer_cache_check_set_return(
                 if layer & Layers.InAppMemory:
                     cachepy.set(key, result, expiry=expiration)
                 if layer & Layers.Memcache:
-                    memcache.set(key, result, time=expiration, namespace=namespace)
+                    set_to_memcache(key, result, time=expiration, namespace=namespace)
                 return result
         
         if layer & Layers.Blobstore:
@@ -183,7 +214,7 @@ def layer_cache_check_set_return(
             cachepy.set(key, result, expiry=expiration)
 
         if layer & Layers.Memcache:
-            if not memcache.set(key, result, time=expiration, namespace=namespace):
+            if not set_to_memcache(key, result, time=expiration, namespace=namespace):
                 logging.error("Memcache set failed for %s" % key)
 
         if layer & Layers.Datastore:
