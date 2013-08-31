@@ -1768,9 +1768,13 @@ def change_default_version(version):
     deferred.defer(rebuild_content_caches, version, _queue="topics-set-default-queue")
 
 
-def rebuild_content_caches(version):
-
+def rebuild_content_caches(version, batch=0):
     topics = Topic.get_all_topics(version)  # does not include hidden topics!
+    batch_size = 25
+    topics = topics[batch_size*batch:batch_size*(batch+1)]
+    if not topics:
+        logging.info("set_default_version complete")
+        return
 
     videos = [v for v in Video.all()]
     video_dict = dict((v.key(), v) for v in videos)
@@ -1809,7 +1813,7 @@ def rebuild_content_caches(version):
     db.put(urls)
 
     logging.info("Rebuilt content topic caches. (" + str(found_videos) + " videos)")
-    logging.info("set_default_version complete")
+    deferred.defer(rebuild_content_caches, version, batch+1, _queue="topics-set-default-queue")
 
 
 class VersionContentChange(db.Model):
