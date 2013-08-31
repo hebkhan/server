@@ -2559,6 +2559,7 @@ class Topic(Searchable, db.Model):
             (str(version.number)+str(version.updated_on)) if version 
             else Setting.topic_tree_version(), 
             include_hidden),
+        bigdata=True,
         layer=layer_cache.Layers.Memcache)    
     def get_all_topics(version=None, include_hidden=False):
         if not version:
@@ -2575,6 +2576,7 @@ class Topic(Searchable, db.Model):
         lambda version=None: 
         "topic.get_visible_topics_%s" % (
             version.key() if version else Setting.topic_tree_version()),
+        bigdata=True,
         layer=layer_cache.Layers.Memcache)
     def get_visible_topics(version = None):
         topics = Topic.get_all_topics(version, False)
