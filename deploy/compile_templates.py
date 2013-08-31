@@ -31,8 +31,7 @@ def append_paths():
         os.path.join(gae_path, 'lib', 'yaml', 'lib'),
     ]
 
-    for path in extra_paths:
-        sys.path.append(path)
+    sys.path[:1] = extra_paths
 
 # Append app and GAE paths so we can simulate our app environment
 # when precompiling templates (otherwise compilation will bail on errors)
