@@ -149,7 +149,8 @@ def big_memcache_set(key, value, chunksize=950000, **kw):
     values = {}
     for i, offset in enumerate(xrange(0, size, chunksize)):
         values[str(i)] = serialized[offset:offset+chunksize]
-    return memcache.set_multi(values, key_prefix=key, **kw)
+    not_set = memcache.set_multi(values, key_prefix=key, **kw)
+    return not not_set # an empty list means success
 
 def big_memcache_get(key, **kw):
     result = memcache.get_multi([str(i) for i in xrange(32)], key_prefix=key, **kw).items()
