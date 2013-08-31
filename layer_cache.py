@@ -170,7 +170,6 @@ def layer_cache_check_set_return(
         **kwargs):
 
     if bigdata:
-        import pdb; pdb.set_trace()
         get_from_memcache = big_memcache_get
         set_to_memcache = big_memcache_set
     else:
