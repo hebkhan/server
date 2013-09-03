@@ -145,7 +145,7 @@ def topic_browser_tree(tree, level=0):
                 continue
 
             # show leaf node as a link
-            href = "#%s" % escape(slugify(child.id))
+            href = "#%s" % escape(child.id)
 
             if level == 0:
                 s += "<li class='solo'><a href='%s' class='menulink'>%s</a></li>" % (href, escape(child.title))
