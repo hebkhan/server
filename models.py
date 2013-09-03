@@ -1768,19 +1768,15 @@ def change_default_version(version):
     deferred.defer(rebuild_content_caches, version, _queue="topics-set-default-queue")
 
 
-def rebuild_content_caches(version, batch=0):
+def rebuild_content_caches(version):
     topics = Topic.get_all_topics(version)  # does not include hidden topics!
-    batch_size = 25
-    topics = topics[batch_size*batch:batch_size*(batch+1)]
-    if not topics:
-        logging.info("set_default_version complete")
-        return
 
     videos = [v for v in Video.all()]
     video_dict = dict((v.key(), v) for v in videos)
 
     for video in videos:
         video.topic_string_keys = []
+
 
     urls = [u for u in Url.all()]
     url_dict = dict((u.key(), u) for u in urls)
@@ -1808,13 +1804,21 @@ def rebuild_content_caches(version, batch=0):
                     logging.info("Failed to find URL " + str(child_key))
 
     logging.info("About to put content caches for all videos")
-    db.put(videos)
+    try:
+        db.put(videos)
+    except:
+        logging.exception("Error putting %s videos (will attempt one-by-one)", len(videos))
+        for video in videos:
+            try:
+                video.put()
+            except:
+                logging.exception("Error putting %s", video.readable_id)
+
     logging.info("Finished putting videos. About to put urls")
     db.put(urls)
 
     logging.info("Rebuilt content topic caches. (" + str(found_videos) + " videos)")
-    deferred.defer(rebuild_content_caches, version, batch+1, _queue="topics-set-default-queue")
-
+    logging.info("set_default_version complete")
 
 class VersionContentChange(db.Model):
     """ This class keeps track of changes made in the admin/content editor
