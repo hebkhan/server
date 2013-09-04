@@ -49,67 +49,6 @@ def get_app_engine_credentials():
         password = getpass.getpass("Password for %s: " % email)
         return (email, password)
 
-def send_hipchat_deploy_message(version, includes_local_changes, email):
-    if hipchat_deploy_token is None:
-        return
-
-    app_id = get_app_id()
-    if app_id != "khan-academy":
-        # Don't notify hipchat about deployments to test apps
-        print 'Skipping hipchat notification as %s looks like a test app' % app_id
-        return
-
-    url = "http://%s.%s.appspot.com" % (version, app_id)
-
-    hg_id = hg_version()
-    hg_msg = hg_changeset_msg(hg_id)
-    kiln_url = "https://khanacademy.kilnhg.com/Search?search=%s" % hg_id
-
-    git_id = git_version()
-    git_msg = git_revision_msg(git_id)
-    github_url = "https://github.com/Khan/khan-exercises/commit/%s" % git_id
-
-    local_changes_warning = " (including uncommitted local changes)" if includes_local_changes else ""
-    message_tmpl = """
-            %(hg_id)s%(local_changes_warning)s to <a href='%(url)s'>a non-default url</a>. Includes
-            website changeset "<a href='%(kiln_url)s'>%(hg_msg)s</a>" and khan-exercises
-            revision "<a href='%(github_url)s'>%(git_msg)s</a>."
-            """ % {
-                "url": url,
-                "hg_id": hg_id,
-                "kiln_url": kiln_url,
-                "hg_msg": hg_msg,
-                "github_url": github_url,
-                "git_msg": git_msg,
-                "local_changes_warning": local_changes_warning,
-            }
-    public_message = "Just deployed %s" % message_tmpl
-    private_message = "%s just deployed %s" % (email, message_tmpl)
-
-    hipchat_message(public_message, ["Exercises"])
-    hipchat_message(private_message, ["1s and 0s"])
-
-def hipchat_message(msg, rooms):
-    if hipchat_deploy_token is None:
-        return
-
-    for room in hipchat.room.Room.list():
-
-        if room.name in rooms:
-
-            result = ""
-            msg_dict = {"room_id": room.room_id, "from": "Mr Monkey", "message": msg, "color": "purple"}
-
-            try:
-                result = str(hipchat.room.Room.message(**msg_dict))
-            except:
-                pass
-
-            if "sent" in result:
-                print "Notified Hipchat room %s" % room.name
-            else:
-                print "Failed to send message to Hipchat: %s" % msg
-
 def get_app_id():
     f = open("app.yaml", "r")
     contents = f.read()
@@ -120,39 +59,29 @@ def get_app_id():
 
     return match.groups()[0]
 
-def hg_st():
-    output = popen_results(['hg', 'st', '-mard', '-S'])
+def git_status():
+    output = popen_results(['git', 'status', '-s'])
     return len(output) > 0
 
-def hg_pull_up():
+def git_pull():
     # Pull latest
-    popen_results(['hg', 'pull'])
+    popen_results(['git', 'pull'])
 
-    # Hg up and make sure we didn't hit a merge
-    output = popen_results(['hg', 'up'])
-    lines = output.split("\n")
-    if len(lines) != 2 or lines[0].find("files updated") < 0:
-        # Ran into merge or other problem
-        return -1
+    # # Hg up and make sure we didn't hit a merge
+    # output = popen_results(['hg', 'up'])
+    # lines = output.split("\n")
+    # if len(lines) != 2 or lines[0].find("files updated") < 0:
+    #     # Ran into merge or other problem
+    #     return -1
 
-    return hg_version()
-
-def hg_version():
-    # grab the tip changeset hash
-    current_version = popen_results(['hg', 'identify','-i']).strip()
-    return current_version or -1
-
-def hg_changeset_msg(changeset_id):
-    # grab the summary and date
-    output = popen_results(['hg', 'log', '--template','{desc}', '-r', changeset_id])
-    return output
+    return git_version()
 
 def git_version():
     # grab the tip changeset hash
-    return popen_results(['git', '--work-tree=khan-exercises/', '--git-dir=khan-exercises/.git', 'rev-parse', 'HEAD']).strip()
+    return popen_results(['git', 'rev-parse', 'HEAD']).strip()[:6]
 
 def git_revision_msg(revision_id):
-    return popen_results(['git', '--work-tree=khan-exercises/', '--git-dir=khan-exercises/.git', 'show', '-s', '--pretty=format:%s', revision_id]).strip()
+    return popen_results(['git', 'show', '-s', '--pretty=format:%s', revision_id]).strip()
 
 def check_secrets():
     content = ""
@@ -261,7 +190,7 @@ def main():
         compress.file_size_report()
         return
 
-    includes_local_changes = hg_st()
+    includes_local_changes = git_status()
     if not options.force and includes_local_changes:
         print "Local changes found in this directory, canceling deploy."
         return
@@ -269,7 +198,7 @@ def main():
     version = -1
 
     if not options.noup:
-        version = hg_pull_up()
+        version = git_pull()
         if version <= 0:
             print "Could not find version after 'hg pull', 'hg up', 'hg tip'."
             return
@@ -291,19 +220,18 @@ def main():
     compress_css()
     compress_exercises()
 
+    if options.version:
+        version = options.version
+    elif options.noup:
+        print 'You must supply a version when deploying with --no-up'
+        return
+
+    print "Deploying version " + str(version)
+
     if not options.dryrun:
-        if options.version:
-            version = options.version
-        elif options.noup:
-            print 'You must supply a version when deploying with --no-up'
-            return
-
-        print "Deploying version " + str(version)
-
         (email, password) = get_app_engine_credentials()
         success = deploy(version, email, password)
         if success:
-            send_hipchat_deploy_message(version, includes_local_changes, email)
             open_browser_to_ka_version(version)
             prime_cache(version)
 
