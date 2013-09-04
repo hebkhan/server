@@ -17,7 +17,7 @@ REPORT_TEMPLATE = (('status', 'started'), ('fetches', 0), ('writes', 0),
                    ('errors', 0), ('redirects', 0))
 YOUTUBE_URL = 'http://www.youtube.com/watch?v=%s'
 UNISUBS_URL = 'http://www.universalsubtitles.org/api/1.0/subtitles/?language=en&video_url=%s'
-TASK_QUEUE = 'subtitles-fetch-queue'
+TASK_QUEUE = 'slow-background-queue'
 
 
 class ReportHandler(request_handler.RequestHandler):
