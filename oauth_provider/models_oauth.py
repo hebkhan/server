@@ -29,6 +29,14 @@ class Resource(db.Model):
     def __unicode__(self):
         return u"Resource %s with url %s" % (self.name, self.url)
 
+    @classmethod
+    def get_default(cls):
+        default = cls.all().filter("name =","default").get()
+        if not default:
+            default = cls(name="default", url="/")
+            default.put()
+        return default
+
 class Consumer(db.Model):
     name = db.StringProperty()
     description = db.TextProperty()

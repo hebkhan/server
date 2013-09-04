@@ -103,7 +103,7 @@ class GAEOAuthDataStore(oauth.OAuthDataStore):
                     raise oauth.OAuthError('Invalid callback URL.')
 
         #not going to implement scope just yet-so just hard code this for now
-        resource = Resource.all().filter("name =","default")[0]
+        resource = Resource.get_default()
         
         #try:
         #    resource = Resource.objects.get(name=self.scope)
