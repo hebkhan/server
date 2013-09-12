@@ -30,11 +30,41 @@ def batch_iter(query, batch_size=1000):
         print "Batch", i*batch_size + len(entities), ":"
         for entity in entities:
             yield entity
-        entities = query.filter('__key__ >', entities[-1].key()).fetch(batch_size)
+        last_key = entity.key() if hasattr(entity, "key") else entity
+        entities = query.filter('__key__ >', last_key).fetch(batch_size)
 
+def update_spreadsheet(key, worksheet, data, chunk_size=200):
+    gsclient = gspread.login(app_engine_username, app_engine_password)
+    wr = gsclient.open_by_key(key).worksheet(worksheet)
+    print "updating %s:" % (wr.title)
 
-def update_spreadsheet():
+    row_generator = iter(data)
+    def get_chunk():
+        for i, line in enumerate(row_generator):
+            yield line
+            if i>=chunk_size:
+                break
 
+    total_rows = 0
+    current_row = 1
+    while True:
+        rows = list(get_chunk())
+        if not rows:
+            break
+        ncols = len(rows[0])
+        total_rows += len(rows)
+        wr.resize(total_rows, ncols)
+        addr = "%s:%s" % (wr.get_addr_int(current_row, 1),
+                          wr.get_addr_int(total_rows, ncols))
+        cells = wr.range(addr)
+        for cell in cells:
+            cell.value = rows[cell.row-current_row][cell.col-1]
+
+        print "updating %s cells (%s)..." % (len(cells), addr)
+        wr.update_cells(cells)
+        current_row += len(rows)
+
+def update_video_mapping():
     def get_video_mapping():
         videos = models.Video.all()
         keys = "youtube_id", "youtube_id_en", "readable_id"
@@ -44,20 +74,61 @@ def update_spreadsheet():
                 yield tuple(getattr(video, k) for k in keys)
 
     print "getting data..."
-    mapping = list(get_video_mapping())
+    update_spreadsheet(key="0Ap8djBdeiIG7dHdKekgwYy1zSDFWRzRSZl9TTDVpNXc", worksheet="mapping", data=mapping)
 
-    client = gspread.login(app_engine_username, app_engine_password)
-    wr = client.open_by_key("0Ap8djBdeiIG7dHdKekgwYy1zSDFWRzRSZl9TTDVpNXc").worksheet("mapping")
-    rows, cols = len(mapping), len(mapping[0])
-    print "resizing to %sx%s" % (rows, cols)
-    wr.resize(rows, cols)
+def update_user_data():
+    import md5
+    keys = [
+        ('user_id', lambda x: md5.new(x).hexdigest().upper()[:8]),
+        ('total_seconds_watched', str),
+        ('last_activity', str),
+        ('badges', len),
+        ('all_proficient_exercises', len),
+        ('is_profile_public', str),
+        ('videos_completed', str),
+        ('last_login', str),
+        ('username', str),
+        ('coaches', len),
+        ('has_current_goals', str),
+        ('proficient_exercises', len),
+        ('joined', str),
+        ('points', str),
+    ]
 
-    cells = wr.range("A1:%s" % wr.get_addr_int(rows, cols))
-    for cell in cells:
-        cell.value = mapping[cell.row-1][cell.col-1]
+    def get_data():
+        users = batch_iter(models.UserData.all())
+        yield [k for k,_ in keys]
+        for u in users:
+            yield [fn(getattr(u,k)) for k,fn in keys]
 
-    print "updating spreadsheet"
-    wr.update_cells(cells)
+    print "getting data..."
+    update_spreadsheet("0Ap8djBdeiIG7dERSdVAtUmdvdl9JNTYzMUF6YnM3YWc", "users", get_data())
+
+import md5
+def hashify(x):
+    return "U_" + md5.new(x).hexdigest().upper()[:8]
+
+def update_video_data():
+    keys = [
+        ("user", lambda user: hashify(user.email())),
+        ("youtube_id", str),
+        ("time_watched", str),
+        ("seconds_watched", str),
+        ("last_second_watched", str),
+        ("points_earned", str),
+        ("is_video_completed", str),
+        ("video_title", unicode),
+    ]
+
+    def get_data():
+        logs = batch_iter(models.VideoLog.all(), 500)
+        yield [k for k,_ in keys]
+        for u in logs:
+            yield [fn(getattr(u,k)) for k,fn in keys]
+
+    print "getting data..."
+    update_spreadsheet("0Ap8djBdeiIG7dERSdVAtUmdvdl9JNTYzMUF6YnM3YWc", "videos", get_data())
+                              
 
 def main():
     parser = optparse.OptionParser()
@@ -67,7 +138,7 @@ def main():
 
     options, args = parser.parse_args()
     init_remote_api(options.app_id)
-    update_spreadsheet()
+    update_video_data()
 
 if __name__ == '__main__':
     main()
