@@ -12,6 +12,10 @@ class RobotsTxt(RequestHandler):
         ]
 
         if os.environ['SERVER_NAME'] in visible_domains:
-            self.response.write("Disallow:")
+            self.response.write("Disallow: /_ah/\n")
+            self.response.write("Disallow: /admin/\n")
+            self.response.write("Disallow: /devadmin/\n")
+            self.response.write("Disallow: /video/\n")
+            self.response.write("Disallow: /discussion/\n")
         else:
             self.response.write("Disallow: *")
