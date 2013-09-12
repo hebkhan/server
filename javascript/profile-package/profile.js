@@ -446,6 +446,8 @@ var Profile = {
 
 
         for (var i = 0, exercise; exercise = data[i]; i++) {
+            if (exercise["summative"]) continue;
+
             var stat = "לא התחיל";
             var color = "";
             var states = exercise["exercise_states"];
