@@ -1906,8 +1906,6 @@ class VersionContentChange(db.Model):
 
     @staticmethod
     def add_content_change(content, version, new_props, changeable_props=None):
-        if changeable_props is None:
-            changeable_props = new_props.keys()
 
         change = VersionContentChange.get_change_for_content(content, version)
        
@@ -1921,10 +1919,12 @@ class VersionContentChange(db.Model):
             change.content_changes = {}
 
         if content and content.is_saved():
-            
-            if previous_changes:
-                content = change.updated_content(content)
-                change.content_changes = {}
+
+            # merge with any existing content changes
+            new_props = dict(change.content_changes, **new_props)
+            if changeable_props is None:
+                changeable_props = new_props.keys()
+            change.content_changes = {}
 
             for prop in changeable_props:
                 if (prop in new_props and
