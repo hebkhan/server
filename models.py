@@ -7,6 +7,7 @@ import urllib
 import pickle
 import random
 import itertools
+from pprint import pformat
 
 from google.appengine.api import users
 from google.appengine.api import memcache
@@ -1919,32 +1920,32 @@ class VersionContentChange(db.Model):
             change.content_changes = {}
 
         if content and content.is_saved():
-
+            # get the raw content w/out content changes
+            content = db.get(content.key())
             # merge with any existing content changes
             new_props = dict(change.content_changes, **new_props)
             if changeable_props is None:
-                changeable_props = new_props.keys()
-            change.content_changes = {}
+                changeable_props = set(new_props)
+            else:
+                changeable_props = set(changeable_props)
 
-            for prop in changeable_props:
-                if (prop in new_props and
-                    new_props[prop] is not None and (
-                        not hasattr(content, prop) or
-                        new_props[prop] != getattr(content, prop))
-                        ):
-
-                    # add new changes for all props that are different from what
-                    # is currently in content
-                    change.content_changes[prop] = new_props[prop]
+            new_props = dict((k, v)
+                            for k,v in new_props.iteritems()
+                            if k in changeable_props and
+                                v is not None and
+                                v != getattr(content, k, None))
+            change.content_changes = new_props
         else:
             raise Exception("content does not exit yet, call add_new_content instead")
 
         # only put the change if we have actually changed any props
         if change.content_changes:
+            logging.info("Changes saved:\n%s", pformat(change.content_changes))
             change.put()
 
         # delete the change if we are back to the original values
         elif previous_changes:
+            logging.info("Removed Changes")
             change.delete()
 
         return change.content_changes
@@ -3366,18 +3367,7 @@ class Video(Searchable, db.Model):
         video = None
         query = Video.all()
         query.filter('readable_id =', readable_id)
-        # The following should just be:
-        # video = query.get()
-        # but the database currently contains multiple Video objects for a particular
-        # video.  Some are old.  Some are due to a YouTube sync where the youtube urls
-        # changed and our code was producing youtube_ids that ended with '_player'.
-        # This hack gets the most recent valid Video object.
-        key_id = 0
-        for v in query:
-            if v.key().id() > key_id and not v.youtube_id.endswith('_player'):
-                video = v
-                key_id = v.key().id()
-        # End of hack
+        video = query.get()
 
         # if there is a version check to see if there are any updates to the video
         if version:
