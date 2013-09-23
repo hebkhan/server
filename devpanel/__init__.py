@@ -8,7 +8,6 @@ from models import UserData
 from common_core.models import CommonCoreMap
 import request_handler
 import user_util
-from collections import namedtuple
 import itertools, functools
 from api.auth.xsrf import ensure_xsrf_cookie
 
@@ -252,6 +251,8 @@ class ManageCoworkers(request_handler.RequestHandler):
         
 def update_common_core_map(remap_doc_id, reset=False):
     fetch = functools.partial(urlfetch.fetch, deadline=30)
+    from util import namedtuple
+
     url_fmt = "http://docs.google.com/spreadsheet/pub?key=%s&gid=%s&single=true&output=csv"
 
     try:
