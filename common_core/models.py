@@ -162,7 +162,23 @@ class CommonCoreMap(db.Model):
 
         all_entries = []
         grades = zip('K 1 2 3 4 5 6 7 8 9 801 802 803 804 805 806 807'.split(),
-                     u"גן א' ב' ג' ד' ה' ו' ז' ח' ט' שאלון-801 שאלון-802 שאלון-803 שאלון-804 שאלון-805 שאלון-806 שאלון-807".split())
+                    (u"כיתה גן",
+                     u"כיתה א'",
+                     u"כיתה ב'",
+                     u"כיתה ג'",
+                     u"כיתה ד'",
+                     u"כיתה ה'",
+                     u"כיתה ו'",
+                     u"כיתה ז'",
+                     u"כיתה ח'",
+                     u"כיתה ט'",
+                     u"שאלון 801",
+                     u"שאלון 802",
+                     u"שאלון 803",
+                     u"שאלון 804",
+                     u"שאלון 805",
+                     u"שאלון 806",
+                     u"שאלון 807"))
         for x, name in grades:
             if not x in all_grades:
                 continue
@@ -180,17 +196,17 @@ class CommonCoreMap(db.Model):
         if ex is not None:
             if ex.key() not in self.exercises:
                 self.exercises.append(ex.key())
+                return True
         else:
-            logging.info("Exercise %s not in datastore" % exercise_name)
+            logging.debug("Exercise %s not in datastore" % exercise_name)
 
-        return
 
     def update_video(self, video_youtube_id):
         v = Video.all().filter('youtube_id =', video_youtube_id).get()
         if v is not None:
             if v.key() not in self.videos:
                 self.videos.append(v.key())
+                return True
         else:
-            logging.info("Youtube ID %s not in datastore" % video_youtube_id)
+            logging.debug("Youtube ID %s not in datastore" % video_youtube_id)
 
-        return

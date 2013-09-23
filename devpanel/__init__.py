@@ -323,13 +323,20 @@ def update_common_core_map(remap_doc_id, reset=False):
 
     cc_list = []
     for standard, data in cc_standards.iteritems():
+        changed = False
         videos, exercises = data.pop("videos"), data.pop("exercises")
         cc = CommonCoreMap.all().filter("standard = ", standard).get()
         if not cc:
             cc = CommonCoreMap(**data)
-        map(cc.update_exercise, exercises)
-        map(cc.update_video, videos)
-        cc_list.append(cc)
+            changed = True
+
+        for ex in exercises:
+            changed |= bool(cc.update_exercise(ex))
+        for ex in videos:
+            changed |= bool(cc.update_video(ex))
+
+        if changed:
+            cc_list.append(cc)
 
     logging.info("Updating %s Common Core Maps", len(cc_list))
     db.put(cc_list)
