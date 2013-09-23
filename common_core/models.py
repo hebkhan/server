@@ -1,3 +1,4 @@
+# coding=utf8
 from __future__ import absolute_import
 import os
 import logging
@@ -7,8 +8,6 @@ import layer_cache
 from google.appengine.ext import db
 
 from models import Exercise, Video
-
-COMMON_CORE_SEPARATOR = '.'
 
 COMMON_CORE_DOMAINS = {
         "A-APR": "Arithmetic with Polynomials and Rational Expressions",
@@ -99,12 +98,7 @@ class CommonCoreMap(db.Model):
     @staticmethod
     @layer_cache.cache_with_key_fxn(key_fxn=lambda lightweight: "structured_cc:%s" % lightweight, layer=layer_cache.Layers.Blobstore)
     def get_all_structured(lightweight=False):
-        all_entries = [
-                { 'grade': 'K', 'domains': [] }, { 'grade': '1', 'domains': [] }, { 'grade': '2', 'domains': [] },
-                { 'grade': '3', 'domains': [] }, { 'grade': '4', 'domains': [] }, { 'grade': '5', 'domains': [] },
-                { 'grade': '6', 'domains': [] }, { 'grade': '7', 'domains': [] }, { 'grade': '8', 'domains': [] },
-                { 'grade': '9-12', 'domains': [] }
-        ]
+        all_grades = {}
         domains_dict = {}
         standards_dict = {}
         exercise_cache = {}
@@ -112,13 +106,12 @@ class CommonCoreMap(db.Model):
 
         query = CommonCoreMap.all()
         for e in query:
-            grade = (x for x in all_entries if x['grade'] == e.grade).next()
-
+            grade = all_grades.setdefault(e.grade, dict(grade=e.grade, domains=[]))
             dkey = e.grade + '.' + e.domain_code
             if dkey not in domains_dict:
                 domain = {}
                 domain['domain_code'] = e.domain_code
-                domain['domain'] = COMMON_CORE_DOMAINS[e.domain_code]
+                domain['domain'] = e.domain
                 domain['standards'] = []
                 grade['domains'].append(domain)
                 domains_dict[dkey] = domain
@@ -167,30 +160,20 @@ class CommonCoreMap(db.Model):
                 else:
                     standard['videos'].append(v)
 
-        for x in all_entries:
-            if x['grade'] == '0':
-                x['grade'] = 'K'
-
-            x['domains'] = sorted(x['domains'], key=lambda k: k['domain'])
-            for y in x['domains']:
-                y['standards'] = sorted(y['standards'], key=lambda k: k['standard'])
+        all_entries = []
+        grades = zip('K 1 2 3 4 5 6 7 8 9 801 802 803 804 805 806 807'.split(),
+                     u"גן א' ב' ג' ד' ה' ו' ז' ח' ט' שאלון-801 שאלון-802 שאלון-803 שאלון-804 שאלון-805 שאלון-806 שאלון-807".split())
+        for x, name in grades:
+            if not x in all_grades:
+                continue
+            entry = all_grades[x]
+            entry['grade_name'] = name
+            entry['domains'].sort(key=lambda k: k['domain'])
+            for domain in entry['domains']:
+                domain['standards'].sort(key=lambda k: k['standard'])
+            all_entries.append(entry)
 
         return all_entries
-
-
-    def update_standard(self, standard, cluster, description):
-        self.standard = standard
-        self.cc_cluster = cluster
-        self.cc_description = description
-        cc_components = self.standard.split(COMMON_CORE_SEPARATOR)
-        self.grade = cc_components[0]
-        self.domain = COMMON_CORE_DOMAINS[cc_components[1]]
-        self.domain_code = cc_components[1]
-        self.level = cc_components[2]
-        if len(cc_components) == 4:
-            self.level += "." + cc_components[3]
-
-        return
 
     def update_exercise(self, exercise_name):
         ex = Exercise.all().filter('name =', exercise_name).get()

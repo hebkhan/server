@@ -57,8 +57,8 @@
 	.heading {
 		padding: 6px 20px;
 		margin: 0px;
-		background:white;
-		z-index:-1;
+		//background:white;
+		z-index: -1;
 	}
 	
 	.grade-heading {
@@ -86,7 +86,7 @@
 	
 	.domain-level {
 		padding: 6px 20px;
-		z-index: -99;
+		z-index: -2;
 		margin: 12px 0px 12px 150px;
 		background-color: #DBDBDB;
 		text-decoration: bold;
@@ -148,9 +148,12 @@
 				
 				$( "#sidebar-wrapper" ).sticky({ topSpacing: 6});
 				
-				$( "#table-wrapper" ).sticky({ topSpacing: 0});
+				// $( "#table-wrapper" ).sticky({ topSpacing: 0});
 				
-				$( ".heading" ).sticky({ topSpacing: 0});
+				//$( ".heading" ).sticky({ topSpacing: 31});
+
+				//$( ".domain-level" ).sticky({ topSpacing: 19});
+				
 				
 				// Sidebar behavior
 				
@@ -160,8 +163,8 @@
 					$(this).removeClass("hover");
 				});
 				
-				$(".domain-link").hide();
-				
+				$(".domain-link").hide()
+				$(".grade-level").slice(1,-1).hide()
 				/*
 				
 				$( "#grade-list" ).accordion({ 
@@ -172,19 +175,20 @@
 				
 				$(".grade-link").click(function() {
 					
-					var grade = $(this).find("a");
+					window.scroll(0);
+					var link = $(this).attr("href")
 					
-					window.location.href = $(this).attr("href");
-					
-					$(".domain-link").hide();
-					
-					$(this).next().show();					
+					$(".grade-level").slideUp("fast");
+					$(link).slideDown("slow");
+
+					$(".domain-link").slideUp("slow");
+					$(this).next().slideDown("slow");
 						
 				});
 				
 				$(".expand-videos").click(function() {
 					
-					var hiddenVideos = $(this).parent().next();
+					var hiddenVideos = $(this).next();
 					
 					if (hiddenVideos.css("display") === "none") hiddenVideos.slideDown("fast");
 					else hiddenVideos.slideUp("fast");
@@ -218,7 +222,7 @@
 			<div id="grade-list" class="pull-down">
 				
 				{% for grade in cc_map %}
-					<h4 class="grade-link" href="#grade-{{grade["grade"]|escape}}"><a href="#grade-{{grade["grade"]|escape}}">כיתה: {{grade["grade"]|escape}}</a></h4>
+					<h4 class="grade-link" href="#grade-{{grade["grade"]|escape}}">{{grade["grade_name"]|escape}}</a></h4>
 					<div class="domain-link">
 						<ul>
 							{% for domain in grade["domains"] %}
@@ -229,22 +233,6 @@
 				{% endfor %}
 				
 			</div>	
-		
-			<!--div id="Topics" class="pulled">
-
-				<select id="ComboBox" style="width: 100%;">
-					<option value="0">Select a topic:</option>
-					<option value="1">Arithmetic</option>
-					<option value="2">Pre-Algebra</option>
-					<option value="3">Algebra</option>
-					<option value="4">Geometry</option>
-					<option value="5">Trigonometry</option>
-					<option value="6">Pre-Calculus</option>
-					<option value="7">Calculus</option>
-					<option value="8">Stats & Probability</option>
-					</select>
-				
-			</div-->
 			
 		</div>
 		
@@ -276,18 +264,16 @@
 		<div id="grade-{{grade["grade"]|escape}}" class="grade-level">
 			
 			<div class="heading">
-				<h4 class="grade-heading">כיתה: {{grade["grade"]|escape}}</h4>
+				<h4 class="grade-heading">{{grade["grade_name"]|escape}}</h4>
 				<p class="content-totals">
-					{% filter upper %}
 						{{ grade_totals[grade_level].videos|escape }} סרטונים <br />
 						{{ grade_totals[grade_level].exercises|escape }} תרגילים
-					{% endfilter %}
 				</p>
 			</div>
 			
 			{% for domain in grade["domains"] %}
 			
-				<h6 id="domain-{{grade["grade"]|escape}}-{{domain["domain_code"]|escape}}" class="domain-level">{{domain["domain"]|escape}}</h6>
+				<h6 id="domain-{{grade["grade"]|escape}}-{{domain["domain_code"]|escape}}" class="domain-level" >{{domain["domain"]|escape}}</h6>
 			
 				{% for standard in domain["standards"] %}
 			
@@ -305,13 +291,13 @@
 											<ul>
     										    {% for video in standard["videos"]|sort(attribute='title') %}
 												
-        											{% if loop.index == 9 %}
-        												<li>... ו- <a href="#" class="expand-videos">{{standard.videos|count - 8}} נוספים</a> ...</li>
+        											{% if standard["videos"].count > 11 and loop.index == 9 %}
+        												ו-<a href="#" class="expand-videos">{{standard.videos|count - 8}} נוספים</a>...
 														<div class="hidden-videos">
 													{% endif %}
         												<li><a href="{{video["ka_url"]|escape}}" title="{{video["title"]|escape}}" target="_blank">{{video["title"]|escape}}</a></li>
 													
-													{% if loop.last and loop.index >= 9 %}
+													{% if loop.last and loop.index > 11 %}
 														</div>
 													{% endif %}	
 													

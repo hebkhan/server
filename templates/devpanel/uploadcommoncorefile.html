@@ -9,6 +9,8 @@
           <form id="upload" method="POST" action="/devadmin/managecommoncore" style="display: block; margin: 22px 0">
             Common-Core mapping spreadsheet (Google-Drive ID):
             <input style="width: 100%" type="text" name="remap_doc_id" value="{{ remap_doc_id }}">
+            <input type="checkbox" name="reset" value="1">Reset current data
+            <input type="hidden" name="reset" value="0">
             <br><br>
             <input type="submit" class="simple-button action-gradient" value="I know what I'm doing. Let's do it!">
           </form>

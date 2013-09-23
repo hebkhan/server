@@ -8,7 +8,8 @@ from models import UserData
 from common_core.models import CommonCoreMap
 import request_handler
 import user_util
-import itertools
+from collections import namedtuple
+import itertools, functools
 from api.auth.xsrf import ensure_xsrf_cookie
 
 import gdata.youtube
@@ -249,52 +250,93 @@ class ManageCoworkers(request_handler.RequestHandler):
 
         self.render_jinja2_template("devpanel/coworkers.html", template_values)
         
-def update_common_core_map(cc_file):
-    logging.info("Deferred job <update_common_core_map> started")
-    reader = csv.reader(cc_file)
+def update_common_core_map(remap_doc_id, reset=False):
+    fetch = functools.partial(urlfetch.fetch, deadline=30)
+    url_fmt = "http://docs.google.com/spreadsheet/pub?key=%s&gid=%s&single=true&output=csv"
+
+    try:
+        # gid=8 for second worksheet
+        url = url_fmt % (remap_doc_id, 8)
+        result = fetch(url)
+    except Exception, e:
+        raise Exception("%s (%s)" % (e, url))
+
+    logging.info("Loading domains")
+    reader = csv.reader(StringIO.StringIO(result.content))
     headerline = reader.next()
-    cc_list = []
-    cc_standards = {}
+    domains = {}
+    Domain = namedtuple("Domain", headerline)
     for line in reader:
-        cc_standard = line[0]
-        cc_cluster = line[1]
+        if not line[0]:
+            break
+        domain = Domain(*line)
+        data = dict(domain._asdict())
+        domains[domain.code] = data
+        logging.info("  %(code)s - %(name)s", data)
+
+    try:
+        # gid=9 for 3rd worksheet
+        url = url_fmt % (remap_doc_id, 9)
+        result = fetch(url)
+    except Exception, e:
+        raise Exception("%s (%s)" % (e, url))
+
+    logging.info("Loading common core map")
+    reader = csv.reader(StringIO.StringIO(result.content))
+    headerline = reader.next()
+    Row = namedtuple("Row", headerline)
+
+    cc_standards = {}
+
+    for line in reader:
+        row = Row(*line)
+        if not row.standard:
+            break
+
         try:
-            cc_description = line[2].encode('utf-8')
-        except Exception, e:
-            cc_description = cc_cluster
-        exercise_name = line[3]
-        video_youtube_id = line[4]
+            cc = cc_standards[row.standard]
+        except KeyError:
+            cc = {}
+            cc["standard"] = row.standard
+            cc["grade"], cc["domain_code"], cc["level"] = row.standard.split(".",2)
+            cc["domain"] = domains[cc["domain_code"]]['name'].decode("utf8")
+            cc["cc_cluster"] = row.cluster.decode("utf8")
+            cc["cc_description"] = row.description.decode("utf8")
+            cc["videos"] = set()
+            cc["exercises"] = set()
+            
+            cc_standards[row.standard] = cc
 
-        if len(cc_standard) == 0:
-            continue
+        if row.exercise_name:
+            cc['exercises'].add(row.exercise_name)
 
-        if cc_standard in cc_standards:
-            cc = cc_standards[cc_standard]
-        else:
-            cc = CommonCoreMap.all().filter('standard = ', cc_standard).get()
-            if cc is None:
-                cc = CommonCoreMap()
+        if row.youtube_id:
+            cc['videos'].add(row.youtube_id)
 
-            cc_standards[cc_standard] = cc
-            cc_list.append(cc)
+    while reset:
+        maps = CommonCoreMap.all(keys_only=True).fetch(limit=500)
+        if not maps:
+            break
+        logging.info("Clearing %s Common Core Maps", len(maps))
+        db.delete(maps)
 
-        cc.update_standard(cc_standard, cc_cluster, cc_description)
-        logging.info("Updated: %s", cc_standard)
+    cc_list = []
+    for standard, data in cc_standards.iteritems():
+        videos, exercises = data.pop("videos"), data.pop("exercises")
+        cc = CommonCoreMap.all().filter("standard = ", standard).get()
+        if not cc:
+            cc = CommonCoreMap(**data)
+        map(cc.update_exercise, exercises)
+        map(cc.update_video, videos)
+        cc_list.append(cc)
 
-        if len(exercise_name) > 0:
-            cc.update_exercise(exercise_name)
-
-        if len(video_youtube_id) > 0:
-            cc.update_video(video_youtube_id)
-
-        if len(cc_list) > 500:
-            db.put(cc_list)
-            cc_list = []
-            cc_standards = {}
-
+    logging.info("Updating %s Common Core Maps", len(cc_list))
     db.put(cc_list)
 
-    return
+    logging.info("Busting caches")
+    CommonCoreMap.get_all_structured(lightweight=True, bust_cache=True)
+    CommonCoreMap.get_all_structured(lightweight=False, bust_cache=True)
+    logging.info("Done with CommonCore.")
 
 class ManageCommonCore(request_handler.RequestHandler):
 
@@ -314,14 +356,8 @@ class ManageCommonCore(request_handler.RequestHandler):
         logging.info("Accessing %s" % self.request.path)
 
         remap_doc_id = self.request_string("remap_doc_id")
-        url = "http://docs.google.com/spreadsheet/pub?key=%s&single=true&output=csv" % remap_doc_id
-        try:
-            result = urlfetch.fetch(url, deadline=30)
-        except Exception, e:
-            raise Exception("%s (%s)" % (e, url))
-
-        cc_file = StringIO.StringIO(result.content)
-        deferred.defer(update_common_core_map, cc_file)
+        reset = self.request_bool("reset")
+        deferred.defer(update_common_core_map, remap_doc_id, reset)
 
         self.redirect("/devadmin")
         return
