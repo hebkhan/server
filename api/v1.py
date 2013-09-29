@@ -1337,6 +1337,8 @@ def user_exercises_all():
 
     results = []
     for exercise in exercises:
+        if exercise.summative:
+            continue
         name = exercise.name
         if name not in user_exercises_dict:
             user_exercise = models.UserExercise()
