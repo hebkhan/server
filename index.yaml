@@ -310,6 +310,17 @@ indexes:
   - name: user
   - name: last_watched
 
+- kind: VersionContentChange
+  properties:
+  - name: version
+  - name: updated_on
+
+- kind: VersionContentChange
+  properties:
+  - name: version
+  - name: updated_on
+    direction: desc
+
 - kind: Video
   properties:
   - name: __key__

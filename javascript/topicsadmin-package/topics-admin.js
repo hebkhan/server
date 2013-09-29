@@ -128,7 +128,7 @@ var TopicTreeEditor = {
                                 });
                                 childWrapper.model.oldValues = oldValues;
                                 childWrapper.model.changeUser = item.last_edited_by;
-
+                                childWrapper.model.changeTime = parseISO8601(item.updated_on);
                                 childNodes.push(TopicTreeEditor.createChild(childWrapper));
                             });
                             node.addChild(childNodes);
@@ -324,7 +324,7 @@ var TopicTreeEditor = {
             data.title += " [(" + child.id + ")]";
         }
         if (child.model && child.model.changeUser) {
-            data.title += " (by " + child.model.changeUser + ")";
+            data.title += "<div>(by " + child.model.changeUser + " on " + child.model.changeTime.toLocaleString() + ")</div>";
         }
         if (child.kind === "Topic") {
             data.isFolder = true;
