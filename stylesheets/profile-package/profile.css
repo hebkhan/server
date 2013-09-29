@@ -615,6 +615,7 @@ div.graph-notification {
     color: #333333;
     position: absolute;
     z-index: 2;
+    direction: rtl; /* because this div is inside the ltr'ed graph-content div*/
 }
 
 div.profile-notification {
