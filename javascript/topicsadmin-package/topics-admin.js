@@ -324,7 +324,10 @@ var TopicTreeEditor = {
             data.title += " [(" + child.id + ")]";
         }
         if (child.model && child.model.changeUser) {
-            data.title += "<div>(by " + child.model.changeUser + " on " + child.model.changeTime.toLocaleString() + ")</div>";
+            data.title += "<div style='font-size:smaller'>" +
+                            "<em>by</em> " + child.model.changeUser + ", " +
+                            "<em>on</em> " + child.model.changeTime.toLocaleString();
+            data.title += "</div>";
         }
         if (child.kind === "Topic") {
             data.isFolder = true;
