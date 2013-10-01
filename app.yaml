@@ -72,7 +72,7 @@ handlers:
   upload: gtv/fullscreen.html
 
 - url: /gtv.*
-  script: gtv/main.application
+  script: gtv.main.application
 # End GTV integration
 
 # Begin khan-exercises integration
@@ -103,41 +103,47 @@ handlers:
   login: admin
 
 - url: /api/.*
-  script: api/main.application
+  script: api.main.application
 
 - url: /gae_mini_profiler/static
   static_dir: gae_mini_profiler/static
   expiration: "300s"
 
 - url: /gae_mini_profiler/.*
-  script: gae_mini_profiler/main.application
+  script: gae_mini_profiler.main.application
 
 - url: /gae_bingo/static
   static_dir: gae_bingo/static
   expiration: "300s"
 
 - url: /gae_bingo/tests/.*
-  script: gae_bingo/tests/main.application
+  script: gae_bingo.tests.main.application
 
 - url: /gae_bingo/.*
-  script: gae_bingo/main.application
+  script: gae_bingo.main.application
 
 - url: /gandalf/static
   static_dir: gandalf/static
   expiration: "300s"
 
 - url: /gandalf/tests/.*
-  script: gandalf/tests/main.application
+  script: gandalf.tests.main.application
 
 - url: /gandalf?.*
-  script: gandalf/main.application
+  script: gandalf.main.application
+
+- url: /mapreduce/pipeline/images
+  static_dir: mapreduce/lib/pipeline/ui/images
+
+- url: /mapreduce(/.*)?
+  script: mapreduce.main.application
+  login: admin
 
 - url: .*
   script: main.application
 
 builtins:
 - appstats: on
-- datastore_admin: on
 - deferred: on
 - remote_api: on
 
@@ -158,6 +164,3 @@ admin_console:
       url: /mapreduce
     - name: YouTube Sync
       url: /admin/youtubesync
-
-includes:
-- mapreduce/include.yaml

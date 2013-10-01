@@ -8,7 +8,6 @@ import re
 
 from google.appengine.runtime.apiproxy_errors import CapabilityDisabledError
 from google.appengine.api import users
-from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.ext import db
 from google.appengine.api import memcache
 
@@ -947,12 +946,3 @@ application = webapp2.WSGIApplication([
 application = profiler.ProfilerWSGIMiddleware(application)
 application = GAEBingoWSGIMiddleware(application)
 application = request_cache.RequestCacheMiddleware(application)
-
-def main():
-    if os.environ["SERVER_NAME"] == "smarthistory.khanacademy.org":
-        run_wsgi_app(applicationSmartHistory)
-    else:
-        run_wsgi_app(application)
-
-if __name__ == '__main__':
-    main()
