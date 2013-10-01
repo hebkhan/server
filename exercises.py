@@ -18,7 +18,7 @@ import points
 import layer_cache
 import knowledgemap
 import string
-import simplejson as json
+import json as json
 from badges import util_badges, last_action_cache
 from phantom_users import util_notify
 from custom_exceptions import MissingExerciseException, QuietException
@@ -599,14 +599,13 @@ def attempt_problem(user_data, user_exercise, problem_number, attempt_number,
         # and want to shift it off to an automatically-retrying task queue.
         # http://ikaisays.com/2011/01/25/app-engine-datastore-tip-monotonically-increasing-values-are-bad/
         deferred.defer(models.commit_problem_log, problem_log,
-                       _queue="problem-log-queue",
-                       _url="/_ah/queue/deferred_problemlog")
+                       _queue="problem-log-queue")
 
         if user_data is not None and user_data.coaches:
             # Making a separate queue for the log summaries so we can clearly see how much they are getting used
             deferred.defer(models.commit_log_summary_coaches, problem_log, user_data.coaches,
                        _queue="log-summary-queue",
-                       _url="/_ah/queue/deferred_log_summary")
+                       )
 
         return user_exercise, user_exercise_graph, goals_updated
 

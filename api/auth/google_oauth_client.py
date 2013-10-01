@@ -1,5 +1,5 @@
 import logging
-import simplejson
+import json
 
 from flask import request
 
@@ -57,12 +57,12 @@ class GoogleOAuthClient(object):
         response = get_response(oauth_request.to_url())
 
         try:
-            obj = simplejson.loads(response)
+            obj = json.loads(response)
 
             if len(obj) == 2:
                 # (user_id, email)
                 return tuple(obj)
-        except simplejson.decoder.JSONDecodeError:
+        except json.decoder.JSONDecodeError:
             logging.error("Error decoding json from current_google_oauth_user_id_and_email; json was %r", response)
             pass
 

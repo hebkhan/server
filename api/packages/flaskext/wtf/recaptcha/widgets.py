@@ -4,7 +4,7 @@ Custom widgets
 try:
     import json
 except ImportError:
-    import simplejson as json
+    import json as json
 
 from flask import current_app
 from werkzeug import url_encode

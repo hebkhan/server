@@ -1,25 +1,26 @@
 import os
+import jinja2
+import webapp2
 
-from google.appengine.ext.webapp.util import run_wsgi_app
-from google.appengine.ext.webapp import WSGIApplication, template, RequestHandler
 
-class RedirectGTV(RequestHandler):
+class RedirectGTV(webapp2.RequestHandler):
     def get(self):
         self.redirect("/gtv/")
 
-class ViewGTV(RequestHandler):
-    def get(self):
-        path = os.path.join(os.path.dirname(__file__), "index.html")
-        self.response.out.write(template.render(path, {}))
 
-application = WSGIApplication([
+class ViewGTV(webapp2.RequestHandler):
+    @webapp2.cached_property
+    def jinja2(self):
+        return jinja2.get_jinja2(app=self.app)
+
+    def render_template(self, filename, **template_args):
+        self.response.write(self.jinja2.render_template(filename, **template_args))
+
+    def get(self):
+        self.render_template('index.html')
+
+
+application = webapp2.WSGIApplication([
     ('/gtv/', ViewGTV),
     ('/gtv', RedirectGTV),
 ])
-
-def main():
-    run_wsgi_app(application)
-
-if __name__ == "__main__":
-    main()
-

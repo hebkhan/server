@@ -6,7 +6,7 @@ import urllib
 import logging
 import layer_cache
 import urllib2
-import simplejson
+import json
 import zlib
 import pickle
 
@@ -308,7 +308,7 @@ def getSmartHistoryContent():
     try:
         opener = urllib2.build_opener()
         f = opener.open(request)
-        smart_history = simplejson.load(f)
+        smart_history = json.load(f)
     except urllib2.URLError, e:
         logging.exception("Failed fetching smarthistory video list")
         smart_history = None

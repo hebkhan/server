@@ -27,7 +27,7 @@ def append_paths():
         os.path.join(gae_path, 'lib', 'antlr3'),
         os.path.join(gae_path, 'lib', 'ipaddr'),
         os.path.join(gae_path, 'lib', 'webob'),
-        os.path.join(gae_path, 'lib', 'simplejson'),
+        os.path.join(gae_path, 'lib', 'json'),
         os.path.join(gae_path, 'lib', 'yaml', 'lib'),
     ]
 

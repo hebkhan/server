@@ -2,7 +2,7 @@ import logging
 import urllib
 import urllib2
 
-import simplejson
+import json
 from google.appengine.api import memcache
 
 from custom_exceptions import TumblrException
@@ -90,7 +90,7 @@ def get_single_post(post_id, force_refresh = False):
 def parse_json_posts(json):
 
     dict_json = None
-    dict_json = simplejson.loads(json)
+    dict_json = json.loads(json)
 
     if not dict_json:
         return []

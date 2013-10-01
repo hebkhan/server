@@ -17,7 +17,7 @@ import gdata.youtube.service
 import urllib
 import csv
 import StringIO
-import simplejson
+import json
 import re
 import models
 import zlib
@@ -89,7 +89,7 @@ class Sync(request_handler.RequestHandler):
             result = urlfetch.fetch(url, deadline=30)
         except Exception, e:
             raise Exception("%s (%s)" % (e, url))
-        topictree = simplejson.loads(result.content)
+        topictree = json.loads(result.content)
 
         url = "https://docs.google.com/spreadsheet/pub?key=%s&single=true&gid=0&output=csv" % remap_doc_id
         try:
@@ -131,14 +131,13 @@ class Sync(request_handler.RequestHandler):
         if not mapping:
             raise Exception("Unrecognized spreadsheet format")
 
-        logging.info("calling /_ah/queue/deferred_import")
+        logging.info("calling import-queue")
         step_log.put()
 
         # importing the full topic tree can be too large so pickling and compressing
         deferred.defer(khan_import_task, step_log,
                        zlib.compress(pickle.dumps((topictree, mapping))),
-                       _queue="import-queue",
-                       _url="/_ah/queue/deferred_import")
+                       _queue="import-queue")
 
 def khan_import_task(step_log, data):
 

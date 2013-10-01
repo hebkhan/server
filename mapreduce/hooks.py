@@ -28,20 +28,21 @@ class Hooks(object):
   subclass of this class.
   """
 
-  def __init__(self, mapper):
+  def __init__(self, mapreduce_spec):
     """Initializes a Hooks class.
 
     Args:
-      mapper: The mapreduce.model.MapperSpec for the current mapreduce.
+      mapreduce_spec: The mapreduce.model.MapreduceSpec for the current
+        mapreduce.
     """
-    self.mapper = mapper
+    self.mapreduce_spec = mapreduce_spec
 
   def enqueue_worker_task(self, task, queue_name):
     """Enqueues a worker task that is used to run the mapper.
 
     Args:
       task: A taskqueue.Task that must be queued in order for the mapreduce
-        mappers to be run.
+        mappers to be run. The task is named.
       queue_name: The queue where the task should be run e.g. "default".
 
     Raises:
@@ -53,9 +54,11 @@ class Hooks(object):
   def enqueue_kickoff_task(self, task, queue_name):
     """Enqueues a task that is used to start the mapreduce.
 
+    This hook will be called within a transaction scope.
+    Hook should add task transactionally.
+
     Args:
-      task: A taskqueue.Task that must be queued in order for the mapreduce
-        to start.
+      task: A taskqueue.Task that must be queued to run KickOffJobHandler.
       queue_name: The queue where the task should be run e.g. "default".
 
     Raises:
@@ -66,6 +69,9 @@ class Hooks(object):
 
   def enqueue_done_task(self, task, queue_name):
     """Enqueues a task that is triggered when the mapreduce completes.
+
+    This hook will be called within a transaction scope.
+    Hook should add task transactionally.
 
     Args:
       task: A taskqueue.Task that must be queued in order for the client to be
@@ -83,7 +89,7 @@ class Hooks(object):
 
     Args:
       task: A taskqueue.Task that must be queued in order for updates to the
-        mapreduce process to be properly tracked.
+        mapreduce process to be properly tracked. The task is named.
       queue_name: The queue where the task should be run e.g. "default".
 
     Raises:

@@ -1,7 +1,7 @@
 import logging
 import datetime
 import sys
-import simplejson as json
+import json as json
 
 from google.appengine.api import taskqueue
 from mapreduce import control

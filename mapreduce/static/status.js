@@ -18,16 +18,70 @@
 
 // Sets the status butter, optionally indicating if it's an error message.
 function setButter(message, error) {
-  var butter = $("#butter");
+  var butter = getButterBar();
   // Prevent flicker on butter update by hiding it first.
-  butter.css('display', 'none');
+  butter.hide();
   if (error) {
     butter.removeClass('info').addClass('error').text(message);
   } else {
     butter.removeClass('error').addClass('info').text(message);
   }
-  butter.css('display', null)
+  butter.show();
   $(document).scrollTop(0);
+}
+
+// Hides the butter bar.
+function hideButter() {
+  getButterBar().hide();
+}
+
+// Fetches the butter bar dom element.
+function getButterBar() {
+  return $('#butter');
+}
+
+
+// Renders a value with a collapsable twisty.
+function renderCollapsableValue(value, container) {
+  var stringValue = $.toJSON(value);
+  var SPLIT_LENGTH = 200;
+  if (stringValue.length < SPLIT_LENGTH) {
+    container.append($('<span>').text(stringValue));
+    return;
+  }
+
+  var startValue = stringValue.substr(0, SPLIT_LENGTH);
+  var endValue = stringValue.substr(SPLIT_LENGTH);
+
+  // Split the end value with <wbr> tags so it looks nice; forced
+  // word wrapping never works right.
+  var moreSpan = $('<span class="value-disclosure-more">');
+  moreSpan.hide();
+  for (var i = 0; i < endValue.length; i += SPLIT_LENGTH) {
+    moreSpan.append(endValue.substr(i, SPLIT_LENGTH));
+    moreSpan.append('<wbr/>');
+  }
+  var betweenMoreText = '...(' + endValue.length + ' more) ';
+  var betweenSpan = $('<span class="value-disclosure-between">')
+      .text(betweenMoreText);
+  var toggle = $('<a class="value-disclosure-toggle">')
+      .text('Expand')
+      .attr('href', '');
+  toggle.click(function(e) {
+      e.preventDefault();
+      if (moreSpan.is(':hidden')) {
+        betweenSpan.text(' ');
+        toggle.text('Collapse');
+      } else {
+        betweenSpan.text(betweenMoreText);
+        toggle.text('Expand');
+      }
+      moreSpan.toggle();
+  });
+  container.append($('<span>').text(startValue));
+  container.append(moreSpan);
+  container.append(betweenSpan);
+  container.append(toggle);
 }
 
 // Given an AJAX error message (which is empty or null on success) and a
@@ -47,7 +101,7 @@ function getResponseDataJson(error, data) {
     error = 'Could not parse response JSON data.';
   }
   if (error) {
-    setButter('Error -- ' + error, true);
+    setButter(error, true);
     return null;
   }
   return response;
@@ -71,11 +125,17 @@ function listConfigs(resultFunc) {
   });
 }
 
-// Return the list of job records.
+// Return the list of job records and notifies the user the content
+// is being fetched.
 function listJobs(cursor, resultFunc) {
+  // If the user is paging then they scrolled down so let's
+  // help them by scrolling the window back to the top.
+  var jumpToTop = !!cursor;
+  cursor = cursor ? cursor : '';
+  setButter('Loading');
   $.ajax({
     type: 'GET',
-    url: 'command/list_jobs',
+    url: 'command/list_jobs?cursor=' + cursor,
     dataType: 'text',
     error: function(request, textStatus) {
       getResponseDataJson(textStatus);
@@ -84,6 +144,10 @@ function listJobs(cursor, resultFunc) {
       var response = getResponseDataJson(null, data);
       if (response) {
         resultFunc(response.jobs, response.cursor);
+        if (jumpToTop) {
+          window.scrollTo(0, 0);
+        }
+        hideButter();  // Hide the loading message.
       }
     }
   });
@@ -222,7 +286,7 @@ function getElapsedTimeString(start_timestamp_ms, updated_timestamp_ms) {
 // Retrieves the mapreduce_id from the query string. Assumes that it is
 // the only querystring parameter.
 function getJobId() {
-  var index = window.location.search.lastIndexOf("=");
+  var index = window.location.search.lastIndexOf('=');
   if (index == -1) {
     return '';
   }
@@ -238,18 +302,17 @@ function initJobOverview(jobs, cursor) {
   body.empty();
 
   if (!jobs || (jobs && jobs.length == 0)) {
-    $('<td colspan="8">').text("No job records found.").appendTo(body);
+    $('<td colspan="8">').text('No job records found.').appendTo(body);
     return;
   }
 
   // Show header.
-  $('#running-list > thead').css('display', null);
+  $('#running-list > thead').show();
 
   // Populate the table.
   $.each(jobs, function(index, job) {
     var row = $('<tr id="row-' + job.mapreduce_id + '">');
 
-    // TODO: Style running colgroup for capitalization.
     var status = (job.active ? 'running' : job.result_status) || 'unknown';
     row.append($('<td class="status-text">').text(status));
 
@@ -292,7 +355,7 @@ function initJobOverview(jobs, cursor) {
 
   // Set up the next/first page links.
   $('#running-first-page')
-    .css('display', null)
+    .show()
     .unbind('click')
     .click(function() {
     listJobs(null, initJobOverview);
@@ -301,21 +364,23 @@ function initJobOverview(jobs, cursor) {
   $('#running-next-page').unbind('click');
   if (cursor) {
     $('#running-next-page')
-      .css('display', null)
+      .show()
       .click(function() {
         listJobs(cursor, initJobOverview);
         return false;
       });
   } else {
-    $('#running-next-page').css('display', 'none');
+    $('#running-next-page').hide();
   }
-  $('#running-list > tfoot').css('display', null);
+  $('#running-list > tfoot').show();
 }
 
 //////// Launching jobs.
 
+// TODO(user): new job parameters shouldn't be hidden by default.
 var FIXED_JOB_PARAMS = [
-    'name', 'mapper_input_reader', 'mapper_handler', 'mapper_params_validator'
+    'name', 'mapper_input_reader', 'mapper_handler', 'mapper_params_validator',
+    'mapper_output_writer'
 ];
 
 var EDITABLE_JOB_PARAMS = ['shard_count', 'processing_rate', 'queue_name'];
@@ -330,10 +395,10 @@ function showRunJobConfig(name) {
     if ($(jobForm).find('input[name="name"]').val() == name) {
       matchedForm = jobForm;
     } else {
-      $(jobForm).css('display', 'none');
+      $(jobForm).hide();
     }
   });
-  $(matchedForm).css('display', null);
+  $(matchedForm).show();
 }
 
 function runJobDone(name, error, data) {
@@ -377,8 +442,8 @@ function initJobLaunching(configs) {
         runJob(config.name);
         return false;
       })
-      .css('display', 'none')
-      .appendTo("#launch-container");
+      .hide()
+      .appendTo('#launch-container');
 
     // Fixed job config values.
     $.each(FIXED_JOB_PARAMS, function(unused, key) {
@@ -388,6 +453,7 @@ function initJobLaunching(configs) {
         // Name is up in the page title so doesn't need to be shown again.
         $('<p class="job-static-param">')
           .append($('<span class="param-key">').text(getNiceParamKey(key)))
+          .append($('<span>').text(': '))
           .append($('<span class="param-value">').text(value))
           .appendTo(jobForm);
       }
@@ -412,18 +478,19 @@ function initJobLaunching(configs) {
         // Deal with the case in which the value is an object rather than
         // just the default value string.
         var prettyKey = key;
-        if (value && value["human_name"]) {
-          prettyKey = value["human_name"];
+        if (value && value['human_name']) {
+          prettyKey = value['human_name'];
         }
 
-        if (value && value["default_value"]) {
-          value = value["default_value"];
+        if (value && value['default_value']) {
+          value = value['default_value'];
         }
 
         $('<label>')
           .attr('for', paramId)
           .text(prettyKey)
           .appendTo(paramP);
+        $('<span>').text(': ').appendTo(paramP);
         $('<input type="text">')
           .attr('id', paramId)
           .attr('name', prefix + key)
@@ -433,8 +500,8 @@ function initJobLaunching(configs) {
       });
     }
 
-    addParameters(config.params, "params.");
-    addParameters(config.mapper_params, "mapper_params.");
+    addParameters(config.params, 'params.');
+    addParameters(config.mapper_params, 'mapper_params.');
 
     $('<input type="submit">')
       .attr('value', 'Run')
@@ -470,17 +537,18 @@ function refreshJobDetail(jobId, detail) {
   var jobParams = $('#detail-params');
   jobParams.empty();
 
-  // TODO: Style running colgroup for capitalization.
   var status = (detail.active ? 'running' : detail.result_status) || 'unknown';
   $('<li class="status-text">').text(status).appendTo(jobParams);
 
   $('<li>')
     .append($('<span class="param-key">').text('Elapsed time'))
+    .append($('<span>').text(': '))
     .append($('<span class="param-value">').text(getElapsedTimeString(
           detail.start_timestamp_ms, detail.updated_timestamp_ms)))
     .appendTo(jobParams);
   $('<li>')
     .append($('<span class="param-key">').text('Start time'))
+    .append($('<span>').text(': '))
     .append($('<span class="param-value">').text(getLocalTimestring(
           detail.start_timestamp_ms)))
     .appendTo(jobParams);
@@ -493,7 +561,8 @@ function refreshJobDetail(jobId, detail) {
 
     $('<li>')
       .append($('<span class="param-key">').text(getNiceParamKey(key)))
-      .append($('<span class="param-value">').text(value))
+      .append($('<span>').text(': '))
+      .append($('<span class="param-value">').text('' + value))
       .appendTo(jobParams);
   });
 
@@ -502,9 +571,12 @@ function refreshJobDetail(jobId, detail) {
     var sortedKeys = getSortedKeys(detail.mapper_spec.mapper_params);
     $.each(sortedKeys, function(index, key) {
       var value = detail.mapper_spec.mapper_params[key];
+      var valueSpan = $('<span class="param-value">');
+      renderCollapsableValue(value, valueSpan);
       $('<li>')
-        .append($('<span class="user-param-key"">').text(key))
-        .append($('<span class="param-value">').html(value))
+        .append($('<span class="user-param-key">').text(key))
+        .append($('<span>').text(': '))
+        .append(valueSpan)
         .appendTo(jobParams);
     });
   }
@@ -515,7 +587,7 @@ function refreshJobDetail(jobId, detail) {
   $('<div>').text('Processed items per shard').appendTo(detailGraph);
   $('<img>')
     .attr('src', detail.chart_url)
-    .attr('width', 300)
+    .attr('width', detail.chart_width || 300)
     .attr('height', 200)
     .appendTo(detailGraph);
 
@@ -530,7 +602,9 @@ function refreshJobDetail(jobId, detail) {
     var avgRate = Math.round(100.0 * value / (runtimeMs / 1000.0)) / 100.0;
     $('<li>')
       .append($('<span class="param-key">').html(getNiceParamKey(key)))
+      .append($('<span>').text(': '))
       .append($('<span class="param-value">').html(value))
+      .append($('<span>').text(' '))
       .append($('<span class="param-aux">').text('(' + avgRate + '/sec avg.)'))
       .appendTo(aggregatedCounters);
   });
@@ -544,7 +618,6 @@ function refreshJobDetail(jobId, detail) {
 
     row.append($('<td>').text(shard.shard_number));
 
-    // TODO: Style running colgroup for capitalization.
     var status = (shard.active ? 'running' : shard.result_status) || 'unknown';
     row.append($('<td>').text(status));
 
@@ -595,7 +668,7 @@ function initJobDetail(jobId, detail) {
 function initDetail() {
   var jobId = getJobId();
   if (!jobId) {
-    setButter("Could not find job ID in query string.", true);
+    setButter('Could not find job ID in query string.', true);
     return;
   }
   getJobDetail(jobId, initJobDetail);

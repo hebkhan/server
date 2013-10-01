@@ -1,6 +1,6 @@
 import re
 import base64
-import simplejson as json
+import json as json
 import urllib2
 import httplib
 import logging

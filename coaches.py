@@ -13,7 +13,7 @@ from profiles.util_profile import ClassProgressReportGraph, ClassEnergyPointsPer
 
 from phantom_users.phantom_util import disallow_phantoms
 import profiles.util_profile as util_profile
-import simplejson as json
+import json as json
 from api.auth.xsrf import ensure_xsrf_cookie
 
 

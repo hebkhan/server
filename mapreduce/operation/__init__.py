@@ -23,7 +23,9 @@ on recieving from handler function.
 
 
 
+# These are all relative imports.
 import db
 import counters
+from base import Operation
 
-__all__ = ['db', 'counters']
+__all__ = ['db', 'counters', 'Operation']

@@ -10,10 +10,10 @@
     :license: BSD, see LICENSE for more details.
 """
 try:
-    from simplejson import dumps
+    from json import dumps
 except ImportError:
     def dumps(*args):
-        raise RuntimeError('simplejson required for jsrouting')
+        raise RuntimeError('json required for jsrouting')
 
 from inspect import getmro
 from werkzeug.templates import Template
@@ -172,7 +172,7 @@ def generate_map(map, name='url_map'):
     script that assigns the function with that name.  Dotted names are
     resolved (so you an use a name like 'obj.url_for')
 
-    In order to use JavaScript generation, simplejson must be installed.
+    In order to use JavaScript generation, json must be installed.
 
     Note that using this feature will expose the rules
     defined in your map to users. If your rules contain sensitive

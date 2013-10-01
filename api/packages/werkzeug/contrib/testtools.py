@@ -51,11 +51,11 @@ class ContentAccessors(object):
     lxml = cached_property(lxml)
 
     def json(self):
-        """Get the result of simplejson.loads if possible."""
+        """Get the result of json.loads if possible."""
         if 'json' not in self.mimetype:
             raise AttributeError('Not a JSON response')
         try:
-            from simplejson import loads
+            from json import loads
         except:
             from json import loads
         return loads(self.data)

@@ -4,7 +4,7 @@ from urllib import urlencode
 from urllib2 import urlopen, Request
 
 try:
-    import simplejson as json
+    import json as json
 except:
     import json
 

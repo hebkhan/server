@@ -1,9 +1,8 @@
-from google.appengine.ext import webapp
-from google.appengine.ext.webapp.util import run_wsgi_app
+import webapp2
 
-from gae_bingo import cache, dashboard, middleware, plots, blotter, api, redirect
+from gae_bingo import cache, dashboard, middleware, blotter, api, redirect
 
-application = webapp.WSGIApplication([
+application = webapp2.WSGIApplication([
     ("/gae_bingo/persist", cache.PersistToDatastore),
     ("/gae_bingo/log_snapshot", cache.LogSnapshotToDatastore),
     ("/gae_bingo/blotter/ab_test", blotter.AB_Test),
@@ -19,11 +18,5 @@ application = webapp.WSGIApplication([
     ("/gae_bingo/api/v1/experiments/control", api.ControlExperiment),
     ("/gae_bingo/api/v1/alternatives", api.Alternatives),
 ])
+
 application = middleware.GAEBingoWSGIMiddleware(application)
-
-def main():
-    run_wsgi_app(application)
-
-if __name__ == "__main__":
-    main()
-

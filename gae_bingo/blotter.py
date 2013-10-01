@@ -11,7 +11,7 @@ from google.appengine.ext.webapp import RequestHandler
 from .gae_bingo import bingo, ab_test
 from .cache import BingoCache
 from .config import can_control_experiments
-import simplejson as json
+import json as json
 
 class AB_Test(RequestHandler):
     """request user alternative/state for an experiment by passing 

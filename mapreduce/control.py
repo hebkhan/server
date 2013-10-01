@@ -20,66 +20,90 @@
 
 __all__ = ["start_map"]
 
-# pylint: disable-msg=C6409
+# pylint: disable=g-bad-name
 
+import logging
 
+from google.appengine.ext import db
 from mapreduce import handlers
 from mapreduce import model
-
-
-_DEFAULT_SHARD_COUNT = 8
+from mapreduce import parameters
+from mapreduce import util
 
 
 def start_map(name,
               handler_spec,
               reader_spec,
-              reader_parameters,
-              shard_count=_DEFAULT_SHARD_COUNT,
+              mapper_parameters,
+              shard_count=None,
+              output_writer_spec=None,
               mapreduce_parameters=None,
-              base_path="/mapreduce",
-              queue_name="default",
+              base_path=None,
+              queue_name=None,
               eta=None,
               countdown=None,
               hooks_class_name=None,
               _app=None,
-              transactional=False):
+              in_xg_transaction=False):
   """Start a new, mapper-only mapreduce.
 
   Args:
     name: mapreduce name. Used only for display purposes.
     handler_spec: fully qualified name of mapper handler function/class to call.
     reader_spec: fully qualified name of mapper reader to use
-    reader_parameters: dictionary of parameters to pass to reader. These are
-      reader-specific.
+    mapper_parameters: dictionary of parameters to pass to mapper. These are
+      mapper-specific and also used for reader initialization.
     shard_count: number of shards to create.
     mapreduce_parameters: dictionary of mapreduce parameters relevant to the
       whole job.
     base_path: base path of mapreduce library handler specified in app.yaml.
       "/mapreduce" by default.
-    queue_name: executor queue name to be used for mapreduce tasks.
-    eta: Absolute time when the MR should execute. May not be specified
-        if 'countdown' is also supplied. This may be timezone-aware or
-        timezone-naive.
-    countdown: Time in seconds into the future that this MR should execute.
-        Defaults to zero.
+    queue_name: taskqueue queue name to be used for mapreduce tasks.
+      see util.get_queue_name.
+    eta: absolute time when the MR should execute. May not be specified
+      if 'countdown' is also supplied. This may be timezone-aware or
+      timezone-naive.
+    countdown: time in seconds into the future that this MR should execute.
+      Defaults to zero.
     hooks_class_name: fully qualified name of a hooks.Hooks subclass.
-    transactional: Specifies if job should be started as a part of already
-      opened transaction.
+    in_xg_transaction: controls what transaction scope to use to start this MR
+      job. If True, there has to be an already opened cross-group transaction
+      scope. MR will use one entity group from it.
+      If False, MR will create an independent transaction to start the job
+      regardless of any existing transaction scopes.
 
   Returns:
     mapreduce id as string.
   """
-  mapper_spec = model.MapperSpec(handler_spec, reader_spec, reader_parameters,
-                                 shard_count)
+  if shard_count is None:
+    shard_count = parameters.DEFAULT_SHARD_COUNT
+  if base_path is None:
+    # pylint: disable=protected-access
+    base_path = parameters._DEFAULT_BASE_PATH
+
+  if mapper_parameters:
+    mapper_parameters = dict(mapper_parameters)
+  if mapreduce_parameters:
+    mapreduce_parameters = dict(mapreduce_parameters)
+
+  mapper_spec = model.MapperSpec(handler_spec,
+                                 reader_spec,
+                                 mapper_parameters,
+                                 shard_count,
+                                 output_writer_spec=output_writer_spec)
+
+  if in_xg_transaction and not db.is_in_transaction():
+    logging.warning("Expects an opened xg transaction to start mapreduce "
+                    "when transactional is True.")
 
   return handlers.StartJobHandler._start_map(
       name,
       mapper_spec,
       mapreduce_parameters or {},
       base_path=base_path,
-      queue_name=queue_name,
+      queue_name=util.get_queue_name(queue_name),
       eta=eta,
       countdown=countdown,
       hooks_class_name=hooks_class_name,
       _app=_app,
-      transactional=transactional)
+      in_xg_transaction=in_xg_transaction)

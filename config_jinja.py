@@ -1,7 +1,7 @@
 # Jinja2 config
 
 from urllib import quote_plus
-import simplejson as json
+import json as json
 import os
 
 from webapp2_extras import jinja2

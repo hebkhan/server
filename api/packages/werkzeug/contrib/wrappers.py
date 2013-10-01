@@ -26,7 +26,7 @@ from werkzeug.utils import cached_property
 from werkzeug.http import dump_options_header, parse_options_header
 from werkzeug._internal import _decode_unicode
 try:
-    from simplejson import loads
+    from json import loads
 except ImportError:
     from json import loads
 
@@ -42,7 +42,7 @@ def is_known_charset(charset):
 
 class JSONRequestMixin(object):
     """Add json method to a request object.  This will parse the input data
-    through simplejson if possible.
+    through json if possible.
 
     :exc:`~werkzeug.exceptions.BadRequest` will be raised if the content-type
     is not json or if the data itself cannot be parsed as json.
@@ -50,7 +50,7 @@ class JSONRequestMixin(object):
 
     @cached_property
     def json(self):
-        """Get the result of simplejson.loads if possible."""
+        """Get the result of json.loads if possible."""
         if 'json' not in self.environ.get('CONTENT_TYPE', ''):
             raise BadRequest('Not a JSON request')
         try:

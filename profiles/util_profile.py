@@ -10,7 +10,7 @@ import consts
 from api.auth.xsrf import ensure_xsrf_cookie
 from phantom_users.phantom_util import disallow_phantoms
 from models import StudentList, UserData
-import simplejson
+import json
 from avatars import util_avatars
 from badges import util_badges
 from gae_bingo.gae_bingo import bingo
@@ -134,7 +134,7 @@ class ViewClassProfile(request_handler.RequestHandler):
                     'list_id': list_id,
                     'student_list': current_list,
                     'student_lists': student_lists_list,
-                    'student_lists_json': simplejson.dumps(student_lists_list),
+                    'student_lists_json': json.dumps(student_lists_list),
                     'coach_nickname': coach.nickname,
                     'selected_graph_type': selected_graph_type,
                     'initial_graph_url': initial_graph_url,

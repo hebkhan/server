@@ -1,7 +1,7 @@
 # Based on http://appengine-cookbook.appspot.com/recipe/extended-jsonify-function-for-dbmodel,
 # with modifications for flask and performance.
 
-import simplejson
+import json
 from google.appengine.ext import db
 from datetime import datetime
 import re
@@ -79,12 +79,12 @@ def is_visible_class_name(class_name):
                 ('db.Query' in class_name)
             )
 
-class JSONModelEncoder(simplejson.JSONEncoder):
+class JSONModelEncoder(json.JSONEncoder):
     def default(self, o):
         """ Turns objects into serializable dicts for the default encoder """
         return dumps(o)
 
-class JSONModelEncoderCamelCased(simplejson.JSONEncoder):
+class JSONModelEncoderCamelCased(json.JSONEncoder):
     def encode(self, obj):
         # We override encode() instead of the usual default(), since we need
         # to handle built in types like lists and dicts ourselves as well.
@@ -107,7 +107,7 @@ def jsonify(data, camel_cased=False):
         encoder = JSONModelEncoderCamelCased
     else:
         encoder = JSONModelEncoder
-    return simplejson.dumps(data,
+    return json.dumps(data,
                             skipkeys=True,
                             sort_keys=True,
                             ensure_ascii=False,

@@ -21,7 +21,10 @@
 __all__ = ['Increment']
 
 
-class Increment(object):
+from mapreduce.operation import base
+
+
+class Increment(base.Operation):
   """Increment counter operation."""
 
   def __init__(self, counter_name, delta=1):

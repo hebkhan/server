@@ -16,16 +16,130 @@
 
 """Utility functions for use with the mapreduce library."""
 
+# pylint: disable=g-bad-name
 
 
-__all__ = ["for_name", "is_generator_function", "get_short_name", "parse_bool",
-           "create_datastore_write_config"]
 
+__all__ = [
+    "create_datastore_write_config",
+    "for_name",
+    "get_queue_name",
+    "get_short_name",
+    "handler_for_name",
+    "is_generator",
+    "parse_bool",
+    "total_seconds",
+    "try_serialize_handler",
+    "try_deserialize_handler",
+    "CALLBACK_MR_ID_TASK_HEADER",
+    ]
 
 import inspect
-import logging
+import os
+import pickle
+import types
 
 from google.appengine.datastore import datastore_rpc
+from mapreduce import parameters
+
+# Taskqueue task header for mr id. Use internal by MR.
+_MR_ID_TASK_HEADER = "AE-MR-ID"
+_MR_SHARD_ID_TASK_HEADER = "AE-MR-SHARD-ID"
+
+# Callback task MR ID task header
+CALLBACK_MR_ID_TASK_HEADER = "Mapreduce-Id"
+
+
+def _get_task_host():
+  """Get the Host header value for all mr tasks.
+
+  Task Host header determines which instance this task would be routed to.
+
+  Current version id format is: v7.368834058928280579
+  Current module id is just the module's name. It could be "default"
+  Default version hostname is app_id.appspot.com
+
+  Returns:
+    A complete host name is of format version.module.app_id.appspot.com
+  If module is the default module, just version.app_id.appspot.com. The reason
+  is if an app doesn't have modules enabled and the url is
+  "version.default.app_id", "version" is ignored and "default" is used as
+  version. If "default" version doesn't exist, the url is routed to the
+  default version.
+  """
+  version = os.environ["CURRENT_VERSION_ID"].split(".")[0]
+  default_host = os.environ["DEFAULT_VERSION_HOSTNAME"]
+  module = os.environ["CURRENT_MODULE_ID"]
+  if os.environ["CURRENT_MODULE_ID"] == "default":
+    return "%s.%s" % (version, default_host)
+  return "%s.%s.%s" % (version, module, default_host)
+
+
+def _get_task_headers(mr_spec, mr_id_header_key=_MR_ID_TASK_HEADER):
+  """Get headers for all mr tasks.
+
+  Args:
+    mr_spec: an instance of model.MapreduceSpec.
+    mr_id_header_key: the key to set mr id with.
+
+  Returns:
+    A dictionary of all headers.
+  """
+  return {mr_id_header_key: mr_spec.mapreduce_id,
+          "Host": _get_task_host()}
+
+
+def _enum(**enums):
+  """Helper to create enum."""
+  return type("Enum", (), enums)
+
+
+def get_queue_name(queue_name):
+  """Determine which queue MR should run on.
+
+  How to choose the queue:
+  1. If user provided one, use that.
+  2. If we are starting a mr from taskqueue, inherit that queue.
+     If it's a special queue, fall back to the default queue.
+  3. Default queue.
+
+  If user is using any MR pipeline interface, pipeline.start takes a
+  "queue_name" argument. The pipeline will run on that queue and MR will
+  simply inherit the queue_name.
+
+  Args:
+    queue_name: queue_name from user. Maybe None.
+
+  Returns:
+    The queue name to run on.
+  """
+  if queue_name:
+    return queue_name
+  queue_name = os.environ.get("HTTP_X_APPENGINE_QUEUENAME",
+                              parameters.DEFAULT_QUEUE_NAME)
+  if len(queue_name) > 1 and queue_name[0:2] == "__":
+    # We are currently in some special queue. E.g. __cron.
+    return parameters.DEFAULT_QUEUE_NAME
+  else:
+    return queue_name
+
+
+def total_seconds(td):
+  """convert a timedelta to seconds.
+
+  This is patterned after timedelta.total_seconds, which is only
+  available in python 27.
+
+  Args:
+    td: a timedelta object.
+
+  Returns:
+    total seconds within a timedelta. Rounded up to seconds.
+  """
+  secs = td.seconds + td.days * 24 * 3600
+  if td.microseconds:
+    secs += 1
+  return secs
 
 
 def for_name(fq_name, recursive=False):
@@ -76,7 +190,7 @@ def for_name(fq_name, recursive=False):
     else:
       raise ImportError("Could not find '%s' on path '%s'" % (
                         short_name, module_name))
-  except ImportError, e:
+  except ImportError:
     # module_name is not actually a module. Try for_name for it to figure
     # out what's this.
     try:
@@ -98,8 +212,65 @@ def for_name(fq_name, recursive=False):
     raise
 
 
-def is_generator_function(obj):
-  """Return true if the object is a user-defined generator function.
+def handler_for_name(fq_name):
+  """Resolves and instantiates handler by fully qualified name.
+
+  First resolves the name using for_name call. Then if it resolves to a class,
+  instantiates a class, if it resolves to a method - instantiates the class and
+  binds method to the instance.
+
+  Args:
+    fq_name: fully qualified name of something to find.
+
+  Returns:
+    handler instance which is ready to be called.
+  """
+  resolved_name = for_name(fq_name)
+  if isinstance(resolved_name, (type, types.ClassType)):
+    # create new instance if this is type
+    return resolved_name()
+  elif isinstance(resolved_name, types.MethodType):
+    # bind the method
+    return getattr(resolved_name.im_class(), resolved_name.__name__)
+  else:
+    return resolved_name
+
+
+def try_serialize_handler(handler):
+  """Try to serialize map/reduce handler.
+
+  Args:
+    handler: handler function/instance. Handler can be a function or an
+      instance of a callable class. In the latter case, the handler will
+      be serialized across slices to allow users to save states.
+
+  Returns:
+    serialized handler string or None.
+  """
+  if (isinstance(handler, types.InstanceType) or  # old style class
+      (isinstance(handler, object) and  # new style class
+       not inspect.isfunction(handler) and
+       not inspect.ismethod(handler)) and
+      hasattr(handler, "__call__")):
+    return pickle.dumps(handler)
+  return None
+
+
+def try_deserialize_handler(serialized_handler):
+  """Reverse function of try_serialize_handler.
+
+  Args:
+    serialized_handler: serialized handler str or None.
+
+  Returns:
+    handler instance or None.
+  """
+  if serialized_handler:
+    return pickle.loads(serialized_handler)
+
+
+def is_generator(obj):
+  """Return true if the object is generator or generator function.
 
   Generator function objects provides same attributes as functions.
   See isfunction.__doc__ for attributes listing.
@@ -112,6 +283,9 @@ def is_generator_function(obj):
   Returns:
     true if the object is generator function.
   """
+  if isinstance(obj, types.GeneratorType):
+    return True
+
   CO_GENERATOR = 0x20
   return bool(((inspect.isfunction(obj) or inspect.ismethod(obj)) and
                obj.func_code.co_flags & CO_GENERATOR))

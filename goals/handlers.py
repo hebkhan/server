@@ -15,7 +15,7 @@ from api.auth.xsrf import ensure_xsrf_cookie
 from phantom_users.phantom_util import create_phantom
 from models import UserData, UserExercise, Exercise, Video, VideoLog
 from .models import Goal, GoalList, GoalObjective
-import simplejson as json
+import json as json
 
 class CreateNewGoal(RequestHandler):
 

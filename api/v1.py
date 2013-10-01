@@ -347,13 +347,12 @@ def topictree_export(version_id = None, topic_id = "root"):
 def topictree_import(version_id = "edit", topic_id="root", publish=False):
     import zlib
     import pickle
-    logging.info("calling /_ah/queue/deferred_import")
+    logging.info("calling import-queue")
 
     # importing the full topic tree can be too large so pickling and compressing
     deferred.defer(models.topictree_import_task, version_id, topic_id, publish,
                    zlib.compress(pickle.dumps((request.json, {}))),
-                   _queue = "import-queue",
-                   _url = "/_ah/queue/deferred_import")
+                   _queue="import-queue")
 
 @route("/api/v1/topicversion/<version_id>/search/<query>", methods=["GET"])
 @jsonp
