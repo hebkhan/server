@@ -1,6 +1,6 @@
 from __future__ import absolute_import
 import os
-import json as json
+import json
 import datetime
 import math
 import logging

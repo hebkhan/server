@@ -1,6 +1,19 @@
 
 var GaeMiniProfiler = {
 
+    // Profiler modes match gae_mini_profiler.profiler.Mode's enum.
+    // TODO(kamens): switch this from an enum to a more sensible bitmask or
+    // other alternative that supports multiple settings without an exploding
+    // number of enums.
+    modes: {
+               SIMPLE: "simple",
+               CPU_INSTRUMENTED: "instrumented",
+               CPU_SAMPLING: "sampling",
+               RPC_ONLY: "rpc",
+               RPC_AND_CPU_INSTRUMENTED: "rpc_instrumented",
+               RPC_AND_CPU_SAMPLING: "rpc_sampling"
+    },
+
     init: function(requestId, fShowImmediately) {
         // Fetch profile results for any ajax calls
         // (see http://code.google.com/p/mvc-mini-profiler/source/browse/MvcMiniProfiler/UI/Includes.js)
@@ -17,12 +30,80 @@ var GaeMiniProfiler = {
         GaeMiniProfiler.fetch(requestId, window.location.search, fShowImmediately);
     },
 
-    toggleEnabled: function(link) {
-        var disabled = !!$.cookiePlugin("g-m-p-disabled");
+    /**
+     * Return the profiler mode being requested by the current browser cookie.
+     */
+    getCookieMode: function() {
+        var mode = $.cookiePlugin("g-m-p-mode");
 
-        $.cookiePlugin("g-m-p-disabled", (disabled ? null : "1"), {path: '/'});
+        // Default to RPC + Instrumented
+        var valid = false;
+        for (var key in this.modes) {
+            if (mode == this.modes[key]) {
+                valid = true;
+                break;
+            }
+        }
+        if (!valid) {
+            mode = this.modes.RPC_AND_CPU_INSTRUMENTED;
+        }
 
-        $(link).replaceWith("<em>" + (disabled ? "Enabled" : "Disabled") + "</em>");
+        return mode;
+    },
+
+    /**
+     * Set browser cookie for current profiler mode according to radio inputs.
+     */
+    setCookieMode: function(elLink) {
+        // Get current state of RPC/CPU profiler settings according to radios
+        var jel = $(elLink).closest(".g-m-p").find(".settings"),
+            rpcValue = jel.find("input:radio[name=rpc]:checked").val(),
+            cpuValue = jel.find("input:radio[name=cpu]:checked").val();
+
+        // Convert to format matching this.modes values.
+        var mode = "simple";
+        if (rpcValue && cpuValue) {
+            mode = rpcValue + "_" + cpuValue;
+        }
+        else {
+            mode = rpcValue || cpuValue || "simple";
+        }
+
+        // Set mode cookie for profiler to detect on next request
+        $.cookiePlugin("g-m-p-mode", mode, {path: '/', expires: 365});
+    },
+
+    /**
+     * True if profiler mode has enabled RPC profiling
+     */
+    isRpcEnabled: function(mode) {
+        return (mode == this.modes.RPC_ONLY ||
+                mode == this.modes.RPC_AND_CPU_INSTRUMENTED ||
+                mode == this.modes.RPC_AND_CPU_SAMPLING);
+    },
+
+    /**
+     * True if profiler mode has enabled CPU instrumentation
+     */
+    isInstrumentedEnabled: function(mode) {
+        return (mode == this.modes.CPU_INSTRUMENTED ||
+                mode == this.modes.RPC_AND_CPU_INSTRUMENTED);
+    },
+
+    /**
+     * True if profiler mode has enabled CPU sampling
+     */
+    isSamplingEnabled: function(mode) {
+        return (mode == this.modes.CPU_SAMPLING ||
+                mode == this.modes.RPC_AND_CPU_SAMPLING);
+    },
+
+    /**
+     * True if either CPU instrumentation or CPU sampling is enabled
+     */
+    isCpuEnabled: function(mode) {
+        return (GaeMiniProfiler.isInstrumentedEnabled(mode) ||
+                GaeMiniProfiler.isSamplingEnabled(mode));
     },
 
     appendRedirectIds: function(requestId, queryString) {
@@ -74,6 +155,60 @@ var GaeMiniProfiler = {
         }
     },
 
+    /**
+     * Fetch the RequestLog data (pending_ms and loading_request) from App
+     * Engine's logservice API.
+     */
+    fetchRequestLog: function(data, attempts) {
+
+        // We're willing to ask the logservice API for its RequestLog data more
+        // than once, because it may take App Engine a while to flush its logs.
+        if (!attempts) {
+            attempts = 0;
+        }
+        
+        // We only try to get the request log three times.
+        if (attempts > 2) {
+            $(".g-m-p .request-log-" + data.logging_request_id)
+                .html("Request log data not found.");
+            return;
+        }
+
+        $.get(
+            "/gae_mini_profiler/request/log",
+            {
+                "request_id": data.request_id,
+                "logging_request_id": data.logging_request_id
+            },
+            function(requestLogData) {
+
+                if (!requestLogData) {
+                    // The request log may not be available just yet, because
+                    // App Engine may still be writing its logs. We'll wait a 
+                    // sec and try up to three times.
+                    setTimeout(function() {
+                        GaeMiniProfiler.fetchRequestLog(data, attempts + 1);
+                    }, 1000);
+                    return;
+                }
+
+                requestLogData.request_id = data.request_id;
+                GaeMiniProfiler.finishFetchRequestLog(requestLogData);
+            }
+        );
+    },
+
+    /**
+     * Render the RequestLog information (pending_ms and loading_request).
+     */
+    finishFetchRequestLog: function(requestLogData) {
+        $(".g-m-p .request-log-" + requestLogData.logging_request_id)
+            .empty()
+            .append(
+                $("#profilerRequestLogTemplate").tmplPlugin(
+                    requestLogData));
+    },
+
     collapse: function(e) {
         if ($(".g-m-p").is(":visible")) {
             $(".g-m-p").slideUp("fast");
@@ -109,8 +244,12 @@ var GaeMiniProfiler = {
                 .click(function() { GaeMiniProfiler.toggleSection(this, ".logs-details"); return false; }).end()
             .find(".callers-link")
                 .click(function() { $(this).parents("td").find(".callers").slideToggle("fast"); return false; }).end()
-            .find(".toggle-enabled")
-                .click(function() { GaeMiniProfiler.toggleEnabled(this); return false; }).end()
+            .find(".request-log-link")
+                .click(function() { GaeMiniProfiler.showRequestLog(this); return false; }).end()
+            .find(".settings-link")
+                .click(function() { GaeMiniProfiler.toggleSettings(this); return false; }).end()
+            .find(".settings input")
+                .change(function() { GaeMiniProfiler.setCookieMode(this); return false; }).end()
             .click(function(e) { e.stopPropagation(); })
             .css("left", jCorner.offset().left + jCorner.width() + 18)
             .slideDown("fast");
@@ -145,14 +284,67 @@ var GaeMiniProfiler = {
         }
 
         toggleLogRows(initLevel);
+
+        // Once a mini profiler entry is expanded, ask App Engine for its
+        // additional request log information.
+        // We wait to do this until a profiler entry is expanded because:
+        //  A) RequestLogs aren't available *immediately* after a request
+        //  finishes, so waiting until the profiler user shows interest in a
+        //  request makes sense.
+        //  B) Most profiler users won't need this data, so we don't want to
+        //  use the logservice API unnecessarily.
+        this.fetchRequestLog(data);
+    },
+
+    /**
+     * Replace the "Show more request info" link with App Engine's RequestLog
+     * data (pending_ms and loading_request), which will have been retrieved as
+     * soon as the mini profiler tab was expanded.
+     */
+    showRequestLog: function(elLink) {
+
+        $(elLink).closest(".g-m-p")
+            .find(".request-log-link")
+                .css("display", "none")
+                .end()
+            .find(".request-log")
+                .show("fast")
+                .end();
+
+    },
+
+    toggleSettings: function(elLink) {
+        var mode = this.getCookieMode();
+
+        var cpuSelector = "#cpu_disabled";
+        if (this.isInstrumentedEnabled(mode)) {
+            cpuSelector = "#cpu_instrumented";
+        }
+        else if (this.isSamplingEnabled(mode)) {
+            cpuSelector = "#cpu_sampling";
+        }
+
+        var rpcSelector = "#rpc_disabled";
+        if (this.isRpcEnabled(mode)) {
+            rpcSelector = "#rpc_enabled";
+        }
+        
+        $(elLink).closest(".g-m-p").find(".settings")
+            .find(cpuSelector)
+                .attr("checked", "checked")
+                .end()
+            .find(rpcSelector)
+                .attr("checked", "checked")
+                .end()
+        .slideToggle("fast");
     },
 
     toggleSection: function(elLink, selector) {
 
-        var fWasVisible = $(selector).is(":visible");
+        var fWasVisible = $(".g-m-p " + selector).is(":visible");
 
-        $(".expand").removeClass("expanded");
-        $(".details:visible").slideUp(50)
+        $(".g-m-p .expand").removeClass("expanded");
+        $(".g-m-p .details:visible").slideUp(50)
 
         if (!fWasVisible) {
             $(elLink).parents(".expand").addClass("expanded");
@@ -160,7 +352,8 @@ var GaeMiniProfiler = {
 
                 var jTable = $(this).find("table");
 
-                if (jTable.length && !jTable.data("table-sorted")) {
+                if (jTable.length && jTable.find("tbody").length &&
+                    !jTable.data("table-sorted")) {
                     jTable
                         .tablesorter()
                         .data("table-sorted", true);

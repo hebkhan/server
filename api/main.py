@@ -32,9 +32,7 @@ def real_main():
             api_app.debug = False
             logging.warning("Error running debugging version of werkzeug app, running production version: %s" % e)
 
-    # Run production app
-    from google.appengine.ext.webapp.util import run_wsgi_app
-    run_wsgi_app(wsgi_app)
+    return wsgi_app
 
 def profile_main():
     # This is the main function for profiling
@@ -51,11 +49,4 @@ def profile_main():
     stats.print_callers()
     print "</pre>"
     
-main = real_main
-# Uncomment the following line to enable profiling 
-# main = profile_main
-
-# Use App Engine app caching
-if __name__ == "__main__":
-    main()
-
+application = real_main()

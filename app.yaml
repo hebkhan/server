@@ -155,6 +155,8 @@ libraries:
   version: latest
 - name: jinja2
   version: latest
+- name: django
+  version: 1.4
 
 admin_console:
   pages:

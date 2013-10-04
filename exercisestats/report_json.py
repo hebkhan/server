@@ -13,7 +13,7 @@ import datetime as dt
 import math
 import random
 import time
-import json as json
+import json
 from google.appengine.ext import db
 
 import logging

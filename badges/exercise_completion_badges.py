@@ -2,7 +2,7 @@
 
 import models
 from badges import Badge, BadgeCategory
-import json as json
+import json
 
 # All badges awarded for completing some subset of exercises inherit from ExerciseCompletionBadge
 class ExerciseCompletionBadge(Badge):

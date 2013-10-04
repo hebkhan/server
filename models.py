@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 import datetime, logging
-import json as json
+import json
 import math
 import urllib
 import pickle

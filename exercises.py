@@ -18,7 +18,7 @@ import points
 import layer_cache
 import knowledgemap
 import string
-import json as json
+import json
 from badges import util_badges, last_action_cache
 from phantom_users import util_notify
 from custom_exceptions import MissingExerciseException, QuietException

@@ -21,7 +21,10 @@ from api.jsonify import jsonify
 class RequestInputHandler(object):
 
     def request_string(self, key, default = ''):
-        return self.request.get(key, default_value=default)
+        ret = self.request.get(key, default_value=default)
+        if isinstance(ret, unicode):
+            ret = ret.encode("utf8")
+        return ret
 
     def request_int(self, key, default = None):
         try:
@@ -367,16 +370,15 @@ class RequestHandler(webapp2.RequestHandler, RequestInputHandler):
         return shared_jinja.get().render_template(template_name, **template_values)
 
     def render_json(self, obj):
-        json = json.dumps(obj, ensure_ascii=False)
-        self.response.out.write(json)
+        self.response.out.write(json.dumps(obj, ensure_ascii=False))
 
     def render_jsonp(self, obj):
-        json = obj if isinstance(obj, basestring) else json.dumps(obj, ensure_ascii=False, indent=4)
+        data = obj if isinstance(obj, basestring) else json.dumps(obj, ensure_ascii=False, indent=4)
         callback = self.request_string("callback")
         if callback:
-            self.response.out.write("%s(%s)" % (callback, json))
+            self.response.out.write("%s(%s)" % (callback, data))
         else:
-            self.response.out.write(json)
+            self.response.out.write(data)
 
 from models import UserData
 import util
