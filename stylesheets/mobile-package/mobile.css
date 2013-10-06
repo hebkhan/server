@@ -43,7 +43,7 @@ h2.featured-videos, .desktop-only { display: none; }
 #mobile-logo {
     width: 90%;
     position: relative;
-    left: -12px;
+    right: -12px;
 }
 
 h2.main-headline { text-align: center; }

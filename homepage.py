@@ -181,6 +181,8 @@ class ViewHomePage(request_handler.RequestHandler):
 #            # Only running ajax version of homepage for non-mobile clients
 #            library_content = library.library_content_html(ajax = True)
         else:
+            if App.is_dev_server:
+                layer_cache.disable()
             library_content = library.library_content_html()
             
         template_values = {

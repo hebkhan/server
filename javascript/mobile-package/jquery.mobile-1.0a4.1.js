@@ -1592,7 +1592,7 @@ $.each({
 
 $.widget( "mobile.page", $.mobile.widget, {
 	options: {
-		backBtnText: "Back",
+		backBtnText: "חזור",
 		addBackBtn: true,
 		backBtnTheme: null,
 		degradeInputs: {

@@ -12,7 +12,7 @@
         font-size: {{font_size}}px;
     }
     {% for multiplier in columns %}
-    .m{{multiplier}} {
+    .m{{multiplier}}:not(.ui-btn) {
         margin-right: {{ 33 * multiplier }}%;
     }
     {% endfor %}

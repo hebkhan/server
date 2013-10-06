@@ -139,26 +139,25 @@ def topic_browser_tree(tree, level=0):
     s = ""
     class_name = "topline"
     for child in tree.children:
-        if not child.children or level>=1:
-            # special cases
-            if child.id == "new-and-noteworthy":
-                continue
-
-            # show leaf node as a link
-            href = "#%s" % escape(child.id)
-
+        href = "#%s" % escape(child.id)
+        if not child.children:
             if level == 0:
                 s += "<li class='solo'><a href='%s' class='menulink'>%s</a></li>" % (href, escape(child.title))
             else:
                 s += "<li class='%s'><a href='%s'>%s</a></li>" % (class_name, href, escape(child.title))
-
         else:
             if level > 0:
                 class_name += " sub"
-
-            s += "<li class='%s'>%s <ul>%s</ul></li>" % (class_name, escape(child.title), topic_browser_tree(child, level=level + 1))
+            s += ("<li class='%s'>"
+                        "<a href='%s'>%s</a>"
+                            "<ul>" % (class_name, href, escape(child.title)))
+            s += topic_browser_tree(child, level=level + 1)
+            s += "</ul></li>"
 
         class_name = ""
+
+    if level == 2:
+        s = "<span class='mobile-only'>%s</span>" % s
 
     return s
 
