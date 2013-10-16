@@ -1,0 +1,35 @@
+
+Got Khan Academy API Tokens:
+
+	Consumer Key: hGhLc8bgsbWjszdc
+	Consumer Secret: zWHsPRSGYfjxLwdV
+
+Got Hebrew Khan API Tokens:
+	Consumer Key:		v8Z9WJUtR6GB49yE
+	Consumer Secret:	xdv3PvT64pCFGKH7
+
+
+Requirements for deployment:
+
+	- use deploy/deploy.py 
+		python2.6 deploy/deploy.py -xf -v 1
+
+	- npm (https://npmjs.org/)
+		curl https://npmjs.org/install.sh | sudo bash
+
+	- nodejs
+		sudo aptitude install nodejs
+
+	- ruby (1.8-dev on ubuntu)
+	- rubygems (1.8)
+		sudo aptitude install ruby1.8-dev rubygems
+		sudo gem install rubygems-update
+		/var/lib/gems/1.9.1/bin/update_rubygems
+
+	- sudo gem install json nokogiri -v 1.5.10 uglifier -v 1.2.7 therubyracer
+	
+	- mercurial (hg)
+		sudo aptitude install mercurial
+
+	- webob
+		sudo pip install webob
