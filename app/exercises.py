@@ -852,8 +852,7 @@ class SyncExercises(request_handler.RequestHandler):
         available_exercises = set(os.path.basename(p)[:-5] for p in os.listdir(exercises_dir) if p.endswith(".html"))
         logging.info("Found exercise files: %s", len(available_exercises))
 
-        c = 0
-        last_unpositioned = -1
+        last_unpositioned = 0
         unpositioned_width = 20
         exercises_to_update = []
         for name, exercise in exercise_dict.iteritems():
@@ -868,21 +867,20 @@ class SyncExercises(request_handler.RequestHandler):
                 exercise.display_name = title
                 exercises_to_update.append(exercise)
                 logging.info("Updating %s (%s)", name, title)
-                c+=1
 
             if exercise.h_position < 0:
-                unposition = -1*exercise.v_position*unpositioned_width + 
-                             exercise.h_position-(unpositioned_width/2)
+                unposition = (-1*exercise.v_position*unpositioned_width + 
+                              exercise.h_position-(unpositioned_width/2))
                 last_unpositioned = max(last_unpositioned, unposition)
 
 
         for exercise_name in available_exercises:
             exercise = models.Exercise(name=exercise_name)
-            exercise.prerequisites = []
-            exercise.covers = []
+            #exercise.prerequisites = []
+            #exercise.covers = []
             #exercise.author = user
             exercise.summative = False
-            exercise.display_name = get_title_from_html(name)
+            exercise.display_name = get_title_from_html(exercise_name)
 
             v, h = divmod(last_unpositioned, unpositioned_width)
             exercise.v_position = -v-1
@@ -892,7 +890,8 @@ class SyncExercises(request_handler.RequestHandler):
 
             exercise.live = False
             exercises_to_update.append(exercise)
-
+            last_unpositioned += 1
+            logging.info("Adding %s (%s)", exercise_name, exercise.display_name)
 
         db.put(exercises_to_update)
-        logging.info("Updated %s exercises", c)
+        logging.info("Updated %s exercises", len(exercises_to_update))
