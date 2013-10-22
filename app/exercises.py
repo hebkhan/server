@@ -853,6 +853,8 @@ class SyncExercises(request_handler.RequestHandler):
         logging.info("Found exercise files: %s", len(available_exercises))
 
         c = 0
+        last_unpositioned = -1
+        unpositioned_width = 20
         exercises_to_update = []
         for name, exercise in exercise_dict.iteritems():
             if exercise.summative:
@@ -860,11 +862,37 @@ class SyncExercises(request_handler.RequestHandler):
             if name not in available_exercises:
                 logging.warning("We don't have exercise '%s'", name)
                 continue
+            available_exercises.remove(name)
             title = get_title_from_html(name)
             if title != exercise.display_name:
                 exercise.display_name = title
                 exercises_to_update.append(exercise)
                 logging.info("Updating %s (%s)", name, title)
                 c+=1
+
+            if exercise.h_position < 0:
+                unposition = -1*exercise.v_position*unpositioned_width + 
+                             exercise.h_position-(unpositioned_width/2)
+                last_unpositioned = max(last_unpositioned, unposition)
+
+
+        for exercise_name in available_exercises:
+            exercise = models.Exercise(name=exercise_name)
+            exercise.prerequisites = []
+            exercise.covers = []
+            #exercise.author = user
+            exercise.summative = False
+            exercise.display_name = get_title_from_html(name)
+
+            v, h = divmod(last_unpositioned, unpositioned_width)
+            exercise.v_position = -v-1
+            exercise.h_position = h - unpositioned_width/2
+            exercise.short_display_name = " ".join(word[:2].title() for word in exercise_name.split("_")[-2:])
+            #exercise.description = description
+
+            exercise.live = False
+            exercises_to_update.append(exercise)
+
+
         db.put(exercises_to_update)
         logging.info("Updated %s exercises", c)
