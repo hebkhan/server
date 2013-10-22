@@ -10,15 +10,8 @@ def append_paths():
     os.environ["CURRENT_VERSION_ID"] = ""
 
     # Can only deploy on unix-based systems for now
-    dev_appserver_path = os.path.realpath( commands.getoutput("which dev_appserver.py") )
-
-    gae_path = None
-    if dev_appserver_path:
-        gae_path = os.path.dirname(dev_appserver_path)
-        
-    if not gae_path:
-        # Default to Mac's default location
-        gae_path = "../google_appengine/"
+    #dev_appserver_path = os.path.realpath( commands.getoutput("which dev_appserver.py") )
+    gae_path = "../../google_appengine/"
 
     extra_paths = [
         os.path.abspath("."),
@@ -32,6 +25,8 @@ def append_paths():
     ]
 
     sys.path[:1] = extra_paths
+    from pprint import pprint
+    pprint(sys.path)
 
 # Append app and GAE paths so we can simulate our app environment
 # when precompiling templates (otherwise compilation will bail on errors)

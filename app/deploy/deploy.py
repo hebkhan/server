@@ -9,7 +9,7 @@ import getpass
 import re
 
 sys.path.append(os.path.abspath("."))
-sys.path.append(os.path.abspath("../google_appengine/"))
+sys.path.append(os.path.abspath("../../google_appengine/"))
 import compress
 import npm
 
