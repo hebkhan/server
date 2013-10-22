@@ -10,6 +10,7 @@ import re
 
 sys.path.append(os.path.abspath("."))
 sys.path.append(os.path.abspath("../../google_appengine/"))
+sys.path.append(os.path.abspath("../offline/"))
 import compress
 import npm
 
@@ -139,7 +140,7 @@ def open_browser_to_ka_version(version):
 
 def deploy(version, email, password):
     print "Deploying version " + str(version)
-    return 0 == popen_return_code(['appcfg.py', '-V', str(version), "-e", email, "--passin", "update", "."], "%s\n" % password)
+    return 0 == popen_return_code(['../../google_appengine/appcfg.py', '-V', str(version), "-e", email, "--passin", "update", "."], "%s\n" % password)
 
 def main():
 
