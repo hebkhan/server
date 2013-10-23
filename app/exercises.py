@@ -840,57 +840,110 @@ class SyncExercises(request_handler.RequestHandler):
 
     def post(self):
         # Protected for admins only by app.yaml so taskqueue can hit this URL
-        self.syncExerciseTitles()
+        self.syncExercises()
 
-    def syncExerciseTitles(self):
-        exercises = models.Exercise.get_all_use_cache()
-        logging.info("got all exercises: %s", len(exercises))
-        exercise_dict = dict((exercise.name, exercise) for exercise in exercises)
+    def syncExercises(self):
 
+        # fetch existing exercise records
+        exercises = models.Exercise.all_unsafe().fetch(2000)
+        logging.info("Fetched %s exercises", len(exercises))
+        heb_exercises = dict((exercise.name, exercise) for exercise in exercises)
+
+
+        # fetch graph information from khan
+        from util import fetch_from_url
+        data = fetch_from_url("http://www.khanacademy.org/api/v1/exercises", json=True)
+        khan_exercises = dict((e["name"], e) for e in data if not e['tutorial_only'])
+        logging.info("Got %s items (%s...)", len(khan_exercises), ", ".join(sorted(khan_exercises)[:4]))
+
+
+        # fetch existing exercise files
         exercises_dir = os.path.join(os.path.dirname(__file__), "khan-exercises/exercises")
-        available_exercises = set(os.path.basename(p)[:-5] for p in os.listdir(exercises_dir) if p.endswith(".html"))
+        available_exercises = [os.path.basename(p)[:-5]
+                               for p in os.listdir(exercises_dir)
+                               if p.endswith(".html") and p != "khan-exercise.html"]
         logging.info("Found exercise files: %s", len(available_exercises))
 
-        last_unpositioned = 0
-        unpositioned_width = 20
-        exercises_to_update = []
-        for name, exercise in exercise_dict.iteritems():
-            if exercise.summative:
-                continue
-            if name not in available_exercises:
-                logging.warning("We don't have exercise '%s'", name)
-                continue
-            available_exercises.remove(name)
-            title = get_title_from_html(name)
-            if title != exercise.display_name:
-                exercise.display_name = title
-                exercises_to_update.append(exercise)
-                logging.info("Updating %s (%s)", name, title)
+        last_unpositioned = 0           # id for exercise that is not positioned in the graph
+        unpositioned_width = 20         # the width of the table in which we put unpositioned exercises
+        exercises_to_update = set()
+
+
+        # update/create our existing exercise files
+        for name in available_exercises:
+            exercise = heb_exercises.pop(name, None)
+            if not exercise:
+                exercise = models.Exercise(name=name)
+                #exercise.author = user
+                exercise.summative = False
+                exercise.display_name = name
+                exercise.h_position = exercise.v_position = -50
+                exercise.short_display_name = " ".join(word[:2].title() for word in name.split("_")[-2:])
+                #exercise.description = description
+                exercise.live = False
+                logging.info("Added %s (%s)", name, exercise.display_name)
+                exercises_to_update.add(exercise)
+
+            display_name = get_title_from_html(name)
+            if display_name != exercise.display_name:
+                exercise.display_name = display_name
+                logging.debug(" -> display_name: %s", display_name)
+                exercises_to_update.add(exercise)
+
+            khan_exercise = khan_exercises.get(name)
+            if khan_exercise:
+                for attr in ("v_position h_position covers prerequisites live short_display_name".split()):
+                    new_value = khan_exercise.get(attr)
+                    if new_value is not None and getattr(exercise, attr) != new_value:
+                        setattr(exercise, attr, new_value)
+                        logging.debug(" -> %s: %s", attr, new_value)
+                        exercises_to_update.add(exercise)
 
             if exercise.h_position < 0:
-                unposition = (-1*exercise.v_position*unpositioned_width + 
-                              exercise.h_position-(unpositioned_width/2))
-                last_unpositioned = max(last_unpositioned, unposition)
+                h, v = divmod(last_unpositioned, unpositioned_width)
+                exercise.h_position = -h - 5
+                exercise.v_position = v-unpositioned_width/2
+                last_unpositioned += 1
+                exercises_to_update.add(exercise)
 
+        # fetching the 'summative' (topic) exercises
+        ret = fetch_from_url("https://www.khanacademy.org/exercisedashboard")
+        for line in ret.splitlines():
+            if "topic_graph_json" in line:
+                val = json.loads(line[line.find(":")+1:])
+                exercise_topics = val['topics']
+                break
+        else:
+            topic_graph_json = {}
+            logging.warning("Could not find 'topic_graph_json' in 'https://www.khanacademy.org/exercisedashboard'")
 
-        for exercise_name in available_exercises:
-            exercise = models.Exercise(name=exercise_name)
-            #exercise.prerequisites = []
-            #exercise.covers = []
-            #exercise.author = user
-            exercise.summative = False
-            exercise.display_name = get_title_from_html(exercise_name)
+        # update/create 'summative' (topic) exercises
+        for name, topic in exercise_topics.iteritems():
+            exercise = heb_exercises.pop(name, None)
+            if not exercise:
+                exercise = models.Exercise(name=name, summative=True)
+                logging.info("Added Summative: %s", name)
+            elif not exercise.summative:
+                logging.error("%s clashes with a summative exercise", name)
+                continue
+            exercise.live = True
+            exercise.short_display_name = name
+            exercise.display_name = topic['standalone_title']
+            exercise.v_position = int(topic['x'])
+            exercise.h_position = int(topic['y'])
+            exercises_to_update.add(exercise)
 
-            v, h = divmod(last_unpositioned, unpositioned_width)
-            exercise.v_position = -v-1
-            exercise.h_position = h - unpositioned_width/2
-            exercise.short_display_name = " ".join(word[:2].title() for word in exercise_name.split("_")[-2:])
-            #exercise.description = description
-
+        # hide orphan exercises (no html file)
+        for name, exercise in heb_exercises.iteritems():
+            logging.warning("Hiding: %s", name)
             exercise.live = False
-            exercises_to_update.append(exercise)
-            last_unpositioned += 1
-            logging.info("Adding %s (%s)", exercise_name, exercise.display_name)
+            exercises_to_update.add(exercise)
 
+        logging.info("Updating %s exercises", len(exercises_to_update))
         db.put(exercises_to_update)
-        logging.info("Updated %s exercises", len(exercises_to_update))
+
+        logging.info("Priming caches...")
+        l1 = models.Exercise._get_all_use_cache_unsafe(bust_cache=True)
+        l2 = models.Exercise._get_dict_use_cache_unsafe(bust_cache=True)
+
+        logging.info("Done")
