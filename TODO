@@ -12,7 +12,7 @@ Got Hebrew Khan API Tokens:
 Requirements for deployment:
 
 	- use deploy/deploy.py 
-		python2.6 deploy/deploy.py -xf -v 1
+		python deploy/deploy.py -xf -v 1
 
 	- npm (https://npmjs.org/)
 		curl https://npmjs.org/install.sh | sudo bash
