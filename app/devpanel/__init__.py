@@ -84,7 +84,7 @@ class Sync(request_handler.RequestHandler):
 
         logging.info("Importing topics from khanacademy.org: %s", ", ".join(sorted(topics)))
 
-        topictree = util.fetch_from_url("http://www.khanacademy.org/api/v1/topictree", json=True)
+        topictree = util.fetch_from_url("http://www.khanacademy.org/api/v1/topictree", as_json=True)
         result = util.fetch_from_url("https://docs.google.com/spreadsheet/pub?key=%s&single=true&gid=0&output=csv" % remap_doc_id)
 
 
