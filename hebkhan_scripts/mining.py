@@ -3,8 +3,9 @@ import os, sys
 import optparse
 
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "google_appengine"))
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "..", "google_appengine"))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "app"))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "offline"))
 
 from secrets_dev import app_engine_username, app_engine_password
 
