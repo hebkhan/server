@@ -11,25 +11,36 @@ Got Hebrew Khan API Tokens:
 
 Requirements for deployment:
 
-	- use deploy/deploy.py 
-		python deploy/deploy.py -xf -v 1
+	- aptititude (why not?)
+		sudo apt-get install aptitude
 
-	- npm (https://npmjs.org/)
-		curl https://npmjs.org/install.sh | sudo bash
+	- pip (python)
 
 	- nodejs
 		sudo aptitude install nodejs
 
-	- ruby (1.8-dev on ubuntu)
-	- rubygems (1.8)
-		sudo aptitude install ruby1.8-dev rubygems
-		sudo gem install rubygems-update
-		/var/lib/gems/1.9.1/bin/update_rubygems
+	- npm (https://npmjs.org/)
+		curl https://npmjs.org/install.sh | sudo bash
 
-	- sudo gem install json nokogiri -v 1.5.10 uglifier -v 1.2.7 therubyracer
+	- ruby (1.8-dev), rubygems (1.8)
+		sudo aptitude install libxslt-dev libxml2-dev
+		sudo aptitude install ruby1.8-dev rubygems
+
+		sudo gem install rubygems-update
+		# /var/lib/gems/1.9.1/bin/update_rubygems (not sure know why this is here)
+		sudo gem install json
+		sudo gem install nokogiri -v 1.5.10
+		sudo gem install uglifier -v 1.2.7
+		sudo gem install therubyracer
 	
 	- mercurial (hg)
 		sudo aptitude install mercurial
 
 	- webob
 		sudo pip install webob
+
+
+
+	- use deploy/deploy.py 
+		python deploy/deploy.py -xf -v 1
+
