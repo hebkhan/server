@@ -132,13 +132,6 @@ handlers:
 - url: /gandalf?.*
   script: gandalf.main.application
 
-- url: /mapreduce/pipeline/images
-  static_dir: mapreduce/lib/pipeline/ui/images
-
-- url: /mapreduce(/.*)?
-  script: mapreduce.main.application
-  login: admin
-
 - url: .*
   script: main.application
 
@@ -157,6 +150,9 @@ libraries:
   version: latest
 - name: django
   version: 1.4
+
+includes:
+- app/mapreduce/include.yaml
 
 admin_console:
   pages:
