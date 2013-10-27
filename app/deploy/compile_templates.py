@@ -18,6 +18,7 @@ def append_paths():
         gae_path,
         # These paths are required by the SDK.
         os.path.join(gae_path, 'lib', 'webapp2-2.5.2'),
+        os.path.join(gae_path, 'lib', 'jinja2-2.6'),
         os.path.join(gae_path, 'lib', 'antlr3'),
         os.path.join(gae_path, 'lib', 'ipaddr'),
         os.path.join(gae_path, 'lib', 'webob'),
