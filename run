@@ -1,1 +1,1 @@
-python "../google_appengine/dev_appserver.py" --use_sqlite --datastore_path="./offline/datastore"  "./app"
+python "../google_appengine/dev_appserver.py" --datastore_path="./offline/datastore"  "./app"

@@ -870,8 +870,8 @@ class SyncExercises(request_handler.RequestHandler):
                 c+=1
 
             if exercise.h_position < 0:
-                unposition = -1*exercise.v_position*unpositioned_width + 
-                             exercise.h_position-(unpositioned_width/2)
+                unposition = (-1*exercise.v_position*unpositioned_width + 
+                              exercise.h_position-(unpositioned_width/2))
                 last_unpositioned = max(last_unpositioned, unposition)
 
 
