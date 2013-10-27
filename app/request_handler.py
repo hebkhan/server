@@ -21,10 +21,7 @@ from api.jsonify import jsonify
 class RequestInputHandler(object):
 
     def request_string(self, key, default = ''):
-        ret = self.request.get(key, default_value=default)
-        if isinstance(ret, unicode):
-            ret = ret.encode("utf8")
-        return ret
+        return self.request.get(key, default_value=default)
 
     def request_int(self, key, default = None):
         try:
