@@ -1,3 +1,3 @@
-[submodule "khan-exercises"]
-	path = khan-exercises
+[submodule "app/khan-exercises"]
+	path = app/khan-exercises
 	url = git@git.assembla.com:hebrew-khan.git
