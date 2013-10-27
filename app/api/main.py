@@ -27,11 +27,10 @@ def real_main():
             api_app.debug = True
             debugged_app = get_debugged_app(wsgi_app)
             CGIHandler().run(debugged_app)
-            return
+            return debugged_app
         except Exception, e:
             api_app.debug = False
             logging.warning("Error running debugging version of werkzeug app, running production version: %s" % e)
-
     return wsgi_app
 
 def profile_main():
