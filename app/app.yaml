@@ -152,7 +152,7 @@ libraries:
   version: 1.4
 
 includes:
-- app/mapreduce/include.yaml
+- mapreduce/include.yaml
 
 admin_console:
   pages:
