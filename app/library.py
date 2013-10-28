@@ -1,6 +1,5 @@
 import layer_cache
 from models import Setting, Topic, TopicVersion
-from topics import create_root
 import request_handler
 import shared_jinja
 import time
@@ -124,12 +123,7 @@ def library_content_html(ajax=False, version_number=None):
     else:
         version = TopicVersion.get_default_version()
 
-    root = Topic.get_root(version)
-    if root is None:
-        if version is None:
-            version = TopicVersion.create_new_version()
-        root = create_root(version)
-    tree = root.make_tree(types = ["Topics", "Video", "Url"])
+    tree = Topic.get_root(version).make_tree(types = ["Topics", "Video", "Url"])
     topics = flatten_tree(tree)
 
     #topics.sort(key = lambda topic: topic.standalone_title)

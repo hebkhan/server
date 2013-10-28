@@ -170,7 +170,7 @@ def create_root(version):
             description="All concepts fit into the root of all knowledge",
             id="root",
             version=version)
-    return root
+
 
 # temporary function to load videos into the topics - will remove after deploy
 def load_videos(version, title=None):
