@@ -86,7 +86,7 @@ class VoteEntity(request_handler.RequestHandler):
         # so we don't have to worry about fast writes to the entity group 
         # causing contention problems for the HR datastore, because
         # the taskqueue will just retry w/ exponential backoff.
-        taskqueue.add(url='/admin/discussion/finishvoteentity', queue_name='slow-background-queue', 
+        taskqueue.add(url='/admin/discussion/finishvoteentity', queue_name='voting-queue', 
                 params={
                     "email": user_data.email,
                     "vote_type": self.request_int("vote_type", default=FeedbackVote.ABSTAIN),
