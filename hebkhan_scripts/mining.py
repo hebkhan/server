@@ -3,8 +3,22 @@ import os, sys
 import optparse
 
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "google_appengine"))
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
+gae_path = "../../google_appengine/"
+
+extra_paths = [
+    gae_path,
+    os.path.join("..", "offline"),
+    os.path.join("..", "app"),
+    os.path.join(gae_path, 'lib', 'webapp2-2.5.2'),
+    os.path.join(gae_path, 'lib', 'jinja2-2.6'),
+    os.path.join(gae_path, 'lib', 'antlr3'),
+    os.path.join(gae_path, 'lib', 'ipaddr'),
+    os.path.join(gae_path, 'lib', 'webob'),
+    os.path.join(gae_path, 'lib', 'json'),
+    os.path.join(gae_path, 'lib', 'yaml', 'lib'),
+]
+
+sys.path[:1] = extra_paths
 
 from secrets_dev import app_engine_username, app_engine_password
 
