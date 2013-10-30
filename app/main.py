@@ -472,7 +472,7 @@ class MobileOAuthLogin(request_handler.RequestHandler):
 
 class PostLogin(request_handler.RequestHandler):
     def get(self):
-        cont = self.request_string('continue', default = "/")
+        cont = self.request_string('continue', default = "/").encode("utf8")
 
         # Immediately after login we make sure this user has a UserData entity
         user_data = UserData.current()
