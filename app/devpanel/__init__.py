@@ -84,18 +84,8 @@ class Sync(request_handler.RequestHandler):
 
         logging.info("Importing topics from khanacademy.org: %s", ", ".join(sorted(topics)))
 
-        url = "http://www.khanacademy.org/api/v1/topictree"
-        try:
-            result = urlfetch.fetch(url, deadline=30)
-        except Exception, e:
-            raise Exception("%s (%s)" % (e, url))
-        topictree = json.loads(result.content)
-
-        url = "https://docs.google.com/spreadsheet/pub?key=%s&single=true&gid=0&output=csv" % remap_doc_id
-        try:
-            result = urlfetch.fetch(url, deadline=30)
-        except Exception, e:
-            raise Exception("%s (%s)" % (e, url))
+        topictree = util.fetch_from_url("http://www.khanacademy.org/api/v1/topictree", json=True)
+        result = util.fetch_from_url("https://docs.google.com/spreadsheet/pub?key=%s&single=true&gid=0&output=csv" % remap_doc_id)
 
 
         def filter_unwanted(branch):

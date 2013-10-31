@@ -3,6 +3,7 @@ tags
 .vimprojects
 cscope.files
 
+*.log
 *.pyc
 *combined.js
 *compressed.js
@@ -28,3 +29,4 @@ compiled_templates*
 .vims
 datastore/*
 offline/*
+*/.ipynb_checkpoints/*
