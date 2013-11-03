@@ -4,7 +4,7 @@ import urllib
 import request_cache
 import logging
 import sys
-import simplejson
+import json
 from google.appengine.api import urlfetch
 from google.appengine.api import users
 from google.appengine.ext import db
@@ -221,7 +221,7 @@ def fetch_from_url(url, json=False):
         typ, exc, tb = sys.exc_info()
         raise typ, "%s (%s)" % (e, url), tb
     if json:
-        return simplejson.loads(result.content)
+        return json.loads(result.content)
     return result.content
 
 from operator import itemgetter as _itemgetter
