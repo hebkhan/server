@@ -10,8 +10,8 @@ def append_paths():
     os.environ["CURRENT_VERSION_ID"] = ""
 
     # Can only deploy on unix-based systems for now
-    #dev_appserver_path = os.path.realpath( commands.getoutput("which dev_appserver.py") )
-    gae_path = "../../google_appengine/"
+    dev_appserver_path = os.path.realpath( commands.getoutput("which dev_appserver.py") )
+    gae_path = os.path.dirname(dev_appserver_path)
 
     extra_paths = [
         os.path.abspath("."),
