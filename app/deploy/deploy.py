@@ -8,8 +8,12 @@ import webbrowser
 import getpass
 import re
 
+import commands
+dev_appserver_path = os.path.realpath(commands.getoutput("which dev_appserver.py"))
+gae_path = os.path.dirname(dev_appserver_path)
+
 sys.path.append(os.path.abspath("."))
-sys.path.append(os.path.abspath("../../google_appengine/"))
+sys.path.append(os.path.abspath(gae_path))
 sys.path.append(os.path.abspath("../offline/"))
 import compress
 import npm
