@@ -871,42 +871,46 @@ class SyncExercises(request_handler.RequestHandler):
 
         # update/create our existing exercise files
         for name in available_exercises.union(khan_exercises):
+            logging.info("Exercise: %s", name)
+
+            new_display_name = get_title_from_html(name) if name in available_exercises else None
+
             exercise = heb_exercises.pop(name, None)
             if not exercise:
                 exercise = models.Exercise(name=name)
                 #exercise.author = user
                 exercise.summative = False
-                exercise.display_name = name
+                exercise.display_name = new_display_name or name
                 exercise.h_position = exercise.v_position = -50
                 exercise.short_display_name = " ".join(word[:2].title() for word in name.split("_")[-2:])
                 #exercise.description = description
                 exercise.live = False
-                logging.info("Added %s (%s)", name, exercise.display_name)
+                logging.info("  added (%s)", name, exercise.display_name)
                 exercises_to_update.add(exercise)
 
-            if name in available_exercises:
-                display_name = get_title_from_html(name)
-                if display_name != exercise.display_name:
-                    exercise.display_name = display_name
-                    logging.debug(" -> display_name: %s", display_name)
-                    exercises_to_update.add(exercise)
+            elif new_display_name and new_display_name != exercise.display_name:
+                exercise.display_name = new_display_name
+                logging.debug("  (file) -> display_name: %s", new_display_name)
+                exercises_to_update.add(exercise)
 
             khan_exercise = khan_exercises.get(name)
             if khan_exercise:
                 if not khan_exercise.get("live"):
+                    logging.debug("  (khan) -> live: False")
                     exercise.live = False
                     exercises_to_update.add(exercise)
                 for attr in ("v_position h_position covers prerequisites short_display_name".split()):
                     new_value = khan_exercise.get(attr)
                     if new_value is not None and getattr(exercise, attr) != new_value:
                         setattr(exercise, attr, new_value)
-                        logging.debug(" -> %s: %s", attr, new_value)
+                        logging.debug("  (khan) -> %s: %s", attr, new_value)
                         exercises_to_update.add(exercise)
 
             elif exercise.h_position < 0:
                 h, v = divmod(last_unpositioned, unpositioned_width)
                 exercise.h_position = -h - 5
                 exercise.v_position = v-unpositioned_width/2
+                logging.debug("  (unpositioned #%s)", last_unpositioned)
                 last_unpositioned += 1
                 exercises_to_update.add(exercise)
 
@@ -916,9 +920,10 @@ class SyncExercises(request_handler.RequestHandler):
             if "topic_graph_json" in line:
                 val = json.loads(line[line.find(":")+1:])
                 exercise_topics = val['topics']
+                logging.info("Fetched %s summative exercises", len(exercise_topics))
                 break
         else:
-            topic_graph_json = {}
+            exercise_topics = {}
             logging.warning("Could not find 'topic_graph_json' in 'https://www.khanacademy.org/exercisedashboard'")
 
         # update/create 'summative' (topic) exercises
