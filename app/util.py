@@ -220,7 +220,7 @@ def fetch_from_url(url, as_json=False):
     except Exception, e:
         typ, exc, tb = sys.exc_info()
         raise typ, "%s (%s)" % (e, url), tb
-    if json:
+    if as_json:
         return json.loads(result.content)
     return result.content
 

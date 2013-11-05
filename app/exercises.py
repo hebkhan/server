@@ -859,9 +859,9 @@ class SyncExercises(request_handler.RequestHandler):
 
         # fetch existing exercise files
         exercises_dir = os.path.join(os.path.dirname(__file__), "khan-exercises/exercises")
-        available_exercises = [os.path.basename(p)[:-5]
-                               for p in os.listdir(exercises_dir)
-                               if p.endswith(".html") and p != "khan-exercise.html"]
+        available_exercises = set(os.path.basename(p)[:-5]
+                                   for p in os.listdir(exercises_dir)
+                                   if p.endswith(".html") and p != "khan-exercise.html")
         logging.info("Found exercise files: %s", len(available_exercises))
 
         last_unpositioned = 0           # id for exercise that is not positioned in the graph
@@ -870,7 +870,7 @@ class SyncExercises(request_handler.RequestHandler):
 
 
         # update/create our existing exercise files
-        for name in available_exercises:
+        for name in available_exercises.union(khan_exercises):
             exercise = heb_exercises.pop(name, None)
             if not exercise:
                 exercise = models.Exercise(name=name)
@@ -884,15 +884,19 @@ class SyncExercises(request_handler.RequestHandler):
                 logging.info("Added %s (%s)", name, exercise.display_name)
                 exercises_to_update.add(exercise)
 
-            display_name = get_title_from_html(name)
-            if display_name != exercise.display_name:
-                exercise.display_name = display_name
-                logging.debug(" -> display_name: %s", display_name)
-                exercises_to_update.add(exercise)
+            if name in available_exercises:
+                display_name = get_title_from_html(name)
+                if display_name != exercise.display_name:
+                    exercise.display_name = display_name
+                    logging.debug(" -> display_name: %s", display_name)
+                    exercises_to_update.add(exercise)
 
             khan_exercise = khan_exercises.get(name)
             if khan_exercise:
-                for attr in ("v_position h_position covers prerequisites live short_display_name".split()):
+                if not khan_exercise.get("live"):
+                    exercise.live = False
+                    exercises_to_update.add(exercise)
+                for attr in ("v_position h_position covers prerequisites short_display_name".split()):
                     new_value = khan_exercise.get(attr)
                     if new_value is not None and getattr(exercise, attr) != new_value:
                         setattr(exercise, attr, new_value)
@@ -922,13 +926,13 @@ class SyncExercises(request_handler.RequestHandler):
             exercise = heb_exercises.pop(name, None)
             if not exercise:
                 exercise = models.Exercise(name=name, summative=True)
+                exercise.display_name = topic['standalone_title']
                 logging.info("Added Summative: %s", name)
             elif not exercise.summative:
                 logging.error("%s clashes with a summative exercise", name)
                 continue
             exercise.live = True
             exercise.short_display_name = name
-            exercise.display_name = topic['standalone_title']
             exercise.v_position = int(topic['x'])
             exercise.h_position = int(topic['y'])
             exercises_to_update.add(exercise)
