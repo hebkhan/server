@@ -213,7 +213,7 @@ def count_with_cursors(query, max_value=None):
 
     return count
 
-def fetch_from_url(url, json=False):
+def fetch_from_url(url, as_json=False):
     logging.info("Fetching from %s", url)
     try:
         result = urlfetch.fetch(url, deadline=30)

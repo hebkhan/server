@@ -852,7 +852,7 @@ class SyncExercises(request_handler.RequestHandler):
 
         # fetch graph information from khan
         from util import fetch_from_url
-        data = fetch_from_url("http://www.khanacademy.org/api/v1/exercises", json=True)
+        data = fetch_from_url("http://www.khanacademy.org/api/v1/exercises", as_json=True)
         khan_exercises = dict((e["name"], e) for e in data if not e['tutorial_only'])
         logging.info("Got %s items (%s...)", len(khan_exercises), ", ".join(sorted(khan_exercises)[:4]))
 
