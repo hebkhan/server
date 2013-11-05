@@ -903,7 +903,7 @@ class SyncExercises(request_handler.RequestHandler):
                         logging.debug(" -> %s: %s", attr, new_value)
                         exercises_to_update.add(exercise)
 
-            if exercise.h_position < 0:
+            elif exercise.h_position < 0:
                 h, v = divmod(last_unpositioned, unpositioned_width)
                 exercise.h_position = -h - 5
                 exercise.v_position = v-unpositioned_width/2
