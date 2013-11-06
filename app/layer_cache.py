@@ -248,9 +248,11 @@ def layer_cache_check_set_return(
             logging.exception("Exception loading from %s cache", key)
             result = None
         if result is not None:
+            logging.debug("Cache HIT (layer=%s): %s [%s]", layer, key, namespace)
             return result
 
     try:
+        logging.debug("Cache MISS (layer=%s): %s [%s]", layer, key, namespace)
         result = target(*args, **kwargs)
 
     # an error happened trying to recompute the result, see if there is a value for it in the permanent cache
