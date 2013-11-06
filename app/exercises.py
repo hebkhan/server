@@ -905,14 +905,15 @@ class SyncExercises(request_handler.RequestHandler):
                         setattr(exercise, attr, new_value)
                         logging.debug("  (khan) -> %s: %s", attr, new_value)
                         exercises_to_update.add(exercise)
-
-            elif exercise.h_position < 0:
-                h, v = divmod(last_unpositioned, unpositioned_width)
-                exercise.h_position = -h - 5
-                exercise.v_position = v-unpositioned_width/2
-                logging.debug("  (unpositioned #%s)", last_unpositioned)
-                last_unpositioned += 1
-                exercises_to_update.add(exercise)
+            else:
+                logging.warning("  (not in khan)")
+                if exercise.h_position < 0:
+                    h, v = divmod(last_unpositioned, unpositioned_width)
+                    exercise.h_position = -h - 5
+                    exercise.v_position = v-unpositioned_width/2
+                    logging.debug("  (unpositioned #%s)", last_unpositioned)
+                    last_unpositioned += 1
+                    exercises_to_update.add(exercise)
 
         # fetching the 'summative' (topic) exercises
         ret = fetch_from_url("https://www.khanacademy.org/exercisedashboard")
@@ -951,8 +952,6 @@ class SyncExercises(request_handler.RequestHandler):
         logging.info("Updating %s exercises", len(exercises_to_update))
         db.put(exercises_to_update)
 
-        logging.info("Priming caches...")
-        l1 = models.Exercise._get_all_use_cache_unsafe(bust_cache=True)
-        l2 = models.Exercise._get_dict_use_cache_unsafe(bust_cache=True)
+        models.Setting.cached_exercises_date(str(datetime.datetime.now()))
 
         logging.info("Done")
