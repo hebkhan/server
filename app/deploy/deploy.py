@@ -158,7 +158,7 @@ def main():
 
     parser.add_option('-v', '--version',
         action="store", dest="version",
-        help="Override the deployed version identifier", default="")
+        help="Override the deployed version identifier", default=git_version())
 
     parser.add_option('-x', '--no-up',
         action="store_true", dest="noup",
