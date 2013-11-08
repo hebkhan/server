@@ -1870,7 +1870,13 @@ class VersionContentChange(db.Model):
     @staticmethod
     @request_cache.cache()
     def get_updated_content_dict(version):
+        return VersionContentChange.get_updated_content_dict_for_keys(version)
+
+    @staticmethod
+    def get_updated_content_dict_for_keys(version, keys=None):
         query = VersionContentChange.all().filter("version =", version)
+        if keys:
+            query.filter("content in", keys)
         return dict((c.key(), c) for c in
                     [u.updated_content(u.content) for u in query])
 
@@ -1984,9 +1990,8 @@ class Topic(Searchable, db.Model):
             children = db.get(self.child_keys)
 
         if not self.version.default:
-            updates = VersionContentChange.get_updated_content_dict(self.version)
-            children = [c if c.key() not in updates else updates[c.key()]
-                        for c in children]
+            updates = VersionContentChange.get_updated_content_dict_for_keys(self.version, children)
+            children = [updates.get(c.key(), c) for c in children]
 
         self.children = []
         for child in children:
