@@ -45,7 +45,7 @@ class CurrentRequestId(object):
     _local.request_id = None
 
     # On the devserver don't use threading.local b/c it's reset on Thread.start
-    dev_server_request_id = None
+    dev_server_request_id = "dev_server"
 
     @staticmethod
     def get():
