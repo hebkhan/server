@@ -154,10 +154,10 @@ class RequestHandler(webapp2.RequestHandler, RequestInputHandler):
             sub_message_html = "If this problem continues and you think something is wrong, please <a href='/reportissue?type=Defect'>let us know by sending a report</a>."
 
         if isinstance(e, QuietException):
-            logging.info(e)
+            logging.info("Exception: %s", type(e))
         else:
             self.error(500)
-            logging.exception(e)
+            logging.exception("Exception: %s", type(e))
 
         # Show a nice stack trace on development machines, but not in production
         if App.is_dev_server or users.is_current_user_admin():
