@@ -41,25 +41,7 @@ def youtube_get_video_data_dict(youtube_id):
 
         video_data["description"] = (video.media.description.text or '').decode('utf-8')
         video_data["keywords"] = (video.media.keywords.text or '').decode('utf-8')
-
-        potential_id = re.sub('[^a-z0-9]', '-', video_data["title"].lower());
-        potential_id = re.sub('-+$', '', potential_id)  # remove any trailing dashes (see issue 1140)
-        potential_id = re.sub('^-+', '', potential_id)  # remove any leading dashes (see issue 1526)
-        
-        if not potential_id:
-            potential_id = "topic-%s" % hashlib.md5(video_data['title']).hexdigest()[:6]
-
-        number_to_add = 0
-        current_id = potential_id
-        while True:
-            query = Video.all()
-            query.filter('readable_id=', current_id)
-            if (query.get() is None): #id is unique so use it and break out
-                video_data["readable_id"] = current_id
-                break
-            else: # id is not unique so will have to go through loop again
-                number_to_add+=1
-                current_id = potential_id+'-'+number_to_add                       
+        video_data["readable_id"] = "video-%s" % youtube_id
 
         return video_data
 
