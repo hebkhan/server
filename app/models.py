@@ -1874,13 +1874,13 @@ class VersionContentChange(db.Model):
 
     @staticmethod
     def get_updated_content_dict_for_keys(version, keys=None):
-        query = VersionContentChange.all().filter("version =", version)
         if keys:
             items = []
             for key_chunk in (keys[i:i+30] for i in xrange(0,len(keys),30)):
+                query = VersionContentChange.all().filter("version =", version)
                 items.extend(query.filter("content in", key_chunk))
         else:
-            items = query
+            items = VersionContentChange.all().filter("version =", version)
         return dict((c.key(), c) for c in
                     (u.updated_content(u.content) for u in items))
 
