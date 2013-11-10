@@ -110,7 +110,7 @@ def jsonify(data, camel_cased=False):
     return json.dumps(data,
                             skipkeys=True,
                             sort_keys=True,
-                            ensure_ascii=False,
+                            ensure_ascii=True,
                             indent=4,
                             cls=encoder)
 
