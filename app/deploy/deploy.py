@@ -158,7 +158,7 @@ def main():
 
     parser.add_option('-v', '--version',
         action="store", dest="version",
-        help="Override the deployed version identifier", default=git_version())
+        help="Override the deployed version identifier", default="AUTO")
 
     parser.add_option('-x', '--no-up',
         action="store_true", dest="noup",
@@ -231,6 +231,8 @@ def main():
         print 'You must supply a version when deploying with --no-up'
         return
 
+    if version == "AUTO":
+        version = time.strftime("%Y-%m-%d-") + git_version()
     print "Deploying version " + str(version)
 
     if not options.dryrun:
