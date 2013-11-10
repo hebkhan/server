@@ -12,7 +12,7 @@ def login_notifications_html(login_notifications, user_data, continue_url="/"):
     return shared_jinja.get().render_template("phantom_users/notifications.html", **context)
 
 def badge_info(user_data):
-    from .badges import badges, util_badges
+    from badges import badges, util_badges
 
     counts_dict = {}
     if user_data:
