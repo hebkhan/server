@@ -911,26 +911,37 @@ def save_video(video_id="", version_id = "edit"):
         
         if other_video:
             return api_invalid_param_response(
-                "Video with youtube_id %s already appears with readable_id %s" %
-                (new_data["youtube_id"], video.readable_id)) 
+                "Video with youtube_id '%s' already appears with readable_id '%s'" %
+                (other_video.youtube_id, other_video.readable_id))
 
-        # make sure we are not changing the video's readable_id to an updated one in the Version's Content Changes
-        changes = models.VersionContentChange.get_updated_content_dict(version)
-        for key, content in changes.iteritems():
-            if type(content) == models.Video and (video is None or 
-                                                  key != video.key()): 
+        check_in_content_changes = (not video
+                                    or any(getattr(video, attr) != new_data.get(attr)
+                                            for attr in "readable_id youtube_id".split()))
 
-                if content.readable_id == new_data["readable_id"]:
+        if check_in_content_changes:
+            # make sure we are not changing the video's readable_id to an updated one in the Version's Content Changes
+            changes = models.VersionContentChange.all().filter("version =", version)
+            for change in changes:
+                content_key = change._content
+                if content_key.kind != "Video":
+                    continue
+                if video and video.key() == content_key:
+                    continue
+                if change.content_changes.get("readable_id") == new_data["readable_id"]:
+                    #content = change.updated_content()
+                    logging.error("Clash on readable_id '%s' in content change %r", new_data["readable_id"], change.key())
                     return api_invalid_param_response(
                         "Video with readable_id %s already exists" %
                         (new_data["readable_id"]))
-                       
-                elif content.youtube_id == new_data["youtube_id"]:
+                elif change.content_changes.get("youtube_id") == new_data["youtube_id"]:
+                    content = change.updated_content()
+                    logging.error("Clash on youtube_id '%s' in content change %r", new_data["youtube_id"], change.key())
                     return api_invalid_param_response(
                         "Video with youtube_id %s already appears with readable_id %s" %
-                        (new_data["youtube_id"], content.readable_id))  
+                        (new_data["youtube_id"], content.readable_id))
 
     if video:
+        logging.info("Saving edited video info: '%s' ", video.readable_id)
         error = check_duplicate(request.json, video)
         if error:
             return error
@@ -941,6 +952,7 @@ def save_video(video_id="", version_id = "edit"):
 
     # handle making a new video
     else:
+        logging.info("Saving a new video: '%s' ", request.json["readable_id"])
         # make sure video doesn't already exist
         error = check_duplicate(request.json)
         if error:
