@@ -240,7 +240,7 @@ def main():
         (email, password) = get_app_engine_credentials()
         success = deploy(version, email, password)
         if success:
-            open_browser_to_ka_version(version)
+            # open_browser_to_ka_version(version)
             prime_cache(version)
 
     end = datetime.datetime.now()
