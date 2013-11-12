@@ -1874,7 +1874,7 @@ class VersionContentChange(db.Model):
 
     @staticmethod
     def get_updated_content_dict_for_keys(version, keys=None):
-        if keys:
+        if keys is not None:
             items = []
             for key_chunk in (keys[i:i+30] for i in xrange(0,len(keys),30)):
                 query = VersionContentChange.all().filter("version =", version)
