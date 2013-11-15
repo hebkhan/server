@@ -3,6 +3,8 @@ from mapreduce import operation as op
 import facebook_util
 from google.appengine.ext import db
 import models 
+from util import fetch_from_url
+from exercises import UpdateExercise
 
 
 def check_user_properties(user_data):
@@ -69,6 +71,13 @@ def update_user_exercise_progress(user_exercise):
     if user_exercise._progress is None:
         user_exercise._progress = user_exercise.get_progress_from_streak()
         yield op.db.Put(user_exercise)
+
+def sync_exercise_related_videos(exercise):
+    related_videos = fetch_from_url("http://www.khanacademy.org/api/v1/exercises/%s/videos" % exercise.name, as_json=True)
+    if related_videos:
+        readable_ids = [r['readable_id'] for r in related_videos]
+        logging.info("%s -> %s", exercise.name, ", ".join(readable_ids))
+        UpdateExercise.do_update_related_videos(exercise, readable_ids)
 
 def transactional_entity_put(entity_key):
     def entity_put(entity_key):

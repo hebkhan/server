@@ -68,3 +68,18 @@ mapreduce:
       default: backfill-mapreduce-queue
     - name: processing_rate
       default: 450
+
+- name: BackfillSyncExerciseVideos
+  mapper:
+    input_reader: mapreduce.input_readers.DatastoreInputReader
+    handler: backfill.sync_exercise_related_videos
+    params:
+    - name: entity_kind
+      default: models.Exercise
+    - name: shard_count
+      default: 64
+    - name: queue_name
+      default: backfill-mapreduce-queue
+    - name: processing_rate
+      default: 350
+
