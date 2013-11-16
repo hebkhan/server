@@ -2459,30 +2459,38 @@ class Topic(Searchable, db.Model):
             self.key(), types, include_hidden),
             layer=layer_cache.Layers.Blobstore)
     def make_tree(self, types=[], include_hidden=False):
-        if include_hidden:
-            nodes = Topic.all().filter("ancestor_keys =", self.key()).run()
-        else:
-            nodes = Topic.all().filter("ancestor_keys =", self.key()).filter("hide = ", False).run()
+        query = Topic.all().filter("ancestor_keys =", self.key())
+        if not include_hidden:
+            query = query.filter("hide = ", False)
+        nodes = query.run()
 
-        node_dict = dict((node.key(), node) for node in nodes)
+        node_dict = {node.key():node for node in nodes}
         node_dict[self.key()] = self # in case the current node is hidden (like root is)
 
-        contentKeys = []
+        contentKeys = set()
         # cycle through the nodes adding its children to the contentKeys that need to be gotten
-        for key, descendant in node_dict.iteritems():
-            contentKeys.extend([c for c in descendant.child_keys if not node_dict.has_key(c) and (c.kind() in types or (len(types) == 0 and c.kind() != "Topic"))])
+        for descendant in node_dict.itervalues():
+            for child in descendant.child_keys:
+                if child in node_dict:
+                    # already got it
+                    continue
+                if child.kind() != "Topic":
+                    if types and child.kind() not in types:
+                        # skip content items that were not asked for
+                        continue
+                contentKeys.add(child)
 
         # get all content that belongs in this tree
+        # keep the keys, in cases of removed content (see later)
+        contentKeys = list(contentKeys)
         contentItems = db.get(contentKeys)
-
-        # add the content to the node dict
-        topics_to_update = []
 
         if self.version.default:
             updates = {}
         else:
             updates = VersionContentChange.get_updated_content_dict(self.version)
 
+        topics_to_update = []   # we might need to update topics with removed children
         for key, content in itertools.izip(contentKeys, contentItems):
             if not content:
                 for topic in Topic.all().filter("version = ", self.version).filter("child_keys =", key).run():
@@ -2490,16 +2498,18 @@ class Topic(Searchable, db.Model):
                     topic.child_keys = [c for c in topic.child_keys if c != key]
                     topics_to_update.append(topic)
                 continue
+            # add the content to the node dict
             content = updates.get(key, content)
             node_dict[content.key()] = content
 
         if topics_to_update:
-            logging.info("Updating %s topics...", len(topics_to_update))
-            db.put(topics_to_update)
+            logging.info("Updating %s topics with removed children...", len(topics_to_update))
+            db.put_async(topics_to_update)
+
         # cycle through the nodes adding each to its parent's children list
         for key, descendant in node_dict.iteritems():
             if hasattr(descendant, "child_keys"):
-                descendant.children = [node_dict[c] for c in descendant.child_keys if node_dict.has_key(c)]
+                descendant.children = [node_dict[c] for c in descendant.child_keys if c in node_dict]
 
         # return the entity that was passed in, now with its children, and its descendants children all added
         return node_dict[self.key()]
@@ -2733,13 +2743,17 @@ class Topic(Searchable, db.Model):
 
         topics = Topic.get_content_topics(version)
         
-        child_dict = {}
+        childs = set()
         for topic in topics:
-            child_dict.update(dict((key, True) for key in topic.child_keys if key.kind() in types or (len(types) == 0 and key.kind() != "Topic")))
-        child_dict.update(dict((e.key(), e) for e in db.get(child_dict.keys())))
+            for key in topic.child_keys:
+                if key.kind() != "Topic":
+                    if types and key.kind() not in types:
+                        continue
+                childs.add(key)
+        child_dict = {e.key(): e for e in db.get(childs)}
 
         for topic in topics:
-            topic.children = [child_dict[key] for key in topic.child_keys if child_dict.has_key(key)]
+            topic.children = [child_dict[key] for key in topic.child_keys if key in child_dict]
 
         return topics
 
