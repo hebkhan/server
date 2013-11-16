@@ -680,8 +680,8 @@ class UserVideoCss(db.Model):
         css_list = []
         css = pickle.loads(self.pickled_dict)
 
-        started_css = '{background-image:url(/images/video-indicator-started.png);padding-left:14px;}'
-        complete_css = '{background-image:url(/images/video-indicator-complete.png);padding-left:14px;}'
+        started_css = '{background-image:url(/images/video-indicator-started.png);padding-right:14px;}'
+        complete_css = '{background-image:url(/images/video-indicator-complete.png);padding-right:14px;}'
 
         for id in UserVideoCss._chunker(list(css['started']), max_selectors):
             css_list.append(','.join(id))
@@ -4360,6 +4360,9 @@ class ExerciseVideo(db.Model):
 
     def key_for_video(self):
         return ExerciseVideo.video.get_value_for_datastore(self)
+
+    def key_for_exercise(self):
+        return ExerciseVideo.exercise.get_value_for_datastore(self)
 
     @staticmethod
     def get_key_dict(query):

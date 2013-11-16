@@ -21,5 +21,8 @@
 
 {% macro video_name_and_progress(video) -%}
     <span class='vid-progress v{{ video.key().id() }} source-{{ video.source }}'>{{ video.title|escape }}</span>
+    {% for ex in video.cached_related_exercises %}
+        <a href={{ex.relative_url}} title='תרגיל: {{ex.display_name}}'><span class='exercise-icon'/></a>
+    {% endfor %}
 {%- endmacro %}
 
