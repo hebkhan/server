@@ -1,2 +1,2 @@
 export PYTHONPATH=$PYTHONPATH:/shared/google_appengine/:/shared/google_appengine/lib/webapp2-2.3/:/home/oferko/hebkhan/offline/:/home/oferko/hebkhan/app/:/home/oferko/hebkhan/utils/
-ipython notebook --no-browser --ip 0.0.0.0 --notebook-dir ./utils/notebooks
+ipython notebook --no-browser --ip 0.0.0.0 $*
