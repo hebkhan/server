@@ -182,9 +182,10 @@ class ViewHomePage(request_handler.RequestHandler):
 #            library_content = library.library_content_html(ajax = True)
         else:
             if App.is_dev_server:
+                logging.info("Disabling layer_cache")
                 layer_cache.disable()
             library_content = library.library_content_html()
-            
+
         template_values = {
                             'marquee_video': marquee_video,
                             'thumbnail_link_sets': thumbnail_link_sets,

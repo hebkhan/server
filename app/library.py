@@ -1,5 +1,5 @@
 import layer_cache
-from models import Setting, Topic, TopicVersion
+from models import Setting, Topic, TopicVersion, ExerciseVideo, Exercise
 import request_handler
 import shared_jinja
 import time
@@ -27,13 +27,13 @@ def print_topics(topics):
             print " "
         print " "
 
-def walk_children(children):
-    for child in children:
-        if child.key().kind() == "Topic":
-            for elem in walk_children(child.children):
-                yield elem
-        else:
-            yield child
+def walk_children(node):
+    if node.key().kind() == "Topic":
+        for child in node.children:
+            for node in walk_children(child):
+                yield node
+    else:
+        yield node
 
 def flatten_tree(tree, parent_topics=[]):
     homepage_topics = []
@@ -68,7 +68,7 @@ def flatten_tree(tree, parent_topics=[]):
     for child in tree.children:
         if child.key().kind() == "Topic":
             if leaf_topic:
-                map(add_once, walk_children(child.children))
+                map(add_once, walk_children(child))
             else:
                 tree.subtopics.append(child)
         else:
@@ -106,6 +106,25 @@ def add_next_topic(topics, next_topic=None):
                     topic.next_is_subtopic = True
                 topic.next = topics[i+1]
 
+def add_related_exercises(videos):
+    logging.info("%s videos", len(videos))
+
+    exercises = {e.key():e for e in Exercise.get_all_use_cache()}
+    relations = {}
+    logging.info("%s exercises", len(exercises))
+    for exvid in ExerciseVideo.all().run():
+        ex = exercises.get(exvid.key_for_exercise())
+        if ex:
+            relations.setdefault(exvid.key_for_video(),[]).append(ex)
+
+    for exs in relations.itervalues():
+        exs.sort(key=lambda e: (e.v_position, e.h_position))
+
+    logging.info("%s related videos", len(relations))
+    for vid in videos:
+        exs = relations.get(vid.key()) or []
+        vid.cached_related_exercises = exs
+
 @layer_cache.cache_with_key_fxn(
         lambda ajax=False, version_number=None: 
         "library_content_by_topic_%s_v%s" % (
@@ -124,6 +143,10 @@ def library_content_html(ajax=False, version_number=None):
         version = TopicVersion.get_default_version()
 
     tree = Topic.get_root(version).make_tree(types = ["Topics", "Video", "Url"])
+
+    videos = [item for item in walk_children(tree) if item.kind()=="Video"]
+    add_related_exercises(videos)
+
     topics = flatten_tree(tree)
 
     #topics.sort(key = lambda topic: topic.standalone_title)

@@ -1361,6 +1361,10 @@ a:link.google-analytics-link-track
                 color: black;
 			}
 
+            #library-content .exercise-icon {
+                padding: 2px 16px 0px 2px;
+                background: url(/images/exercise-icon-active.png) no-repeat right center;
+            }
 
 ul.ui-autocomplete .ui-menu-item a {
     font-size: 0.8em;
@@ -3767,7 +3771,7 @@ div.clearFloat { overflow:hidden; height:1px; clear:both; }
 
 .vid-progress {
   background-repeat: no-repeat;
-  background-position: 0% 50%;
+  background-position: 100% 50%;
 }
 
 /* There are 5 places where video completion icons are shown:
