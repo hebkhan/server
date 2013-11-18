@@ -370,6 +370,12 @@ var TopicTreeEditor = {
             parentOriginalChild.hide = model.get("hide");
         }
 
+        was_expanded = []
+        _.each(node.childList, function(child) {
+            if (child.isExpanded()) {
+                was_expanded.push(child.data.key);
+            }
+        });
         node.removeChildren();
         if (model.get("children")) {
             childNodes = [];
@@ -378,6 +384,12 @@ var TopicTreeEditor = {
             });
             node.addChild(childNodes);
         }
+        _.each(was_expanded, function(key) {
+            node = TopicTreeEditor.dynatree.getNodeByKey(key)
+            if (node) {
+                node.expand();
+            }
+        });
 
         if (model.id == "root") {
             node.expand();
