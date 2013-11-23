@@ -3967,6 +3967,8 @@ div.clearFloat { overflow:hidden; height:1px; clear:both; }
   margin: 0 0 0 -225px;
   top: 90px;
   right: 50%;
+  direction: ltr;
+  text-align: left;
 }
 
 .modal .generic-message {
