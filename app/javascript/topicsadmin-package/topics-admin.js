@@ -515,12 +515,19 @@ var TopicTreeEditor = {
     },
 
     handleError: function(xhr, queryObject) {
+        var responseText = xhr.responseText || queryObject.responseText;
         popupGenericMessageBox({
             title: "Server error",
-            message: "There has been a server error:<br /><span style=\"color: #900;\">" + queryObject.responseText + "</span><br />The topic tree will now refresh.",
-            buttons: [
-                { title: "OK", action: function() { hideGenericMessageBox(); TopicTreeEditor.editVersion(TopicTreeEditor.currentVersion.get("number")); } }
-            ]
+            message: "There has been a server error:<br /><span style=\"color: #900;\">" + responseText + "</span><br />The topic tree will now refresh.",
+            buttons: [{
+                title: "OK",
+                action: function() {
+                    hideGenericMessageBox();
+                    root = TopicTreeEditor.dynatree.getNodeByKey("Topic/root");
+                    root.data.original = null; // force the refresh
+                    TopicTreeEditor.editVersion(TopicTreeEditor.currentVersion.get("number"));
+                }
+            }]
         });
     },
 
@@ -1534,7 +1541,8 @@ TopicTreeEditor.CreateVideoView = Backbone.View.extend({
             video.save({}, {
                 success: function(model) {
                     TopicTreeEditor.addItemToTopic("Video", model.get("readable_id"), model.get("title"), self.contextNode, self.contextModel, -1);
-                }
+                },
+                error: TopicTreeEditor.handleError
             });
         }
         this.hide();

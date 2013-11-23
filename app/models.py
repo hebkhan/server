@@ -1898,6 +1898,11 @@ class VersionContentChange(db.Model):
         return change
 
     @staticmethod
+    def get_updated_content(content, version):
+        change = VersionContentChange.get_change_for_content(content, version)
+        return change.updated_content() if change else content
+
+    @staticmethod
     def add_new_content(klass, version, new_props, changeable_props=None, 
                         put_change=True):
         new_props = dict((str(k), v) for k,v in new_props.iteritems()

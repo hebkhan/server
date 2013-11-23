@@ -426,7 +426,7 @@ def topic_find_child(parent_id, version_id, kind, id):
 
     parent_topic = models.Topic.get_by_id(parent_id, version)
     if not parent_topic:
-        return ["Could not find topic with ID %s" % str(parent_id), None, None, None]
+        raise Exception("Could not find topic with ID %s" % parent_id)
 
     if kind == "Topic":
         child = models.Topic.get_by_id(id, version)
@@ -437,12 +437,12 @@ def topic_find_child(parent_id, version_id, kind, id):
     elif kind == "Url":
         child = models.Url.get_by_id_for_version(int(id), version)
     else:
-        return ["Invalid kind: %s" % kind, None, None, None]
+        raise Exception("Invalid kind: %s" % kind)
 
     if not child:
-        return ["Could not find a %s with ID %s " % (kind, id), None, None, None]
+        raise Exception("Could not find a %s with ID %s " % (kind, id))
 
-    return [None, child, parent_topic, version]
+    return child, parent_topic, version
 
 @route("/api/v1/topicversion/<version_id>/topic/<parent_id>/addchild", methods=["POST"])   
 @route("/api/v1/topic/<parent_id>/addchild", methods=["POST"])
@@ -453,9 +453,13 @@ def topic_add_child(parent_id, version_id = "edit"):
     kind = request.request_string("kind")        
     id = request.request_string("id")
 
-    [error, child, parent_topic, version] = topic_find_child(parent_id, version_id, kind, id)
-    if error:
-        return api_invalid_param_response(error)
+    try:
+        child, parent_topic, version = topic_find_child(parent_id, version_id, kind, id)
+    except Exception, error:
+        return api_invalid_param_response(error.message)
+
+    if child.key() in parent_topic.child_keys:
+        return api_invalid_param_response("The child '%s' already appears in topic '%s'" % (child.title, parent_topic.title))
 
     pos = request.request_int("pos", default=0)
 
@@ -473,9 +477,10 @@ def topic_delete_child(parent_id, version_id = "edit"):
     kind = request.request_string("kind")        
     id = request.request_string("id")
 
-    [error, child, parent_topic, version] = topic_find_child(parent_id, version_id, kind, id)
-    if error:
-        return api_invalid_param_response(error)
+    try:
+        child, parent_topic, version = topic_find_child(parent_id, version_id, kind, id)
+    except Exception, error:
+        return api_invalid_param_response(error.message)
 
     parent_topic.delete_child(child)
 
@@ -491,14 +496,18 @@ def topic_move_child(old_parent_id, version_id = "edit"):
     kind = request.request_string("kind")        
     id = request.request_string("id")
 
-    [error, child, old_parent_topic, version] = topic_find_child(old_parent_id, version_id, kind, id)
-    if error:
-        return api_invalid_param_response(error)
+    try:
+        child, old_parent_topic, version = topic_find_child(old_parent_id, version_id, kind, id)
+    except Exception, error:
+        return api_invalid_param_response(error.message)
 
     new_parent_id = request.request_string("new_parent_id")
     new_parent =  models.Topic.get_by_id(new_parent_id, version)
     if not old_parent_topic:
         return api_invalid_param_response("Could not find topic with ID " + str(old_parent_id))
+
+    if child.key() in new_parent.child_keys:
+        return api_invalid_param_response("The child '%s' already appears in topic '%s'" % (child.title, new_parent.title))
            
     new_parent_pos = request.request_string("new_parent_pos")
 
@@ -898,9 +907,11 @@ def save_video(video_id="", version_id = "edit"):
         other_video = query.get()
                 
         if other_video:
-            return api_invalid_param_response(
-                "Video with readable_id %s already exists" %
-                (new_data["readable_id"]))        
+            other_video = models.VersionContentChange.get_updated_content(other_video, version)
+            if other_video.readable_id == new_data["readable_id"]:
+                return api_invalid_param_response(
+                    "Video with readable_id %s already exists" %
+                    (new_data["readable_id"]))
         
         # make sure we are not changing the video's youtube_id to another one's
         query = models.Video.all()
@@ -910,9 +921,11 @@ def save_video(video_id="", version_id = "edit"):
         other_video = query.get()
         
         if other_video:
-            return api_invalid_param_response(
-                "Video with youtube_id '%s' already appears with readable_id '%s'" %
-                (other_video.youtube_id, other_video.readable_id))
+            other_video = models.VersionContentChange.get_updated_content(other_video, version)
+            if other_video.youtube_id == new_data["youtube_id"]:
+                return api_invalid_param_response(
+                    "Video with youtube_id '%s' already appears with readable_id '%s'" %
+                    (other_video.youtube_id, other_video.readable_id))
 
         check_in_content_changes = (not video
                                     or any(getattr(video, attr) != new_data.get(attr)
@@ -923,7 +936,7 @@ def save_video(video_id="", version_id = "edit"):
             changes = models.VersionContentChange.all().filter("version =", version)
             for change in changes:
                 content_key = change._content
-                if content_key.kind != "Video":
+                if content_key.kind() != "Video":
                     continue
                 if video and video.key() == content_key:
                     continue
@@ -937,7 +950,7 @@ def save_video(video_id="", version_id = "edit"):
                     content = change.updated_content()
                     logging.error("Clash on youtube_id '%s' in content change %r", new_data["youtube_id"], change.key())
                     return api_invalid_param_response(
-                        "Video with youtube_id %s already appears with readable_id %s" %
+                        "Video with youtube_id '%s' already appears with readable_id '%s'" %
                         (new_data["youtube_id"], content.readable_id))
 
     if video:
@@ -945,10 +958,17 @@ def save_video(video_id="", version_id = "edit"):
         error = check_duplicate(request.json, video)
         if error:
             return error
+        youtube_id = request.json["youtube_id"]
+        if youtube_id != video.youtube_id:
+            # youtube_id changed - check it actually exists, and update the duration
+            video_data = youtube_get_video_data_dict(youtube_id)
+            if not video_data:
+                return api_invalid_param_response("Could not find youtube_id '%s' in YouTube" % youtube_id)
+            request.json["duration"] = video_data["duration"]
         return models.VersionContentChange.add_content_change(video, 
             version, 
             request.json, 
-            ["readable_id", "title", "youtube_id", "youtube_id_en", "description", "keywords", "source"])
+            ["readable_id", "title", "youtube_id", "youtube_id_en", "description", "keywords", "source", "duration"])
 
     # handle making a new video
     else:
