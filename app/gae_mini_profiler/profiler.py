@@ -50,9 +50,9 @@ class CurrentRequestId(object):
     @staticmethod
     def get():
         if dev_server:
-            return CurrentRequestId.dev_server_request_id
+            return CurrentRequestId.dev_server_request_id or "dev_server"
         else:
-            return CurrentRequestId._local.request_id
+            return CurrentRequestId._local.request_id or "dev_server"
 
     @staticmethod
     def set(request_id):
