@@ -38,7 +38,12 @@
       <tr>
         <td style="font-weight:bold;">YouTube ID</td>
         <td style="padding-bottom:9px;">
-          <input type="text" name="youtube_id" value="{{ model.youtube_id }}" maxlength="11" class="short" /><br/>
+          <input type="text" name="youtube_id" value="{{ model.youtube_id }}" maxlength="11" class="short" />
+          Open this video in
+          <a href="#"
+            onclick="window.open('http://youtu.be/' + $('input[name=youtube_id]').attr('value')); return false;">
+            YouTube</a>
+          <br/>
           {{#if oldValues.youtube_id }}<span class="old-value">Old value: <input type="text" disabled value="{{ oldValues.youtube_id }}" maxlength="11" class="short"/></span><br/>{{/if}}
           <em>ID of this video on YouTube</em>
         </td>
@@ -50,6 +55,14 @@
           <input type="text" name="youtube_id_en" value="{{ model.youtube_id_en }}" maxlength="11" class="short" /><br/>
           {{#if oldValues.youtube_id_en }}<span class="old-value">Old value: <input type="text" disabled value="{{ oldValues.youtube_id_en }}" maxlength="11" class="short"/></span><br/>{{/if}}
           <em>ID of the original Khan Academy video on YouTube</em>
+        </td>
+      </tr>
+
+      <tr>
+        <td style="font-weight:bold;">Video Duration</td>
+        <td style="padding-bottom:9px;">
+          <input type="text" name="duration" value="{{ model.duration }}" disabled /><br/>
+          <em>Video duration in seconds</em>
         </td>
       </tr>
 
