@@ -539,28 +539,28 @@ var TopicTreeEditor = {
 
         KAConsole.log("Adding " + kind + " " + id + " to Topic " + parent_model.get("title"));
 
-        var newChild = {
-            kind: kind,
-            id: id,
-            title: title
-        };
-        children = parent_model.get("children").slice(0);
-        children.splice(parent_pos, 0, newChild);
-        parent_model.set({ children: children });
-
-        parent_node.expand();
-        parent_node.getChildren()[parent_pos].activate();
-
         var data = {
             kind: kind,
             id: id,
             pos: parent_pos
         };
+
         $.ajaxq("topics-admin", {
             url: "/api/v1/topicversion/edit/topic/" + parent_model.id + "/addchild",
             type: "POST",
             data: data,
             success: function(json) {
+                var newChild = {
+                    kind: kind,
+                    id: id,
+                    title: title
+                };
+                children = parent_model.get("children").slice(0);
+                children.splice(parent_pos, 0, newChild);
+                parent_model.set({ children: children });
+                parent_node.expand();
+                parent_node.getChildren()[parent_pos].activate();
+
                 KAConsole.log("Added item successfully.");
             },
             error: TopicTreeEditor.handleError
