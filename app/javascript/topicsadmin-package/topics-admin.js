@@ -14,6 +14,7 @@ var TopicTreeEditor = {
 
     currentEditor: null,
     itemCopyBuffer: null,
+    was_expanded: [],
 
     createEditor: function(kind) {
         if (kind == "Topic") {
@@ -370,12 +371,14 @@ var TopicTreeEditor = {
             parentOriginalChild.hide = model.get("hide");
         }
 
-        was_expanded = []
-        _.each(node.childList, function(child) {
+        function collect_expanded(child) {
             if (child.isExpanded()) {
-                was_expanded.push(child.data.key);
+                TopicTreeEditor.was_expanded.push(child.data.key);
             }
-        });
+            _.each(child.childList, collect_expanded)
+        }
+        collect_expanded(node);
+
         node.removeChildren();
         if (model.get("children")) {
             childNodes = [];
@@ -384,10 +387,14 @@ var TopicTreeEditor = {
             });
             node.addChild(childNodes);
         }
+
+        was_expanded = TopicTreeEditor.was_expanded.splice(0)
         _.each(was_expanded, function(key) {
             node = TopicTreeEditor.dynatree.getNodeByKey(key)
             if (node) {
                 node.expand();
+            } else {
+                TopicTreeEditor.was_expanded.push(key)
             }
         });
 
