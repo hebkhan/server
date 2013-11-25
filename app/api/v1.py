@@ -506,7 +506,7 @@ def topic_move_child(old_parent_id, version_id = "edit"):
     if not old_parent_topic:
         return api_invalid_param_response("Could not find topic with ID " + str(old_parent_id))
 
-    if child.key() in new_parent.child_keys:
+    if old_parent_id!=new_parent_id and child.key() in new_parent.child_keys:
         return api_invalid_param_response("The child '%s' already appears in topic '%s'" % (child.title, new_parent.title))
            
     new_parent_pos = request.request_string("new_parent_pos")
