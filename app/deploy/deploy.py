@@ -147,6 +147,10 @@ def deploy(version, email, password):
     print "Deploying version " + str(version)
     return 0 == popen_return_code(['appcfg.py', '-V', str(version), "-e", email, "--passin", "update", "."], "%s\n" % password)
 
+def set_default_version(version, email, password):
+    print "Setting version as default" + str(version)
+    return 0 == popen_return_code(['appcfg.py', '-V', str(version), "-e", email, "--passin", "set_default_version", "."], "%s\n" % password)
+
 def main():
 
     start = datetime.datetime.now()
@@ -182,6 +186,11 @@ def main():
         action="store_false", dest="node",
         help="Don't check for local npm modules and don't install/update them",
         default=True)
+
+    parser.add_option('--set-default',
+        action="store_true", dest="set_default_version",
+        help="Set the newly created version as the default version to serve",
+        default=False)
 
     options, args = parser.parse_args()
 
@@ -242,6 +251,8 @@ def main():
         if success:
             # open_browser_to_ka_version(version)
             prime_cache(version)
+        if options.set_default_version:
+            set_default_version(version, email, password)
 
     end = datetime.datetime.now()
     print "Done. Duration: %s" % (end - start)
