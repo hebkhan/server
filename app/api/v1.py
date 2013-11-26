@@ -965,10 +965,13 @@ def save_video(video_id="", version_id = "edit"):
         if not video_data:
             return api_invalid_param_response("Could not find youtube_id '%s' in YouTube" % youtube_id)
         request.json["duration"] = video_data["duration"]
-        return models.VersionContentChange.add_content_change(video, 
-            version, 
-            request.json, 
-            ["readable_id", "title", "youtube_id", "youtube_id_en", "description", "keywords", "source", "duration"])
+        changeable_props = ["readable_id", "title", "youtube_id", "youtube_id_en",
+                            "description", "keywords", "source", "duration"]
+        changes = models.VersionContentChange.add_content_change(video, version, request.json, changeable_props)
+        # return all data, updated with the changes
+        data = {attr:changes.get(attr, getattr(video, attr))
+                for attr in changeable_props}
+        return data
 
     # handle making a new video
     else:
