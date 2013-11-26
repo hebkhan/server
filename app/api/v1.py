@@ -958,13 +958,13 @@ def save_video(video_id="", version_id = "edit"):
         error = check_duplicate(request.json, video)
         if error:
             return error
-        youtube_id = request.json["youtube_id"]
-        if youtube_id != video.youtube_id:
-            # youtube_id changed - check it actually exists, and update the duration
-            video_data = youtube_get_video_data_dict(youtube_id)
-            if not video_data:
-                return api_invalid_param_response("Could not find youtube_id '%s' in YouTube" % youtube_id)
-            request.json["duration"] = video_data["duration"]
+        # if youtube_id was en empty string then we're just about validating & refreshing the duration
+        youtube_id = request.json["youtube_id"] = (request.json["youtube_id"] or video.youtube_id)
+        # check youtube actually exists, and update the duration
+        video_data = youtube_get_video_data_dict(youtube_id)
+        if not video_data:
+            return api_invalid_param_response("Could not find youtube_id '%s' in YouTube" % youtube_id)
+        request.json["duration"] = video_data["duration"]
         return models.VersionContentChange.add_content_change(video, 
             version, 
             request.json, 
@@ -978,9 +978,10 @@ def save_video(video_id="", version_id = "edit"):
         if error:
             return error
 
-        video_data = youtube_get_video_data_dict(request.json["youtube_id"])
-        if video_data is None:
-            return None
+        youtube_id = request.json["youtube_id"]
+        video_data = youtube_get_video_data_dict(youtube_id)
+        if not video_data:
+            return api_invalid_param_response("Could not find youtube_id '%s' in YouTube" % youtube_id)
         return models.VersionContentChange.add_new_content(models.Video, 
                                                            version,
                                                            video_data)
