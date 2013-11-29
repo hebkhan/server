@@ -813,6 +813,8 @@ function stringArraysEqual(ar1, ar2) {
                     success: function() {
                         editor.handleChange(self.model, oldID);
                         Throbber.hide();
+                        var node = TopicTreeEditor.dynatree.getNodeByKey(self.model.get("kind") + "/" + self.model.id);
+                        node.activate();
                     },
                     error: TopicTreeEditor.handleError
                 });
