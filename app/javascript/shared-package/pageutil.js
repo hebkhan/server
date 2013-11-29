@@ -519,7 +519,7 @@ FacebookHook.init();
 var Throbber = {
     jElement: null,
 
-    show: function(jTarget, fOnRight) {
+    show: function(jTarget, fOnLeft) {
         if (!Throbber.jElement)
         {
             Throbber.jElement = $("<img style='display:none;' src='/images/throbber.gif' class='throbber'/>");
@@ -530,10 +530,10 @@ var Throbber = {
 
         var offset = jTarget.offset();
 
-        var top = offset.top + (jTarget.height() / 2) - 8;
-        var right = fOnRight ? (offset.right - 16 - 4) : (offset.right + jTarget.width() + 4);
+        var top = offset.top + (jTarget.outerHeight() / 2) - 8;
+        var left = fOnLeft ? (offset.left + jTarget.outerWidth() - 16 - 4) : (offset.left + 4);
 
-        Throbber.jElement.css("top", top).css("right", right).css("display", "");
+        Throbber.jElement.css("top", top).css("left", left).css("display", "");
     },
 
     hide: function() {
