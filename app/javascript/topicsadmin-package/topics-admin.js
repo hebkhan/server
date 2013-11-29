@@ -1539,6 +1539,7 @@ TopicTreeEditor.CreateVideoView = Backbone.View.extend({
 
         if (this.readableID) {
             TopicTreeEditor.addItemToTopic("Video", this.readableID, this.title, this.contextNode, this.contextModel, -1);
+            self.hide();
         } else {
             if (!this.youtubeID) {
                 return;
@@ -1548,11 +1549,14 @@ TopicTreeEditor.CreateVideoView = Backbone.View.extend({
             video.save({}, {
                 success: function(model) {
                     TopicTreeEditor.addItemToTopic("Video", model.get("readable_id"), model.get("title"), self.contextNode, self.contextModel, -1);
+                    self.hide();
                 },
-                error: TopicTreeEditor.handleError
+                error: function(xhr, queryObject) {
+                    TopicTreeEditor.handleError(xhr, queryObject);
+                    self.hide();
+                }
             });
         }
-        this.hide();
     },
 
     doVideoSearch: function() {
