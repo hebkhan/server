@@ -534,6 +534,7 @@ var Throbber = {
         var left = fOnLeft ? (offset.left + jTarget.outerWidth() - 16 - 4) : (offset.left + 4);
 
         Throbber.jElement.css("top", top).css("left", left).css("display", "");
+        Throbber.jElement.zIndex(jTarget.zIndex()+10);
     },
 
     hide: function() {
