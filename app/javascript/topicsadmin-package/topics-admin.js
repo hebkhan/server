@@ -1538,6 +1538,7 @@ TopicTreeEditor.CreateVideoView = Backbone.View.extend({
 
     createVideo: function() {
         var self = this;
+        $(self.el).find(".ok-button").addClass("disabled").removeClass("green");
 
         if (this.readableID) {
             TopicTreeEditor.addItemToTopic("Video", this.readableID, this.title, this.contextNode, this.contextModel, -1);
