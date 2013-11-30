@@ -1,12 +1,10 @@
-
 var Video = {
 
     SHOW_SUBTITLES_COOKIE: "show_subtitles",
 
     init: function() {
-
         VideoControls.onYouTubeBlocked(function() {
-           $("#youtube_blocked").css("visibility", "visible").css("left", "0px").css("position", "relative");
+           $("#youtube_blocked").css("display", "inline").css("left", "0px").css("position", "relative");
            $("#idOVideo").hide();
            VideoStats.prepareAlternativePlayer(); // If YouTube is hidden, use the flv player for statistics
         });
