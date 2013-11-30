@@ -885,7 +885,11 @@ def get_youtube_info(youtube_id):
         return video_data
 
     video_data = models.Video(youtube_id = youtube_id)
-    return youtube_get_video_data(video_data)
+    data = youtube_get_video_data(video_data)
+    if data is None:
+        return api_invalid_param_response("Cannot find '%s' in YouTube" % youtube_id)
+    else:
+        return data
 
 @route("/api/v1/topicversion/<version_id>/videos/", methods=["POST", "PUT"])
 @route("/api/v1/topicversion/<version_id>/videos/<video_id>", methods=["POST", "PUT"])

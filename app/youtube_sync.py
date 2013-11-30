@@ -29,8 +29,8 @@ def youtube_get_video_data_dict(youtube_id):
     try:
         video = yt_service.GetYouTubeVideoEntry(video_id=youtube_id)
     except:
-        video = None
-    if video:
+        return
+    else:
         video_data = {"youtube_id" : youtube_id,
                       "title" : video.media.title.text.decode('utf-8'),
                       "url" : video.media.player.url.decode('utf-8'),
@@ -45,14 +45,12 @@ def youtube_get_video_data_dict(youtube_id):
 
         return video_data
 
-    return None
-
 
 def youtube_get_video_data(video):
     data_dict = youtube_get_video_data_dict(video.youtube_id)
 
     if data_dict is None:
-        return None
+        return
 
     for prop, value in data_dict.iteritems():
         setattr(video, prop, value)

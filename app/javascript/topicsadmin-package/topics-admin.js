@@ -538,7 +538,7 @@ var TopicTreeEditor = {
         });
     },
 
-    addItemToTopic: function(kind, id, title, parent_node, parent_model, parent_pos) {
+    addItemToTopic: function(kind, id, title, parent_node, parent_model, parent_pos, callback) {
 
         if (parent_pos < 0) {
             parent_pos = parent_model.get("children").length;
@@ -570,7 +570,8 @@ var TopicTreeEditor = {
 
                 KAConsole.log("Added item successfully.");
             },
-            error: TopicTreeEditor.handleError
+            error: TopicTreeEditor.handleError,
+            complete: callback
         });
     },
 
@@ -1538,11 +1539,19 @@ TopicTreeEditor.CreateVideoView = Backbone.View.extend({
 
     createVideo: function() {
         var self = this;
-        $(self.el).find(".ok-button").addClass("disabled").removeClass("green");
+        var ok = $(self.el).find(".ok-button")
+        ok.addClass("disabled").removeClass("green");
+        Throbber.show(ok, false);
+        function hide_me() {
+            Throbber.hide();
+            self.hide();
+        }
 
         if (this.readableID) {
-            TopicTreeEditor.addItemToTopic("Video", this.readableID, this.title, this.contextNode, this.contextModel, -1);
-            self.hide();
+            TopicTreeEditor.addItemToTopic("Video",
+                this.readableID, this.title,
+                this.contextNode, this.contextModel, -1,
+                hide_me);
         } else {
             if (!this.youtubeID) {
                 return;
@@ -1551,12 +1560,14 @@ TopicTreeEditor.CreateVideoView = Backbone.View.extend({
             var video = new Video({ youtube_id: this.youtubeID });
             video.save({}, {
                 success: function(model) {
-                    TopicTreeEditor.addItemToTopic("Video", model.get("readable_id"), model.get("title"), self.contextNode, self.contextModel, -1);
-                    self.hide();
+                    TopicTreeEditor.addItemToTopic("Video",
+                        model.get("readable_id"), model.get("title"),
+                        self.contextNode, self.contextModel, -1,
+                        hide_me);
                 },
                 error: function(xhr, queryObject) {
                     TopicTreeEditor.handleError(xhr, queryObject);
-                    self.hide();
+                    hide_me();
                 }
             });
         }
@@ -1565,6 +1576,9 @@ TopicTreeEditor.CreateVideoView = Backbone.View.extend({
     doVideoSearch: function() {
         var youtubeID = $(this.el).find("input[name=\"youtube_id\"]").val();
         var self = this;
+        if (self.youtubeID === youtubeID) {
+            return;
+        }
         $.ajax({
             url: "/api/v1/videos/" + youtubeID + "/youtubeinfo",
             success: function(json) {
