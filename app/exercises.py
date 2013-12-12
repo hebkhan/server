@@ -945,6 +945,8 @@ class SyncExercises(request_handler.RequestHandler):
 
         # hide orphan exercises (no html file)
         for name, exercise in heb_exercises.iteritems():
+            if exercise.summative:
+                continue
             logging.warning("Hiding orphan: %s", name)
             exercise.live = False
             h, v = divmod(last_unpositioned, unpositioned_width)
