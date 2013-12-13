@@ -1078,13 +1078,23 @@ var ProgressReport = {
     },
 
     filterRows: function(model) {
+
+        var progressType = $(".progress-type-radio:checked").val();
+
+        // Videos can't be filtered by time
+        var time_filter_disabled = (progressType == "video");
+        $("#progressreport-filter-last-time").prop("disabled", time_filter_disabled);
+        $("#progressreport-recent").prop("disabled", time_filter_disabled);
+        if (time_filter_disabled == true) {
+            $("#progressreport-recent").prop("checked", false);
+        }
+
         var filterText = $.trim($('#student-progressreport-search').val().toLowerCase());
         var filters = {};
         $("input.progressreport-filter-check").each(function(idx, element) {
             filters[$(element).attr('name')] = $(element).is(":checked");
         });
         var filterRecentTime = $("#progressreport-filter-last-time").val();
-        var progressType = $(".progress-type-radio:checked").val();
 
         var visibleColumns = [];
         var matchingColumns = [];
