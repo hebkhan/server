@@ -910,7 +910,7 @@ var ClassProfile = {
             $.each(student_row.videos, function(idx2, video) {
                 video.video_display = data.progress_names[lastIdx + idx2].display_name;
                 video.status_css = 'transparent';
-                if (video.status_name == 'finished') video.status_css = 'proficient';
+                if (video.status_name == 'completed') video.status_css = 'proficient';
                 else if (video.status_name == 'started') video.status_css = 'started';
                 video.notTransparent = (video.status_css != 'transparent');
                 video.isVideo = true;
