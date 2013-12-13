@@ -1020,7 +1020,7 @@ $.widget( "ui.accordion", {
 		fillSpace: false,
 		header: "> li > :first-child,> :not(li):even",
 		icons: {
-			header: "ui-icon-triangle-1-e",
+			header: "ui-icon-triangle-1-w",
 			headerSelected: "ui-icon-triangle-1-s"
 		},
 		navigation: false,
