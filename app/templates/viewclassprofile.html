@@ -127,11 +127,15 @@
     </div>
     <div class="filter-block">
       <p>מציג רק
-        <input type="text" id="student-progressreport-search" placeholder="תלמידים או תרגיל" class="search-input simple-input ui-corner-all blur-on-esc"></input>
+        <input type="text" id="student-progressreport-search" placeholder="תלמידים או תרגיל או וידאו" class="search-input simple-input ui-corner-all blur-on-esc"></input>
         <span class="coach-filter-block">
             <input type="checkbox" class="progressreport-filter-check" id="progressreport-struggling" name="struggling" /><label for="progressreport-struggling">מתקשה</label></span>
       <span class="coach-filter-block"><input type="checkbox" class="progressreport-filter-check" id="progressreport-recent" name="recent" /><label for="progressreport-recent">עבד עליו במהלך:</label>
             <select id="progressreport-filter-last-time"><option value="1">היום האחרון</option><option value="2">היומיים האחרונים</option><option value="3">שלושת הימים האחרונים</option><option selected value="7">השבוע אחרון</option><option value="30">החודש אחרון</option></select></span>
+
+      <input class="progress-type-radio" type="radio" name="progress_type" value="video">סרטונים
+      <input class="progress-type-radio" type="radio" name="progress_type" value="exercise" checked="checked">תרגילים
+
     </div>
   </div>
 

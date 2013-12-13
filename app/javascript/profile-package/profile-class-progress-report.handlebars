@@ -5,7 +5,7 @@
             <div id="divHeader" class="sizeOnResize" style="overflow:hidden;width:450px; line-height: 15px;">
                 <table cellspacing="0" cellpadding="0" border="1" style="width: 100%">
                   <tr>
-                    {{#each exercise_names}}
+                    {{#each progress_names}}
                         <th class="student-exercises-col" data-id="{{ idx }}"><div class="tableHeader">{{ display_name }}</div></th>
                     {{/each}}
                     <th style="background: transparent; border-color: transparent; max-width:5px; min-width: 5px; width: 5px">&nbsp;</th>
@@ -42,16 +42,20 @@
                 <table style="width:100%;" cellspacing="0" cellpadding="0" border="0">
                     {{#each exercise_list}}
                     <tr class="student-exercises-row" data-id="{{ idx }}">
-                      {{#each exercises}}
+                      {{#each progress}}
                         <td class="student-module-status exercise-color {{ status_css }} {{#if notTransparent}}action-gradient seethrough{{/if}}" data-id="{{ idx }}">
                           {{#if status}}
                           <div class="hover-content" style="display: none;">
                             <b>{{ ../../nickname }}</b><br/>
                             <b>{{ exercise_display }}</b><br/>
                             <em><nobr>מצב: {{ status }}</nobr></em><br/>
-                            <em>התקדמות: {{ progress }}%</em><br/>
-                            {{#if last_done_ago}}<em>מועד פעילות אחרון: {{ last_done_ago }}</em></br/>{{/if}}
-                            <em>שאלות שנוסו: {{ total_done }}</em>
+                            {{#if exercise.isExercise}}
+                                <em>התקדמות: {{ progress }}%</em><br/>
+                                {{#if last_done_ago}}
+                                    <em>מועד פעילות אחרון: {{ last_done_ago }}</em></br/>
+                                {{/if}}
+                                <em>שאלות שנוסו: {{ total_done }}</em>
+                            {{/if}}
                           </div>
                           {{/if}}
                         </td>

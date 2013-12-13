@@ -856,15 +856,24 @@ var ClassProfile = {
     },
 
     renderStudentProgressReport: function(data, href) {
-        ClassProfile.updateStudentInfo(data.exercise_data.length, data.c_points);
+        ClassProfile.updateStudentInfo(data.progress_data.length, data.c_points);
 
         $.each(data.exercise_names, function(idx, exercise) {
+            exercise.isExercise = true;
+        });
+
+        $.each(data.video_names, function(idx, exercise) {
+            exercise.isVideo = true;
+        });
+
+        data.progress_names = data.exercise_names.concat(data.video_names);
+        $.each(data.progress_names, function(idx, exercise) {
             exercise.display_name_lower = exercise.display_name.toLowerCase();
             exercise.idx = idx;
         });
 
         data.exercise_list = [];
-        $.each(data.exercise_data, function(idx, student_row) {
+        $.each(data.progress_data, function(idx, student_row) {
             data.exercise_list.push(student_row);
         });
         data.exercise_list.sort(function(a, b) { if (a.nickname < b.nickname) return -1; else if (b.nickname < a.nickname) return 1; return 0; });
@@ -872,7 +881,7 @@ var ClassProfile = {
         $.each(data.exercise_list, function(idx, student_row) {
             student_row.idx = idx;
             student_row.nickname_lower = student_row.nickname.toLowerCase();
-
+            var lastIdx = 0;
             $.each(student_row.exercises, function(idx2, exercise) {
                 exercise.exercise_display = data.exercise_names[idx2].display_name;
                 exercise.progress = (exercise.progress*100).toFixed(0);
@@ -894,7 +903,21 @@ var ClassProfile = {
                 exercise.notTransparent = (exercise.status_css != 'transparent');
 
                 exercise.idx = idx2;
+                exercise.isExercise = true;
+                lastIdx = idx2 + 1;
             });
+
+            $.each(student_row.videos, function(idx2, video) {
+                video.video_display = data.progress_names[lastIdx + idx2].display_name;
+                video.status_css = 'transparent';
+                if (video.status_name == 'finished') video.status_css = 'proficient';
+                else if (video.status_name == 'started') video.status_css = 'started';
+                video.notTransparent = (video.status_css != 'transparent');
+                video.isVideo = true;
+                video.idx = lastIdx + idx2;
+            });
+
+            student_row.progress = student_row.exercises.concat(student_row.videos);
         });
 
         var template = Templates.get( "profile.profile-class-progress-report" );
@@ -1008,7 +1031,6 @@ var ProgressReport = {
         $('#module-progress').find('tr.student-exercises-row').each(function() {
             var row_idx = $(this).attr('data-id');
             var row = (row_idx >= 0) ? model.exercise_list[row_idx] : self.hiddenStudentsModel;
-
             var rowView = new ProgressReport.studentRowView({
                 el: this,
                 model: row
@@ -1047,6 +1069,10 @@ var ProgressReport = {
             ProgressReport.filterRows(model);
         });
 
+        $(".progress-type-radio").change(function() {
+            ProgressReport.filterRows(model);
+        });
+
         ProgressReport.filterRows(model);
     },
 
@@ -1057,13 +1083,14 @@ var ProgressReport = {
             filters[$(element).attr('name')] = $(element).is(":checked");
         });
         var filterRecentTime = $("#progressreport-filter-last-time").val();
+        var progressType = $(".progress-type-radio:checked").val();
 
         var visibleColumns = [];
         var matchingColumns = [];
         var hiddenCount = 0;
 
         // Match columns with filter text
-        $.each(model.exercise_names, function(idx, exercise) {
+        $.each(model.progress_names, function(idx, exercise) {
             matchingColumns[idx] = (filterText != '' && exercise.display_name_lower.indexOf(filterText) > -1);
             visibleColumns[idx] = matchingColumns[idx] || (filterText == '');
         });
@@ -1072,8 +1099,7 @@ var ProgressReport = {
         $.each(model.exercise_list, function(idx, studentRow) {
             var foundMatchingExercise = false;
             var matchesFilter = filterText == '' || studentRow.nickname_lower.indexOf(filterText) > -1;
-
-            $.each(studentRow.exercises, function(idx2, exercise) {
+            $.each(studentRow.progress, function(idx2, exercise) {
                 if (exercise.status != '' && matchingColumns[idx2]) {
                     foundMatchingExercise = true;
                     return false;
@@ -1086,7 +1112,7 @@ var ProgressReport = {
                 studentRow.highlight = matchesFilter && (filterText != '');
 
                 if (matchesFilter) {
-                    $.each(studentRow.exercises, function(idx2, exercise) {
+                    $.each(studentRow.progress, function(idx2, exercise) {
                         if (exercise.status != '')
                             visibleColumns[idx2] = true;
                     });
@@ -1106,7 +1132,7 @@ var ProgressReport = {
                 if (studentRow.visible) {
                     var foundValid = false;
                     studentRow.matchingCells = [];
-                    $.each(studentRow.exercises, function(idx2, exercise) {
+                    $.each(studentRow.progress, function(idx2, exercise) {
                         var valid = visibleColumns[idx2];
                         if (filters['struggling'] && exercise.status != 'Struggling') {
                             valid = false;
@@ -1129,7 +1155,7 @@ var ProgressReport = {
             });
 
             // Hide columns that don't match the filter
-            $.each(model.exercise_names, function(idx, exercise) {
+            $.each(model.progress_names, function(idx, exercise) {
                 if (!matchingColumns[idx] && !filteredColumns[idx])
                     visibleColumns[idx] = false;
             });
@@ -1139,6 +1165,15 @@ var ProgressReport = {
             });
         }
 
+
+        $.each(model.progress_names, function(idx, exercise) {
+            if ((exercise.isVideo && progressType != 'video') ||
+                (exercise.isExercise && progressType != 'exercise')) {
+                matchingColumns[idx] = false;
+                visibleColumns[idx] = false;
+            }
+        });
+
         this.hiddenStudentsModel.visible = (hiddenCount > 0);
         this.hiddenStudentsModel.hiddenCount = hiddenCount;
 
@@ -1147,6 +1182,7 @@ var ProgressReport = {
                 rowView.updateFilter(visibleColumns);
             });
             _.each(this.headingViews, function(colView) {
+                // per column list of visible rows, list of highlighted rows
                 colView.updateFilter(visibleColumns, matchingColumns);
             });
         }, this);
