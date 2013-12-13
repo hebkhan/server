@@ -912,6 +912,7 @@ var ClassProfile = {
                 video.status_css = 'transparent';
                 if (video.status_name == 'completed') video.status_css = 'proficient';
                 else if (video.status_name == 'started') video.status_css = 'started';
+                video.link = "/video/" + data.video_names[idx2].name;
                 video.notTransparent = (video.status_css != 'transparent');
                 video.isVideo = true;
                 video.idx = lastIdx + idx2;
@@ -1047,7 +1048,7 @@ var ProgressReport = {
                 $(this).click(function() {
                     // TODO: awkward turtle this should really just be a link,
                     // but I don't feel like combing through right now.
-                    window.location = row.exercises[col_idx].link;
+                    window.location = row.progress[col_idx].link;
                 });
             });
         });
