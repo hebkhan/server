@@ -44,13 +44,8 @@ def class_progress_report_graph_context(user_data, list_students):
     exercise_list = [{'name': e.name, 'display_name': e.display_name} for e in exercises_found]
 
     videos_all = Video.get_all()
-
-    all_video_progress = {student.email: get_videos_for_user(student) for student in list_students}
-    videos_found = {
-        video_id
-        for video_progress in all_video_progress.itervalues()
-        for video_id in video_progress
-    }
+    all_video_progress = dict(zip(list_students, get_video_progress_for_students(list_students)))
+    videos_found = reduce(set.union, all_video_progress.itervalues(), set())
 
     videos_found = [video for video in videos_all if video.key().id() in videos_found]
     video_list = [{'name': v.readable_id, 'display_name': v.title} for v in videos_found]
@@ -108,7 +103,7 @@ def class_progress_report_graph_context(user_data, list_students):
                     "status": status,
                 })
 
-        video_progress = all_video_progress[student.email]
+        video_progress = all_video_progress[student]
         for video in videos_found:
             status_name = video_progress.get(video.key().id(), "")
             status = STATUSES[status_name]
@@ -130,12 +125,17 @@ def class_progress_report_graph_context(user_data, list_students):
     }
 
 
-def get_videos_for_user(user_data):
-    css = UserVideoCss.get_for_user_data(user_data)
-    vid_css_data = pickle.loads(css.pickled_dict)
-    video_progress = {
-        int(vid_str[2:]): progress
-        for progress, vids in vid_css_data.iteritems()
-        for vid_str in vids
-        }
-    return video_progress
+def get_video_progress_for_students(students):
+    keys = (UserVideoCss._key_for(student) for student in students)
+    data = UserVideoCss.get_by_key_name(keys)
+    for student, css in zip(students, data):
+        if css:
+            vid_css_data = pickle.loads(css.pickled_dict)
+            video_progress = {
+                int(vid_str[2:]): progress
+                for progress, vids in vid_css_data.iteritems()
+                for vid_str in vids
+            }
+            yield video_progress
+        else:
+            yield {}
