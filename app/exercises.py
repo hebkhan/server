@@ -890,9 +890,9 @@ class SyncExercises(request_handler.RequestHandler):
                 exercises_to_update.add(exercise)
 
             elif new_display_name and new_display_name != exercise.display_name:
-                # exercise.display_name = new_display_name
-                logging.warning("  display names changed: %s != %s", new_display_name, exercise.display_name)
-                # exercises_to_update.add(exercise)
+                exercise.display_name = new_display_name
+                logging.debug("  (file) -> display_name: %s", new_display_name)
+                exercises_to_update.add(exercise)
 
             khan_exercise = khan_exercises.get(name)
             if khan_exercise:
