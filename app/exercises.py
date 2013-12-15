@@ -850,11 +850,12 @@ class SyncExercises(request_handler.RequestHandler):
         heb_exercises = dict((exercise.name, exercise) for exercise in exercises)
 
 
-        # fetch graph information from khan
-        from util import fetch_from_url
-        data = fetch_from_url("http://www.khanacademy.org/api/v1/exercises", as_json=True)
-        khan_exercises = dict((e["name"], e) for e in data if not e['tutorial_only'])
-        logging.info("Got %s items (%s...)", len(khan_exercises), ", ".join(sorted(khan_exercises)[:4]))
+        # # fetch graph information from khan
+        # from util import fetch_from_url
+        # data = fetch_from_url("http://www.khanacademy.org/api/v1/exercises", as_json=True)
+        # khan_exercises = dict((e["name"], e) for e in data if not e['tutorial_only'])
+        # logging.info("Got %s items (%s...)", len(khan_exercises), ", ".join(sorted(khan_exercises)[:4]))
+        khan_exercises = {}
 
 
         # fetch existing exercise files
@@ -889,9 +890,9 @@ class SyncExercises(request_handler.RequestHandler):
                 exercises_to_update.add(exercise)
 
             elif new_display_name and new_display_name != exercise.display_name:
-                exercise.display_name = new_display_name
-                logging.debug("  (file) -> display_name: %s", new_display_name)
-                exercises_to_update.add(exercise)
+                # exercise.display_name = new_display_name
+                logging.warning("  display names changed: %s != %s", new_display_name, exercise.display_name)
+                # exercises_to_update.add(exercise)
 
             khan_exercise = khan_exercises.get(name)
             if khan_exercise:
@@ -915,33 +916,33 @@ class SyncExercises(request_handler.RequestHandler):
                     last_unpositioned += 1
                     exercises_to_update.add(exercise)
 
-        # fetching the 'summative' (topic) exercises
-        ret = fetch_from_url("https://www.khanacademy.org/exercisedashboard")
-        for line in ret.splitlines():
-            if "topic_graph_json" in line:
-                val = json.loads(line[line.find(":")+1:])
-                exercise_topics = val['topics']
-                logging.info("Fetched %s summative exercises", len(exercise_topics))
-                break
-        else:
-            exercise_topics = {}
-            logging.warning("Could not find 'topic_graph_json' in 'https://www.khanacademy.org/exercisedashboard'")
+        # # fetching the 'summative' (topic) exercises
+        # ret = fetch_from_url("https://www.khanacademy.org/exercisedashboard")
+        # for line in ret.splitlines():
+        #     if "topic_graph_json" in line:
+        #         val = json.loads(line[line.find(":")+1:])
+        #         exercise_topics = val['topics']
+        #         logging.info("Fetched %s summative exercises", len(exercise_topics))
+        #         break
+        # else:
+        #     exercise_topics = {}
+        #     logging.warning("Could not find 'topic_graph_json' in 'https://www.khanacademy.org/exercisedashboard'")
 
-        # update/create 'summative' (topic) exercises
-        for name, topic in exercise_topics.iteritems():
-            exercise = heb_exercises.pop(name, None)
-            if not exercise:
-                exercise = models.Exercise(name=name, summative=True)
-                exercise.display_name = topic['standalone_title']
-                logging.info("Added Summative: %s", name)
-            elif not exercise.summative:
-                logging.error("%s clashes with a summative exercise", name)
-                continue
-            exercise.live = True
-            exercise.short_display_name = name
-            exercise.v_position = int(topic['x'])
-            exercise.h_position = int(topic['y'])
-            exercises_to_update.add(exercise)
+        # # update/create 'summative' (topic) exercises
+        # for name, topic in exercise_topics.iteritems():
+        #     exercise = heb_exercises.pop(name, None)
+        #     if not exercise:
+        #         exercise = models.Exercise(name=name, summative=True)
+        #         exercise.display_name = topic['standalone_title']
+        #         logging.info("Added Summative: %s", name)
+        #     elif not exercise.summative:
+        #         logging.error("%s clashes with a summative exercise", name)
+        #         continue
+        #     exercise.live = True
+        #     exercise.short_display_name = name
+        #     exercise.v_position = int(topic['x'])
+        #     exercise.h_position = int(topic['y'])
+        #     exercises_to_update.add(exercise)
 
         # hide orphan exercises (no html file)
         for name, exercise in heb_exercises.iteritems():
