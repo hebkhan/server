@@ -1088,6 +1088,8 @@ var ProgressReport = {
         if (time_filter_disabled == true) {
             $("#progressreport-recent").prop("checked", false);
         }
+        $(".graph-options").children().hide();
+        $("#"+progressType+"-progress-legend").show();
 
         var filterText = $.trim($('#student-progressreport-search').val().toLowerCase());
         var filters = {};
