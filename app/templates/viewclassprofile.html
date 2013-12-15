@@ -51,19 +51,25 @@
         <li>
             {{ profile_macros.class_api_link(user_data_coach, "דו\"ח מצב", "progressreport", selected_graph_type, list_id) }}
             <div class="accordion-content">
-                מראה לכם אילו תרגילים הכיתה שלכם עבדה עליהם והשלימה.
+                מציג את התרגילים והסרטונים עליהם עבדה הכיתה שלכם 
                 <div class="graph-options">
-                    <span class="progress-legend exercise-color started">התחיל</span>
-                    <span class="progress-legend exercise-color proficient">מיומן/צפה</span>
-                    <span class="progress-legend exercise-color review light">חזרה</span>
-                    <span class="progress-legend exercise-color struggling">מתקשה</span>
+                    <span class="progress-legend-group" id="exercise-progress-legend">
+                        <span class="progress-legend exercise-color started">התחיל</span>
+                        <span class="progress-legend exercise-color proficient">מיומן</span>
+                        <span class="progress-legend exercise-color review light">חזרה</span>
+                        <span class="progress-legend exercise-color struggling">מתקשה</span>
+                    </span>
+                    <span class="progress-legend-group" id="video-progress-legend" style="display:none;">
+                        <span class="progress-legend exercise-color started">התחיל לצפות</span>
+                        <span class="progress-legend exercise-color proficient">סיים לצפות</span>
+                    </span>
                 </div>
             </div>
         </li>
         <li>
             {{ profile_macros.class_api_link(user_data_coach, "סיכום מצב", "progress/summary", selected_graph_type, list_id) }}
             <p class="accordion-content">
-                מראה לכם אילו תרגילים וסרטים הכיתה שלכם עבדה עליהם והשלימה.
+                מציג את התרגילים עליהם עבדה הכיתה שלכם 
             </p>
         </li>
         <li>
