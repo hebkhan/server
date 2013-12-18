@@ -661,12 +661,12 @@ class EditExercise(request_handler.RequestHandler):
 class UpdateExercise(request_handler.RequestHandler):
     
     @staticmethod
-    def do_update(dict):
+    def do_update(data):
         current_user = models.UserData.current()
-        user = dict.get("user") or (current_user and current_user.user)
+        user = data.get("user") or (current_user and current_user.user)
 
-        exercise_name = dict["name"]
-        display_name = dict.get("display_name") or models.Exercise.to_display_name(exercise_name)
+        exercise_name = data["name"]
+        display_name = data.get("display_name") or models.Exercise.to_display_name(exercise_name)
 
         query = models.Exercise.all()
         query.filter('name =', exercise_name)
@@ -677,34 +677,32 @@ class UpdateExercise(request_handler.RequestHandler):
             exercise.covers = []
             if user:
                 exercise.author = user
-            exercise.summative = dict["summative"]
+            exercise.summative = data["summative"]
 
-        exercise.prerequisites = dict["prerequisites"] 
-        exercise.covers = dict["covers"]
+        exercise.prerequisites = data["prerequisites"]
+        exercise.covers = data["covers"]
         exercise.display_name = display_name
 
-        if "v_position" in dict:
-            exercise.v_position = int(dict["v_position"])
+        if "v_position" in data:
+            exercise.v_position = int(data["v_position"])
 
-        if "h_position" in dict:
-            exercise.h_position = int(dict["h_position"])
+        if "h_position" in data:
+            exercise.h_position = int(data["h_position"])
 
-        if "short_display_name" in dict:
-            exercise.short_display_name = dict["short_display_name"]
+        if "short_display_name" in data:
+            exercise.short_display_name = data["short_display_name"]
 
-        if "description" in dict:
-            exercise.description = dict["description"]
+        if "description" in data:
+            exercise.description = data["description"]
 
-        exercise.live = dict["live"]
+        exercise.live = data["live"]
 
         exercise.put()
 
-        if "related_videos" in dict:
-            UpdateExercise.do_update_related_videos(exercise, 
-                                                    dict["related_videos"])
-        elif "related_video_keys" in dict:
-            UpdateExercise.do_update_related_video_keys(exercise, 
-                                                    dict["related_video_keys"])
+        if "related_videos" in data:
+            UpdateExercise.do_update_related_videos(exercise, data["related_videos"])
+        elif "related_video_keys" in data:
+            UpdateExercise.do_update_related_video_keys(exercise, data["related_video_keys"])
         else:
             UpdateExercise.do_update_related_video_keys(exercise, [])
 
@@ -722,6 +720,8 @@ class UpdateExercise(request_handler.RequestHandler):
 
     @staticmethod
     def do_update_related_video_keys(exercise, video_keys):
+        logging.info("Updating excercise '%s' with %s related videos", exercise.name, len(video_keys))
+
         query = models.ExerciseVideo.all()
         query.filter('exercise =', exercise.key())
         existing_exercise_videos = query.fetch(1000)
@@ -777,43 +777,47 @@ class UpdateExercise(request_handler.RequestHandler):
 
     @user_util.developer_only
     def get(self):
-        dict = {}
-        dict["name"] = self.request.get('name')
-        if not dict["name"]:
+        data = {}
+        data["name"] = self.request.get('name')
+        if not data["name"]:
             self.response.out.write("No exercise submitted, please resubmit if you just logged in.")
             return
 
-        dict["summative"] = self.request_bool('summative', default=False)
-        dict["v_position"] = self.request.get('v_position')
-        dict["h_position"] = self.request.get('h_position')
-        dict["display_name"] = self.request.get('display_name')
-        dict["short_display_name"] = self.request.get('short_display_name')
-        dict["live"] = self.request_bool("live", default=False)
+        data["summative"] = self.request_bool('summative', default=False)
+        data["v_position"] = self.request.get('v_position')
+        data["h_position"] = self.request.get('h_position')
+        data["display_name"] = self.request.get('display_name')
+        data["short_display_name"] = self.request.get('short_display_name')
+        data["live"] = self.request_bool("live", default=False)
 
-        dict["prerequisites"] = []
+        data["prerequisites"] = []
         for c_check_prereq in range(0, 1000):
             prereq_append = self.request_string("prereq-%s" % c_check_prereq, default="")
-            if prereq_append and not prereq_append in dict["prerequisites"]:
-                dict["prerequisites"].append(prereq_append)
+            if prereq_append and not prereq_append in data["prerequisites"]:
+                data["prerequisites"].append(prereq_append)
 
-        dict["covers"] = []
+        data["covers"] = []
         for c_check_cover in range(0, 1000):
             cover_append = self.request_string("cover-%s" % c_check_cover, default="")
-            if cover_append and not cover_append in dict["covers"]:
-                dict["covers"].append(cover_append)
+            if cover_append and not cover_append in data["covers"]:
+                data["covers"].append(cover_append)
 
-        dict["related_video_keys"] = []
-        dict["related_videos"] = []
-        for c_check_video in range(0, 1000):
-            video_name_append = self.request_string("video-%s-readable" % c_check_video, default="")
-            if video_name_append and not video_name_append in dict["related_videos"]:
-                dict["related_videos"].append(video_name_append)
+        related_videos = set()
+        related_video_keys = set()
 
-            video_append = self.request_string("video-%s" % c_check_video, default="")
-            if video_append and not video_append in dict["related_video_keys"]:
-                dict["related_video_keys"].append(video_append)
+        for i in xrange(0, 1000):
+            related_videos.add(self.request_string("video-%s-readable" % i))
+            related_video_keys.add(self.request_string("video-%s" % i))
 
-        self.do_update(dict)
+        related_video_keys = filter(None, related_video_keys)
+        if related_video_keys:
+            data['related_video_keys'] = related_video_keys
+
+        related_videos = filter(None, related_videos)
+        if related_videos:
+            data['related_videos'] = related_videos
+
+        self.do_update(data)
 
         self.redirect('/editexercise?saved=1&name=' + dict["name"])
 
