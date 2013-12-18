@@ -59,6 +59,10 @@ ul.dynatree-container {
   border: 1px solid #ccc;
 }
 
+#details-view {
+    direction: ltr;
+}
+
 #details-view .item-action.left-align {
     float: right;
     margin-right: 1px;
@@ -81,10 +85,12 @@ ul.dynatree-container {
     width: 500px;
     height: 6em;
     font-size: 12px;
+    direction: rtl;
 }
 
 #details-view input[type="text"] {
     width: 300px;
+    direction: rtl;
 }
 
 #details-view input.short {
