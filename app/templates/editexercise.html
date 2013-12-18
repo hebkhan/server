@@ -100,11 +100,13 @@
     {% endfor %}
     });
 
+    {% if not main_exercise.summative %}
     $(function(){
         // Configure the search form
         $('#related-videos-input').placeholder();
         initAutocomplete("#related-videos-input", false, addVideo, true);
     });
+    {% endif %}
 
     </script>
 
@@ -141,6 +143,12 @@
                             <a href="{{ main_exercise.relative_url|escape }}" target="_blank">פתחו {{ main_exercise.display_name|escape }} בחלונית חדשה</a>
                         </td>
                     </tr>
+
+                    {% if main_exercise.summative %}
+                    <tr>
+                        <td style="font-weight:bold;">תרגיל מסכם</td>
+                    </tr>
+                    {% endif %}
 
                     <tr>
                         <td style="font-weight:bold;">מצב</td>
