@@ -819,7 +819,7 @@ class UpdateExercise(request_handler.RequestHandler):
 
         self.do_update(data)
 
-        self.redirect('/editexercise?saved=1&name=' + dict["name"])
+        self.redirect('/editexercise?name=%(name)s&saved=1' % data)
 
 
 RE_HTML_TITLE = re.compile("<title>(.*)</title>")
