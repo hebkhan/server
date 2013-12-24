@@ -256,6 +256,7 @@ def main():
 
     end = datetime.datetime.now()
     print "Done. Duration: %s" % (end - start)
+    return success
 
 if __name__ == "__main__":
-    main()
+    sys.exit(0 if main() else 1)
