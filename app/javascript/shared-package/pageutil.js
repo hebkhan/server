@@ -31,8 +31,8 @@ function validateEmail(sEmail)
 
 function addAutocompleteMatchToList(list, match, kind, reMatch) {
     var o = {
-                "label": (kind == 'exercise') ? match.display_name : match.title,
-                "title": (kind == 'exercise') ? match.display_name : match.title,
+                "label": match.title,
+                "title": match.title,
                 "value": match.relative_url || match.ka_url,
                 "key": match.key,
                 "kind": kind

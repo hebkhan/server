@@ -17,7 +17,7 @@ from models import StudentList
 from phantom_users.phantom_util import api_create_phantom
 import notifications
 from gae_bingo.gae_bingo import bingo
-from autocomplete import video_title_dicts, topic_title_dicts, url_title_dicts
+from autocomplete import video_title_dicts, topic_title_dicts, url_title_dicts, exercise_title_dicts
 from goals.models import (GoalList, Goal, GoalObjective,
     GoalObjectiveAnyExerciseProficiency, GoalObjectiveAnyVideo)
 import profiles.util_profile as util_profile
@@ -2022,34 +2022,22 @@ def autocomplete():
 
         max_results_per_type = 10
 
-        exercise_results = filter(
-                lambda exercise: query in exercise.display_name.lower(),
-                models.Exercise.get_all_use_cache())
-        video_results = filter(
-                lambda video_dict: query in video_dict["title"].lower(),
-                video_title_dicts())
-        topic_results = filter(
-                lambda topic_dict: query in topic_dict["title"].lower(),
-                topic_title_dicts())
-        topic_results.extend(map(lambda topic: {
+        filterer = lambda item: query in item['title'].lower()
+        exercise_results = filter(filterer, exercise_title_dicts())
+        video_results = filter(filterer, video_title_dicts())
+        topic_results = filter(filterer, topic_title_dicts())
+        topic_results.extend({
                 "title": topic.standalone_title,
                 "key": str(topic.key()),
                 "relative_url": topic.relative_url,
                 "id": topic.id
-            }, filter(lambda topic: query in topic.title.lower(), models.Topic.get_super_topics())))
-        url_results = filter(
-                lambda url_dict: query in url_dict["title"].lower(),
-                url_title_dicts())
+            } for topic in models.Topic.get_super_topics() if query in topic.title.lower())
+        url_results = filter(filterer, url_title_dicts())
 
-        exercise_results = sorted(
-                exercise_results,
-                key=lambda v: v.display_name.lower().index(query))[:max_results_per_type]
-        video_results = sorted(
-                video_results + url_results,
-                key=lambda v: v["title"].lower().index(query))[:max_results_per_type]
-        topic_results = sorted(
-                topic_results,
-                key=lambda t: t["title"].lower().index(query))[:max_results_per_type]
+        sorter = lambda v: v['title'].lower().index(query)
+        exercise_results = sorted(exercise_results, key=sorter)[:max_results_per_type]
+        video_results = sorted(video_results+url_results, key=sorter)[:max_results_per_type]
+        topic_results = sorted(topic_results, key=sorter)[:max_results_per_type]
 
     return {
             "query": query,
