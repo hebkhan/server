@@ -13,12 +13,14 @@
         $("#form-exercise").submit();
     }
 
-    function insertVideo(key, title) {
+    function insertVideo(key, title, url) {
         if (!insertVideo.c) insertVideo.c = 0;
 
         var html = "<div id='video-" + key + "'>" +
             "<input type='hidden' name='video-" + insertVideo.c + "' value='" + key + "' />" +
-            "&bull; " + title + " (<a href='#' onclick='deleteVideo(\"" + key + "\");return false;'>remove</a>)" +
+            "&bull; " + 
+            "<a href='" + url + "' target='_blank'>" + title + "</a>" +
+            " (<a href='#' onclick='deleteVideo(\"" + key + "\");return false;'>X</a>)" +
             "</div>";
         $("#videos-container").append(html);
 
@@ -26,8 +28,8 @@
     }
 
     function addVideo(item) {
-        if (item) {
-            insertVideo(item.key, item.title);
+        if (item && item.kind=="video") {
+            insertVideo(item.key, item.title, item.value);
             $("#related-videos-input").val("");
         }
     }
@@ -39,9 +41,11 @@
     function insertCover(cover) {
         if (!insertCover.c) insertCover.c = 0;
 
-        var html = "<div id='cover-" + cover + "'>" +
+        var html = "<div id='cover-" + cover + "' style='text-align:right; direction:ltr;'>" +
             "<input type='hidden' name='cover-" + insertCover.c + "' value='" + cover + "' />" +
-            "&bull; " + cover + " (<a href='#' onclick='deleteCover(\"" + cover + "\");return false;'>remove</a>)" +
+            "&bull; " + 
+            "<a href='/exercise/" + cover + "' target='_blank'>" + cover + "</a>" + 
+            "(<a href='#' onclick='deleteCover(\"" + cover + "\");return false;'>X</a>)" +
             "</div>";
         $("#covers-container").append(html);
 
@@ -64,9 +68,11 @@
     function insertPrereq(prereq) {
         if (!insertPrereq.c) insertPrereq.c = 0;
 
-        var html = "<div id='prereq-" + prereq + "'>" +
+        var html = "<div id='prereq-" + prereq + "' style='text-align:right; direction:ltr;'>" +
             "<input type='hidden' name='prereq-" + insertPrereq.c + "' value='" + prereq + "' />" +
-            "&bull; " + prereq + " (<a href='#' onclick='deletePrereq(\"" + prereq + "\");return false;'>remove</a>)" +
+            "&bull; " + 
+            "<a href='/exercise/" + prereq + "' target='_blank'>" + prereq + "</a>" + 
+            " (<a href='#' onclick='deletePrereq(\"" + prereq + "\");return false;'>X</a>)" +
             "</div>";
         $("#prereqs-container").append(html);
 
@@ -96,7 +102,11 @@
     {% endfor %}
 
     {% for exercise_video in exercise_videos %}
-        insertVideo('{{ exercise_video.video.key()|escapejs }}', '{{ exercise_video.video.title|escapejs }}');
+        insertVideo(
+            '{{ exercise_video.video.key()|escapejs }}',
+            '{{ exercise_video.video.title|escapejs }}',
+            '{{ exercise_video.video.relative_url|escapejs }}'
+        );
     {% endfor %}
     });
 
@@ -114,10 +124,10 @@
 
 {% block pagesubmenu %}
     <span class="breadcrumbs_nav">
-        <a href="/admin94040">תרגילים</a>
-        {{ main_exercise.display_name|escape }}
+        <a href="/admin94040">כל התרגילים</a>&nbsp;
+        "{{ main_exercise.display_name|escape }}"
         {% if saved %}
-            <span style="color:green;" id="saved">...נשמרו!</span>
+            <span style="color:green;" id="saved">...נשמר!</span>
             <script>$(function(){setTimeout(function(){$("#saved").fadeOut("slow");}, 2000);});</script>
         {% endif %}
     </span>
@@ -140,7 +150,7 @@
                     <tr>
                         <td style="font-weight:bold;">צפו</td>
                         <td style="padding-bottom:9px;">
-                            <a href="{{ main_exercise.relative_url|escape }}" target="_blank">פתחו {{ main_exercise.display_name|escape }} בחלונית חדשה</a>
+                            <a href="{{ main_exercise.relative_url|escape }}" target="_blank">פתחו "{{ main_exercise.display_name|escape }}" בחלונית חדשה</a>
                         </td>
                     </tr>
 
@@ -197,10 +207,10 @@
                         <td style="padding-bottom:9px;">
                             <div id="prereqs-container"></div>
 
-                            <select id="add-prereq" onchange="addPrereq();" style="width:200px;">
+                            <select id="add-prereq" onchange="addPrereq();" style="width:400px; direction:ltr;">
                                 <option value=""> - הוסף תרגיל מקדים - </option>
                                 {% for exercise in exercises %}
-                                    <option value="{{ exercise.name|escape }}">{{ exercise.display_name|escape }}</option>
+                                    <option value="{{ exercise.name|escape }}">{{ exercise.name }} - "{{ exercise.display_name|escape }}"</option>
                                 {% endfor %}
                             </select><br/>
 
@@ -216,10 +226,10 @@
                         <td style="padding-bottom:9px;">
                             <div id="covers-container"></div>
 
-                            <select id="add-cover" onchange="addCover();" style="width:200px;">
+                            <select id="add-cover" onchange="addCover();" style="width:400px; direction:ltr;">
                                 <option value=""> - הוסף תרגיל המכסה את החומר - </option>
                                 {% for exercise in exercises %}
-                                    <option value="{{ exercise.name|escape }}">{{ exercise.display_name|escape }}</option>
+                                    <option value="{{ exercise.name|escape }}">{{ exercise.name }} - "{{ exercise.display_name|escape }}"</option>
                                 {% endfor %}
                             </select><br/>
 
