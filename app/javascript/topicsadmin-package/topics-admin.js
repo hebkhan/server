@@ -761,7 +761,7 @@ function stringArraysEqual(ar1, ar2) {
             attrs.tags = this.tags;
         }
     };
-    
+
     editor.NodeEditor.prototype.updateTags = function() {
         var self = this;
         var elements = [];
@@ -1305,7 +1305,8 @@ TopicTreeEditor.AddExistingItemView = Backbone.View.extend({
     events: {
         "click .do-search": "doSearch",
         "click .show-recent": "showRecent",
-        "click .ok-button": "selectItem"
+        "click .ok-button": "selectItem",
+        "change .search-results": "previewItem"
     },
 
     render: function() {
@@ -1337,17 +1338,18 @@ TopicTreeEditor.AddExistingItemView = Backbone.View.extend({
     },
 
     showResults: function(json) {
+        $("#item-preview #description").text('');
+        $("#item-preview #date-added").text('');
+        $("#item-preview #url").text('');
+        $("#item-preview #url").attr('href', '');
+        $("#item-preview #title").text('');
+
         var elements = [];
         var self = this;
         this.results = {};
         _.each(json, function(item) {
-            if (self.type == "video") {
-                elements.push($('<option value="' + item.id + '">' + item.title + '</option>'));
-                self.results[item.id] = item.title;
-            } else {
-                elements.push($('<option value="' + item.name + '">' + item.display_name + '</option>'));
-                self.results[item.name] = item.display_name;
-            }
+            elements.push($('<option value="' + item.id + '">' + item.title + '</option>'));
+            self.results[item.id] = item.title;
         });
 
         var resultsElement = $("select.search-results", this.el);
@@ -1412,6 +1414,33 @@ TopicTreeEditor.AddExistingItemView = Backbone.View.extend({
                 } else {
                     self.showResults(json.exercises);
                 }
+            }
+        });
+    },
+
+    previewItem: function() {
+        var itemID = $(this.el).find("select.search-results option:selected").val();
+        if (this.type == "video") {
+            var url = "/api/v1/videos/";
+        } else {
+            var url = "/api/v1/exercises/";
+        }
+        var self = this;
+        $.ajax({
+            url: url + itemID,
+            success: function(json) {
+                if (self.type == "video") {
+                    $("#item-preview #date-added").text(json.date_added);
+                    $("#item-preview #url").text(json.url);
+                    $("#item-preview #url").attr('href', json.url);
+                    $("#item-preview #title").text(json.title);
+                } else {
+                    $("#item-preview #date-added").text(json.creation_date);
+                    $("#item-preview #url").text(json.relative_url);
+                    $("#item-preview #url").attr('href', json.relative_url);
+                    $("#item-preview #title").text(json.display_name);
+                }
+                $("#item-preview #description").text(json.description);
             }
         });
     },

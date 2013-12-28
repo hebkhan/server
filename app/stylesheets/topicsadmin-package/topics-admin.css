@@ -49,8 +49,19 @@ ul.dynatree-container {
 }
 
 .modal.add-existing-item .search-results {
-    width: 90%;
-    height: 400px;
+    width: 49%;
+    height: 320px;
+    float: right;
+}
+
+.modal.add-existing-item #item-preview {
+    width: 49%;
+    height: 310px;
+    float: left;
+    padding: 5px;
+    border-style:solid;
+    border-width:1px;
+    border-color:gray;
 }
 
 .modal.create-video .create-video-preview {

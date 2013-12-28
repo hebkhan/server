@@ -7,8 +7,19 @@
         <input name="item-search" type="text" /> <a class="do-search simple-button action-gradient" href="javascript:void(0)">Search</a>
 <br />
         <span class="search-description"></span> <br />
-        <select class="search-results" size="20"></select> <br />
-        <a class="ok-button simple-button green action-gradient" href="javascript:void(0)" style="float: right">Select</a>
+
+        <div class="search-results-and-preview">
+                <select class="search-results" size="20"></select>
+                <div id="item-preview">
+                  <h3>תקציר</h3>
+                  <p><strong>תאריך הוספה: </strong><span id="date-added"></span></p>
+                  <p><strong>שם: </strong><span id="title"></span></p>
+                  <p><strong>קישור: </strong><a id="url" href=""></a></p>
+                  <p><strong>תיאור: </strong><span id="description"></span></p>
+                </div>
+        </div>
+
+        <a class="ok-button simple-button green action-gradient" href="javascript:void(0)">Select</a>
         <div style="clear: both"></div>
     </div>
 </div>
