@@ -2,7 +2,7 @@ application: hebkhan
 version: 1
 runtime: python27
 api_version: 1
-threadsafe: true
+threadsafe: false
 default_expiration: "365d"
 
 skip_files:
