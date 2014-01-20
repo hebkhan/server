@@ -1080,6 +1080,7 @@ function stringArraysEqual(ar1, ar2) {
         this.covers = null;
         this.prereqs = null;
         this.videos = null;
+        this.videos_titles = null;
     };
 
     editor.ExerciseEditor.prototype = new TopicTreeEditor.ItemEditor();
@@ -1107,6 +1108,8 @@ function stringArraysEqual(ar1, ar2) {
             this.updateCovers();
 
             this.videos = (this.model.get("related_videos") || []).slice(0);
+            this.videos_titles = (this.model.get("related_videos_titles") || []).slice(0);
+
             this.updateVideos();
         }
     };
@@ -1133,6 +1136,7 @@ function stringArraysEqual(ar1, ar2) {
 
         if (this.videos && !stringArraysEqual(this.videos, this.model.get("related_videos"))) {
             attrs.related_videos = this.videos;
+            attrs.related_videos_titles = this.videos_titles;
         }
     };
 
@@ -1195,9 +1199,10 @@ function stringArraysEqual(ar1, ar2) {
     editor.ExerciseEditor.prototype.updateVideos = function() {
         var self = this;
         var elements = [];
-        _.each(this.videos, function(video) {
+        console.log(self);
+        _.each(this.videos, function(video, idx) {
             elements.push(
-                $("<div>" + video + " <a href=\"javascript:\">(remove)</a></div>")
+                $("<div>" + video + " - " + self.videos_titles[idx] + " <a href=\"javascript:\">(remove)</a></div>")
                     .delegate("a", "click", function() { self.deleteVideo(video); })
             );
         });
@@ -1207,6 +1212,7 @@ function stringArraysEqual(ar1, ar2) {
     editor.ExerciseEditor.prototype.addVideo = function(kind, id, title) {
         if (id) {
             this.videos.push(id);
+            this.videos_titles.push(title);
             this.updateVideos();
             this.handleChange();
         }
@@ -1215,6 +1221,7 @@ function stringArraysEqual(ar1, ar2) {
         var idx = _.indexOf(this.videos, video);
         if (idx >= 0) {
             this.videos.splice(idx, 1);
+            this.videos_titles.splice(idx, 1);
             this.updateVideos();
             this.handleChange();
         }

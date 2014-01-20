@@ -729,6 +729,8 @@ def get_exercise(exercise_name, version_id = None):
     if exercise and not hasattr(exercise, "related_videos"):
         exercise_videos = exercise.related_videos_query()
         exercise.related_videos = map(lambda exercise_video: exercise_video.video.readable_id, exercise_videos)
+    if not hasattr(exercise, "related_videos_titles") or len(exercise.videos != exercise.related_videos_titles):
+        exercise.related_videos_titles = [models.Video.get_for_readable_id(related_video, version).title for related_video in exercise.related_videos]
     return exercise
 
 @route("/api/v1/exercises/recent", methods=["GET"])
