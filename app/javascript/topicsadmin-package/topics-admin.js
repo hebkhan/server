@@ -1313,7 +1313,7 @@ TopicTreeEditor.AddExistingItemView = Backbone.View.extend({
         "click .do-search": "doSearch",
         "click .show-recent": "showRecent",
         "click .ok-button": "selectItem",
-        "change .search-results": "previewItem"
+        "click .search-results-option": "previewItem"
     },
 
     render: function() {
@@ -1355,7 +1355,7 @@ TopicTreeEditor.AddExistingItemView = Backbone.View.extend({
         var self = this;
         this.results = {};
         _.each(json, function(item) {
-            elements.push($('<option value="' + item.id + '">' + item.title + '</option>'));
+            elements.push($('<option class="search-results-option" value="' + item.id + '">' + item.title + '</option>'));
             self.results[item.id] = item.title;
         });
 
@@ -1425,8 +1425,8 @@ TopicTreeEditor.AddExistingItemView = Backbone.View.extend({
         });
     },
 
-    previewItem: function() {
-        var itemID = $(this.el).find("select.search-results option:selected").val();
+    previewItem: function(e) {
+        var itemID = $(e.currentTarget).val();
         if (this.type == "video") {
             var url = "/api/v1/videos/";
         } else {
@@ -1453,13 +1453,7 @@ TopicTreeEditor.AddExistingItemView = Backbone.View.extend({
     },
 
     selectItem: function() {
-        var itemID = $(this.el).find("select.search-results option:selected").val();
-        if (!itemID || itemID === "_") {
-            return;
-        }
-
-        this.hide();
-
+        var self = this;
         var kind;
         if (this.type == "video") {
             kind = "Video";
@@ -1467,7 +1461,15 @@ TopicTreeEditor.AddExistingItemView = Backbone.View.extend({
             kind = "Exercise";
         }
 
-        this.callback(kind, itemID, this.results[itemID], this.contextNode, this.contextModel, -1);
+        $(this.el).find("select.search-results option:selected").each(function() {
+            var itemID = $(this).val();
+            if (!itemID || itemID === "_") {
+                return;
+            }
+            self.callback(kind, itemID, self.results[itemID], self.contextNode, self.contextModel, -1);
+        });
+        this.hide();
+
     },
 
     hide: function() {
