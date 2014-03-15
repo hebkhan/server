@@ -4812,8 +4812,12 @@ class UserExerciseGraph(object):
         """
         all_exercises_dict = {}
 
-        def is_boundary(graph_dict):
+        def is_boundary(graph_dict, _visited=set()):
             name = graph_dict["name"]
+            if name in _visited:
+                logging.warning("Cycle on %s", name)
+                return False
+            _visited.add(name)
 
             if name in all_exercises_dict:
                 return all_exercises_dict[name]
