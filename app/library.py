@@ -142,7 +142,7 @@ def library_content_html(ajax=False, version_number=None):
     else:
         version = TopicVersion.get_default_version()
 
-    tree = Topic.get_root(version).make_tree(types = ["Topics", "Video", "Url"])
+    tree = Topic.get_root(version).make_tree(types = ["Topics", "Video", "Exercise", "Url"])
 
     videos = [item for item in walk_children(tree) if item.kind()=="Video"]
     add_related_exercises(videos)

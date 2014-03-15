@@ -26,3 +26,6 @@
     {% endfor %}
 {%- endmacro %}
 
+{% macro exercise_name_and_progress(item) -%}
+    <span class='vid-progress v{{ item.key().id() }}'><b>תרגיל:</b> {{ item.display_name|escape }}</span>
+{%- endmacro %}
