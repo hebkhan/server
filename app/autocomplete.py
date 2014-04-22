@@ -9,7 +9,7 @@ def exercise_title_dicts():
         "key": str(exercise.key()),
         "relative_url": exercise.relative_url,
         "id": exercise.name,
-    } for exercise in Exercise.get_all_use_cache()]
+    } for exercise in Exercise.get_all_use_cache() if not exercise.summative]
 
 @layer_cache.cache_with_key_fxn(lambda version_number=None: 
     "video_title_dicts_%s" % (
