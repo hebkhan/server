@@ -66,7 +66,7 @@ KEY_NAME_DELIMITER = '||'  # Used to hold arbitrary strings in key names.
 
 MAX_ENTITY_SEARCH_PHRASES = datastore._MAX_INDEXED_PROPERTIES - 1
 
-SEARCH_PHRASE_MIN_LENGTH = 4
+SEARCH_PHRASE_MIN_LENGTH = 1
 
 STOP_WORDS = frozenset([
  'a', 'about', 'according', 'accordingly', 'affected', 'affecting', 'after',
@@ -260,7 +260,7 @@ class Searchable(object):
                          kind=None, 
                          stemming=INDEX_STEMMING,
                          multi_word_literal=INDEX_MULTI_WORD,
-                         searched_phrases_out=[]):
+                         searched_phrases_out=None):
         """Queries search indices for phrases using a merge-join.
         
         Args:
@@ -273,6 +273,8 @@ class Searchable(object):
 
         TODO -- Should provide feedback if input search phrase has stop words, etc.
         """
+        if searched_phrases_out is None:
+            searched_phrases_out = []
         index_keys = []
         keywords = PUNCTUATION_REGEX.sub(' ', phrase).lower().split()
         if stemming:
@@ -403,7 +405,7 @@ class Searchable(object):
         return phrases
 
     @classmethod
-    def search(cls, phrase, limit=10, keys_only=False, searched_phrases_out=[]):
+    def search(cls, phrase, limit=10, keys_only=False, searched_phrases_out=None):
         """Queries search indices for phrases using a merge-join.
         
         Use of this class method lets you easily restrict searches to a kind
@@ -420,6 +422,8 @@ class Searchable(object):
             A list.  If keys_only is True, the list holds (key, title) tuples.
             If keys_only is False, the list holds Model instances.
         """
+        if searched_phrases_out is None:
+            searched_phrases_out = []
         key_list = Searchable.full_text_search(
                         phrase, limit=limit, kind=cls.kind(),
                         stemming=cls.INDEX_STEMMING, 

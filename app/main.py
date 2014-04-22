@@ -562,7 +562,6 @@ class Search(request_handler.RequestHandler):
                 })
             self.render_jinja2_template("searchresults.html", template_values)
             return
-        searched_phrases = []
 
         # Do an async query for all ExerciseVideos, since this may be slow
         exvids_query = ExerciseVideo.all()
@@ -572,8 +571,7 @@ class Search(request_handler.RequestHandler):
         all_text_keys = Topic.full_text_search(
                 query, limit=50, kind=None,
                 stemming=Topic.INDEX_STEMMING,
-                multi_word_literal=Topic.INDEX_MULTI_WORD,
-                searched_phrases_out=searched_phrases)
+                multi_word_literal=Topic.INDEX_MULTI_WORD)
 
         # Quick title-only partial search
         topic_partial_results = filter(
