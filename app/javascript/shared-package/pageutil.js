@@ -107,16 +107,14 @@ function initAutocomplete(selector, fTopics, fxnSelect, fIgnoreSubmitOnEnter)
             var jelMenu = $(autocompleteWidget.data("autocomplete").menu.element);
             var jelInput = $(this);
 
-            var pxRightMenu = jelMenu.offset().right + jelMenu.outerWidth();
-            var pxRightInput = jelInput.offset().right + jelInput.outerWidth();
+            var pxRightMenu = jelMenu.offset().left + jelMenu.outerWidth();
+            var pxRightInput = jelInput.offset().left + jelInput.outerWidth();
+            var delta = pxRightMenu - pxRightInput
 
-            if (pxRightMenu > pxRightInput)
+            if (delta != 0)
             {
                 // Keep right side of search input and autocomplete menu aligned
-                jelMenu.offset({
-                                    right: pxRightInput - jelMenu.outerWidth(),
-                                    top: jelMenu.offset().top
-                                });
+                jelMenu.offset({left: jelMenu.offset().left - delta});
             }
         }
     }).bind("keydown.autocomplete", function(e) {
