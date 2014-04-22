@@ -135,11 +135,11 @@ function initAutocomplete(selector, fTopics, fxnSelect, fIgnoreSubmitOnEnter)
         // Customize the display of autocomplete suggestions
         var jLink = $("<a></a>").html(item.label);
         if (item.kind == "topic")
-            jLink.prepend("<span class='autocomplete-topic'>Topic </span>");
+            jLink.prepend("<span class='autocomplete-topic'>נושא </span>");
         else if (item.kind == "video")
-            jLink.prepend("<span class='autocomplete-video'>Video </span>");
+            jLink.prepend("<span class='autocomplete-video'>סרטון </span>");
         else if (item.kind == "exercise")
-            jLink.prepend("<span class='autocomplete-exercise'>Exercise </span>");
+            jLink.prepend("<span class='autocomplete-exercise'>תרגיל </span>");
 
         return $("<li></li>")
             .data("item.autocomplete", item)
