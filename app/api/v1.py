@@ -737,7 +737,13 @@ def get_exercise(exercise_name, version_id = None):
 @jsonp
 @jsonify
 def exercise_recent_list():
-    return models.Exercise.all().order('-creation_date').fetch(20)
+    exercises = models.Exercise.all().order('-creation_date').fetch(20)
+    for exercise in exercises:
+        exercise.title = exercise.display_name
+        exercise.key = str(exercise.key())
+        exercise.relative_url = exercise.relative_url
+        exercise.id = exercise.name
+    return exercises
 
 @route("/api/v1/exercises/<exercise_name>/followup_exercises", methods=["GET"])
 @jsonp
@@ -812,7 +818,13 @@ def video(video_id, version_id = None):
 @jsonp
 @jsonify
 def video_recent_list():
-    return models.Video.all().order('-date_added').fetch(20)
+    videos = models.Video.all().order('-date_added').fetch(20)
+    for video in videos:
+        video.title = video.title
+        video.key = str(video.key())
+        video.relative_url = "/video/%s" % video.readable_id
+        video.id = video.readable_id
+    return videos
 
 @route("/api/v1/videos/<video_id>/download_available", methods=["POST"])
 @oauth_required(require_anointed_consumer=True)
