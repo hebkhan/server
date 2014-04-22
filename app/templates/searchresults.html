@@ -63,7 +63,7 @@
         {% if (video_count == 0 and topic_count == 0) %}
             אין התאמות לחיפוש זה. בבקשה נסו שאלה אחרת.
         {% else %}
-            נמצא {{ video_count }} סרטון{{ video_count|pluralize }} ו{{ topic_count }} נושא{{ topic_count|pluralize }} אשר מתאימים לחיפוש שלך:
+            נמצאו {{ video_count }} סרטונים ו{{ topic_count }} נושאים אשר מתאימים לחיפוש שלך:
         {% endif %}
     </section>
     {% if topics %}
@@ -73,7 +73,9 @@
             <dt><h2 class="topic searchresulthighlight">{{ topic.standalone_title|escape }}
             <span class="match_count">
                 {% if topic.match_count > 0 %}
-                    ({{ topic.match_count }} סרטון תואם{{ topic.match_count|pluralize }})
+                    ({{ topic.match_count }} סרטונים תואמים)
+                {% elif topic.match_count == 1 %}
+                    (סרטון תואם אחד)
                 {% endif %}
             </span>
             </h2>
