@@ -2029,24 +2029,25 @@ def remove_coworker():
 @jsonify
 def autocomplete():
 
-    video_results = []
+    video_results = topic_results = exercise_results = []
 
     query = request.request_string("q", default="").strip().lower()
-    if query:
+    if len(query) > 1:
 
         max_results_per_type = 10
 
         filterer = lambda item: query in item['title'].lower()
         exercise_results = filter(filterer, exercise_title_dicts())
         video_results = filter(filterer, video_title_dicts())
+        url_results = filter(filterer, url_title_dicts())
         topic_results = filter(filterer, topic_title_dicts())
         topic_results.extend({
-                "title": topic.standalone_title,
-                "key": str(topic.key()),
-                "relative_url": topic.relative_url,
-                "id": topic.id
-            } for topic in models.Topic.get_super_topics() if query in topic.title.lower())
-        url_results = filter(filterer, url_title_dicts())
+            "title": topic.standalone_title,
+            "key": str(topic.key()),
+            "relative_url": topic.relative_url,
+            "id": topic.id}
+            for topic in models.Topic.get_super_topics() if query in topic.title.lower()
+        )
 
         sorter = lambda v: v['title'].lower().index(query)
         exercise_results = sorted(exercise_results, key=sorter)[:max_results_per_type]
@@ -2054,10 +2055,10 @@ def autocomplete():
         topic_results = sorted(topic_results, key=sorter)[:max_results_per_type]
 
     return {
-            "query": query,
-            "videos": video_results,
-            "topics": topic_results,
-            "exercises": exercise_results
+        "query": query,
+        "videos": video_results,
+        "topics": topic_results,
+        "exercises": exercise_results
     }
 
 @route("/api/v1/dev/backupmodels", methods=["GET"])

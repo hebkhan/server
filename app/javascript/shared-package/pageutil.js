@@ -51,7 +51,7 @@ function initAutocomplete(selector, fTopics, fxnSelect, fIgnoreSubmitOnEnter)
         source: function(req, fxnCallback) {
 
             var term = $.trim(req.term);
-            if (!term) {
+            if (term.length < 2) {
                 fxnCallback([]);
                 return;
             }
