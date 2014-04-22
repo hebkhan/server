@@ -55,7 +55,7 @@ def topic_title_dicts(version_number=None):
     return [{
         "title": topic.standalone_title,
         "key": str(topic.key()),
-        "relative_url": topic.relative_url,
+        "relative_url": "/%s" % topic.relative_url,
         "id": topic.id
     } for topic in Topic.get_content_topics(version=version)]
 
