@@ -340,6 +340,8 @@ class Stemmer:
             word = word.encode('utf-8')
 
         if len(word) <= 2:
+            if was_unicode:
+                return word.decode('utf-8')
             return word
         word = remove_initial_apostrophe(word)
 
