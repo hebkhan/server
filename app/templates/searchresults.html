@@ -1,5 +1,5 @@
 {% extends "page_template.html" %}
-{% block pagetitle %}{% if page_search_query %}חפש תוצאות עבור {{page_search_query|escape}}{% else %}Search{% endif %}{% endblock pagetitle %}
+{% block pagetitle %}{% if page_search_query %}חפש תוצאות עבור {{page_search_query|escape}}{% else %}חפש{% endif %}{% endblock pagetitle %}
 {% block pagescript %}
 <style>
     #page_sub_nav { display: none; }
@@ -57,13 +57,27 @@
 <article class="search_results" id="search_results">
     <form id="page_requery" action="/search">
         <input id="search-page-box" type="text" name="page_search_query" value='{{page_search_query|escape}}'>
-        <button type="submit">חיפוש חדש</button>
+        <button type="submit">חפש</button>
     </form>
     <section class="searchresult-counts">
-        {% if (video_count == 0 and topic_count == 0) %}
-            אין התאמות לחיפוש זה. בבקשה נסו שאלה אחרת.
+        {% if ((video_count, topic_count) == (0, 0)) %}
+            אין התאמות לחיפוש זה. בבקשה נסו חיפוש אחר.
         {% else %}
-            נמצאו {{ video_count }} סרטונים ו{{ topic_count }} נושאים אשר מתאימים לחיפוש שלך:
+            {% if ((video_count, topic_count) == (0, 1)) %}
+                נמצא נושא אחד אשר מתאים לחיפוש שלך:
+            {% elif ((video_count, topic_count) == (1, 0)) %}
+                נמצא סרטון אחד אשר מתאים לחיפוש שלך:
+            {% elif (video_count == 0) %}
+                נמצאו {{ topic_count }} נושאים אשר מתאימים לחיפוש שלך:
+            {% elif (topic_count == 0) %}
+                נמצאו {{ video_count }} סרטונים אשר מתאימים לחיפוש שלך:
+            {% elif (video_count == 1) %}
+                נמצא סרטון אחד ו-{{ topic_count }} נושאים אשר מתאימים לחיפוש שלך:
+            {% elif (topic_count == 1) %}
+                נמצאו {{ video_count }} סרטונים ונושא אחד אשר מתאימים לחיפוש שלך:
+            {% else %}
+                נמצאו {{ video_count }} סרטונים ו-{{ topic_count }} נושאים אשר מתאימים לחיפוש שלך:
+            {% endif %}
         {% endif %}
     </section>
     {% if topics %}

@@ -66,7 +66,7 @@ KEY_NAME_DELIMITER = '||'  # Used to hold arbitrary strings in key names.
 
 MAX_ENTITY_SEARCH_PHRASES = datastore._MAX_INDEXED_PROPERTIES - 1
 
-SEARCH_PHRASE_MIN_LENGTH = 1
+SEARCH_PHRASE_MIN_LENGTH = 2
 
 STOP_WORDS = frozenset([
  'a', 'about', 'according', 'accordingly', 'affected', 'affecting', 'after',
