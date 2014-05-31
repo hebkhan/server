@@ -1,5 +1,5 @@
 {% extends "page_template.html" %}
-{% block pagetitle %}{% if page_search_query %}חפש תוצאות עבור {{page_search_query|escape}}{% else %}Search{% endif %}{% endblock pagetitle %}
+{% block pagetitle %}{% if page_search_query %}חפש תוצאות עבור {{page_search_query|escape}}{% else %}חפש{% endif %}{% endblock pagetitle %}
 {% block pagescript %}
 <style>
     #page_sub_nav { display: none; }
@@ -57,13 +57,27 @@
 <article class="search_results" id="search_results">
     <form id="page_requery" action="/search">
         <input id="search-page-box" type="text" name="page_search_query" value='{{page_search_query|escape}}'>
-        <button type="submit">חיפוש חדש</button>
+        <button type="submit">חפש</button>
     </form>
     <section class="searchresult-counts">
-        {% if (video_count == 0 and topic_count == 0) %}
-            אין התאמות לחיפוש זה. בבקשה נסו שאלה אחרת.
+        {% if ((video_count, topic_count) == (0, 0)) %}
+            אין התאמות לחיפוש זה. בבקשה נסו חיפוש אחר.
         {% else %}
-            נמצאו {{ video_count }} סרטונים ו{{ topic_count }} נושאים אשר מתאימים לחיפוש שלך:
+            {% if ((video_count, topic_count) == (0, 1)) %}
+                נמצא נושא אחד אשר מתאים לחיפוש שלך:
+            {% elif ((video_count, topic_count) == (1, 0)) %}
+                נמצא סרטון אחד אשר מתאים לחיפוש שלך:
+            {% elif (video_count == 0) %}
+                נמצאו {{ topic_count }} נושאים אשר מתאימים לחיפוש שלך:
+            {% elif (topic_count == 0) %}
+                נמצאו {{ video_count }} סרטונים אשר מתאימים לחיפוש שלך:
+            {% elif (video_count == 1) %}
+                נמצא סרטון אחד ו-{{ topic_count }} נושאים אשר מתאימים לחיפוש שלך:
+            {% elif (topic_count == 1) %}
+                נמצאו {{ video_count }} סרטונים ונושא אחד אשר מתאימים לחיפוש שלך:
+            {% else %}
+                נמצאו {{ video_count }} סרטונים ו-{{ topic_count }} נושאים אשר מתאימים לחיפוש שלך:
+            {% endif %}
         {% endif %}
     </section>
     {% if topics %}
@@ -89,20 +103,16 @@
                 {% if topic.key().__str__() in video.topic_string_keys %}
                     <li class="videos">
                       <div class="column">
-                        <a href="{% if video.readable_id %}/video/{{video.readable_id|urlencode}}{% else %}{{video.url}}{% endif %}" class="video-result"><span class="searchresulthighlight">{{ video.title|escape }}</span></a>
+                        <a href="{% if video.readable_id %}/video/{{video.readable_id|urlencode}}{% else %}{{video.url}}{% endif %}" class="video-result">
+                            <span class="searchresulthighlight vid-progress v{{ video.key().id() }}">{{ video.title|escape }}</span>
+                        </a>
                         {% if video.description %}
                         <p class="description searchresulthighlight">{{ video.description|escape }}</p>
                         {% endif %}
                       </div>
-                      <div class="column">
-                        <p class="column-heading">צפיה</p>
-                        <ul>
-                          <li><a href="{% if video.readable_id %}/video/{{video.readable_id|urlencode}}{% else %}{{video.url}}{% endif %}" class="vl"><span class="vid-progress v{{ video.key().id() }}">צפו בסרטון הלימודי</a></li>
-                        </ul>
-                      </div>
                       {% if video_exercises[video.key().__str__()] %}
                       <div class="column">
-                        <p class="column-heading">תרגלו תרגילים</p>
+                        <p class="column-heading">תרגילים מקושרים</p>
                           <ul>
                             {% for exercise in video_exercises[video.key().__str__()] %}
                               <li><a href="{{ exercise.relative_url }}" class="exercise-link">{{ exercise.display_name|escape }}</a></li>
@@ -115,7 +125,7 @@
                 {% endif %}
             {% endfor %}
             <li>
-                <a href="/#{{topic.standalone_title|slugify|escape}}">ראו כל הסרטונים מהנושא {{ topic.standalone_title|escape }}</a>
+                <a href="/#{{ topic.id }}">קפצו לנושא {{ topic.standalone_title|escape }}</a>
             </li>
             </ol>
         {% endfor %}
