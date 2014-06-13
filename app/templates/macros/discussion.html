@@ -15,7 +15,7 @@
         {% endif %}
 
         <span class="comments_show_more">
-            <a href="/video/{{video.readable_id}}?topic={{topic.id|urlencode}}&comments_page=1" class="comment_show control uses_script"><img class="icon" src="{{ "/images/balloons.png"|static_url }}" />ראו עוד</a>
+            <a href="/video/{{video.readable_id}}?topic={{topic.id}}&comments_page=1" class="comment_show control uses_script"><img class="icon" src="{{ "/images/balloons.png"|static_url }}" />ראו עוד</a>
         </span>
 
         <div class="comment_form" style="display:none;">
@@ -54,8 +54,8 @@
                         בעלות יותר קולות הצבעה קודם
                     {% endif %}
                     <ul>
-                        <li><a href="/discussion/updateqasort?sort=1&readable_id={{video.readable_id}}&topic_id={{topic.id|urlencode}}#qa">בעלות יותר קולות הצבעה קודם</a></li>
-                        <li><a href="/discussion/updateqasort?sort=2&readable_id={{video.readable_id}}&topic_id={{topic.id|urlencode}}#qa">שאלות חדשות קודם</a></li>
+                        <li><a href="/discussion/updateqasort?sort=1&readable_id={{video.readable_id}}&topic_id={{topic.id}}#qa">בעלות יותר קולות הצבעה קודם</a></li>
+                        <li><a href="/discussion/updateqasort?sort=2&readable_id={{video.readable_id}}&topic_id={{topic.id}}#qa">שאלות חדשות קודם</a></li>
                     </ul>
                 </li>
             </ul>
@@ -308,7 +308,7 @@
             <div class="answer {% if answer.appears_as_deleted_to(UserData.current()) %}deleted{% endif %}">
                 {{ vote_tools(answer) }}
                 {% if standalone %}
-                    <a href="/video/{{video.readable_id}}?topic={{topic.id|urlencode}}&qa_expand_key={{answer.question().key()}}#q_{{answer.question().key()}}">
+                    <a href="/video/{{video.readable_id}}?topic={{topic.id}}&qa_expand_key={{answer.question().key()}}#q_{{answer.question().key()}}">
                         {{ answer.content|truncate(40)|escape|linebreaksbr }}
                     </a>
                 {% else %}
