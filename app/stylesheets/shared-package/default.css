@@ -553,6 +553,29 @@ footer {
             background-position: -320px -465px;
         }
 
+#top-header .logo-ani10 {
+    position: absolute;
+    right: 380px;
+    top: 22px;
+    z-index: 1;
+    width: 115px;
+    height: 61px;
+    background-image: url(/images/ani10logo.png);
+}
+
+#top-header #associations {
+    font-family: Georgia, serif;
+    position: absolute;
+    right: 322px;
+    top: 46px;
+    font-size: 12px;
+    font-style: italic;
+    font-weight: normal;
+    text-decoration: none;
+    width: 4em;
+    line-height: 1em;
+    text-align: left;    
+}
 
 #top-header #stats {
     position: relative;

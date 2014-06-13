@@ -901,3 +901,13 @@ var Review = {
         reviewCounterElem.data("counter", reviewsLeftCount);
     }
 };
+function showAssociations() {
+    $("#associations").toggle({effect: "drop", direction: "right"});
+    setTimeout(function() {
+        $(".logo-ani10").toggle({effect: "drop", direction: "right"})
+    }, 200);
+}
+
+$(function(){
+    setTimeout(showAssociations, 5000);
+})

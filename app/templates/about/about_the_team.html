@@ -6,8 +6,11 @@
     <div class="col1">
         <h2>קבוצה קטנה למען מטרות גדולות</h2>
         <p>
-            פרויקט "קהאן אקדמי" הישראלי החל לרקום עור וגידים לפני יותר משנה, במטרה להנגיש את החומרים של "Khan Academy" לדוברי העברית.
+            פרויקט "קהאן אקדמי" הישראלי החל לרקום עור וגידים אי שם ב-2011, במטרה להנגיש את החומרים של "Khan Academy" לדוברי העברית.
             כיום אנו פועלים כעמותת "כאן ועכשיו". אנחנו קבוצה של אנשים, שחברו מתוך הזדהות עם תפיסת הלימוד של "Khan Academy", ופועלים תוך כדי שיתוף פעולה עמם, באופן התנדבותי וללא מטרות רווח.
+        </p>
+        <p>
+            באמצע 2013 התחלנו לפעול בשיתוף פעולה עם אני-10 ומאיה קלנר (היזמת) במטרה להעשיר את התכנים שלנו ולהתאים אותם גם לתכנית הלימודים הישראלית.
         </p>
         <p>
             שותפות נוספים לפרויקט: שנקר, קרן טראמפ, אירגון האינטרנט הישראלי, ערי חינוך, וחברת אנדרומדיה.
@@ -32,175 +35,25 @@
     <div class="clear"></div>
     <hr>
     <h2 class="section-header">הצוות הישראלי</h2>
-    <div class="team-card">
-        <div class="card-photo vertical-shadow">
-            <img src="/images/headshots/emanuel.jpg" />
+    {% for (id, name, bio) in team %}
+        <div class="team-card" id={{id}}>
+            <div class="card-photo vertical-shadow">
+                <img src="/images/headshots/{{id}}.jpg" />
+            </div>
+            <div class="card-info">
+                <h2 class="pulls">{{name}}</h2>
+                <p>{{bio}}
+                </p>
+            </div>
         </div>
-        <div class="card-info">
-            <h2 class="pulls">עמנואל</h2>
-            <!--
-            <h3>Founder &amp; Executive Director</h3>
-            <p class="contact-links">
-                <a href="http://twitter.com/khanacademy" class="contact-twitter">Twitter</a>
-            </p>
-            -->
-            <p>
-                פרופ' עמנואל גרינגרד עבד שנים רבות בחברת י.ב.מ ישראל, השתתף בפיתוח מערכות ההפעלה במעבדות הפיתוח בארה"ב וכן שימש כמנהל היישום של השפות השמיות במרכזי הפיתוח של י.ב.מ בארה"ב.
-                בין תפקידיו בארץ ניתן למנות: מנהל הסיוע הטכני, מנהל הקבוצה להסבת תוכנות לעברית, מנהל ארצי של מהנדסי מערכות ומנהל המרכז המדעי של י.ב.מ. ישראל.
-                משך עבודתו לימד באוניברסיטאות ולאחר פרישתו מי.ב.מ. יסד את המחלקה להנדסת תוכנה בשנקר – בי"ס גבוה להנדסה ולעיצוב ועמד בראשה שנים רבות. עיסוקו הנוכחי הוא במחשבים אישיים, אינטרנט ולימוד מקוון .משמש כמנהל הפרויקט של התאמת תוכנת Moodle לעברית ומרכז התרגום של אקדמיית קהאן לעברית.
-            </p>
-        </div>
-    </div>
-    <div class="team-card">
-        <div class="card-photo vertical-shadow">
-            <img src="/images/headshots/yarden.jpg" />
-        </div>
-        <div class="card-info">
-            <h2 class="pulls">ירדן</h2>
-            <!--
-                <h3>President &amp; COO</h3>
-            <p class="contact-links">
-                <a href="http://twitter.com/ShantanuKSinha" class="contact-twitter">Twitter</a>
-            </p>
-            -->
-            <p>
-                ירדן אסא גילתה את קאהן אקדמי בעקבות חיפוש ברשת של סרטון שיסביר לה מה זה "בינארי".
-                מאז היא מחפשת אנשים שרוצים להירתם ליצירת שינוי בעולם, שיצטרפו אליה.
-                היא חגגה השנה 25 והיא לקראת סיום תואר בפסיכולוגיה ומנהל עסקים.
-                היא מאד אוהבת את האקדמיה, אבל מרגישה שהגיע הזמן ליצור אקדמיה של העולם החדש.
-                היא מתגעגעת לניו-יורק שהייתה לה לבית, אבל אוהבת את ישראל יותר מהכל.
-            </p>
-        </div>
-    </div>
-    <div class="clear"></div>
-    <div class="team-card">
-        <div class="card-photo vertical-shadow">
-            <img src="/images/headshots/eran.jpg" />
-        </div>
-        <div class="card-info">
-            <h2 class="pulls">ערן</h2>
-            <!--
-                <h3>Dean of Translations</h3>
-            <p class="contact-links">
-                <a href="mailto:translations@khanacademy.org" class="contact-email">Email</a>
-            </p>
-            -->
-            <p>
-                ערן חג'ג', 33, תל אביב, יזם ומתכנת מילדות.
-                בעברו מילא תפקידי פיתוח וניהול שונים בניהם כ-CTO של ביטוח ישיר.
-                כיום מנכ"ל של חברת אלגו-טריידינג, יזם ויועץ לחברות היטק שונות בניהן בינק ו-JFROG,
-                אבל יותר מכל אוהב ללמד.
-                ערן נדבק בחיידק בעקבות ההרצאה של סאל ב-TED ומאז פועל לקידום הפרוייקט בארץ.
-                מאמין גדול ביכולת שינוי לטובה של מערכת החינוך והעולם בכלל ומשתדל לחיות בהווה.
-            </p>
-        </div>
-    </div>
-    <div class="team-card">
-        <div class="card-photo vertical-shadow">
-            <img src="/images/headshots/ofer.jpg" />
-        </div>
-        <div class="card-info">
-            <h2 class="pulls">עופר</h2>
-            <!--
-                <h3>Lead Developer</h3>
-            <p class="contact-links">
-                <a href="http://twitter.com/kamens" class="contact-twitter">Twitter</a>
-                <a href="http://bjk5.com" class="contact-blog">Blog</a>
-            </p>
-            !-->
-            <p>
-                עופר קורן נתקל לראשונה בקהאן לפני כ-5 שנים, אז עבד באולפני האנימציה של דיסני בקליפורניה, והיה צריך להשלים חסך במטריצות וטרנספורמציות בתלת-מימד.
-                מאז הוא כבר חזר לישראל ועובד בחברת IBM כמהנדס תוכנה, ובמקביל מרכז את הפיתוח והתחזוקה של אתר אקדמית קהאן העברית.
-            </p>
-        </div>
-    </div>
-    <div class="clear"></div>
-    <div class="team-card">
-        <div class="card-photo vertical-shadow">
-            <img src="/images/headshots/asaf.jpg" id="asaf" />
-        </div>
-        <div class="card-info">
-            <h2 class="pulls">אסף</h2>
-            <!--
-                <h3>Lead Designer</h3>
-            <p class="contact-links">
-                <a href="http://twitter.com/jasonrr" class="contact-twitter">Twitter</a>
-                <a href="http://shipordie.com" class="contact-blog">Blog</a>
-            </p>
-            -->
-            <p>
-                אסף גלבוע הוא יזם בנשמה שמתמחה בהפיכת רעיונות טובים לארגונים מצליחים.
-                בחמשת השנים האחרונות אסף הקים וניהל את תמיס יישומי כטב"ם, חברה פורצת דרך שהעבירה את עולם המטוסים הבלתי מאויישים מהספרה הצבאית לספרה האזרחית.
-                בנוסף לפעילותו העסקית לאסף יש תשוקה בוערת לחינוך. בשנתיים האחרונות אסף עובד עם נערים ונערות בערי הפריפריה במסגרת עמותת יוניסטרים, אשר פועלת להעניק למנהיגי העתיד של ארצנו את הביטחון העצמי והאמונה ביכולת שלהם להיות יזמים וליצור עולם טוב יותר.
-                כשהוא לא מנסה לשנות את העולם אסף משחית את זמנו בטיולים ברחבי הארץ והעולם עם אשתו ושון הכלב (גולדן רטריור ויזם בתחום העצמות וכדורי הטניס) וברכיבה על אופני שטח ברחבי ארץ ישראל המדהימה.
-            </p>
-        </div>
-    </div>
-    <div class="team-card">
-        <div class="card-photo vertical-shadow">
-            <img src="/images/headshots/shahar.jpg" />
-        </div>
-        <div class="card-info">
-            <h2 class="pulls">שחר</h2>
-            <!--
-            <h3>Software Engineer</h3>
-            <p class="contact-links">
-                <a href="http://twitter.com/marcia_lee" class="contact-twitter">Twitter</a>
-                <a href="http://missmarcialee.com" class="contact-blog">Blog</a>
-                <a href="/profile/marcia" class="contact-ka">Profile</a>
-            </p>
-            -->
-            <p>
-                שחר קידר, בן 30, גר במסילת ציון ונשוי למילה. בימים הוא מתכנת בכיר בחברת סטארטאפ בשם BigPanda.
-                בלילות הוא ישן. פעם חלם להיות מורה, אבל במקום זה, החליט לנצל את התשוקה שלו לטכנולוגיה ולחינוך על מנת לייסד את "אקדמיית קהאן בישראל".
-            </p>
-        </div>
-    </div>
-    <div class="clear"></div>
-
+        {% if loop.index0 % 2 or loop.last%}<div class="clear"></div>{% endif %}
+    {% endfor %}
     <div style="text-align:center;">
-        <p>כמו כן עזרו בקידום הפרויקט האנשים היקרים האלה:
-        </p>
+        <p>כמו כן עזרו בקידום הפרויקט האנשים היקרים האלה:</p>
         <ul>
-            <li>
-            אלדד ארנון
-            </li>
-            <li>
-            שלומית אורגד
-            </li>
-            <li>
-            עידו גרינגרד
-            </li>
-            <li>
-            רויטל חליף
-            </li>
-            <li>
-            מיכאל נירגד-גיא
-            </li>
-            <li>
-            מילה קידר
-            </li>
-            <li>
-            אורי כהן
-            </li>
-            <li>
-            זוהר שינדלמן
-            </li>
-            <li>
-            שרון בר-נטע
-            </li>
-            <li>
-            חני מנור
-            </li>
-            <li>
-            ויקטור פליקשטיין
-            </li>
-            <li>
-            יגאל ספיר
-            </li>
-            <li>
-            מיקי אליאל
-            </li>
+            {% for name in contributors %}
+                <li>{{name}}</li>
+            {% endfor %}
         </ul>
     </div>
 
@@ -210,12 +63,4 @@
 
 {% block bottompagescript %}
 {{ super() }}
-<script type="text/javascript" charset="utf-8">
-$(function(){
-    $('#jason').hover(
-        function(){$('#jason').attr('src', '/images/headshots/jason-rawr.jpg');},
-        function(){$('#jason').attr('src', '/images/headshots/jason.jpg');}
-    );
-});
-</script>
 {% endblock bottompagescript %}
