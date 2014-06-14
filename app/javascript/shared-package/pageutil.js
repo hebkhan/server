@@ -909,5 +909,5 @@ function showAssociations() {
 }
 
 $(function(){
-    setTimeout(showAssociations, 5000);
+    setTimeout(showAssociations, 2000);
 })
