@@ -1,5 +1,3 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
 import datetime
 import random
 import logging
@@ -141,10 +139,10 @@ class ViewHomePage(request_handler.RequestHandler):
 
         # If all else fails, just show the TED talk on the homepage
         marquee_video = {
-            "youtube_id": "gO-P6Rx9fyk",
-            "href": "/video?v=%s" % "gO-P6Rx9fyk",
-            "thumb_urls": models.Video.youtube_thumbnail_urls("gO-P6Rx9fyk"),
-            "title": 'אקדמיית קהאן ואני10 ברשת אמי"ת',
+            "youtube_id": "gM95HHI4gLk",
+            "href": "/video?v=%s" % "gM95HHI4gLk",
+            "thumb_urls": models.Video.youtube_thumbnail_urls("gM95HHI4gLk"),
+            "title": "Salman Khan talk at TED 2011",
             "key": "",
         }
 
@@ -183,9 +181,9 @@ class ViewHomePage(request_handler.RequestHandler):
 #            # Only running ajax version of homepage for non-mobile clients
 #            library_content = library.library_content_html(ajax = True)
         else:
-            # if App.is_dev_server:
-            #     logging.info("Disabling layer_cache")
-            #     layer_cache.disable()
+            if App.is_dev_server:
+                logging.info("Disabling layer_cache")
+                layer_cache.disable()
             library_content = library.library_content_html()
 
         template_values = {

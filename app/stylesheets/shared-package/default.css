@@ -97,20 +97,19 @@ article {
 
 /* Basic typography for the entire site */
 
-h1, h2, h3, h4, h5 { color: #222E3D; font-family: "MuseoSans500", sans-serif; }
+h1, h2, h3, h4, h5 { color: #111; font-family: "MuseoSans500", sans-serif; }
 h1 {font-size:25px; margin-bottom: 22px;}
+    .main-headline, .section-headline { padding-top: 22px; }
+    .main-headline a, .section-headline a { text-decoration: none;}
+    .main-headline a:hover, .section-headline a:hover { text-decoration: underline;}
+    .main-headline a:visited, .section-headline a:visited { color: #7EA800 };
+    h1.main-headline {font-size: 32px; position: relative; line-height: 37px; z-index: 10;}
+
 h2 {font-size:20px; margin-bottom: 22px;}
 h3 {font-size:18px; margin-bottom: 22px;}
 h4 {font-size:15px; margin-bottom: 22px;}
 h5 {font-size: 15px; margin-bottom: -22px;}
 p { font-size: 14px; margin: 22px 0;}
-
-h1.main-headline {font-size: 32px; position: relative; line-height: 37px; z-index: 10;}
-.main-headline, .section-headline { padding-top: 22px; }
-.main-headline a, .section-headline a { text-decoration: none;}
-.main-headline a:hover, .section-headline a:hover { text-decoration: underline;}
-.main-headline a:visited, .section-headline a:visited { color: #7EA800 };
-
 
 .pulls { margin-bottom: 9px; } /* "Pulls" the next block element up by halving the margin. */
 .pulled { margin-top: 9px; margin-bottom: 27px; } /* Preserves vertical rhythm. Not always necessary */
@@ -757,131 +756,6 @@ footer {
 
 /* End of visual indicator styles */
 
-
-#library-content-main .heading {
-    cursor: pointer !important;
-    text-decoration: none !important;
-    display: block;
-    color: #556;
-    border: 1px solid #DDE;
-    border-bottom: 1px solid #AAA;
-    line-height: 22px;
-    padding: 5px 10px;
-    position: relative;
-    margin: 0;
-
-    border-radius: 5px;
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
-
-    text-shadow: 0 1px 0 #fff;
-
-    -moz-box-shadow: inset 0 1px 0 rgba(255,255,255, .3);
-    -webkit-box-shadow: inset 0 1px 0 rgba(255,255,255, .3);
-    box-shadow: inset 0 1px 0 rgba(255,255,255, .3);
-}
-
-.lte7 #library-content-main .heading { position: static; }
-
-#library-content-main .heading:hover {
-    border-color: #aaa;
-
-    -webkit-box-shadow: inset 0 1px 0 rgba(255,255,255, .4), inset 0 0 50px 5px rgba(255,255,255,.2);
-    -moz-box-shadow: inset 0 1px 0 rgba(255,255,255, .4), inset 0 0 50px 5px rgba(255,255,255,.2);
-    box-shadow: inset 0 1px 0 rgba(255,255,255, .4), inset 0 0 50px 5px rgba(255,255,255,.2);
-}
-
-.lte8 #library-content-main .heading:hover {
-    outline: 2px solid #333;
-}
-
-#library-content-main .heading:focus {
-    outline: 5px auto #E59700;
-}
-
-#library-content-main .heading:active {
-    top: 1px;
-}
-
-#library-content-main .heading > div {
-    display: table;
-    width: 100%;
-}
-
-#library-content-main .topic-title {
-    display: table-cell;
-    vertical-align: middle;
-    font-size: 22px;
-    padding: 12px 22px 12px 12px;
-    white-space: nowrap;
-}
-
-#library-content-main .topic-level-2 .topic-title {
-    font-size: 16px;
-    padding-top: 4px;
-    padding-bottom: 4px;
-}
-
-#library-content-main .topic-desc {
-    display: table-cell;
-    vertical-align: middle;
-    padding-right: 1em;
-    width: 99%;
-}
-
-#library-content-main .heading.active .topic-counts,
-#library-content-main .heading:hover .topic-counts {
-    display: table-cell;
-}
-
-#library-content-main .topic-counts {
-    background-repeat: no-repeat;
-    background-position: 5.5em 0px;
-    display: none;
-    padding: 0px 2em;
-    min-width: 3em;
-    width: 3em;
-}
-
-#library-content-main .heading .topic-counts.videos {
-    background-image: url(/images/video-camera-icon-inset-small.png);
-}
-
-#library-content-main .heading .topic-counts.exercises {
-    background-image: url(/images/generic-exercise-icon-inset-small.png);
-}
-
-#library-content-main .content {
-    padding: 0em 20px 0em 0em;
-    border-style: solid;
-    border-color: #C5D2DA;
-    border-width: 0px 1px 0px 0px;
-}
-
-#library-content-main .content > ol {
-    padding: 1em;
-    margin-right: -20px;
-}
-
-#library-content-main .heading { background: #D0DEE7; }
-#library-content-main .heading.even { background: #C5D2DA; }
-
-/*
-#library-content-main .topic-level-1 > .heading,
-#library-content-main .topic-level-3 > .heading,
-#library-content-main .topic-level-5 > .heading { background: #E8EFD0; }
-
-#library-content-main .topic-level-2 > .heading,
-#library-content-main .topic-level-4 > .heading { background: #E0E7D0; }
-*/
-
-#library-content-main .heading.active {
-    text-shadow: 0px 1px 2px #fff;
-    /*border-color: #000;*/
-    color: #242;
-    background: #D7E7C0;
-}
-
 #topic-jump > span {
     float: right;
     font-size: 15px;
@@ -921,11 +795,11 @@ footer {
 #topic-jump nav > ul > li ul {
     font-size: 12px;
 }
-#fb-like-badge {
-    position: relative;
+#social-actions #fb-like-badge {
+    display: inline-block;
     width: 165px;
     height: 20px;
-    top: -2px;
+    vertical-align: top;
 }
 .homepage-mailing {
     padding-top: 13px;
@@ -1171,6 +1045,42 @@ nav {
     margin: 0;
 }
 
+#page_main_nav {
+    clear: none;
+    float: right;
+}
+.lte7 #page_main_nav {
+    min-width: 45ex;
+}
+#page_main_nav li#do-exercises {
+    border-left: 1px solid rgba(255,255,255, .6);
+    margin-left: 5px;
+    padding: 0;
+}
+    #page_main_nav li#do-exercises #do-exercise-inner {
+        padding: .25ex 1ex;
+        border-left: 1px solid rgba(0,0,0, .05);
+    }
+    #page_main_nav li#do-exercises:after {
+        display: none;
+    }
+    #page_main_nav li#do-exercises a {
+        color: #333;
+        padding-left: 5px;
+    }
+    #page_main_nav li#do-exercises:hover {
+        border-top-color: transparent;
+        border-right-color: transparent;
+        background: transparent;
+    }
+    #page_main_nav li#do-exercises a:hover {
+        color: #00659E;
+    }
+
+#page_main_nav ul.page_links {
+    float: left;
+}
+
 nav#page_sub_nav {
     padding: 7px 10px 11px;
     min-height: 16px;
@@ -1394,7 +1304,6 @@ a:link.google-analytics-link-track
 		#library-content #library-content-main {
 			padding: 0 0 38px;
 		}
-
 			#library-content .library-content-header h2 {
 				margin-top: 0;
 				margin-bottom: .9em;
@@ -1476,7 +1385,7 @@ a:link.google-analytics-link-track
 			}
 
             #library-content .exercise-icon {
-                padding: 2px 13px 0px 2px;
+                padding: 2px 16px 0px 2px;
                 background: url(/images/exercise-icon-active.png) no-repeat right center;
             }
 
@@ -3063,14 +2972,13 @@ a.proficient-badge.disabled {
     margin: 0 0 18px 0;
 }
 #homepage-text {
+    max-width: 37%;
+    margin-right: 63%;
+    height: 435px;
     font-size:  16px;
     line-height: 24px;
-    text-align: justify;
-    padding-top: 50px;
-    float: right;
 }
-
-a.call-to-action {
+#homepage-text a.call-to-action {
     display: block;
     font-size: 20px;
     text-decoration: none;
@@ -3078,12 +2986,6 @@ a.call-to-action {
     padding: 10px 0 12px;
     margin-bottom: 15px;
     font-family: "MuseoSans500", Helvetica, Arial, sans-serif;
-    width: 300px;
-}
-
-.call-to-action-buttons {
-    float: left;
-    padding: 22px 0px;
 }
 
 #back-to-top {
@@ -3318,9 +3220,9 @@ div.arrow-left-shadow, div.arrow-right-shadow {
 #homepage #main-video {
     position: absolute;
     margin-top: 18px;
-    min-width: 55%;
-    max-width: 55%;
-    left: 21px;
+    min-width: 58%;
+    max-width: 58%;
+    right: 21px;
     /*
      * Max-height is used to restrict the vertical size of main-video even when
      * both the placeholder image and youtube embed are loaded. (We can't
