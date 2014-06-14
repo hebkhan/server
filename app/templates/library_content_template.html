@@ -1,55 +1,51 @@
 {% import 'macros/library.html' as library %}
 
-<div id="library">
-        <div id="library-content" >
-            {{ library.column_major_order_styles() }}
-            <div id="library-content-main">
-            {% for topic in topics recursive %}
-            {% if loop.first and topic.depth == 0%}
-                <div class="clear desktop-only"><a name="{{ topic.standalone_title|slugify|escape }}" id="{{ topic.standalone_title|slugify|escape }}">&nbsp;</a></div>
-            {% endif %}
-            <div data-role="page" id="{{ topic.id }}" data-theme="b">
-                <div data-role="header" class="library-content-header">
-                    <a href="#" data-rel="back" data-icon="arrow-l" class="mobile-only">חזור</a>
-                    {% if topic.depth %}
-                        <h2 class='subtopic-{{ topic.depth }}-heading {% if loop.first %}topic-heading-first{% endif %}'>{{topic.homepage_title|escape}}</h2>
-                    {% else %}
-                        <h2 class='topic-heading {% if loop.first %}topic-heading-first{% endif %}'>{{topic.homepage_title|escape}}</h2>
-                    {% endif %}
-                    <a href="/" data-icon="home" data-iconpos="notext" data-direction="reverse" class="mobile-only"></a>
-                </div>
-                {% if topic.is_super or topic.content %}
-                <div data-role="content" class="library-content-list">
-                    {% if topic.description %}
-                        <p class='topic-desc'>{{topic.description}}</p>
-                    {% endif %}
-
-                    {% if topic.content %}
-                        {% if ajax %}
-                            <ol style="height:{{topic.height}}px;" data-role="listview" data-inset="true">
-                            <span style="padding-left: 16px;">טוען סרטונים...</span>
-                            </ol>
-                        {% else %}
-                            {{ templatetags.column_major_sorted_videos(topic) }}
-                        {% endif %}
-                    {% endif %}
-    
-                    <div class="clear desktop-only{% if topic.next_is_subtopic %} subtopic-jump-fix{% endif %}{% if topic.subtopics %} first{% endif %}">
-                    {% if topic.next %}
-                        <a name="{{ topic.next.id|slugify|escape }}" id="{{ topic.next.id|slugify|escape }}">&nbsp;</a>
-                    {% endif %}
-                    </div>
-                </div>
-                {% endif %}
-                {% if topic.subtopics %}
-                    {{loop(topic.subtopics)}}
-                {% endif %}
-            </div>
-
-           
-            {% endfor %}
-            </div>
+{% macro topic_header(id, title, description, count, even) %}
+    <a class='heading ui-accordion-header ui-helper-reset ui-state-default ui-corner-all{% if even %} even{% endif %}'
+        id="_{{ id }}" href="#{{ id }}">
+        <span class="ui-icon ui-icon-triangle-1-w"></span>
+        <div>
+            <div class="topic-title">{{ title }}</div>
+            {% if description %}<div class='topic-desc'>{{ description }}</div>{% endif %}
+            {% if count.exercise %}<div class="topic-counts exercises">{{ count.exercise }}</div>{% endif %}
+            {% if count.video %}<div class="topic-counts videos">{{ count.video }}</div>{% endif %}
         </div>
+    </a>
+{% endmacro %}
+
+<div id="library">
+    <div id="library-content" >
+        {{ library.column_major_order_styles() }}
+        <div id="library-content-main">
+            <a name="browse"></a>
+            <ul class="accordion ui-accordion ui-widget ui-helper-reset ui-accordion-icons">
+                {% for topic in topics recursive %}
+                    <li class="topic-level-{{ topic.depth }} ">
+                        {{ topic_header(topic.id, topic.title, topic.description, topic.all_content_count, loop.index%2) }}
+                        <div class="content" style="display: none">
+                            {% if topic.subtopics %}
+                                <ul>
+                                    {{ loop(topic.subtopics) }}
+                                    {% if topic.content %}
+                                        {# topic has both subtopics and content; put content in a 'fake' subtopic #}
+                                        <li class="topic-level-{{ topic.depth+1 }}">
+                                            {{ topic_header(topic.id + '-leaf', 'תוכן נוסף', None, topic.content_count, loop.index%2) }}
+                                            <div class="content" style="display: none">
+                                                {{ templatetags.column_major_sorted_videos(topic) }}
+                                            </div>
+                                        </li>
+                                    {% endif %}
+                                </ul>
+                            {% elif topic.content %}
+                                {{ templatetags.column_major_sorted_videos(topic) }}
+                            {% endif %}
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+            <div class="clear"></div>
+        </div>
+    </div>
 </div>
 
 <!-- Topic tree version: #{{ version_id }}, published {{ version_date }} -->

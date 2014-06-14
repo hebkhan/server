@@ -16,12 +16,15 @@ def user_info(username, user_data):
 
 def column_major_sorted_videos(topic, num_cols=3, column_width=300, gutter=20, font_size=12):
     content = topic.content
+    while (len(content) / num_cols < 2) and num_cols > 1:
+        num_cols -= 1
     items_in_column = len(content) / num_cols
     remainder = len(content) % num_cols
     link_height = font_size * 1.5
     # Calculate the column indexes (tops of columns). Since video lists won't divide evenly, distribute
     # the remainder to the left-most columns first, and correctly increment the indices for remaining columns
     column_indices = [(items_in_column * multiplier + (multiplier if multiplier <= remainder else remainder)) for multiplier in range(1, num_cols + 1)]
+
 
     template_values = {
         "topic": topic,
