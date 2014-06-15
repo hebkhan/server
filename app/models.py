@@ -156,6 +156,10 @@ class Exercise(db.Model):
             "coverers", "prerequisites_ex", "assigned",
             ]
 
+    @property
+    def readable_id(self):
+        return self.name
+
     @staticmethod
     def get_relative_url(exercise_name):
         return "/exercise/%s" % exercise_name
@@ -1983,6 +1987,10 @@ class Topic(Searchable, db.Model):
     INDEX_USES_MULTI_ENTITIES = False
 
     _serialize_blacklist = ["child_keys", "version", "parent_keys", "ancestor_keys", "created_on", "updated_on", "last_edited_by"]
+
+    @property
+    def readable_id(self):
+        return self.id
 
     @property
     def relative_url(self):
