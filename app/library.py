@@ -72,22 +72,6 @@ def prepare(topic, depth=0, max_depth=4):
 
     return [topic]
 
-def add_related_exercises(videos):
-    exercises = {e.key():e for e in Exercise.get_all_use_cache()}
-    relations = {}
-    for exvid in ExerciseVideo.all().run():
-        ex = exercises.get(exvid.key_for_exercise())
-        if ex:
-            relations.setdefault(exvid.key_for_video(),[]).append(ex)
-
-    for exs in relations.itervalues():
-        exs.sort(key=lambda e: (e.v_position, e.h_position))
-
-    logging.info("%s related videos", len(relations))
-    for vid in videos:
-        exs = relations.get(vid.key()) or []
-        vid.cached_related_exercises = exs
-
 @layer_cache.cache_with_key_fxn(
         lambda ajax=False, version_number=None: 
         "library_content_by_topic_%s_v%s" % (
@@ -105,7 +89,6 @@ def library_content_html(ajax=False, version_number=None):
     tree = Topic.get_root(version).make_tree(types = ["Topics", "Video", "Exercise", "Url"])
 
     videos = [item for item in walk_children(tree) if item.kind()=="Video"]
-    add_related_exercises(videos)
 
     topics = prepare(tree)[0].subtopics
 
