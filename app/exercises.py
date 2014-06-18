@@ -29,6 +29,7 @@ from gae_bingo.models import ConversionTypes
 from goals.models import GoalList
 from experiments import StrugglingExperiment
 from js_css_packages import templatetags
+from models import UserVideoCss
 
 class MoveMapNodes(request_handler.RequestHandler):
     def post(self):
@@ -591,6 +592,12 @@ def attempt_problem(user_data, user_exercise, problem_number, attempt_number,
         goals_updated = GoalList.update_goals(user_data,
             lambda goal: goal.just_did_exercise(user_data, user_exercise,
                 just_earned_proficiency))
+
+        user_data.uservideocss_version += 1
+        if user_exercise.progress >= 1.0:
+            UserVideoCss.set_completed(user_data, exercise, user_data.uservideocss_version)
+        else:
+            UserVideoCss.set_started(user_data, exercise, user_data.uservideocss_version)
 
         # Bulk put
         db.put([user_data, user_exercise, user_exercise_graph.cache])
