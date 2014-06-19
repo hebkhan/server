@@ -664,14 +664,14 @@ class UserVideoCss(db.Model):
         return 'user_video_css_%s' % user_data.key_email
 
     @staticmethod
-    def set_started(user_data, video, version):
-        deferred.defer(set_css_deferred, user_data.key(), video.key(),
+    def set_started(user_data_key, item_key, version):
+        deferred.defer(set_css_deferred, user_data_key, item_key,
                        UserVideoCss.STARTED, version,
                        _queue="video-log-queue")
 
     @staticmethod
-    def set_completed(user_data, video, version):
-        deferred.defer(set_css_deferred, user_data.key(), video.key(),
+    def set_completed(user_data_key, item_key, version):
+        deferred.defer(set_css_deferred, user_data_key, item_key,
                        UserVideoCss.COMPLETED, version,
                        _queue="video-log-queue")
 
@@ -3805,7 +3805,7 @@ class VideoLog(BackupModel):
         if seconds_watched > 0:
             if user_video.seconds_watched == 0:
                 user_data.uservideocss_version += 1
-                UserVideoCss.set_started(user_data, user_video.video, user_data.uservideocss_version)
+                UserVideoCss.set_started(user_data.key(), user_video.video.key(), user_data.uservideocss_version)
 
             user_video.seconds_watched += seconds_watched
             user_data.total_seconds_watched += seconds_watched
@@ -3850,7 +3850,7 @@ class VideoLog(BackupModel):
             user_data.videos_completed = -1
 
             user_data.uservideocss_version += 1
-            UserVideoCss.set_completed(user_data, user_video.video, user_data.uservideocss_version)
+            UserVideoCss.set_completed(user_data.key(), user_video.video.key(), user_data.uservideocss_version)
 
             bingo([
                 'struggling_videos_finished',

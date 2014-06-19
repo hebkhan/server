@@ -595,9 +595,9 @@ def attempt_problem(user_data, user_exercise, problem_number, attempt_number,
 
         user_data.uservideocss_version += 1
         if user_exercise.progress >= 1.0:
-            UserVideoCss.set_completed(user_data, exercise, user_data.uservideocss_version)
+            UserVideoCss.set_completed(user_data.key(), exercise.key(), user_data.uservideocss_version)
         else:
-            UserVideoCss.set_started(user_data, exercise, user_data.uservideocss_version)
+            UserVideoCss.set_started(user_data.key(), exercise.key(), user_data.uservideocss_version)
 
         # Bulk put
         db.put([user_data, user_exercise, user_exercise_graph.cache])
