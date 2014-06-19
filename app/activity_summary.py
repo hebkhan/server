@@ -213,7 +213,7 @@ class StartNewDailyActivityLogMapReduce(request_handler.RequestHandler):
                 name = "DailyActivityLog",
                 handler_spec = "activity_summary.daily_activity_summary_map",
                 reader_spec = "mapreduce.input_readers.DatastoreInputReader",
-                reader_parameters = {
+                mapper_parameters = {
                      "entity_kind": "models.UserData",
                      "processing_rate": 250,
                 },
