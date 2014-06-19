@@ -157,7 +157,7 @@ class StartNewVoteMapReduce(request_handler.RequestHandler):
                 name = "UpdateFeedbackVotes",
                 handler_spec = "discussion.voting.vote_update_map",
                 reader_spec = "mapreduce.input_readers.DatastoreInputReader",
-                reader_parameters = {"entity_kind": "discussion.models_discussion.Feedback"},
+                mapper_parameters = {"entity_kind": "discussion.models_discussion.Feedback"},
                 queue_name = "backfill-mapreduce-queue",
                 )
 
