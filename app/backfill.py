@@ -64,11 +64,13 @@ def migrate_userdata(key):
 
 def update_user_exercise_progress(user_exercise):
     user_data = user_exercise.get_user_data()
+    user_data.uservideocss_version += 1
     ex_key = user_exercise.__class__.exercise_model.get_value_for_datastore(user_exercise)
     if user_exercise.progress >= 1.0:
         UserVideoCss.set_completed(user_data.key(), ex_key, user_data.uservideocss_version)
     else:
         UserVideoCss.set_started(user_data.key(), ex_key, user_data.uservideocss_version)
+    yield op.db.Put(user_data)
 
 def sync_exercise_related_videos(exercise):
     related_videos = fetch_from_url("http://www.khanacademy.org/api/v1/exercises/%s/videos" % exercise.name, as_json=True)
