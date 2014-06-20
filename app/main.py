@@ -225,19 +225,12 @@ class ViewVideo(request_handler.RequestHandler):
         if user_video:
             awarded_points = user_video.points
 
-        subtitles_key_name = VideoSubtitles.get_key_name('en', video.youtube_id)
-        subtitles = VideoSubtitles.get_by_key_name(subtitles_key_name)
-        subtitles_json = None
-        if subtitles:
-            subtitles_json = subtitles.load_json()
-
         template_values = {
                             'topic': topic,
                             'video': video,
                             'videos': videos,
                             'video_path': video_path,
                             'video_points_base': consts.VIDEO_POINTS_BASE,
-                            'subtitles_json': subtitles_json,
                             'button_top_exercise': button_top_exercise,
                             'related_exercises': [], # disabled for now
                             'previous_topic': previous_topic,
