@@ -507,7 +507,7 @@ def topic_move_child(old_parent_id, version_id = "edit"):
         return api_invalid_param_response("Could not find topic with ID " + str(old_parent_id))
 
     if old_parent_id!=new_parent_id and child.key() in new_parent.child_keys:
-        return api_invalid_param_response("The child '%s' already appears in topic '%s'" % (child.title, new_parent.title))
+        return api_invalid_param_response("The child '%s' (%s) already appears in topic '%s'" % (child.title, child.kind(), new_parent.title))
            
     new_parent_pos = request.request_string("new_parent_pos")
 
@@ -600,9 +600,7 @@ def topic_versions():
 def topic_version_unused_content(version_id = None):
     version = models.TopicVersion.get_by_id(version_id)
     def get_key(m):
-        kind = m.kind()
-        name = getattr(m, dict(Video="title", Exercise="display_name", Url="title")[kind])
-        return kind, name
+        return m.kind(), m.title
     return sorted(version.get_unused_content(), key = get_key)
 
 @route("/api/v1/topicversion/<version_id>/url/<int:url_id>", methods=["GET"])
