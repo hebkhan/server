@@ -21,7 +21,7 @@
         </h1>
     </div>
     {% if not user_data %}
-    <div class="call-to-action-buttons">
+    <div class="call-to-action-buttons desktop-only">
         <a href="/login" class="call-to-action simple-button action-gradient green">התחברו</a>
         <fb:facepile colorscheme="light" size="large" width="300px" max_rows="1" class="fb_iframe_widget"/>
     </div> 
@@ -73,25 +73,16 @@
 
     <div class="clear"></div>
 
-<div data-role="page" data-theme="b" {% if is_mobile %}id="browse"{% endif %}>
-    <div data-role="content">
-        <div id="mobile-homepage" class="mobile-only">
-            <img data-src="{{ "/images/logo-horizontal-large.png"|static_url }}" id="mobile-logo" />
-            <span id="page_visitors">
-                    <span id="page_num_visitors">
-                        <!-- Content will get populated by javacript at end of page -->
-                    </span>&nbsp; שיעורים הועברו
-            </span>
-        </div>
-        <h3 class="section-headline pulls">
-            עיינו בספריה שלנו עם יותר מ-{{approx_vid_count|thousands_separated}} סרטונים ו-{{exercise_count}} תרגילים,
-            מסודרים לפי תוכנית הלימודים מכיתה א' ועד יב':
-            <a name="browse">&nbsp;</a>
-        </h3>
-        {{ library_content }}
-        <a href="/mobilefullsite" class="mobile-only" data-role="button" data-ajax="false">לאתר הרגיל</a>
-    </div>
-</div>
+{% if is_mobile %}
+    {{ library_content }}
+{% else %}
+    <h3 class="section-headline pulls">
+        עיינו בספריה שלנו עם יותר מ-{{approx_vid_count|thousands_separated}} סרטונים
+        ו-{{exercise_count}} תרגילים, מסודרים לפי תוכנית הלימודים מכיתה א' ועד יב':
+        <a name="browse">&nbsp;</a>
+    </h3>
+    {{ library_content }}
+{% endif %}
 
 </article>
 
@@ -104,34 +95,33 @@
 {% block bottompagescript %}
     {% if not is_mobile %}
         {{ js_css_packages.js_package("homepage") }}
+        <script type="text/javascript">
+            $(function(){
+                VideoStats.startLoggingProgress("{{ marquee_video["key"]|escapejs }}");
+
+                if (typeof(Homepage) !== "undefined") {
+                    Homepage.initPlaceholder("{{ marquee_video["youtube_id"]|escapejs }}");
+                }
+            });
+
+            (function(){
+                var twitterWidgets = document.createElement('script');
+                twitterWidgets.type = 'text/javascript';
+                twitterWidgets.async = true;
+                twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+                // Setup a callback to track once the script loads.
+                twitterWidgets.onload = _ga.trackTwitter;
+                document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+            })();
+
+            (function() {
+                var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+                po.src = 'https://apis.google.com/js/plusone.js';
+                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+            })();
+            _ga.trackFacebook();
+        </script>
     {% endif %}
-
-    <script type="text/javascript">
-        $(function(){
-            VideoStats.startLoggingProgress("{{ marquee_video["key"]|escapejs }}");
-
-            if (typeof(Homepage) !== "undefined") {
-                Homepage.initPlaceholder("{{ marquee_video["youtube_id"]|escapejs }}");
-            }
-        });
-
-        (function(){
-            var twitterWidgets = document.createElement('script');
-            twitterWidgets.type = 'text/javascript';
-            twitterWidgets.async = true;
-            twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
-            // Setup a callback to track once the script loads.
-            twitterWidgets.onload = _ga.trackTwitter;
-            document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
-        })();
-
-        (function() {
-            var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
-            po.src = 'https://apis.google.com/js/plusone.js';
-            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
-        })();
-        _ga.trackFacebook();
-    </script>
 
     {{ analytics.crazyegg_tracker(False) }}
 

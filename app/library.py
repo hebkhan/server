@@ -1,5 +1,7 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
 import layer_cache
-from models import Setting, Topic, TopicVersion, ExerciseVideo, Exercise
+from models import Setting, Topic, TopicVersion, ExerciseVideo, Exercise, Video
 import request_handler
 import shared_jinja
 import time
@@ -36,6 +38,10 @@ def walk_children(node):
     else:
         yield node
 
+class TopicDummy(object):
+    def __init__(self, **kw):
+        self.__dict__.update(kw)
+
 def prepare(topic, depth=0, max_depth=4):
     topic.content = []
     topic.subtopics = []
@@ -63,23 +69,30 @@ def prepare(topic, depth=0, max_depth=4):
     if not (topic.content or topic.subtopics):
         return []  # trim this branch
 
-    topic.height = math.ceil(len(topic.content)/3.0) * 18
-
     topic.content_count = Counter(item.kind().lower() for item in topic.content)
+    if topic.content and topic.subtopics:
+        dummy = TopicDummy(id=topic.id+"-leaf", title=u"תוכן נוסף", content=topic.content, subtopics=[],
+                           content_count=topic.content_count, all_content_count=topic.content_count, depth=topic.depth+1)
+        topic.subtopics.append(dummy)
+        topic.content = []
+        topic.content_count = {}
+
     topic.all_content_count = Counter(topic.content_count)
     for subtopic in topic.subtopics:
         topic.all_content_count.update(subtopic.all_content_count)
 
+    topic.height = math.ceil(len(topic.content)/3.0) * 18
+
     return [topic]
 
 @layer_cache.cache_with_key_fxn(
-        lambda ajax=False, version_number=None: 
+        lambda mobile=False, version_number=None: 
         "library_content_by_topic_%s_v%s" % (
-        "ajax" if ajax else "inline", 
+        "mobile" if mobile else "desktop", 
         version_number if version_number else Setting.topic_tree_version()),
         layer=layer_cache.Layers.Blobstore
         )
-def library_content_html(ajax=False, version_number=None):
+def library_content_html(mobile=False, version_number=None):
 
     if version_number:
         version = TopicVersion.get_by_number(version_number)
@@ -90,20 +103,20 @@ def library_content_html(ajax=False, version_number=None):
 
     videos = [item for item in walk_children(tree) if item.kind()=="Video"]
 
-    topics = prepare(tree)[0].subtopics
-
-    # special case the duplicate topics for now, eventually we need to either make use of multiple parent functionality (with a hack for a different title), or just wait until we rework homepage
-    topics = [topic for topic in topics if (not topic.id == "new-and-noteworthy")]
+    root, = prepare(tree)
+    topics = root.subtopics
 
     timestamp = time.time()
 
     template_values = {
         'topics': topics,
-        'ajax' : ajax,
+        'is_mobile': mobile,
         # convert timestamp to a nice integer for the JS
         'timestamp': int(round(timestamp * 1000)),
         'version_date': str(version.made_default_on),
-        'version_id': version.number
+        'version_id': version.number,
+        'approx_vid_count': Video.approx_count(),
+        'exercise_count': Exercise.get_count(),
     }
 
     html = shared_jinja.get().render_template("library_content_template.html", **template_values)
@@ -117,7 +130,7 @@ class GenerateLibraryContent(request_handler.RequestHandler):
         self.get(from_task_queue = True)
 
     def get(self, from_task_queue = False):
-        library_content_html(ajax=True, version_number=None, bust_cache=True)
+        library_content_html(mobile=False, version_number=None, bust_cache=True)
 
         if not from_task_queue:
             self.redirect("/")

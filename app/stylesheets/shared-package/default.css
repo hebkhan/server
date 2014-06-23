@@ -852,6 +852,7 @@ footer {
     border-style: solid;
     border-color: #C5D2DA;
     border-width: 0px 1px 0px 1px;
+    display: none;
 }
 
 #library-content-main .content > ol {

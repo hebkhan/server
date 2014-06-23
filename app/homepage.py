@@ -173,12 +173,14 @@ class ViewHomePage(request_handler.RequestHandler):
             thumbnail_link_sets = thumbnail_link_sets[current_link_set_offset:] + thumbnail_link_sets[:current_link_set_offset]
 
         default = models.TopicVersion.get_default_version()
+        is_mobile = self.is_mobile()
+        logging.info("is_mobile = %s", is_mobile)
         if App.is_dev_server and default is None:
             library_content = "<h1>Content not initialized. <a href=\"/devadmin/content?autoupdate=1\">Click here</a> to autoupdate from khanacademy.org."
         elif version_number:
             logging.info("Library for version = %s", version_number)
             layer_cache.disable()
-            library_content = library.library_content_html(version_number=int(version_number))
+            library_content = library.library_content_html(mobile=is_mobile, version_number=int(version_number))
 #        elif not self.is_mobile_capable():
 #            # Only running ajax version of homepage for non-mobile clients
 #            library_content = library.library_content_html(ajax = True)
@@ -186,7 +188,7 @@ class ViewHomePage(request_handler.RequestHandler):
             # if App.is_dev_server:
             #     logging.info("Disabling layer_cache")
             #     layer_cache.disable()
-            library_content = library.library_content_html()
+            library_content = library.library_content_html(mobile=is_mobile)
 
         template_values = {
                             'marquee_video': marquee_video,

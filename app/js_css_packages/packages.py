@@ -145,8 +145,9 @@ javascript = {
     "mobile": {
         "files": [
             "jquery.js",
-            "jquery.mobile-1.0a4.1.js",
             "mobile.js",
+            #"jquery.mobile-1.0a4.1.js",
+            "jquery.mobile-1.2.1.js",
             "../shared-package/cookies.js",
             "../shared-package/video-addons.js",
             "../shared-package/api.js",
@@ -273,7 +274,8 @@ stylesheets = {
     },
     "mobile": {
         "files": [
-            "jquery.mobile-1.0a4.1.css",
+            #"jquery.mobile-1.0a4.1.css",
+            "jquery.mobile-1.2.1.css",
             "mobile.css",
         ]
     },
