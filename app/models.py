@@ -160,6 +160,10 @@ class Exercise(db.Model):
     def readable_id(self):
         return self.name
 
+    @property
+    def title(self):
+        return self.display_name
+
     @staticmethod
     def get_relative_url(exercise_name):
         return "/exercise/%s" % exercise_name
