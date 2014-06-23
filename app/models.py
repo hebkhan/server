@@ -2102,7 +2102,7 @@ class Topic(Searchable, db.Model):
 
             while prev_index >= 0:
                 prev_topic = db.get(parent_topic.child_keys[prev_index])
-                if not prev_topic.hide:
+                if prev_topic.kind() == "Topic" and not prev_topic.hide:
                     return prev_topic
 
                 prev_index -= 1

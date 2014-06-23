@@ -35,7 +35,7 @@
 {% block pagecontent %}
 <article id="video-page">
 <div class="video" data-role="page" data-theme="b">
-    <div data-role="header" class="mobile-only">
+    <div data-role="header" class="mobile-only" data-theme="b">
         <a href="#" data-rel="back" data-icon="arrow-l">חזור</a>
         <h2>{{video.title|escape}}</h2>
         <a href="/" data-icon="home" data-iconpos="notext" data-direction="reverse"></a>
@@ -100,7 +100,7 @@
         </div>
         <div class="youtube-video">
             <link itemprop="thumbnailUrl" href="http://img.youtube.com/vi/{{video.youtube_id}}/hqdefault.jpg">
-            {{ youtube.player_embed(video.youtube_id, mobile=is_mobile_capable, use_iframe_embed=is_ipad, http_origin=http_host) }}
+            {{ youtube.player_embed(video.youtube_id, mobile=is_mobile_capable, use_iframe_embed=is_mobile, http_origin=http_host) }}
         </div>
         <span class="video_extra_links desktop-only">
             <nobr>
@@ -124,31 +124,32 @@
 {% endblock pagecontent %}
 
 {% block bottompagescript %}
+    {% if not is_mobile %}
+        {{ js_css_packages.js_package("video") }}
+        <script>
+          $(function() {
+            Video.init();
+            VideoStats.startLoggingProgress("{{ video.key()|escapejs }}");
 
-    {{ js_css_packages.js_package("video") }}
-    <script>
-      $(function() {
-        Video.init();
-        VideoStats.startLoggingProgress("{{ video.key()|escapejs }}");
+            Discussion.init();
+            Moderation.init();
+            Voting.init();
+            Comments.init();
+            QA.init();
+          });
 
-        Discussion.init();
-        Moderation.init();
-        Voting.init();
-        Comments.init();
-        QA.init();
-      });
+          // We take the message in the title of the energy points box and place it
+          // in a tooltip, and if it's the message with a link to the login we
+          // replace it with a nicer link (we don't want to have to pass the url to
+          // the templatetag).
+          var $points = $('.video-energy-points');
+          $points.data('title', $points.attr('title').replace(/Sign in/,
+                     '<a href="{{ login_url|escape }}">Sign in</a>'))
+                 .removeAttr('title');
 
-      // We take the message in the title of the energy points box and place it
-      // in a tooltip, and if it's the message with a link to the login we
-      // replace it with a nicer link (we don't want to have to pass the url to
-      // the templatetag).
-      var $points = $('.video-energy-points');
-      $points.data('title', $points.attr('title').replace(/Sign in/,
-                 '<a href="{{ login_url|escape }}">Sign in</a>'))
-             .removeAttr('title');
-
-      VideoStats.tooltip('#points-badge-hover', $points.data('title'));
-    </script>
+          VideoStats.tooltip('#points-badge-hover', $points.data('title'));
+        </script>
+    {% endif %}
     {{ analytics.crazyegg_tracker(False) }}
 {% endblock bottompagescript %}
 
