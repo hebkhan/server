@@ -908,6 +908,11 @@ function showAssociations() {
     }, 200);
 }
 
-$(function(){
-    setTimeout(showAssociations, 2000);
+$(function() {
+    if (document.referrer.indexOf(location.protocol + "//" + location.host) === 0) {
+        $("#associations").show();
+        $(".logo-ani10").show();
+    } else {
+        setTimeout(showAssociations, 2000);
+    }
 })
