@@ -148,7 +148,8 @@ var ClassProfile = {
             }
         }, 1000);
 
-        ClassProfile.ProgressSummaryView = new ProgressSummaryView();
+        ClassProfile.ExerciseProgressSummaryView = new ProgressSummaryView('exercise');
+        ClassProfile.VideoProgressSummaryView = new ProgressSummaryView('video');
 
         $('#studentlists_dropdown').css('display', 'inline-block');
         var $dropdown = $('#studentlists_dropdown ol');
@@ -358,7 +359,8 @@ var ClassProfile = {
         var apiCallbacksTable = {
             '/api/v1/user/students/goals': this.renderStudentGoals,
             '/api/v1/user/students/progressreport': ClassProfile.renderStudentProgressReport,
-            '/api/v1/user/students/progress/summary': this.ProgressSummaryView.render
+            '/api/v1/user/students/progress/exercise_summary': this.ExerciseProgressSummaryView.render,
+            '/api/v1/user/students/progress/video_summary': this.VideoProgressSummaryView.render
         };
         if (!href) return;
 

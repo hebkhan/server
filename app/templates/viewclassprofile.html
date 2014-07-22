@@ -51,7 +51,7 @@
         <li>
             {{ profile_macros.class_api_link(user_data_coach, "דו\"ח מצב", "progressreport", selected_graph_type, list_id) }}
             <div class="accordion-content">
-                מציג את התרגילים והסרטונים עליהם עבדה הכיתה שלכם 
+                מציג את התרגילים והסרטונים עליהם עבדה הכיתה שלכם
                 <div class="graph-options">
                     <span id="exercise-progress-legend" style="display:none;">
                         <span class="progress-legend exercise-color started">התחיל</span>
@@ -62,14 +62,21 @@
                     <span id="video-progress-legend" style="display:none;">
                         <span class="progress-legend exercise-color started">התחיל לצפות</span>
                         <span class="progress-legend exercise-color proficient">סיים לצפות</span>
+                        <span class="progress-legend exercise-color completed">סיים לצפות</span>
                     </span>
                 </div>
             </div>
         </li>
         <li>
-            {{ profile_macros.class_api_link(user_data_coach, "סיכום מצב", "progress/summary", selected_graph_type, list_id) }}
+            {{ profile_macros.class_api_link(user_data_coach, "סיכום מצב תרגילים", "progress/exercise_summary", selected_graph_type, list_id) }}
             <p class="accordion-content">
-                מציג את התרגילים עליהם עבדה הכיתה שלכם 
+                מציג את התרגילים עליהם עבדה הכיתה שלכם
+            </p>
+        </li>
+        <li>
+            {{ profile_macros.class_api_link(user_data_coach, "סיכום מצב סרטונים", "progress/video_summary", selected_graph_type, list_id) }}
+            <p class="accordion-content">
+                מציג את הסרטונים שראתה הכיתה שלכם
             </p>
         </li>
         <li>
@@ -146,14 +153,26 @@
   </div>
 
   <div class="filter">
-    {{ profile_macros.class_api_link(user_data_coach, "סיכום מצב", "progress/summary", selected_graph_type, list_id) }}
+    {{ profile_macros.class_api_link(user_data_coach, "סיכום מצב תרגילים", "progress/exercise_summary", selected_graph_type, list_id) }}
 
     <div class="filter-block">
-      <h3>סיכום מצב</h3>
+      <h3>סיכום מצב תרגילים</h3>
     </div>
     <div class="filter-block">
       <p>מציג רק
-        <input type="text" id="student-progresssummary-search" placeholder="שם התרגיל" class="search-input simple-input ui-corner-all blur-on-esc"></input>
+        <input type="text" id="student-progresssummary-exercise-search" placeholder="שם התרגיל" class="search-input simple-input ui-corner-all blur-on-esc"></input>
+    </div>
+  </div>
+
+  <div class="filter">
+    {{ profile_macros.class_api_link(user_data_coach, "סיכום מצב סרטונים", "progress/video_summary", selected_graph_type, list_id) }}
+
+    <div class="filter-block">
+      <h3>סיכום מצב סרטונים</h3>
+    </div>
+    <div class="filter-block">
+      <p>מציג רק
+        <input type="text" id="student-progresssummary-video-search" placeholder="שם הסרטון" class="search-input simple-input ui-corner-all blur-on-esc"></input>
     </div>
   </div>
 

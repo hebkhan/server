@@ -1,7 +1,7 @@
-var ProgressSummaryView = function() {
+var ProgressSummaryView = function(type) {
     var fInitialized = false,
         template = Templates.get("profile.class-progress-summary"),
-        statusInfo = {
+        exerciseStatusInfo = {
                 struggling: {
                     display: "מתקשה",
                     fShowOnLeft: true,
@@ -22,21 +22,41 @@ var ProgressSummaryView = function() {
                     display: "לא התחיל",
                     fShowOnLeft: false,
                     order: 4}
-            },
-        updateFilterTimeout = null;
+        },
+        videoStatusInfo = {
+            completed: {
+                display: "סיים",
+                fShowOnLeft: true,
+                order: 0},
+            started: {
+                display: "התחיל",
+                fShowOnLeft: false,
+                order: 1},
+            "not-started": {
+                display: "לא התחיל",
+                fShowOnLeft: false,
+                order: 2}
+        },
+        updateFilterTimeout = null,
+        context = null,
+        statusInfo = null;
+    if (type == "video") {
+        statusInfo = videoStatusInfo;
+    } else {
+        statusInfo = exerciseStatusInfo;
+    }
 
     function toPixelWidth(num) {
-        return Math.round(200 * num / Profile.numStudents);
+        return Math.round(200 * num / context.num_students);
     }
 
     function filterSummaryRows() {
         updateFilterTimeout = null;
-        var filterText = $("#student-progresssummary-search").val()
+        var filterText = $("#student-progresssummary-" + type + "-search").val()
                             .toLowerCase();
-
-        $(".exercise-row").each(function(index) {
+        $(".item-row").each(function(index) {
             var jel = $(this),
-                exerciseName = jel.find(".exercise-name span")
+                exerciseName = jel.find(".item-name span")
                                 .html().toLowerCase();
             if (filterText == "" || exerciseName.indexOf(filterText) > -1) {
                 jel.show();
@@ -64,7 +84,7 @@ var ProgressSummaryView = function() {
         });
 
         Handlebars.registerHelper("toDisplay", function(status) {
-            return statusInfo[status].display;
+            return (exerciseStatusInfo[status] || videoStatusInfo[status]).display;
         });
 
         Handlebars.registerHelper("progressColumn", function(block) {
@@ -77,7 +97,7 @@ var ProgressSummaryView = function() {
                 fOnLeft = (block.hash.side === "left");
 
             $.each(progress, function(index, p) {
-                if (fOnLeft === statusInfo[p.status].fShowOnLeft) {
+                if (fOnLeft === (exerciseStatusInfo[p.status] || videoStatusInfo[p.status]).fShowOnLeft) {
                     result += block(p);
                 }
             });
@@ -86,7 +106,7 @@ var ProgressSummaryView = function() {
         });
 
         // Delegate clicks to expand rows and load student graphs
-        $("#graph-content").delegate(".exercise-row", "click", function(e) {
+        $("#graph-content").delegate(".item-row", "click", function(e) {
             var jRow = $(this),
                 studentLists = jRow.find(".student-lists");
 
@@ -111,27 +131,31 @@ var ProgressSummaryView = function() {
             }
         });
 
-        $("#stats-filters").delegate("#student-progresssummary-search", "keyup", function() {
+        $("#stats-filters").delegate("#student-progresssummary-" + type + "-search", "keyup", function() {
             if (updateFilterTimeout == null) {
                 updateFilterTimeout = setTimeout(filterSummaryRows, 250);
             }
         });
+
     }
 
     return {
-        render: function(context) {
+        render: function(c) {
+            context = c;
             if (!fInitialized) {
                 init();
             }
+            if (type == "video") {
+                context.items = context.videos;
+            } else {
+                context.items = context.exercises;
+            }
 
-            Profile.numStudents = context.num_students;
-
-            $.each(context.exercises, function(index, exercise) {
-                exercise.progress.sort(function(first, second) {
+            $.each(context.items, function(index, item) {
+                item.progress.sort(function(first, second) {
                     return statusInfo[first.status].order - statusInfo[second.status].order;
                 });
             });
-
             $("#graph-content").html(template(context));
         }
     };
