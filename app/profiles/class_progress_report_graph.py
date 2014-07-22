@@ -42,7 +42,6 @@ def class_progress_report_graph_context(user_data, list_students):
 
     exercise_names = [(e.name, e.display_name, escapejs(e.name)) for e in exercises_found]
     exercise_list = [{'name': e.name, 'display_name': e.display_name} for e in exercises_found]
-
     videos_all = Video.get_all()
     all_video_progress = dict(zip(list_students, get_video_progress_for_students(list_students)))
     videos_found = reduce(set.union, all_video_progress.itervalues(), set())

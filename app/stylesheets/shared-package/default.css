@@ -1570,6 +1570,10 @@ ul.ui-autocomplete .ui-menu-item a span.autocomplete-exercise {
             background-color: #0080C9;
             color: #eee !important;
         }
+        .exercise-color.completed {
+            background-color: #0080C9;
+            color: #eee !important;
+        }
         .exercise-color.suggested {
             background-color: #73982C;
             color: #eee !important;

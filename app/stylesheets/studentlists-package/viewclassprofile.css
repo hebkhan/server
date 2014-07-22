@@ -113,16 +113,16 @@
       margin-left:2px;
     }
 
-.exercise-row {
+.item-row {
   padding-top: 5px;
   padding-bottom: 10px;
   min-width: 670px;
 }
-.exercise-row:hover {
+.item-row:hover {
   background-color: #EEE;
   cursor: ns-resize;
 }
-    .exercise-row .exercise-name {
+    .item-row .ditem-name {
       width: 130px;
       float: right;
       line-height: 1.2;
