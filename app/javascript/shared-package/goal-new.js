@@ -153,11 +153,11 @@ var GoalCreator = {
 
         var message = "";
         if (GoalCreator.objectives.length === 0) {
-            message = "This goal currently has no objectives selected. Select <b>up to 10</b> exercises or videos to complete below.";
+            message = "טרם בחרתם מטרות ליעד זה. בחרו <b>עד 10</b> תרגילים או סרטונים למטה.";
         } else {
             var matchingObjectives;
 
-            message = "To complete this goal, you will have to <ul>";
+            message = "בכדי להשלים יעד זה, עליכם<ul>";
 
             // Exercises
             matchingObjectives = [];
@@ -166,18 +166,18 @@ var GoalCreator = {
                     matchingObjectives.push(objective);
             });
             if (matchingObjectives.length > 0) {
-                message += "<li class='exercise-objectives'>become proficient in exercise";
+                message += "<li class='exercise-objectives'>להשיג מיומנות בתרגיל";
                 if (matchingObjectives.length == 1) {
                     message += " <em>" + matchingObjectives[0].description + "</em>";
                 } else {
-                    message += "s ";
+                    message += "ים ";
                     $.each(matchingObjectives, function(idx, objective) {
                         if (idx === 0)
                             message += "<em>" + objective.description + "</em>";
                         else if (idx < matchingObjectives.length - 1)
                             message += ", <em>" + objective.description + "</em>";
                         else
-                            message += " and <em>" + objective.description + "</em>";
+                            message += " ו<em>" + objective.description + "</em>";
                     });
                 }
                 message += "</li>";
@@ -190,18 +190,18 @@ var GoalCreator = {
                     matchingObjectives.push(objective);
             });
             if (matchingObjectives.length > 0) {
-                message += "<li class='video-ojectives'>, and watch video";
+                message += "<li class='video-ojectives'>, ולצפות בסרט";
                 if (matchingObjectives.length == 1) {
                     message += " <em>" + matchingObjectives[0].description + "</em>";
                 } else {
-                    message += "s ";
+                    message += "ים ";
                     $.each(matchingObjectives, function(idx, objective) {
                         if (idx === 0)
                             message += "<em>" + objective.description + "</em>";
                         else if (idx < matchingObjectives.length - 1)
                             message += ", <em>" + objective.description + "</em>";
                         else
-                            message += " and <em>" + objective.description + "</em>";
+                            message += " ו<em>" + objective.description + "</em>";
                     });
                 }
                 message += ".</li>";
@@ -369,7 +369,7 @@ var GoalCreator = {
 
         if (GoalCreator.objectives.length < 2)
         {
-            error = "We'd like you to pick at least two (2) objectives";
+            error = "כדאי לבחור לפחות שתי משימות. האמת - חייבים שתי משימות לפחות.";
         }
 
         if (error !== "") {
@@ -389,7 +389,7 @@ var GoalCreator = {
         var titleField = form.find('input[name="title"]');
         if (titleField.val() === "")
         {
-            titleField.val("Custom goal: " + new Date().toDateString());
+            titleField.val("יעד מותאם אישית: " + new Date().toDateString());
         }
 
         var goal = new Goal({
