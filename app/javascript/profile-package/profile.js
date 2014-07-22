@@ -888,28 +888,6 @@ var Profile = {
         $("#profile-goals-content").append(fakeView.show().addClass("empty-chart"));
     },
 
-    populateSuggestedActivity: function(activities) {
-        var suggestedTemplate = Templates.get("profile.suggested-activity");
-
-        var attachProgress = function(activity) {
-            var progress = activity["progress"] || 0;
-            var formattedProgress = progress ?
-                    (100 * progress).toPrecision(4) + "%" :
-                    "not started";
-            activity["streakBar"] = {
-                "proficient": false,
-                "suggested": true,
-                "progressDisplay": formattedProgress,
-                // TODO: is this the right width?
-                "maxWidth": 228,
-                "width": activity["progress"] * 228
-            };
-        };
-        _.each(activities["exercises"] || [], attachProgress);
-        _.each(activities["videos"] || [], attachProgress);
-        $("#suggested-activity").append(suggestedTemplate(activities));
-    },
-
     populateRecentActivity: function(activities) {
         var listTemplate = Templates.get("profile.recent-activity-list"),
             exerciseTemplate = Templates.get("profile.recent-activity-exercise"),
@@ -960,7 +938,6 @@ var Profile = {
                             "slow", function() {
                                 $(this).hide();
                             });
-                    Profile.populateSuggestedActivity(data.suggested);
                     Profile.populateRecentActivity(data.recent);
                     $("#activity-contents").show();
                 }
