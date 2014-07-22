@@ -8,7 +8,6 @@ import logging
 from google.appengine.api import users
 
 from request_handler import RequestHandler
-from knowledgemap import deserializeMapCoords
 from library import library_content_html
 from user_util import developer_only
 from api.auth.xsrf import ensure_xsrf_cookie
@@ -24,14 +23,8 @@ class CreateNewGoal(RequestHandler):
     def get(self):
         user_data = UserData.current()
 
-        from exercises import exercise_graph_dict_json
-
         context = {
-            'graph_dict_data': exercise_graph_dict_json(user_data),
             'user_data': user_data,
-            'expanded_all_exercises': user_data.expanded_all_exercises,
-            'map_coords': json.dumps(deserializeMapCoords(user_data.map_coords)),
-
             # Get pregenerated library content from our in-memory/memcache
             # two-layer cache
             'library_content': library_content_html(),
