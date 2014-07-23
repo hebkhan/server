@@ -1484,7 +1484,6 @@ def get_students_video_progress_summary():
         return api_invalid_param_response(e.message)
 
     list_students = sorted(list_students, key=lambda student: student.nickname)
-    from collections import defaultdict
     from profiles.class_progress_report_graph import get_video_progress_for_students
     student_email_to_info = {}
     video_id_to_display_name = {video.key().id(): video.title for video in models.Video.get_all()}
@@ -1496,7 +1495,10 @@ def get_students_video_progress_summary():
         for not_started_video in set(video_id_to_display_name) - set(video_id_to_status):
             video_id_to_status[not_started_video] = 'not-started'
         for video_id, status in video_id_to_status.iteritems():
-            name_to_status_to_emails[video_id_to_display_name[video_id]][status].add(student.email)
+            try:
+                name_to_status_to_emails[video_id_to_display_name[video_id]][status].add(student.email)
+            except KeyError: # video doesn't exist anymore
+                pass
 
     video_data = [dict(display_name=name, progress=[dict(status=status, students=[student_email_to_info[email] for email in emails])
                                                     for status, emails in status_to_emails.iteritems()])
