@@ -1087,8 +1087,10 @@ var ProgressReport = {
         var time_filter_disabled = (progressType == "video");
         $("#progressreport-filter-last-time").prop("disabled", time_filter_disabled);
         $("#progressreport-recent").prop("disabled", time_filter_disabled);
+        $("#progressreport-struggling").prop("disabled", time_filter_disabled);
         if (time_filter_disabled == true) {
             $("#progressreport-recent").prop("checked", false);
+            $("#progressreport-struggling").prop("checked", false);
         }
         $(".graph-options").children().hide();
         $("#"+progressType+"-progress-legend").show();
@@ -1149,7 +1151,7 @@ var ProgressReport = {
                     studentRow.matchingCells = [];
                     $.each(studentRow.progress, function(idx2, exercise) {
                         var valid = visibleColumns[idx2];
-                        if (filters['struggling'] && exercise.status != 'Struggling') {
+                        if (filters['struggling'] && exercise.status_css != 'struggling') {
                             valid = false;
                         } else if (filters['recent'] && exercise.seconds_since_done > 60*60*24*filterRecentTime) {
                             valid = false;
