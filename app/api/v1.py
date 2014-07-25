@@ -1458,9 +1458,11 @@ def get_students_exercise_progress_summary():
                     'profile_root': student.profile_root,
             })
 
-        progress = [dict([('status', status),
-                        ('students', progress_buckets[status])])
-                        for status in progress_buckets]
+        if not any(bucket for status, bucket in progress_buckets.iteritems() if status != "not-started"):
+            # skip exercises that have no student activity
+            continue
+
+        progress = [dict(status=status, students=progress_buckets[status]) for status in progress_buckets]
 
         exercise_data.append({
             'name': exercise.name,
@@ -1486,19 +1488,28 @@ def get_students_video_progress_summary():
     list_students = sorted(list_students, key=lambda student: student.nickname)
     from profiles.class_progress_report_graph import get_video_progress_for_students
     student_email_to_info = {}
-    video_id_to_display_name = {video.key().id(): video.title for video in models.Video.get_all()}
+    student_to_video_id_to_status = dict(zip(list_students, get_video_progress_for_students(list_students)))
+    all_video_ids = set(vid
+                        for video_id_to_status in student_to_video_id_to_status.itervalues()
+                        for vid in video_id_to_status)
+    video_id_to_display_name = {video.key().id(): video.title
+                                for video in db.get([db.Key.from_path("Video", vid) for vid in all_video_ids])
+                                if video}
     name_to_status_to_emails = {name: {'completed': set(), 'started': set(), 'not-started': set()}
                                 for name in video_id_to_display_name.values()}
-    student_to_video_id_to_status = dict(zip(list_students, get_video_progress_for_students(list_students)))
     for student, video_id_to_status in student_to_video_id_to_status.iteritems():
-        student_email_to_info[student.email] = {'email': student.email, 'nickname': student.nickname, 'profile_root': student.profile_root}
+        student_email_to_info[student.email] = dict(email=student.email,
+                                                    nickname=student.nickname,
+                                                    profile_root=student.profile_root)
         for not_started_video in set(video_id_to_display_name) - set(video_id_to_status):
             video_id_to_status[not_started_video] = 'not-started'
         for video_id, status in video_id_to_status.iteritems():
             try:
-                name_to_status_to_emails[video_id_to_display_name[video_id]][status].add(student.email)
-            except KeyError: # video doesn't exist anymore
-                pass
+                vid_name = video_id_to_display_name[video_id]
+            except KeyError:
+                # video doesn't exist anymore
+                continue
+            name_to_status_to_emails[vid_name][status].add(student.email)
 
     video_data = [dict(display_name=name, progress=[dict(status=status, students=[student_email_to_info[email] for email in emails])
                                                     for status, emails in status_to_emails.iteritems()])
