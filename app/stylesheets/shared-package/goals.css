@@ -343,6 +343,7 @@ input.goal-title:hover {
 }
 .goal-description {
     font-size: 14px;
+    margin: 5px 0;
 }
 
 .goal-description.pulls {
