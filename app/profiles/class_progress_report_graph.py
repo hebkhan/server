@@ -12,7 +12,7 @@ import pickle
 STATUSES = dict(
     started = "התחיל",
     completed = "צפה",
-    review = "לבחון מחדש",
+    review = "סיים",
     struggling = "מתקשה",
     proficient = "מנוסה",
     proficient_implicit = "מנוסה (עקב נסיון ביחידות מתקדמות יותר)",

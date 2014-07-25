@@ -7,7 +7,7 @@ var ProgressSummaryView = function(type) {
                     fShowOnLeft: true,
                     order: 0},
                 review: {
-                    display: "לבחון מחדש",
+                    display: "סיים",
                     fShowOnLeft: true,
                     order: 1},
                 proficient: {

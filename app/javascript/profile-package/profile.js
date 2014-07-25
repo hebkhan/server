@@ -458,7 +458,7 @@ var Profile = {
             }
 
             if (states["reviewing"]) {
-                stat = "לבחון מחדש";
+                stat = "סיים";
                 color = "review light";
             } else if (states["proficient"]) {
                 // TODO: handle implicit proficiency - is that data in the API?
