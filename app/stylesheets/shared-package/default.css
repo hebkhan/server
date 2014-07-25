@@ -1579,11 +1579,11 @@ ul.ui-autocomplete .ui-menu-item a span.autocomplete-exercise {
             color: #eee !important;
         }
         .exercise-color.review {
-            background-color: #E35D04;
+            background-color: #5404E3;
             color: #eee !important;
         }
         .exercise-color.review.light {
-            background-color: #f2b891;
+            background-color: #91A1F2;
             color: #333 !important;
         }
         .exercise-color.not-started {
@@ -1603,7 +1603,7 @@ ul.ui-autocomplete .ui-menu-item a span.autocomplete-exercise {
           border-right: 5px solid #0080C9;
         }
         .exercise-color.review.border-only {
-          border-right: 5px solid #E35D04;
+          border-right: 5px solid #5404E3;
         }
         .exercise-color.not-started.border-only {
           border-right: 5px solid #CCC;
