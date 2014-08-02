@@ -11,13 +11,13 @@ if (typeof Profile !== "undefined") {
             guiders.createGuider({
                 buttons: [
                     {
-                        action: guiders.ButtonAction.CLOSE,
-                        text: "No thanks",
+                        onclick: doneGuiding,
+                        text: "לא תודה",
                         classString: "simple-button action-gradient"
                     },
                     {
-                        action: guiders.ButtonAction.CLOSE,
-                        text: "Cool. Let me login now!",
+                        onclick: doneGuiding,
+                        text: "מגניב - תן לי להתחבר!",
                         onclick: function() {
                             var postLoginUrl = "/postlogin?continue=" +
                                     encodeURIComponent(window.location.href);
@@ -27,32 +27,40 @@ if (typeof Profile !== "undefined") {
                         classString: "simple-button action-gradient green"
                     }
                 ],
-                title: "Log in to save and customize your profile!",
-                description: "Your profile page shows you all the great progress you've made on Khan Academy. If you login, you can even customize and share your profile with your friends!",
+                title: "התחברו כדי לשמור ולהתאים את הפרופיל שלכם!",
+                description: "עמוד הפרופיל מציג לכם את ההתקדמות הנפלאה שעשיתם באתר. אם תתחברו, תוכלו אפילו להתאים ולשתף את הפרופיל שלכם עם חבריכם!",
                 overlay: true
             }).show();
             return;
         }
 
         var isFullyEditable = Profile.profile.get("isDataCollectible");
+
+        var doneGuiding = function() {
+            guiders.hideAll();
+            if (isFullyEditable) {
+                $("#edit-basic-info").click();
+            }
+        }
+
         guiders.createGuider({
             id: "welcome",
             next: "basic-profile",
 
             buttons: [
                 {
-                    action: guiders.ButtonAction.CLOSE,
-                    text: "No thanks. I know what I'm doing.",
+                    onclick: doneGuiding,
+                    text: "תודה!",
                     classString: "simple-button action-gradient"
                 },
                 {
                     action: guiders.ButtonAction.NEXT,
-                    text: "Cool. Show me around!",
+                    text: "מגניב - תנו לי סיור!",
                     classString: "simple-button action-gradient green"
                 }
             ],
-            title: "Welcome to your new profile!",
-            description: "All of the stuff you liked is still here, and we've added some new things you can customize!",
+            title: "ברוכים הבאים לפרופיל החדש שלכם!",
+            description: "בדף זה תוכלו לעדכן את הפרטים שלכם ולהתעדכן על הפעילות שלכם באקדמיית קהאן.", 
             overlay: true
         }).show();
 
@@ -66,20 +74,20 @@ if (typeof Profile !== "undefined") {
             position: 3,
             buttons: [
                 {
-                    action: guiders.ButtonAction.CLOSE,
-                    text: "Close",
+                    onclick: doneGuiding,
+                    text: "סגור",
                     classString: "simple-button action-gradient"
                 },
                 {
                     action: guiders.ButtonAction.NEXT,
-                    text: "Next",
+                    text: "אוקי, הלאה...",
                     classString: "simple-button action-gradient green"
                 }
             ],
-            title: "It's all about you.",
+            title: "זה הכל אתם.",
             description: isFullyEditable ?
-                "This is your basic profile information, which you can now edit! You can change your name and pick a cool avatar just by clicking on it over there on the left." :
-                "This is your basic profile information, which you can now customize with a cool avatar! Just click on it over there on the left."
+                "כאן תמצאו את המידע הבסיסי שלכם. תוכלו לשנות את שם המשתמש שלכם ולבחור תמונת פרופיל מגניבה על ידי לחיצה על התמונה הנוכחית." : 
+                "כאן תמצאו את המידע הבסיסי שלכם. תוכלו לבחור תמונת פרופיל מגניבה על ידי לחיצה על התמונה הנוכחית."
         });
 
         guiders.createGuider({
@@ -92,18 +100,18 @@ if (typeof Profile !== "undefined") {
             position: 6,
             buttons: [
                 {
-                    action: guiders.ButtonAction.CLOSE,
-                    text: "Close",
+                    onclick: doneGuiding,
+                    text: "סגור",
                     classString: "simple-button action-gradient"
                 },
                 {
                     action: guiders.ButtonAction.NEXT,
-                    text: "More! Show me more.",
+                    text: "עוד, תראו לי עוד!",
                     classString: "simple-button action-gradient green"
                 }
             ],
-            title: "Show off your accomplishments.",
-            description: "You can select up to five badges to show off in your very own shiny display case!"
+            title: "הציגו את ההישגים שלכם.",
+            description: "תוכלו לבחור עד חמש מדליות להציג בתיבת התצוגה הנוצצת שלכם!"
         });
 
         guiders.createGuider({
@@ -113,25 +121,25 @@ if (typeof Profile !== "undefined") {
             attachTo: ".vertical-tab-list",
             highlight: ".vertical-tab-list",
             overlay: true,
-            position: 3,
+            position: 9,
             buttons: (isFullyEditable ?
                 [{
-                    action: guiders.ButtonAction.CLOSE,
-                    text: "Close",
+                    onclick: doneGuiding,
+                    text: "סגור",
                     classString: "simple-button action-gradient"
                 },
                 {
                     action: guiders.ButtonAction.NEXT,
-                    text: "Next",
+                    text: "אחלה, יש עוד?",
                     classString: "simple-button action-gradient green"
                 }] : [{
-                    action: guiders.ButtonAction.CLOSE,
-                    text: "OK! Let me play with the page!",
+                    onclick: doneGuiding,
+                    text: "סבבה! תנו לי לשחק עם העמוד!",
                     classString: "simple-button action-gradient green"
                 }]
             ),
-            title: "Checking Your Vitals",
-            description: "The statistics about your progress on Khan Academy are just a click away in the navigation menu. Don't worry, though, only you and your coaches can see this and nobody else."
+            title: "מה המצב?",
+            description: "הסטטיסטיקות של פעילותכם באתר זמינות במרחק לחיצה בתפריט זה. אל דאגה, הנתונים חשופים רק לכם ולמדריכים שלכם, ולא לאף-אחד אחר."
         });
 
         if (isFullyEditable) {
@@ -141,15 +149,17 @@ if (typeof Profile !== "undefined") {
                 attachTo: ".edit-visibility",
                 highlight: ".user-info, .edit-visibility",
                 overlay: true,
-                position: 9,
+                position: 3,
                 buttons: [{
-                    action: guiders.ButtonAction.CLOSE,
-                    text: "OK! Let me play with the page!",
+                    onclick: doneGuiding,
+                    text: "סבבה. עכשיו תנו לי לשוטט!",
                     classString: "simple-button action-gradient green"
                 }],
-                title: "Share With The World <span style='font-size:65%'>(but only if you want to)</span>",
-                description: "The information in the box above can be made public. If you make your profile public, you'll get your own special space on Khan Academy. Other users will be able to visit your page. Don't worry! You can make your profile private at any time, in which case only you and your coaches can see your info."
+                title: "שתף עם העולם! <span style='font-size:65%'>(אבל רק אם אתם רוצים)</span>",
+                description: "ניתן להפוך את העמוד שלכם לציבורי. כך תקבלו איזור משלכם באקדמיית קהאן, ומשתמשים אחרים יוכלו לבקר בו. אל דאגה - תמיד תוכלו להפוך את הפרופיל שלכם בחזרה לפרטי, ואז רק אתם והמדריכים שלכם יוכלו לראות את הנתונים שלכם."
             });
+
+            
         }
     }
 }

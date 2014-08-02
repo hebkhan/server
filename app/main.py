@@ -466,8 +466,7 @@ class MobileOAuthLogin(request_handler.RequestHandler):
 
 class PostLogin(request_handler.RequestHandler):
     def get(self):
-        cont = self.request_string('continue', default = "/").encode("utf8")
-
+        cont = self.request_string('continue', default = None)
         # Immediately after login we make sure this user has a UserData entity
         user_data = UserData.current()
         if user_data:
@@ -482,6 +481,8 @@ class PostLogin(request_handler.RequestHandler):
             # from Facebook, as they now have an opportunity to set it themself
             if not user_data.username:
                 user_data.update_nickname()
+                if not cont:
+                    cont = "/profile"
 
             # Set developer and moderator to True if user is admin
             if (not user_data.developer or not user_data.moderator) and users.is_current_user_admin():
@@ -530,7 +531,7 @@ class PostLogin(request_handler.RequestHandler):
         # Always delete phantom user cookies on login
         self.delete_cookie('ureg_id')
 
-        self.redirect(cont)
+        self.redirect(cont.encode("utf8"))
 
 class Logout(request_handler.RequestHandler):
     def get(self):
@@ -938,3 +939,4 @@ application = webapp2.WSGIApplication([
 application = profiler.ProfilerWSGIMiddleware(application)
 application = GAEBingoWSGIMiddleware(application)
 application = request_cache.RequestCacheMiddleware(application)
+
