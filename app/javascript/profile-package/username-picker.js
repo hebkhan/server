@@ -177,7 +177,7 @@ UsernamePickerView = Backbone.View.extend({
     },
 
     onTimeout_: function() {
-        this.showSidenote_(".username-row", "Checking...");
+        this.showSidenote_(".username-row", "בודק...");
         this.model.validateUsername(this.getFormValue_(".username"));
         this.keyupTimeout = null;
     },
@@ -192,7 +192,7 @@ UsernamePickerView = Backbone.View.extend({
         if (isValid) {
             this.showSidenote_(".nickname-row", "");
         } else {
-            this.showSidenote_(".nickname-row", "Can't leave empty.", false);
+            this.showSidenote_(".nickname-row", "אי-אפשר להשאיר ריק.", false);
         }
 
         this.usernameFieldAcceptable_ = isValid;
