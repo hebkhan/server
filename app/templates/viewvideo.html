@@ -143,8 +143,8 @@
           // replace it with a nicer link (we don't want to have to pass the url to
           // the templatetag).
           var $points = $('.video-energy-points');
-          $points.data('title', $points.attr('title').replace(/Sign in/,
-                     '<a href="{{ login_url|escape }}">Sign in</a>'))
+          $points.data('title', $points.attr('title').replace(/התחברו/,
+                     '<a href="{{ login_url|escape }}">התחברו</a>'))
                  .removeAttr('title');
 
           VideoStats.tooltip('#points-badge-hover', $points.data('title'));
