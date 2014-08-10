@@ -1,4 +1,4 @@
-{% macro player_embed(youtube_id, width=800, height=480, mobile=False, use_iframe_embed=False, http_origin=None) -%}
+{% macro player_embed(youtube_id, width=800, height=480, mobile=False, use_iframe_embed=True, http_origin=None) -%}
 
 {% if mobile %}
     {% set width="100%" %}
@@ -44,6 +44,6 @@
     <param name="FlashVars" value="flv={{video_path|urlencode}}&amp;showstop=1&amp;showvolume=1&amp;hl=he&amp;cc_load_policy=1&amp;showfullscreen=1&amp;showiconplay=1&amp;bgcolor=FFFFFF&amp;bgcolor1=80C65A&amp;bgcolor2=80C65A&amp;iconplaybgcolor=80C65A&amp;width={{ width }}&amp;height={{ height }}" />
     <div>
             <p><a href="http://www.adobe.com/go/getflashplayer"><img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Get Adobe Flash player" /></a></p>
-    </div>                
+    </div>
 </object>
 {%- endmacro %}
