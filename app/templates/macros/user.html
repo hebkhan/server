@@ -16,7 +16,7 @@
 {%- endmacro %}
 
 {% macro user_points_content(profile_root, points) -%}
-<span title="{{ points|thousands_separated }} energy points" class="energy-points-badge" onclick="location.href='{{profile_root}}'" {% if not points %} style="display: none" {% endif %}>{{ points|thousands_separated }}</span>
+<span title="{{ points|thousands_separated }} נקודות" class="energy-points-badge" onclick="location.href='{{profile_root}}'" {% if not points %} style="display: none" {% endif %}>{{ points|thousands_separated }}</span>
 {%- endmacro %}
 
 {% macro username_and_notification(username, user_data) -%}
@@ -44,5 +44,5 @@
 {%- endmacro %}
 
 {% macro possible_points_badge(points, possible_points, logged_in=True) -%}
-<div class="video-energy-points"{% if logged_in %} title="{{ points }} Energy Points earned for watching this video"{% else %} title="You're earning points for watching this video. Sign in to keep them"{% endif %}><span class="video-energy-points-current">{{ points }}</span> מתוך {{ possible_points }}</div>
+<div class="video-energy-points"{% if logged_in %} title="{{ points }} נקודות נצברו בצפיה בסרטון זה"{% else %} title="אתם צוברים נקודות עבור צפיה בסרטון זה. התחברו בכדי לשמור אותן!"{% endif %}><span class="video-energy-points-current">{{ points }}</span> מתוך {{ possible_points }}</div>
 {%- endmacro %}
