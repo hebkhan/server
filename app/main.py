@@ -474,8 +474,9 @@ class PostLogin(request_handler.RequestHandler):
             # Update email address if it has changed
             current_google_user = users.get_current_user()
             if current_google_user and current_google_user.email() != user_data.email:
-                user_data.user_email = current_google_user.email()
+                prev, user_data.user_email = user_data.user_email, current_google_user.email()
                 user_data.put()
+                logging.debug("email changed: %s -> %s", prev, user_data.user_email)
 
             # If the user has a public profile, we stop "syncing" their username
             # from Facebook, as they now have an opportunity to set it themself
