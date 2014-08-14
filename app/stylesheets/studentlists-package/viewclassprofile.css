@@ -151,9 +151,15 @@
     #left-column .float-off-spine {
       float: left;
     }
-#right-column {
+
+.exercise-progress #right-column {
   width: 300px;
 }
+
+.video-progress #right-column {
+  width: 100px;
+}
+
     #right-column .float-off-spine {
       float: right;
     }
