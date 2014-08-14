@@ -1087,12 +1087,10 @@ class UserData(GAEBingoIdentityModel, db.Model):
         google_user = users.get_current_user()
         if google_user:
             email = google_user.email()
-            logging.debug("Using googlemail: %s", email)
 
         if user_id:
             # Once we have rekeyed legacy entities,
             # we will be able to simplify this.
-            logging.debug("Fetching UserData: %s, %s", user_id, email)
             return UserData.get_from_user_id(user_id) or \
                    UserData.get_from_db_key_email(email) or \
                    UserData.insert_for(user_id, email)
