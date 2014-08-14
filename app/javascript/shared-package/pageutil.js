@@ -976,7 +976,11 @@ var TopicNav = {
         }
         scroll_target -= topic_anchor.outerHeight();  // give some context
 
-        $('html, body').animate({scrollTop: scroll_target}, speed);
+        if (speed == 0) {
+            // we actually don't wanna animate-scroll upon clicking;
+            // only scroll if the speed is 0, i.e hash changes.
+            $('html, body').animate({scrollTop: scroll_target}, speed);
+        }
 
         TopicNav.updateHash(topic_id.slice(1));
     },
@@ -1008,6 +1012,7 @@ var TopicNav = {
                 TopicNav.openTopic(this.id);
             }
             event.preventDefault();
+            return false;
         })
 
         if (!TopicNav.hashSupport) {
@@ -1027,6 +1032,7 @@ var TopicNav = {
                     TopicNav.openTopic(topic_anchor[0].id, 0);
                 }
             }
+            return false;
         });
 
         // jump to initial topic, if exists
