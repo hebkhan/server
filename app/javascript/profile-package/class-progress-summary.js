@@ -84,7 +84,7 @@ var ProgressSummaryView = function(type) {
         });
 
         Handlebars.registerHelper("toDisplay", function(status) {
-            return (exerciseStatusInfo[status] || videoStatusInfo[status]).display;
+            return statusInfo[status].display;
         });
 
         Handlebars.registerHelper("progressColumn", function(block) {
@@ -97,7 +97,7 @@ var ProgressSummaryView = function(type) {
                 fOnLeft = (block.hash.side === "left");
 
             $.each(progress, function(index, p) {
-                if (fOnLeft === (exerciseStatusInfo[p.status] || videoStatusInfo[p.status]).fShowOnLeft) {
+                if (fOnLeft === statusInfo[p.status].fShowOnLeft) {
                     result += block(p);
                 }
             });
@@ -145,11 +145,9 @@ var ProgressSummaryView = function(type) {
             if (!fInitialized) {
                 init();
             }
-            if (type == "video") {
-                context.items = context.videos;
-            } else {
-                context.items = context.exercises;
-            }
+
+            context.progress_type = type;
+            context.items = (type == "video" ? context.videos : context.exercises);
 
             $.each(context.items, function(index, item) {
                 item.progress.sort(function(first, second) {
