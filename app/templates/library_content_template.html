@@ -49,15 +49,13 @@
                 {% elif topic.content %}
                     <ol data-role="listview" data-inset="true">
                     {% for item in topic.content %}
-                    <li>
                         {% if item.kind()=="Video" %}
-                            <a href="/video/{{item.readable_id}}?topic={{topic.id}}" title="{{item.description|escape}}" data-id='{{ item.readable_id|escape }}'>
-                            {{ item.title }}
-                            </a>
+                            <li><a href="/video/{{item.readable_id}}?topic={{topic.id}}" title="{{item.description|escape}}" data-id='{{ item.readable_id|escape }}'>
+                                {{ item.title }}
+                            </a></li>
                         {% elif item.kind()=="Url" %}
-                            <a href="{{item.url}}" data-ajax="false">{{ item.title }}</a>
+                            <li><a href="{{item.url}}" data-ajax="false">{{ item.title }}</a></li>
                         {% endif %}
-                    </li>
                     {% endfor %}
                     </ol>
                 {% endif %}
