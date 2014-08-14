@@ -894,7 +894,7 @@ var ClassProfile = {
                 if (exercise.last_done) {
                     exercise.seconds_since_done = ((new Date()).getTime() - Date.parse(exercise.last_done)) / 1000;
                 } else {
-                    exercise.seconds_since_done = 1000000;
+                    exercise.seconds_since_done = -1;
                 }
 
                 exercise.status_css = 'transparent';
@@ -1153,7 +1153,9 @@ var ProgressReport = {
                         var valid = visibleColumns[idx2];
                         if (filters['struggling'] && exercise.status_css != 'struggling') {
                             valid = false;
-                        } else if (filters['recent'] && exercise.seconds_since_done > 60*60*24*filterRecentTime) {
+                        } else if (filters['recent'] &&
+                                    (exercise.seconds_since_done <= -1 ||
+                                    exercise.seconds_since_done > 60*60*24*filterRecentTime)) {
                             valid = false;
                         }
                         if (valid) {
