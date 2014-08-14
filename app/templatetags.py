@@ -71,9 +71,10 @@ def exercise_message(exercise, user_exercise_graph, sees_graph=False,
             proficient_exercises = user_exercise_graph.proficient_exercise_names()
             for prereq in exercise.prerequisites:
                 if prereq not in proficient_exercises:
+                    prereq_ex = Exercise.get_by_name(prereq)
                     suggested_prereqs.append({
-                          'ka_url': Exercise.get_relative_url(prereq),
-                          'display_name': Exercise.to_display_name(prereq),
+                          'ka_url': prereq_ex.relative_url,
+                          'display_name': prereq_ex.display_name,
                           })
         exercise_states['suggested_prereqs'] = apijsonify.jsonify(
                 suggested_prereqs)
