@@ -32,11 +32,12 @@ class ExerciseCompletionBadge(Badge):
 
     def extended_description(self):
         badges = []
-        total_len = 0;
+        total_len = 0
 
         for exercise_name in self.exercise_names_required:
-            long_name = models.Exercise.to_display_name(exercise_name)
-            short_name = models.Exercise.to_short_name(exercise_name)
+            ex = models.Exercise.get_by_name(exercise_name)
+            long_name = ex.display_name
+            short_name = ex.short_name
 
             display_name = long_name if (total_len < 80) else short_name
 
