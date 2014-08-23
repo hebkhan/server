@@ -1,5 +1,5 @@
+from __future__ import absolute_import
 import webapp2
-
 from gae_bingo import cache, dashboard, middleware, blotter, api, redirect
 
 application = webapp2.WSGIApplication([
