@@ -8,7 +8,7 @@ var FocusGraph = {
             // Exercise legend in the upper left
             var exerciseLegend = {
                 type: "pie",
-                name: "Exercises",
+                name: "תרגילים",
                 cursor: "",
                 size: "20%",
                 innerSize: "13%",
@@ -20,7 +20,7 @@ var FocusGraph = {
                 },
                 data: [
                         {
-                            name: "Exercises",
+                            name: "תרגילים",
                             fLegend: true,
                             y: 100,
                             color: "silver"
@@ -49,8 +49,8 @@ var FocusGraph = {
                 };
             }
             exerciseFocus.data = _.map(this.segmentData.dictExerciseSeconds, function(segment, key) {
-                var proficientText = segment["proficient"] ? (", <b>" + this.star + "Proficient</b>") : "",
-                    tooltip = "<b>" + segment["exerciseTitle"] + "</b> (exercise" + proficientText + ")";
+                var proficientText = segment["proficient"] ? this.star : "",
+                    tooltip = "<b>" + segment["exerciseTitle"] + " " + proficientText + "</b>";
 
                 return {
                     name: "<b>" + segment["exerciseTitle"] + (segment["proficient"] ? " " + this.star : "") + "</b>",
@@ -69,7 +69,7 @@ var FocusGraph = {
             // Video legend in the upper left
             var videoLegend = {
                 type: "pie",
-                name: "Videos",
+                name: "סרטונים",
                 cursor: "",
                 size: "9.4%",
                 innerSize: "3%",
@@ -88,7 +88,7 @@ var FocusGraph = {
                             color: "silver"
                         },
                         {
-                            name: "Videos",
+                            name: "סרטונים",
                             fLegend: true,
                             y: 75,
                             color: "silver"
@@ -120,7 +120,7 @@ var FocusGraph = {
                 return {
                     name: segment["playlistTitle"],
                     y: segment["percentage"],
-                    tooltip_title: "<b>" + segment["playlistTitle"] + "</b> (videos)",
+                    tooltip_title: "<b>" + segment["playlistTitle"] + "</b>",
                     time_spent: segment["timeSpent"],
                     tooltip_more: segment["tooltipMore"]
                 };
@@ -150,13 +150,17 @@ var FocusGraph = {
                 }
             }
         },
+        legend: {
+            rtl: true
+        },
         tooltip: {
+            useHTML: true,
             enabled: true,
             formatter: function() {
                 if (this.point.fLegend) {
                     return false;
                 }
-                return this.point.tooltip_title + "<br/> - " + this.point.time_spent + " total<br><br>" + this.point.tooltip_more;
+                return this.point.tooltip_title + "<br/>זמן: " + this.point.time_spent + "<br>" + this.point.tooltip_more;
             }
         }
     },
