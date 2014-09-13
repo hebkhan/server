@@ -2748,10 +2748,11 @@ class Topic(Searchable, db.Model):
     @staticmethod
     @layer_cache.cache_with_key_fxn(
         lambda types=None, version=None, include_hidden = False: 
-        "topic.get_filled_content_topics_%s_%s" % (
+        "topic.get_filled_content_topics_%s_%s_%s" % (
             (str(version.number)+str(version.updated_on)) if version 
             else Setting.topic_tree_version(),
-            include_hidden),
+            include_hidden,
+            "_".join(types or ["all"])),
         bigdata=True,
         layer=layer_cache.Layers.Blobstore) 
     def get_filled_content_topics(types=None, version=None, include_hidden=False):
