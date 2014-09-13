@@ -12,6 +12,8 @@
 
     var ClassExerciseProgressChart = {
 
+        exercises: {{exercises}},
+
         init: function() {
             if (window.fBoundClassExerciseProgressChart) return;
 
@@ -40,6 +42,10 @@
                 ClassExerciseProgressChart.showNone();
             });
 
+            $('#exercises-highlight li').hide();
+            $.each(ClassExerciseProgressChart.exercises, function(i, ex) {
+                $('#exercises-highlight li a[data-exercise="'+ex+'"]').parent().show();
+            })
             window.fBoundClassExerciseProgressChart = true;
         },
 

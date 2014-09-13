@@ -41,16 +41,14 @@ def class_progress_report_graph_context(user_data, list_students):
                 break
 
     exercise_names = [(e.name, e.display_name, escapejs(e.name)) for e in exercises_found]
-    exercise_list = sorted(({'name': e.name, 'display_name': e.display_name}
-                            for e in exercises_found), key=lambda e: e.display_name)
+    exercise_list = [{'name': e.name, 'display_name': e.display_name} for e in sorted(exercises_found, key=lambda e: e.display_name)]
 
     all_video_progress = dict(get_video_progress_for_students(list_students))
     videos_found = reduce(set.union, all_video_progress.itervalues(), set())
 
     videos_all = Video.get_all()
     videos_found = [video for video in videos_all if video.key().id() in videos_found]
-    video_list = sorted(({'name': v.readable_id, 'display_name': v.title}
-                            for v in videos_found), key=lambda v: v.title)
+    video_list = [{'name': v.readable_id, 'display_name': v.title} for v in sorted(videos_found, key=lambda v: v.title)]
 
     progress_data = {}
 

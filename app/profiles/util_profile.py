@@ -127,6 +127,9 @@ class ViewClassProfile(request_handler.RequestHandler):
             else:
                 initial_graph_url = "/profile/graph/%s?coach_email=%s&%s" % (selected_graph_type, urllib.quote(coach.email), urllib.unquote(self.request_string("graph_query_params", default="")))
             initial_graph_url += 'list_id=%s' % list_id
+            
+            exercises = models.Exercise.get_all_use_cache()
+            exercises.sort(key=lambda ex: ex.display_name)
 
             template_values = {
                     'user_data_coach': coach,
@@ -138,7 +141,7 @@ class ViewClassProfile(request_handler.RequestHandler):
                     'coach_nickname': coach.nickname,
                     'selected_graph_type': selected_graph_type,
                     'initial_graph_url': initial_graph_url,
-                    'exercises': models.Exercise.get_all_use_cache(),
+                    'exercises': exercises,
                     'is_profile_empty': not coach.has_students(),
                     'selected_nav_link': 'coach',
                     "view": self.request_string("view", default=""),
