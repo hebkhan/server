@@ -30,3 +30,4 @@ datastore/*
 offline/*
 */.ipynb_checkpoints/*
 v/
+google_appengine
