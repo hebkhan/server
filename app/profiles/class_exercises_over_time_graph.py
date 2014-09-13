@@ -21,6 +21,7 @@ def class_exercises_over_time_graph_context(user_data, student_list):
         students_data = user_data.get_students_data()
   
     dict_student_exercises = {}
+    exercises = set()
     user_exercise_cache_list = models.UserExerciseCache.get(students_data)
     for i, user_data_student in enumerate(students_data):
         student_nickname = user_data_student.nickname
@@ -39,14 +40,15 @@ def class_exercises_over_time_graph_context(user_data, student_list):
                 proficient_date = user_exercise["proficient_date"].strftime('%m/%d/%Y')
                 data = ExerciseData(student_nickname, exercise, days_until_proficient, proficient_date)
                 dict_student_exercises[student_nickname]["exercises"].append(data)
+                exercises.add(exercise)
    
         dict_student_exercises[student_nickname]["exercises"].sort(key = lambda k : k.days_until_proficient)
 
-
     return {
             "dict_student_exercises": dict_student_exercises,
+            "exercises": sorted(map(str, exercises)),
             "user_data_students": students_data,
-            "c_points": reduce(lambda a, b: a + b, map(lambda s: s.points, students_data), 0)
+            "c_points": sum(s.points for s in students_data)
             }
 
 
