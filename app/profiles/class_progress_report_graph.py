@@ -41,22 +41,23 @@ def class_progress_report_graph_context(user_data, list_students):
                 break
 
     exercise_names = [(e.name, e.display_name, escapejs(e.name)) for e in exercises_found]
-    exercise_list = [{'name': e.name, 'display_name': e.display_name} for e in exercises_found]
-    videos_all = Video.get_all()
-    all_video_progress = dict(zip(list_students, get_video_progress_for_students(list_students)))
+    exercise_list = sorted(({'name': e.name, 'display_name': e.display_name}
+                            for e in exercises_found), key=lambda e: e.display_name)
+
+    all_video_progress = dict(get_video_progress_for_students(list_students))
     videos_found = reduce(set.union, all_video_progress.itervalues(), set())
 
+    videos_all = Video.get_all()
     videos_found = [video for video in videos_all if video.key().id() in videos_found]
-    video_list = [{'name': v.readable_id, 'display_name': v.title} for v in videos_found]
+    video_list = sorted(({'name': v.readable_id, 'display_name': v.title}
+                            for v in videos_found), key=lambda v: v.title)
 
     progress_data = {}
 
     for (student, student_email_pair, escapejsed_student_email, user_exercise_graph) in izip(list_students, student_email_pairs, emails_escapejsed, user_exercise_graphs):
 
         student_email = student.email
-
         student_review_exercise_names = user_exercise_graph.review_exercise_names()
-
         progress_data[student_email] = student_data = {
             'email': student.email,
             'nickname': student.nickname,
@@ -127,7 +128,7 @@ def class_progress_report_graph_context(user_data, list_students):
 def get_video_progress_for_students(students):
     keys = (UserVideoCss._key_for(student) for student in students)
     data = UserVideoCss.get_by_key_name(keys)
-    for student, css in zip(students, data):
+    for student, css in izip(students, data):
         if css:
             vid_css_data = pickle.loads(css.pickled_dict)
             video_progress = {
@@ -135,6 +136,6 @@ def get_video_progress_for_students(students):
                 for progress, vids in vid_css_data.iteritems()
                 for vid_str in vids
             }
-            yield video_progress
+            yield student, video_progress
         else:
-            yield {}
+            yield student, {}
