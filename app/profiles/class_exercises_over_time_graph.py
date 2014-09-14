@@ -1,15 +1,5 @@
 import models
 
-class ExerciseData:
-        def __init__(self, nickname, exid, days_until_proficient, proficient_date):
-            self.nickname = nickname
-            self.exid = exid
-            self.days_until_proficient = days_until_proficient
-            self.proficient_date = proficient_date
-
-        def display_name(self):
-            return  models.Exercise.to_display_name(self.exid)
-
 def class_exercises_over_time_graph_context(user_data, student_list):
 
     if not user_data:
@@ -21,28 +11,39 @@ def class_exercises_over_time_graph_context(user_data, student_list):
         students_data = user_data.get_students_data()
   
     dict_student_exercises = {}
-    exercises = set()
+
+    exercises = {}
+    def get_display_name(exercise):
+        try:
+            return exercises[exercise]
+        except KeyError:
+            ret = exercises[exercise] = models.Exercise.get_by_name(exercise).display_name
+            return ret
+
     user_exercise_cache_list = models.UserExerciseCache.get(students_data)
     for i, user_data_student in enumerate(students_data):
         student_nickname = user_data_student.nickname
-
+        student_exercises = []
         dict_student_exercises[student_nickname] = {
                 "nickname": student_nickname,
                 "email": user_data_student.email,
                 "profile_root": user_data_student.profile_root,
-                "exercises": [],
+                "exercises": student_exercises,
             }
 
         for exercise, user_exercise in user_exercise_cache_list[i].dicts.iteritems():
             if user_exercise["proficient_date"]:
                 joined = min(user_data_student.joined, user_exercise["proficient_date"])
-                days_until_proficient = (user_exercise["proficient_date"] - joined).days
-                proficient_date = user_exercise["proficient_date"].strftime('%m/%d/%Y')
-                data = ExerciseData(student_nickname, exercise, days_until_proficient, proficient_date)
-                dict_student_exercises[student_nickname]["exercises"].append(data)
-                exercises.add(exercise)
+                data = dict(
+                    exid = exercise,
+                    nickname = student_nickname,
+                    days_until_proficient = (user_exercise["proficient_date"] - joined).days,
+                    proficient_date = user_exercise["proficient_date"].strftime('%m/%d/%Y'),
+                    display_name = get_display_name(exercise),
+                )
+                student_exercises.append(data)
    
-        dict_student_exercises[student_nickname]["exercises"].sort(key = lambda k : k.days_until_proficient)
+        student_exercises.sort(key = lambda k : k['days_until_proficient'])
 
     return {
             "dict_student_exercises": dict_student_exercises,
