@@ -199,7 +199,10 @@ var ClassProfile = {
                 var pointOptions = series.data[ixData].options;
                 if (!pointOptions.marker) pointOptions.marker = {};
                 pointOptions.marker.enabled = fxnHighlight(pointOptions);
-                if (pointOptions.marker.enabled) pointOptions.marker.radius = 6;
+                if (pointOptions.marker.enabled) {
+                    pointOptions.marker.radius = 6;
+                }
+                series.data[ixData].update(pointOptions);
             }
 
             series.isDirty = true;
