@@ -43,6 +43,7 @@ def class_time_graph_context(user_data, dt_utc, tz_offset, student_list):
             classtime_table = classtime_analyzer.get_classtime_table_old(students_data, dt_utc)
 
 
+    profiles = []
     for user_data_student in students_data:
 
         short_name = user_data_student.nickname
@@ -53,12 +54,15 @@ def class_time_graph_context(user_data, dt_utc, tz_offset, student_list):
         if classtime_table is not None:
             total_student_minutes = classtime_table.get_student_total(user_data_student.email)
 
+
+        profiles.append(user_data_student.profile_root)
         graph_data.append({
             "name": short_name,
             "total_minutes": "~%.0f" % total_student_minutes
             })
 
     return {
+            "profiles": map(str, profiles),
             "classtime_table": classtime_table,
             "coach_email": user_data.email,
             "width": (60 * len(graph_data)) + 120,
