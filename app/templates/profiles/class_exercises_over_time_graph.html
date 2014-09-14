@@ -169,7 +169,8 @@
                     tooltip: {
                         formatter: function() {
                             return '<b>' + this.point.nickname + '</b><br/><br/><b>' + this.point.display_name + '</b><br/>' + this.point.dt;
-                        }
+                        },
+                        useHTML: true
                     },
                     legend: {
                         enabled: false,
@@ -195,13 +196,13 @@
                                 data:[
                                 {% for exercise_data in dict_student_exercises[key]["exercises"] %}
                                 { 
-                                    dt: '{{ exercise_data.proficient_date|escapejs }}', 
-                                    name: '{{ exercise_data.exid|escapejs }}', 
-                                    display_name: '{{ exercise_data.display_name()|escapejs }}', 
+                                    dt: '{{ exercise_data.proficient_date|escapejs }}',
+                                    name: '{{ exercise_data.exid|escapejs }}',
+                                    display_name: '{{ exercise_data.display_name|escapejs }}',
                                     nickname: '{{ exercise_data.nickname|escapejs }}',
                                     email: '{{ dict_student_exercises[key]["email"]|escapejs }}',
                                     profile_root: '{{ dict_student_exercises[key]["profile_root"]|escapejs }}',
-                                    x: {{ exercise_data.days_until_proficient }}, 
+                                    x: {{ exercise_data.days_until_proficient }},
                                     y: {{ loop.index }}
                                 }{% if not loop.last %},{% endif %}
                                 {% endfor %}
