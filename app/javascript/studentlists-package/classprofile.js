@@ -11,6 +11,7 @@ var ClassProfile = {
     fLoadedGraph: false,
 
     init: function() {
+
         $(".share-link").hide();
         $(".sharepop").hide();
 
@@ -926,6 +927,10 @@ var ClassProfile = {
             student_row.progress = student_row.exercises.concat(student_row.videos);
         });
 
+        Handlebars.registerHelper("toTopicName", function(idx) {
+            return data.topic_names[idx];
+        });
+
         var template = Templates.get( "profile.profile-class-progress-report" );
 
         $("#graph-content").html( template(data) );
@@ -969,6 +974,9 @@ var ProgressReport = {
             if (visibleColumns[this.options.index]) {
                 if (matchingColumns && matchingColumns[this.options.index]) {
                     $(this.el).addClass('highlight');
+                    if (matchingColumns[this.options.index] == "name") {
+                        $(this.el).find(".item-name").addClass("filter-match");
+                    }
                 } else {
                     $(this.el).removeClass('highlight');
                 }
@@ -1109,16 +1117,37 @@ var ProgressReport = {
         var matchingColumns = [];
         var hiddenCount = 0;
 
+        // Match topic names
+        var matchingTopics = [];
+        $(".filter-match").removeClass("filter-match")
+        if (filterText.length > 1) {
+            $.each(model.topic_names, function(idx, name) {
+                if (name.indexOf(filterText) > -1) {
+                    matchingTopics.push(parseInt(idx));
+                    $(".topic-name[data-id=" + idx + "]").addClass("filter-match");
+                }
+            });
+        }
+
         // Match columns with filter text
         $.each(model.progress_names, function(idx, exercise) {
-            matchingColumns[idx] = (filterText != '' && exercise.display_name_lower.indexOf(filterText) > -1);
-            visibleColumns[idx] = matchingColumns[idx] || (filterText == '');
+            matchingColumns[idx] = false;
+            visibleColumns[idx] = true;
+            if (filterText.length > 1) {
+                if (exercise.display_name_lower.indexOf(filterText) > -1) {
+                    matchingColumns[idx] = "name";
+                } else if (_.intersection(exercise.topics, matchingTopics).length > 0) {
+                    matchingColumns[idx] = "topic";
+                } else {
+                    visibleColumns[idx] = false;
+                }
+            }
         });
 
         // Match rows with filter text
         $.each(model.exercise_list, function(idx, studentRow) {
             var foundMatchingExercise = false;
-            var matchesFilter = filterText == '' || studentRow.nickname_lower.indexOf(filterText) > -1;
+            var matchesFilter = filterText.length <= 1 || studentRow.nickname_lower.indexOf(filterText) > -1;
             $.each(studentRow.progress, function(idx2, exercise) {
                 if (exercise.status != '' && matchingColumns[idx2]) {
                     foundMatchingExercise = true;
@@ -1129,7 +1158,7 @@ var ProgressReport = {
             if (foundMatchingExercise || matchesFilter) {
 
                 studentRow.visible = true;
-                studentRow.highlight = matchesFilter && (filterText != '');
+                studentRow.highlight = matchesFilter && (filterText.length > 1);
 
                 if (matchesFilter) {
                     $.each(studentRow.progress, function(idx2, exercise) {

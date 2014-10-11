@@ -193,3 +193,11 @@
     color: #aaa;
     text-align: center;
 }
+
+.topic-name {
+    color: grey;
+}
+
+.filter-match {
+    color: #069;
+}
