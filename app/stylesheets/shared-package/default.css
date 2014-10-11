@@ -422,7 +422,9 @@ footer {
     clear: both;
     background: url(/images/footer-bg.png) repeat-x 0 0; /*! data-uri(/images/footer-bg.png) */
     min-width: 970px;
-    position: relative;
+    /*position: relative;*/
+    position: fixed;
+    bottom: 0;
 }
     footer.short, .push {
         height: 38px;
@@ -513,6 +515,30 @@ footer {
         background-image: url(/images/non-repeating-sprites.3.png);
         background-position: -10px -155px;
     }
+
+    footer.short .large-social-links a {
+        margin-left: 0;
+        display: inline-block;
+        height: 24px;
+        width: 24px;
+        position: relative;
+        top: 7px;
+        padding-left: 0;
+    }
+
+    footer.short .large-social-links .ani10 {
+        /*position: absolute;*/
+/*        display: inline;
+        right: 380px;
+        top: 22px;
+        z-index: 1;*/
+        width: 115px;
+        height: 61px;
+        background-position: 0px 0px;
+        background-image: url(/images/ani10logo.png);
+    }
+
+
     footer.short .inner {
         max-width: 1200px;
         margin: 0 auto;
@@ -554,8 +580,10 @@ footer {
             background-position: -320px -465px;
         }
 
-#top-header .logo-ani10 {
-    position: absolute;
+ 
+footer.short .small-social .logo-ani10 {
+    display: inline;
+    /*position: absolute;*/
     right: 380px;
     top: 22px;
     z-index: 1;
@@ -564,9 +592,10 @@ footer {
     background-image: url(/images/ani10logo.png);
 }
 
-#top-header #associations {
+#associations {
+    display: inline;
     font-family: Georgia, serif;
-    position: absolute;
+    /*position: absolute;*/
     right: 322px;
     top: 46px;
     font-size: 12px;
