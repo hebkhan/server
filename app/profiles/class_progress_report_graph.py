@@ -6,6 +6,7 @@ from jinja2.utils import escape
 from templatefilters import escapejs, timesince_ago
 from models import Exercise, UserExerciseGraph
 from models import UserVideoCss, Video
+from models import Topic
 import pickle
 
 
@@ -22,6 +23,21 @@ STATUSES[""] = ""
 def class_progress_report_graph_context(user_data, list_students):
     if not user_data:
         return {}
+
+    topics = {str(t.key()):(idx, t) for idx, t in enumerate(Topic.get_visible_topics())}
+    topic_names = {}
+    def get_topics_of(item):
+        def g():
+            if not item.topic_string_keys:
+                return
+            for tk in item.topic_string_keys:
+                idx, topic = topics[tk]
+                for tk2 in topic.ancestor_keys[:-1][::-1]:
+                    idx2, topic2 = topics[str(tk2)]
+                    topic_names[idx2] = topic2.title
+                    yield idx2
+        return list(g())
+
 
     list_students = sorted(list_students, key=lambda student: student.nickname)
 
@@ -41,14 +57,14 @@ def class_progress_report_graph_context(user_data, list_students):
                 break
 
     exercise_names = [(e.name, e.display_name, escapejs(e.name)) for e in exercises_found]
-    exercise_list = [{'name': e.name, 'display_name': e.display_name} for e in sorted(exercises_found, key=lambda e: e.display_name)]
+    exercise_list = [{'name': e.name, 'display_name': e.display_name, 'topics': get_topics_of(e)} for e in sorted(exercises_found, key=lambda e: e.display_name)]
 
+    videos_all = Video.get_all()
     all_video_progress = dict(get_video_progress_for_students(list_students))
     videos_found = reduce(set.union, all_video_progress.itervalues(), set())
 
-    videos_all = Video.get_all()
     videos_found = [video for video in videos_all if video.key().id() in videos_found]
-    video_list = [{'name': v.readable_id, 'display_name': v.title} for v in sorted(videos_found, key=lambda v: v.title)]
+    video_list = [{'name': v.readable_id, 'display_name': v.title, 'topics': get_topics_of(v)} for v in sorted(videos_found, key=lambda v: v.title)]
 
     progress_data = {}
 
@@ -117,6 +133,7 @@ def class_progress_report_graph_context(user_data, list_students):
     return {
         'exercise_names': exercise_list,
         'video_names': video_list,
+        'topic_names': topic_names,
         'progress_data': student_row_data,
         'coach_email': user_data.email,
         'c_points': reduce(lambda a, b: a + b, map(lambda s: s.points, list_students), 0)
