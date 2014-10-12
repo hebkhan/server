@@ -1087,6 +1087,16 @@ var ProgressReport = {
             ProgressReport.filterRows(model);
         });
 
+        $("#module-progress .tableHeader .topic-name a").click(function(e) {
+            e.preventDefault();
+            if ($("#student-progressreport-search").val() == e.srcElement.text) {
+                $("#student-progressreport-search").val("");
+            } else {
+                $("#student-progressreport-search").val(e.srcElement.text);
+            }
+            ProgressReport.filterRows(model);
+        });
+
         ProgressReport.filterRows(model);
     },
 
