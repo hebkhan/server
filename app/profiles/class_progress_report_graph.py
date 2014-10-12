@@ -30,10 +30,14 @@ def class_progress_report_graph_context(user_data, list_students):
         def g():
             if not item.topic_string_keys:
                 return
+            seen = set()
             for tk in item.topic_string_keys:
                 idx, topic = topics[tk]
                 for tk2 in topic.ancestor_keys[:-1][::-1]:
                     idx2, topic2 = topics[str(tk2)]
+                    if idx2 in seen:
+                        continue
+                    seen.add(idx2)
                     topic_names[idx2] = topic2.title
                     yield idx2
         return list(g())
