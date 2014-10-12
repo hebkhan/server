@@ -1,13 +1,14 @@
 # coding=utf8
-from itertools import izip
+from itertools import izip, chain
 
 from jinja2.utils import escape
 
 from templatefilters import escapejs, timesince_ago
 from models import Exercise, UserExerciseGraph
 from models import UserVideoCss, Video
-from models import Topic
+from models import Topic, Setting
 import pickle
+import layer_cache
 
 
 STATUSES = dict(
@@ -20,10 +21,11 @@ STATUSES = dict(
 )
 STATUSES[""] = ""
 
-def class_progress_report_graph_context(user_data, list_students):
-    if not user_data:
-        return {}
 
+@layer_cache.cache_with_key_fxn(
+    lambda : "content_data_%s" % (Setting.cached_content_add_date()),
+    layer=layer_cache.Layers.Blobstore)
+def get_content_data():
     topics = {str(t.key()):(idx, t) for idx, t in enumerate(Topic.get_visible_topics())}
     topic_names = {}
     def get_topics_of(item):
@@ -33,42 +35,62 @@ def class_progress_report_graph_context(user_data, list_students):
             seen = set()
             for tk in item.topic_string_keys:
                 idx, topic = topics[tk]
-                for tk2 in topic.ancestor_keys[:-1][::-1]:
+                for depth, tk2 in enumerate(topic.ancestor_keys[:-1][::-1]):
                     idx2, topic2 = topics[str(tk2)]
                     if idx2 in seen:
                         continue
                     seen.add(idx2)
                     topic_names[idx2] = topic2.title
-                    yield idx2
-        return list(g())
+                    # use depth for sorting by topic level
+                    yield depth, idx2
+        return [idx for _, idx in sorted(g())]
+
+    videos = {video.key().id():
+        dict(
+            key_id=video.key().id(),
+            name=video.readable_id,
+            display_name=video.title,
+            topics=get_topics_of(video)
+        ) for video in Video.get_all()}
+
+    exercises = {exercise.name:
+        dict(
+            name=exercise.name,
+            display_name=exercise.display_name,
+            topics=get_topics_of(exercise),
+        ) for exercise in Exercise.get_all_use_cache()}
+
+    return topic_names, videos, exercises
 
 
+def class_progress_report_graph_context(user_data, list_students):
+    if not user_data:
+        return {}
+
+
+    all_topic_names, videos_all, exercises_all = get_content_data()
     list_students = sorted(list_students, key=lambda student: student.nickname)
 
     student_email_pairs = [(escape(s.email), (s.nickname[:14] + '...') if len(s.nickname) > 17 else s.nickname) for s in list_students]
     emails_escapejsed = [escapejs(s.email) for s in list_students]
 
-    exercises_all = Exercise.get_all_use_cache()
     user_exercise_graphs = UserExerciseGraph.get(list_students)
 
-    exercises_found = []
+    exercise_list = []
 
-    for exercise in exercises_all:
+    for name, exercise in exercises_all.iteritems():
         for user_exercise_graph in user_exercise_graphs:
-            graph_dict = user_exercise_graph.graph_dict(exercise.name)
+            graph_dict = user_exercise_graph.graph_dict(name)
             if graph_dict and graph_dict["total_done"]:
-                exercises_found.append(exercise)
+                exercise_list.append(exercise)
                 break
 
-    exercise_names = [(e.name, e.display_name, escapejs(e.name)) for e in exercises_found]
-    exercise_list = [{'name': e.name, 'display_name': e.display_name, 'topics': get_topics_of(e)} for e in sorted(exercises_found, key=lambda e: e.display_name)]
+    exercise_list.sort(key=lambda e: e["display_name"])
 
-    videos_all = Video.get_all()
     all_video_progress = dict(get_video_progress_for_students(list_students))
     videos_found = reduce(set.union, all_video_progress.itervalues(), set())
-
-    videos_found = [video for video in videos_all if video.key().id() in videos_found]
-    video_list = [{'name': v.readable_id, 'display_name': v.title, 'topics': get_topics_of(v)} for v in sorted(videos_found, key=lambda v: v.title)]
+    video_list = [videos_all[vid_id] for vid_id in videos_found if vid_id in videos_all]
+    video_list.sort(key=lambda v: v["display_name"])
 
     progress_data = {}
 
@@ -84,9 +106,9 @@ def class_progress_report_graph_context(user_data, list_students):
             'videos': [],
         }
 
-        for (exercise, (_, exercise_display, exercise_name_js)) in izip(exercises_found, exercise_names):
+        for e in exercise_list:
+            exercise_name, exercise_display, exercise_name_js =  e["name"], e["display_name"], escapejs(e["name"])
 
-            exercise_name = exercise.name
             graph_dict = user_exercise_graph.graph_dict(exercise_name)
 
             status = ""
@@ -122,15 +144,25 @@ def class_progress_report_graph_context(user_data, list_students):
                 })
 
         video_progress = all_video_progress[student]
-        for video in videos_found:
-            status_name = video_progress.get(video.key().id(), "")
+        for video in video_list:
+            status_name = video_progress.get(video["key_id"], "")
             status = STATUSES[status_name]
             student_data['videos'].append({
-                    "name": video.title,
+                    "name": video["display_name"],
                     "status": status,
                     "status_name": status_name,
                 })
 
+    # prune topics
+    topic_names = {
+        topic_id: all_topic_names[topic_id]
+        for item in chain(exercise_list, video_list)
+        for topic_id in item['topics']
+    }
+
+    # clean-up video list
+    for video in video_list:
+        video.pop("key_id")
 
     student_row_data = [data for key, data in progress_data.iteritems()]
 
