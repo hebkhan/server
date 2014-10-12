@@ -198,6 +198,7 @@
     color: grey;
 }
 
-.filter-match {
-    color: #069;
+.filter-match a {
+    color: #005987;
+    text-decoration: underline;
 }
