@@ -43,7 +43,7 @@ var Voting = {
 
     voteEntity: function(e) {
 
-        if (QA.showNeedsLoginNote(this, "to vote.")) return false;
+        if (QA.showNeedsLoginNote(this, "כדי להצביע.")) return false;
 
         var jel = $(this);
 
@@ -124,7 +124,7 @@ var Moderation = {
 
     showFlagTools: function() {
 
-        if (QA.showNeedsLoginNote(this, "to flag this item.")) return false;
+        if (QA.showNeedsLoginNote(this, "כדי לסמן זאת לבדיקה.")) return false;
 
         var parent = $(this).parents(".flag_tools");
         if (!parent.length) return false;
@@ -143,15 +143,15 @@ var Moderation = {
         return Moderation.actionWithoutConfirmation(this,
                 "/discussion/flagentity",
                 {flag: flag},
-                "flagged!");
+                "סומן!");
     },
 
     deleteEntity: function() {
         return Moderation.actionWithConfirmation(this,
                 "/discussion/deleteentity",
                 null,
-                "Are you sure you want to delete this?",
-                "deleted!");
+                "למחוק? בטוח?",
+                "נמחק!");
     },
 
     editEntity: function() {
@@ -166,8 +166,8 @@ var Moderation = {
         return Moderation.actionWithConfirmation(this,
                 "/discussion/changeentitytype",
                 {target_type: target_type},
-                "Are you sure you want to change this to a " + target_type + "?",
-                "changed to " + target_type + "!");
+                "להמיר ל" + target_type + "?",
+                "שונה ל" + target_type + "!");
     },
 
     actionWithConfirmation: function(el, sUrl, data, sConfirm, sCompleted) {
@@ -439,7 +439,7 @@ var QA = {
 
     focusQuestion: function() {
 
-        if (QA.showNeedsLoginNote(this, "to ask your question.")) return false;
+        if (QA.showNeedsLoginNote(this, "כדי שלאול שאלה.")) return false;
 
         var parent = QA.getQAParent(this);
         if (!parent.length) return;
@@ -474,7 +474,7 @@ var QA = {
 
     focusAnswer: function() {
 
-        if (QA.showNeedsLoginNote(this, "to answer this question.")) return false;
+        if (QA.showNeedsLoginNote(this, "כדי לענות על שאלה זו.")) return false;
 
         var parent = QA.getQAParent(this);
         if (!parent.length) return;
