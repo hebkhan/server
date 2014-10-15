@@ -670,7 +670,8 @@ var globalPopupDialog = {
         options = _.extend({
             buttons: [
                 { title: 'OK', action: hideGenericMessageBox }
-            ]
+            ],
+            popup_class: 'ltr'
         }, options);
 
         var template = Templates.get( "shared.generic-dialog" );
