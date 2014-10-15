@@ -615,6 +615,24 @@ var TopicTreeEditor = {
                 error: TopicTreeEditor.handleError
             });
         });
+    },
+
+    deleteTopic: function(node, topic) {
+        var deleteData = {
+            kind: "Topic",
+            id: topic.id
+        };
+        $.ajaxq("topics-admin", {
+            url: "/api/v1/topic/" + node.parent.data.id + "/deletechild",
+            type: "POST",
+            data: deleteData,
+            success: function(json) {
+                TopicTreeEditor.topicTree.fetchByID(node.parent.data.id, function(model) {
+                    model.removeChild("Topic", topic.id);
+                });
+            },
+            error: TopicTreeEditor.handleError
+        });
     }
 };
 
@@ -965,18 +983,13 @@ function stringArraysEqual(ar1, ar2) {
             }
 
         } else if (action == "delete_topic") {
-            var deleteData = {
-                kind: "Topic",
-                id: self.model.id
-            };
-            $.ajaxq("topics-admin", {
-                url: "/api/v1/topic/" + self.parentModel.id + "/deletechild",
-                type: "POST",
-                data: deleteData,
-                success: function(json) {
-                    self.parentModel.removeChild("Topic", self.model.id);
-                },
-                error: TopicTreeEditor.handleError
+            popupGenericMessageBox({
+                title: "Confirm delete topic",
+                message: "Deleting this topic move all its children to 'Unreferenced Content'. Are you sure?",
+                buttons: [
+                    { title: "Yes", action: function() { TopicTreeEditor.deleteTopic(self.node, self.model); hideGenericMessageBox(); } },
+                    { title: "No", action: hideGenericMessageBox }
+                ]
             });
         } else {
             editor.NodeEditor.prototype.handleAction.call(this, action);
