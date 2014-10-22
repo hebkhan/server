@@ -193,3 +193,12 @@
     color: #aaa;
     text-align: center;
 }
+
+.topic-name {
+    color: grey;
+}
+
+.filter-match a {
+    color: #005987;
+    text-decoration: underline;
+}

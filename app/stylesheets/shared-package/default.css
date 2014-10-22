@@ -4090,8 +4090,6 @@ div.clearFloat { overflow:hidden; height:1px; clear:both; }
   margin: 0 0 0 -225px;
   top: 90px;
   right: 50%;
-  direction: ltr;
-  text-align: left;
 }
 
 .modal .generic-message {
@@ -4105,6 +4103,26 @@ div.clearFloat { overflow:hidden; height:1px; clear:both; }
     width: 60px;
     text-align: center;
 }
+
+
+.modal.generic-dialog.ltr {
+  direction: ltr;
+  text-align: left;
+}
+
+.modal.generic-dialog.ltr .close-button {
+    float: right;
+}
+
+.modal.generic-dialog.ltr .modal-header,
+.modal.generic-dialog.ltr .modal-body {
+    text-align: left;
+}
+
+.modal.generic-dialog.ltr .generic-button {
+    float: right;
+}
+
 
 #highchart {
     direction: ltr;

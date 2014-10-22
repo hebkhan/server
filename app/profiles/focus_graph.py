@@ -1,3 +1,5 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
 import datetime
 import time
 import logging
@@ -86,10 +88,9 @@ def get_exercise_focus_data(user_data, daily_activity_logs, dt_start_utc, dt_end
                 hourly_activity_summary_exercise_item = hourly_activity_summary.dict_exercises[exercise_key]
 
                 exid = hourly_activity_summary_exercise_item.exercise
-
                 key_exercise = exid.lower()
                 if not dict_exercise_seconds.has_key(key_exercise):
-                    dict_exercise_seconds[key_exercise] = {"exercise_title": models.Exercise.to_display_name(exid), "exid": exid, "seconds": 0, "correct": 0, "problems": 0}
+                    dict_exercise_seconds[key_exercise] = {"exercise_title": models.Exercise.get_by_name(exid).display_name, "exid": exid, "seconds": 0, "correct": 0, "problems": 0}
 
                 dict_exercise_seconds[key_exercise]["seconds"] += hourly_activity_summary_exercise_item.time_taken
                 dict_exercise_seconds[key_exercise]["problems"] += hourly_activity_summary_exercise_item.c_problems
@@ -107,10 +108,11 @@ def get_exercise_focus_data(user_data, daily_activity_logs, dt_start_utc, dt_end
             dict_exercise_seconds[key_exercise]["time_spent"] = seconds_to_time_string(dict_exercise_seconds[key_exercise]["seconds"], False)
 
             correct = dict_exercise_seconds[key_exercise]["correct"]
-            dict_exercise_seconds[key_exercise]["s_correct_problems"] = "%d correct problem%s without a hint" % (correct, pluralize(correct))
+            dict_exercise_seconds[key_exercise]["s_correct_problems"] = "{}: ".format(correct) +  "תרגילים שנפתרו ללא רמזים"
+
 
             problems = dict_exercise_seconds[key_exercise]["problems"]
-            dict_exercise_seconds[key_exercise]["s_problems"] = "%d total problem%s" % (problems, pluralize(problems))
+            dict_exercise_seconds[key_exercise]["s_problems"] = "{}: ".format(problems) + "סך כל התרגילים"
 
             dict_exercise_seconds[key_exercise]["proficient"] = user_data.is_proficient_at(key_exercise)
 

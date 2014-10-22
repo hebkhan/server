@@ -8,6 +8,7 @@
 
 <script>
     var chart;
+    var profiles = {{profiles}};
     $(function() {
         chart = new Highcharts.Chart({
             chart: {
@@ -21,15 +22,17 @@
                 column: {
                 },
                 series: {
+                    cursor: "pointer",
                     showInLegend: false,
                     stacking: 'normal',
                     point: {
                         events: {
                             click: function() {
+                                 window.location = profiles[this.x] + "/vital-statistics/";
                             }
                         }
                     }
-            }
+                }
             },
             title: {
                 text: ''
