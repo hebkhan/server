@@ -1,10 +1,13 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
 import layer_cache
-from models import Setting, Topic, TopicVersion, ExerciseVideo, Exercise
+from models import Setting, Topic, TopicVersion, ExerciseVideo, Exercise, Video
 import request_handler
 import shared_jinja
 import time
 import math
 import logging
+from collections import Counter
 
 # helpful function to see topic structure from the console.  In the console:
 # import library
@@ -35,108 +38,62 @@ def walk_children(node):
     else:
         yield node
 
-def flatten_tree(tree, parent_topics=[]):
-    homepage_topics = []
-    tree.content = []
-    tree.subtopics = []
+class TopicDummy(object):
+    def __init__(self, **kw):
+        self.__dict__.update(kw)
 
-    tree.depth = min(len(parent_topics), 2) # our css only handles down-to subtopic2
-
-    if parent_topics:
-        if tree.depth == 2:
-            tree.homepage_title = ": ".join([parent_topics[-1].standalone_title, tree.title])
-        else:
-            tree.homepage_title = tree.title
-    else:
-        tree.homepage_title = tree.standalone_title
-
-    child_parent_topics = parent_topics[:]
-
-    if tree.is_super or parent_topics:
-        child_parent_topics.append(tree)
-
-    # Cutting tree depth
-    leaf_topic = len(parent_topics) >= 2
+def prepare(topic, depth=0, max_depth=4):
+    topic.content = []
+    topic.subtopics = []
+    topic.depth = depth
+    topic.is_leaf = depth >= max_depth
 
     def add_once(child, _dups=set()):
         if child.key() not in _dups:
             _dups.add(child.key())
-            tree.content.append(child)
+            topic.content.append(child)
         else:
-            logging.debug("Dup: %s (%s)", child.readable_id, tree.id)
+            logging.debug("Dup: %s (%s)", child.readable_id, topic.id)
 
-    for child in tree.children:
+    for child in topic.children:
         if child.key().kind() == "Topic":
-            if leaf_topic:
+            if topic.is_leaf:
                 map(add_once, walk_children(child))
             else:
-                tree.subtopics.append(child)
+                topic.subtopics.extend(prepare(child, depth=depth+1, max_depth=max_depth))
         else:
             add_once(child)
 
-    del tree.children
+    del topic.children
 
-    if tree.content:
-        tree.height = math.ceil(len(tree.content)/3.0) * 18
+    if not (topic.content or topic.subtopics):
+        return []  # trim this branch
 
-    if tree.is_super or (not parent_topics and tree.content):
-        homepage_topics.append(tree)
+    topic.content_count = Counter(item.kind().lower() for item in topic.content)
+    if topic.content and topic.subtopics:
+        dummy = TopicDummy(id=topic.id+"-leaf", title=u"תוכן נוסף", content=topic.content, subtopics=[],
+                           content_count=topic.content_count, all_content_count=topic.content_count, depth=topic.depth+1)
+        topic.subtopics.append(dummy)
+        topic.content = []
+        topic.content_count = {}
 
-    for subtopic in tree.subtopics:
-        homepage_topics += flatten_tree(subtopic, child_parent_topics)
+    topic.all_content_count = Counter(topic.content_count)
+    for subtopic in topic.subtopics:
+        topic.all_content_count.update(subtopic.all_content_count)
 
-    return homepage_topics
+    topic.height = math.ceil(len(topic.content)/3.0) * 18
 
-def add_next_topic(topics, next_topic=None):
-    topic_prev = None
-    topics = topics + [None]
-    for i, topic in enumerate(topics):
-        if not topic:
-            continue
-        if topic.subtopics:
-            topic.next = topic.subtopics[0]
-            topic.next_is_subtopic = True
-            #for subtopic in topic.subtopics:
-            add_next_topic(topic.subtopics, next_topic=topics[i+1])
-        else:
-            if i+1 == len(topics):
-                topic.next = next_topic
-            else:
-                if next_topic:
-                    topic.next_is_subtopic = True
-                topic.next = topics[i+1]
-
-def add_related_exercises(videos):
-    logging.info("%s videos", len(videos))
-
-    exercises = {e.key():e for e in Exercise.get_all_use_cache()}
-    relations = {}
-    logging.info("%s exercises", len(exercises))
-    for exvid in ExerciseVideo.all().run():
-        ex = exercises.get(exvid.key_for_exercise())
-        if ex:
-            relations.setdefault(exvid.key_for_video(),[]).append(ex)
-
-    for exs in relations.itervalues():
-        exs.sort(key=lambda e: (e.v_position, e.h_position))
-
-    logging.info("%s related videos", len(relations))
-    for vid in videos:
-        exs = relations.get(vid.key()) or []
-        vid.cached_related_exercises = exs
+    return [topic]
 
 @layer_cache.cache_with_key_fxn(
-        lambda ajax=False, version_number=None: 
+        lambda mobile=False, version_number=None: 
         "library_content_by_topic_%s_v%s" % (
-        "ajax" if ajax else "inline", 
+        "mobile" if mobile else "desktop", 
         version_number if version_number else Setting.topic_tree_version()),
         layer=layer_cache.Layers.Blobstore
         )
-def library_content_html(ajax=False, version_number=None):
-    """" Returns the HTML for the structure of the topics as they will be
-    populated ont he homepage. Does not actually contain the list of video
-    names as those are filled in later asynchronously via the cache.
-    """
+def library_content_html(mobile=False, version_number=None):
+
     if version_number:
         version = TopicVersion.get_by_number(version_number)
     else:
@@ -145,29 +102,21 @@ def library_content_html(ajax=False, version_number=None):
     tree = Topic.get_root(version).make_tree(types = ["Topics", "Video", "Exercise", "Url"])
 
     videos = [item for item in walk_children(tree) if item.kind()=="Video"]
-    add_related_exercises(videos)
 
-    topics = flatten_tree(tree)
-
-    #topics.sort(key = lambda topic: topic.standalone_title)
-
-    # special case the duplicate topics for now, eventually we need to either make use of multiple parent functionality (with a hack for a different title), or just wait until we rework homepage
-    topics = [topic for topic in topics
-              if (not topic.id == "new-and-noteworthy")]
-
-    # print_topics(topics)
-
-    add_next_topic(topics)
+    root, = prepare(tree)
+    topics = root.subtopics
 
     timestamp = time.time()
 
     template_values = {
         'topics': topics,
-        'ajax' : ajax,
+        'is_mobile': mobile,
         # convert timestamp to a nice integer for the JS
         'timestamp': int(round(timestamp * 1000)),
         'version_date': str(version.made_default_on),
-        'version_id': version.number
+        'version_id': version.number,
+        'approx_vid_count': Video.approx_count(),
+        'exercise_count': Exercise.get_count(),
     }
 
     html = shared_jinja.get().render_template("library_content_template.html", **template_values)
@@ -181,7 +130,7 @@ class GenerateLibraryContent(request_handler.RequestHandler):
         self.get(from_task_queue = True)
 
     def get(self, from_task_queue = False):
-        library_content_html(ajax=True, version_number=None, bust_cache=True)
+        library_content_html(mobile=False, version_number=None, bust_cache=True)
 
         if not from_task_queue:
             self.redirect("/")

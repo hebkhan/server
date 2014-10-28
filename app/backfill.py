@@ -5,7 +5,7 @@ from google.appengine.ext import db
 import models 
 from util import fetch_from_url
 from exercises import UpdateExercise
-
+from models import UserVideoCss
 
 def check_user_properties(user_data):
     if not user_data or not user_data.user:
@@ -63,14 +63,14 @@ def migrate_userdata(key):
     db.run_in_transaction(tn, key)
 
 def update_user_exercise_progress(user_exercise):
-    # If a UserExercise object doesn't have the _progress property, it means
-    # the user hasn't done a problem of that exercise since the accuracy model
-    # rollout. This means that what they see on their dashboards and on the
-    # exercise page is unchanged from the streak model. So, we can just
-    # backfill with what their progress would be under the streak model.
-    if user_exercise._progress is None:
-        user_exercise._progress = user_exercise.get_progress_from_streak()
-        yield op.db.Put(user_exercise)
+    user_data = user_exercise.get_user_data()
+    user_data.uservideocss_version += 1
+    ex_key = user_exercise.__class__.exercise_model.get_value_for_datastore(user_exercise)
+    if user_exercise.progress >= 1.0:
+        UserVideoCss.set_completed(user_data.key(), ex_key, user_data.uservideocss_version)
+    else:
+        UserVideoCss.set_started(user_data.key(), ex_key, user_data.uservideocss_version)
+    yield op.db.Put(user_data)
 
 def sync_exercise_related_videos(exercise):
     related_videos = fetch_from_url("http://www.khanacademy.org/api/v1/exercises/%s/videos" % exercise.name, as_json=True)

@@ -1,11 +1,8 @@
 var GoalCreator = {
     objectives: [],
-    knowledgeMap: null,
     videosAreInit: false,
 
-    init: function(knowledgeMap) {
-        this.knowledgeMap = knowledgeMap;
-
+    init: function() {
         $(window).resize($.proxy(this.resize, this));
 
         $("#create-goal .goal-title")
@@ -26,41 +23,34 @@ var GoalCreator = {
 
         GoalCreator.updateViewAndDescription();
     },
-    getCurrentVideoObjectives: function() {
+    getCurrentObjectives: function() {
         var list = {};
         $.each(GoalBook.models, function(idx, model) {
             $.each(model.get("objectives"), function(idx2, objective) {
-                if (objective.type == "GoalObjectiveWatchVideo")
-                    list[objective.internal_id] = true;
+                list[objective.internal_id] = true;
             });
         });
         return list;
     },
 
-    initVideos: function() {
+    initCatalog: function() {
         $("#goal-choose-videos")
-
-            // can't set goals for content only on smarthistory.khanacademy.org
-            .find("#smarthistory").remove().end()
 
             .on("click", ".vl", function(e) {
                 // prevent the href navigation from occuring
                 e.preventDefault();
 
                 var jel = $(e.currentTarget);
-                var span = jel.children("span");
-                var image = $(span).css("background-image");
+                var href = jel.attr("href");
+                if (typeof href === "undefined") {
+                    return;
+                }
 
-                if (image.indexOf("indicator-complete") == -1)
-                {
-                    // video isn't complete, so set a goal
-                    var name = jel.attr("data-id");
-                    var title = span.text();
-                    GoalCreator.onVideoClicked(name, title);
-                }
-                else {
-                    alert("You can't add a video you've already watched to a goal.");
-                }
+                var type = href.indexOf("/video")==0 ? "video" : "exercise";
+                var span = jel.children("span");
+                var name = jel.attr("data-id");
+                var title = span.text();
+                GoalCreator.onClicked(name, title, type);
             });
 
         $("#goal-choose-videos .vl").each(function(i, element) {
@@ -70,6 +60,7 @@ var GoalCreator = {
 
             if (image.indexOf("indicator-complete") >= 0) {
                 jel.addClass("goalVideoInvalid");
+                jel.removeAttr("href");
             }
         });
     },
@@ -79,10 +70,9 @@ var GoalCreator = {
         GoalCreator.objectives = [];
         $('#create-goal input[name="title"]').val("");
 
-        GoalCreator.updateExerciseCount();
-        GoalCreator.updateVideoCount();
+        GoalCreator.updateCount();
         GoalCreator.updateViewAndDescription();
-        GoalCreator.showExercises();
+        GoalCreator.showCatalog();
     },
 
     toggleObjectiveInternal: function(type, css, id, name) {
@@ -153,31 +143,33 @@ var GoalCreator = {
 
         var message = "";
         if (GoalCreator.objectives.length === 0) {
-            message = "This goal currently has no objectives selected. Select <b>up to 10</b> exercises or videos to complete below.";
+            message = "טרם בחרתם מטרות ליעד זה. בחרו <b>עד 10</b> תרגילים או סרטונים למטה.";
         } else {
             var matchingObjectives;
 
-            message = "To complete this goal, you will have to <ul>";
+            message = "בכדי להשלים יעד זה, עליכם <ul>";
 
             // Exercises
             matchingObjectives = [];
+            var hadExercises = false;
             $.each(GoalCreator.objectives, function(idx, objective) {
                 if (objective.type == "GoalObjectiveExerciseProficiency")
                     matchingObjectives.push(objective);
             });
             if (matchingObjectives.length > 0) {
-                message += "<li class='exercise-objectives'>become proficient in exercise";
+                hadExercises = true;
+                message += "<li class='exercise-objectives'>להשיג מיומנות בתרגיל";
                 if (matchingObjectives.length == 1) {
                     message += " <em>" + matchingObjectives[0].description + "</em>";
                 } else {
-                    message += "s ";
+                    message += "ים ";
                     $.each(matchingObjectives, function(idx, objective) {
                         if (idx === 0)
                             message += "<em>" + objective.description + "</em>";
                         else if (idx < matchingObjectives.length - 1)
                             message += ", <em>" + objective.description + "</em>";
                         else
-                            message += " and <em>" + objective.description + "</em>";
+                            message += " ו<em>" + objective.description + "</em>";
                     });
                 }
                 message += "</li>";
@@ -190,18 +182,21 @@ var GoalCreator = {
                     matchingObjectives.push(objective);
             });
             if (matchingObjectives.length > 0) {
-                message += "<li class='video-ojectives'>, and watch video";
+                if (hadExercises) {
+                    message += ", ו"
+                }
+                message += "<li class='video-ojectives'>לצפות בסרט";
                 if (matchingObjectives.length == 1) {
                     message += " <em>" + matchingObjectives[0].description + "</em>";
                 } else {
-                    message += "s ";
+                    message += "ים ";
                     $.each(matchingObjectives, function(idx, objective) {
                         if (idx === 0)
                             message += "<em>" + objective.description + "</em>";
                         else if (idx < matchingObjectives.length - 1)
                             message += ", <em>" + objective.description + "</em>";
                         else
-                            message += " and <em>" + objective.description + "</em>";
+                            message += " ו<em>" + objective.description + "</em>";
                     });
                 }
                 message += ".</li>";
@@ -215,116 +210,47 @@ var GoalCreator = {
     },
 
     resize: function() {
-        var context = $("#goal-choose-exercises");
-
-        // Resize map contents
-        var jelMapContent = $(".dashboard-drawer", context)
-            .add(".dashboard-drawer-inner", context)
-            .add(".dashboard-map", context)
-            .add("#goal-choose-videos .dashboard-content-stretch");
+        var content = $("#goal-choose-videos .dashboard-content-stretch");
 
         var container = $(".goal-new-custom.modal");
         var containerHeight = container.outerHeight(true);
-        var yTopPadding = $("#goal-spacer").offset().top - container.offset().top;
-        var yBottomPadding = 48; // magic numbers ahoy
+        var yTopPadding = content.offset().top - container.offset().top;
+        var yBottomPadding = 30; // magic numbers ahoy
         var newHeight = containerHeight - (yTopPadding + yBottomPadding);
 
-        jelMapContent.height(newHeight);
-
-
-        // Account for padding in the dashboard drawer
-        var jelDrawerInner = $(".dashboard-drawer-inner", context);
-        jelDrawerInner.height(jelDrawerInner.height() - 20);
-
-        if (this.knowledgeMap && this.knowledgeMap.map)
-            google.maps.event.trigger(this.knowledgeMap.map, "resize");
+        content.height(newHeight);
     },
 
-    showExercises: function() {
-        $("#goal-choose-exercises").show();
-        $("#goal-choose-videos").hide();
-        $("#show-vid-btn").removeClass("blue");
-        $("#show-ex-btn").addClass("blue");
-
-        this.resize();
-    },
-    onExerciseClicked: function(exercise, evt) {
-        // prevent the anchor href from being followed
-        evt.preventDefault();
-
-        // Cannot select exercises that:
-        //      user is already proficient in
-        //      are already objectives in current goals
-        if (exercise.get("status") == "Proficient" ||
-            exercise.get("status") == "Review" ||
-            exercise.get("goal_req")) {
-            return;
-        }
-
-        GoalCreator.toggleObjectiveInternal("GoalObjectiveExerciseProficiency", "exercise", exercise.get("name"), exercise.get("display_name"));
-
-        GoalCreator.updateExerciseCount();
-        GoalCreator.updateViewAndDescription();
-    },
-    onExerciseBadgeClicked: function(id) {
-        this.onExerciseClicked(this.knowledgeMap.dictNodes[id], null);
-    },
-    updateExerciseCount: function() {
-        var count = 0;
-        var self = this;
-
-        $.each(GoalCreator.objectives, function(index, objective) {
-            if (objective.type == "GoalObjectiveExerciseProficiency")
-                count++;
-        });
-
-        $("#goal-exercise-count").html(count);
-
-        $.each(self.knowledgeMap.dictNodes, function(index, exercise) {
-            var found = false;
-
-            $.each(GoalCreator.objectives, function(index2, objective) {
-                if (objective.type == "GoalObjectiveExerciseProficiency" && objective.id == exercise.name)
-                {
-                    found = true;
-                }
-            });
-
-            $.each(self.knowledgeMap.exerciseRowViews, function(index, exerciseRowView) {
-                if (exercise.name == exerciseRowView.model.get("name"))
-                    exerciseRowView.showGoalIcon(found);
-            });
-
-            self.knowledgeMap.exerciseMarkerViews[exercise.name].showGoalIcon(found);
-        });
-    },
-
-    onVideoClicked: function(id, title) {
-        if (id in GoalCreator.getCurrentVideoObjectives())
+    onClicked: function(id, title, type) {
+        if (id in GoalCreator.getCurrentObjectives())
             return;  // Cannot select videos that are objectives in current goals
 
-        GoalCreator.toggleObjectiveInternal("GoalObjectiveWatchVideo", "video", id, title);
+        if (type === "exercise") {
+            GoalCreator.toggleObjectiveInternal("GoalObjectiveExerciseProficiency", "exercise", id, title);
+        } else {
+            GoalCreator.toggleObjectiveInternal("GoalObjectiveWatchVideo", "video", id, title);
+        }
 
-        GoalCreator.updateVideoCount();
+        GoalCreator.updateCount();
         GoalCreator.updateViewAndDescription();
     },
-    showVideos: function() {
+
+    showCatalog: function() {
         if (!GoalCreator.videosAreInit) {
             GoalCreator.videosAreInit = true;
-            GoalCreator.initVideos();
+            GoalCreator.initCatalog();
         }
-        $("#goal-choose-exercises").hide();
         $("#goal-choose-videos").show();
-        $("#show-vid-btn").addClass("blue");
-        $("#show-ex-btn").removeClass("blue");
 
         this.resize();
 
-        for (var readableId in GoalCreator.getCurrentVideoObjectives()) {
-            $('.vl[data-id="' + readableId + '"]').addClass("goalVideoInvalid");
+        for (var readableId in GoalCreator.getCurrentObjectives()) {
+            $('.vl[data-id="' + readableId + '"]')
+                .addClass("goalVideoInvalid")
+                .removeAttr("href");
         }
     },
-    updateVideoCount: function() {
+    updateCount: function() {
         var count = 0;
 
         $.each(GoalCreator.objectives, function(index, objective) {
@@ -334,12 +260,20 @@ var GoalCreator = {
 
         $("#goal-video-count").html(count);
 
+        $.each(GoalCreator.objectives, function(index, objective) {
+            if (objective.type == "GoalObjectiveExerciseProficiency")
+                count++;
+        });
+
+        $("#goal-exercise-count").html(count);
+
+
         $("#library-content-main").find(".vl").each(function(index, element) {
-            var video_name = $(element).attr("data-id");
+            var obj_id = $(element).attr("data-id");
             var found = false;
 
             $.each(GoalCreator.objectives, function(index2, objective) {
-                if (objective.type == "GoalObjectiveWatchVideo" && objective.id == video_name)
+                if (objective.id == obj_id)
                 {
                     found = true;
                 }
@@ -349,7 +283,8 @@ var GoalCreator = {
             if (found)
             {
                 if (goalIcon.length === 0)
-                    $('<span class="video-goal-icon"><img src="/images/flag.png"></span>').insertBefore($(element).children("span")[0]);
+                    $('<span class="video-goal-icon"><img src="/images/flag.png"></span>')
+                        .insertBefore($(element).children("span")[0]);
             }
             else
             {
@@ -357,10 +292,10 @@ var GoalCreator = {
             }
         });
     },
+
     onSelectedObjectiveClicked: function(type, css, name, id) {
         GoalCreator.toggleObjectiveInternal(type, css, name, id);
-        GoalCreator.updateExerciseCount();
-        GoalCreator.updateVideoCount();
+        GoalCreator.updateCount();
         GoalCreator.updateViewAndDescription();
     },
 
@@ -369,7 +304,7 @@ var GoalCreator = {
 
         if (GoalCreator.objectives.length < 2)
         {
-            error = "We'd like you to pick at least two (2) objectives";
+            error = "יש לבחור לפחות שתי משימות.";
         }
 
         if (error !== "") {
@@ -387,9 +322,10 @@ var GoalCreator = {
             return;
 
         var titleField = form.find('input[name="title"]');
-        if (titleField.val() === "")
+        if (titleField.val() === "" || titleField.val() === titleField.attr("placeholder"))
         {
-            titleField.val("Custom goal: " + new Date().toDateString());
+            var d = new Date();
+            titleField.val("יעד מותאם אישית: " + d.getDate() + "/" + (d.getMonth()+1) + "/" + d.getFullYear());
         }
 
         var goal = new Goal({

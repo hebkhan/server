@@ -113,16 +113,16 @@
       margin-left:2px;
     }
 
-.exercise-row {
+.item-row {
   padding-top: 5px;
   padding-bottom: 10px;
   min-width: 670px;
 }
-.exercise-row:hover {
+.item-row:hover {
   background-color: #EEE;
   cursor: ns-resize;
 }
-    .exercise-row .exercise-name {
+    .item-row .ditem-name {
       width: 130px;
       float: right;
       line-height: 1.2;
@@ -151,9 +151,15 @@
     #left-column .float-off-spine {
       float: left;
     }
-#right-column {
+
+.exercise-progress #right-column {
   width: 300px;
 }
+
+.video-progress #right-column {
+  width: 100px;
+}
+
     #right-column .float-off-spine {
       float: right;
     }
@@ -186,4 +192,13 @@
 #class-student-goals .goal .no-goal {
     color: #aaa;
     text-align: center;
+}
+
+.topic-name {
+    color: grey;
+}
+
+.filter-match a {
+    color: #005987;
+    text-decoration: underline;
 }

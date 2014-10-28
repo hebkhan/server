@@ -16,7 +16,6 @@ hashed-*.css
 hashed-*.js
 app/js_css_packages/packages_hash.py
 app/js_css_packages/packages_compressed.py
-app/javascript/*/*.js
 app/templates/*.py
 app/templates/*/*.py
 app/secrets.py
@@ -30,3 +29,6 @@ compiled_templates*
 datastore/*
 offline/*
 */.ipynb_checkpoints/*
+v/
+google_appengine
+*.orig

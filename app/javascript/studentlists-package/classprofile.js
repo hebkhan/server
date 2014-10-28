@@ -11,6 +11,7 @@ var ClassProfile = {
     fLoadedGraph: false,
 
     init: function() {
+
         $(".share-link").hide();
         $(".sharepop").hide();
 
@@ -148,7 +149,8 @@ var ClassProfile = {
             }
         }, 1000);
 
-        ClassProfile.ProgressSummaryView = new ProgressSummaryView();
+        ClassProfile.ExerciseProgressSummaryView = new ProgressSummaryView('exercise');
+        ClassProfile.VideoProgressSummaryView = new ProgressSummaryView('video');
 
         $('#studentlists_dropdown').css('display', 'inline-block');
         var $dropdown = $('#studentlists_dropdown ol');
@@ -198,7 +200,10 @@ var ClassProfile = {
                 var pointOptions = series.data[ixData].options;
                 if (!pointOptions.marker) pointOptions.marker = {};
                 pointOptions.marker.enabled = fxnHighlight(pointOptions);
-                if (pointOptions.marker.enabled) pointOptions.marker.radius = 6;
+                if (pointOptions.marker.enabled) {
+                    pointOptions.marker.radius = 6;
+                }
+                series.data[ixData].update(pointOptions);
             }
 
             series.isDirty = true;
@@ -358,7 +363,8 @@ var ClassProfile = {
         var apiCallbacksTable = {
             '/api/v1/user/students/goals': this.renderStudentGoals,
             '/api/v1/user/students/progressreport': ClassProfile.renderStudentProgressReport,
-            '/api/v1/user/students/progress/summary': this.ProgressSummaryView.render
+            '/api/v1/user/students/progress/exercise_summary': this.ExerciseProgressSummaryView.render,
+            '/api/v1/user/students/progress/video_summary': this.VideoProgressSummaryView.render
         };
         if (!href) return;
 
@@ -892,7 +898,7 @@ var ClassProfile = {
                 if (exercise.last_done) {
                     exercise.seconds_since_done = ((new Date()).getTime() - Date.parse(exercise.last_done)) / 1000;
                 } else {
-                    exercise.seconds_since_done = 1000000;
+                    exercise.seconds_since_done = -1;
                 }
 
                 exercise.status_css = 'transparent';
@@ -919,6 +925,10 @@ var ClassProfile = {
             });
 
             student_row.progress = student_row.exercises.concat(student_row.videos);
+        });
+
+        Handlebars.registerHelper("toTopicName", function(idx) {
+            return data.topic_names[idx];
         });
 
         var template = Templates.get( "profile.profile-class-progress-report" );
@@ -964,6 +974,9 @@ var ProgressReport = {
             if (visibleColumns[this.options.index]) {
                 if (matchingColumns && matchingColumns[this.options.index]) {
                     $(this.el).addClass('highlight');
+                    if (matchingColumns[this.options.index] == "name") {
+                        $(this.el).find(".item-name").addClass("filter-match");
+                    }
                 } else {
                     $(this.el).removeClass('highlight');
                 }
@@ -1074,6 +1087,16 @@ var ProgressReport = {
             ProgressReport.filterRows(model);
         });
 
+        $("#module-progress .tableHeader .topic-name a").click(function(e) {
+            e.preventDefault();
+            if ($("#student-progressreport-search").val() == e.srcElement.text) {
+                $("#student-progressreport-search").val("");
+            } else {
+                $("#student-progressreport-search").val(e.srcElement.text);
+            }
+            ProgressReport.filterRows(model);
+        });
+
         ProgressReport.filterRows(model);
     },
 
@@ -1085,8 +1108,10 @@ var ProgressReport = {
         var time_filter_disabled = (progressType == "video");
         $("#progressreport-filter-last-time").prop("disabled", time_filter_disabled);
         $("#progressreport-recent").prop("disabled", time_filter_disabled);
+        $("#progressreport-struggling").prop("disabled", time_filter_disabled);
         if (time_filter_disabled == true) {
             $("#progressreport-recent").prop("checked", false);
+            $("#progressreport-struggling").prop("checked", false);
         }
         $(".graph-options").children().hide();
         $("#"+progressType+"-progress-legend").show();
@@ -1102,16 +1127,37 @@ var ProgressReport = {
         var matchingColumns = [];
         var hiddenCount = 0;
 
+        // Match topic names
+        var matchingTopics = [];
+        $(".filter-match").removeClass("filter-match")
+        if (filterText.length > 1) {
+            $.each(model.topic_names, function(idx, name) {
+                if (name.indexOf(filterText) > -1) {
+                    matchingTopics.push(parseInt(idx));
+                    $(".topic-name[data-id=" + idx + "]").addClass("filter-match");
+                }
+            });
+        }
+
         // Match columns with filter text
         $.each(model.progress_names, function(idx, exercise) {
-            matchingColumns[idx] = (filterText != '' && exercise.display_name_lower.indexOf(filterText) > -1);
-            visibleColumns[idx] = matchingColumns[idx] || (filterText == '');
+            matchingColumns[idx] = false;
+            visibleColumns[idx] = true;
+            if (filterText.length > 1) {
+                if (exercise.display_name_lower.indexOf(filterText) > -1) {
+                    matchingColumns[idx] = "name";
+                } else if (_.intersection(exercise.topics, matchingTopics).length > 0) {
+                    matchingColumns[idx] = "topic";
+                } else {
+                    visibleColumns[idx] = false;
+                }
+            }
         });
 
         // Match rows with filter text
         $.each(model.exercise_list, function(idx, studentRow) {
             var foundMatchingExercise = false;
-            var matchesFilter = filterText == '' || studentRow.nickname_lower.indexOf(filterText) > -1;
+            var matchesFilter = filterText.length <= 1 || studentRow.nickname_lower.indexOf(filterText) > -1;
             $.each(studentRow.progress, function(idx2, exercise) {
                 if (exercise.status != '' && matchingColumns[idx2]) {
                     foundMatchingExercise = true;
@@ -1122,7 +1168,7 @@ var ProgressReport = {
             if (foundMatchingExercise || matchesFilter) {
 
                 studentRow.visible = true;
-                studentRow.highlight = matchesFilter && (filterText != '');
+                studentRow.highlight = matchesFilter && (filterText.length > 1);
 
                 if (matchesFilter) {
                     $.each(studentRow.progress, function(idx2, exercise) {
@@ -1147,9 +1193,11 @@ var ProgressReport = {
                     studentRow.matchingCells = [];
                     $.each(studentRow.progress, function(idx2, exercise) {
                         var valid = visibleColumns[idx2];
-                        if (filters['struggling'] && exercise.status != 'Struggling') {
+                        if (filters['struggling'] && exercise.status_css != 'struggling') {
                             valid = false;
-                        } else if (filters['recent'] && exercise.seconds_since_done > 60*60*24*filterRecentTime) {
+                        } else if (filters['recent'] &&
+                                    (exercise.seconds_since_done <= -1 ||
+                                    exercise.seconds_since_done > 60*60*24*filterRecentTime)) {
                             valid = false;
                         }
                         if (valid) {

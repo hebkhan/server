@@ -31,7 +31,7 @@ class StartNewFlagUpdateMapReduce(request_handler.RequestHandler):
                 name = "FeedbackFlagUpdate",
                 handler_spec = "discussion.qa.feedback_flag_update_map",
                 reader_spec = "mapreduce.input_readers.DatastoreInputReader",
-                reader_parameters = {"entity_kind": "discussion.models_discussion.Feedback"},
+                mapper_parameters = {"entity_kind": "discussion.models_discussion.Feedback"},
                 shard_count = 64,
                 queue_name = "backfill-mapreduce-queue",
                 )

@@ -225,19 +225,12 @@ class ViewVideo(request_handler.RequestHandler):
         if user_video:
             awarded_points = user_video.points
 
-        subtitles_key_name = VideoSubtitles.get_key_name('en', video.youtube_id)
-        subtitles = VideoSubtitles.get_by_key_name(subtitles_key_name)
-        subtitles_json = None
-        if subtitles:
-            subtitles_json = subtitles.load_json()
-
         template_values = {
                             'topic': topic,
                             'video': video,
                             'videos': videos,
                             'video_path': video_path,
                             'video_points_base': consts.VIDEO_POINTS_BASE,
-                            'subtitles_json': subtitles_json,
                             'button_top_exercise': button_top_exercise,
                             'related_exercises': [], # disabled for now
                             'previous_topic': previous_topic,
@@ -249,7 +242,8 @@ class ViewVideo(request_handler.RequestHandler):
                             'selected_nav_link': 'watch',
                             'awarded_points': awarded_points,
                             'issue_labels': ('Component-Videos,Video-%s' % readable_id),
-                            'author_profile': 'https://plus.google.com/103970106103092409324'
+                            'author_profile': 'https://plus.google.com/103970106103092409324',
+                            'is_mobile_allowed': True,
                         }
         template_values = qa.add_template_values(template_values, self.request)
 
@@ -472,8 +466,7 @@ class MobileOAuthLogin(request_handler.RequestHandler):
 
 class PostLogin(request_handler.RequestHandler):
     def get(self):
-        cont = self.request_string('continue', default = "/").encode("utf8")
-
+        cont = self.request_string('continue', default = None)
         # Immediately after login we make sure this user has a UserData entity
         user_data = UserData.current()
         if user_data:
@@ -481,13 +474,15 @@ class PostLogin(request_handler.RequestHandler):
             # Update email address if it has changed
             current_google_user = users.get_current_user()
             if current_google_user and current_google_user.email() != user_data.email:
-                user_data.user_email = current_google_user.email()
+                prev, user_data.user_email = user_data.user_email, current_google_user.email()
                 user_data.put()
+                logging.debug("email changed: %s -> %s", prev, user_data.user_email)
 
             # If the user has a public profile, we stop "syncing" their username
             # from Facebook, as they now have an opportunity to set it themself
             if not user_data.username:
                 user_data.update_nickname()
+                cont = "/profile"
 
             # Set developer and moderator to True if user is admin
             if (not user_data.developer or not user_data.moderator) and users.is_current_user_admin():
@@ -535,8 +530,9 @@ class PostLogin(request_handler.RequestHandler):
 
         # Always delete phantom user cookies on login
         self.delete_cookie('ureg_id')
-
-        self.redirect(cont)
+        if not cont:
+            cont = "/"
+        self.redirect(cont.encode("utf8"))
 
 class Logout(request_handler.RequestHandler):
     def get(self):

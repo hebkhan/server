@@ -6,7 +6,14 @@
                 <table cellspacing="0" cellpadding="0" border="1" style="width: 100%">
                   <tr>
                     {{#each progress_names}}
-                        <th class="student-exercises-col" data-id="{{ idx }}"><div class="tableHeader">{{ display_name }}</div></th>
+                        <th class="student-exercises-col" data-id="{{ idx }}">
+                            <div class="tableHeader">
+                                {{#each topics}}
+                                    <span class="topic-name" data-id="{{this}}"><a href="#">{{toTopicName this}}</a> - </span>
+                                {{/each}}
+                                <span class="item-name">{{ display_name }}</span>
+                            </div>
+                        </th>
                     {{/each}}
                     <th style="background: transparent; border-color: transparent; max-width:5px; min-width: 5px; width: 5px">&nbsp;</th>
                   </tr>

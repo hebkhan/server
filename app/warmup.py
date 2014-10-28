@@ -17,7 +17,8 @@ class Warmup(request_handler.RequestHandler):
                 k.delete()
 
         logging.info("Warmup: loading homepage html")
-        library.library_content_html()
+        library.library_content_html(mobile=False)
+        library.library_content_html(mobile=True)
 
         logging.info("Warmup: loading badges")
         util_badges.all_badges()

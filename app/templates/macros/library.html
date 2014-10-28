@@ -5,8 +5,11 @@
 
 <style>
     #library #library-content ol li {
-        width: 30%;
-        height: {{link_height}}px;   
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        width: 33%;
+        height: {{link_height}}px;
     }
     #library #library-content ol li a {
         font-size: {{font_size}}px;
@@ -21,9 +24,6 @@
 
 {% macro video_name_and_progress(video) -%}
     <span class='vid-progress v{{ video.key().id() }} source-{{ video.source }}'>{{ video.title|escape }}</span>
-    {% for ex in video.cached_related_exercises %}
-        <a href={{ex.relative_url}} title='תרגיל: {{ex.display_name}}'><span class='exercise-icon'/></a>
-    {% endfor %}
 {%- endmacro %}
 
 {% macro exercise_name_and_progress(item) -%}

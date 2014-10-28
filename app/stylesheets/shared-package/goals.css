@@ -130,7 +130,7 @@ ul.inline-list, ul.inline-list li {
     height: 20px;
     background: transparent url(/images/generic-exercise-icon-full-small.png) no-repeat 0 0px; /*! data-uri(/images/generic-exercise-icon-full-small.png) */
     position: absolute;
-    right: -6px;
+    right: -4px;
     top: 0;
 }
 
@@ -331,12 +331,19 @@ input.goal-title:focus {
     padding-right: 5px;
 }
 
+input.goal-title:hover {
+    border-color: #C6D1AD;
+    padding-right: 5px;
+}
+
+
 .goal .goal-description {
     line-height: 35px;
     margin:0;
 }
 .goal-description {
     font-size: 14px;
+    margin: 5px 0;
 }
 
 .goal-description.pulls {
@@ -380,7 +387,7 @@ input.goal-title:focus {
 }
 .create-goal-page #goal-choose-videos .dashboard-content-stretch {
     overflow-y: auto;
-    padding-right: 20px;
+    padding-left: 20px;
 }
 .objective-type-picker {
     position: absolute;

@@ -4,6 +4,7 @@ var Homepage = {
         VideoControls.initThumbnails();
         Homepage.initWaypoints();
         Homepage.loadData();
+        TopicNav.init();
     },
 
     initPlaceholder: function(youtube_id) {
@@ -139,6 +140,7 @@ var Homepage = {
 
         topics = null;
     }
+
 }
 
 $(function() {Homepage.init();});

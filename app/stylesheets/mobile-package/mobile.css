@@ -1,7 +1,7 @@
 /* Welcome to my madness */
 header, footer, #back-to-top, #thumbnails_container, 
 #main-video, #homepage-text, #browse-fixed, .video #description
-h2.featured-videos, .desktop-only { display: none; }
+h2.featured-videos, .desktop-only { display: none !important; }
 
 #library #library-content .ui-page .ui-content ol { 
     height: auto !important; 
@@ -48,6 +48,8 @@ h2.featured-videos, .desktop-only { display: none; }
 
 h2.main-headline { text-align: center; }
 
-.ui-page .mobile-only {
+/*.ui-page .mobile-only {
     display: block;
 }
+*/
+.ui-page { -webkit-backface-visibility: hidden; }

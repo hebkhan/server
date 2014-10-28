@@ -12,7 +12,7 @@ var ModalVideo = {
             return $(el).text() == "Login";
         }).attr("href");
         var title = ($points.attr("title") || $points.data("title"))
-            .replace(/Sign in/, '<a href="' + loginUrl + '">Sign in</a>');
+            .replace(/התחברו/, '<a href="' + loginUrl + '">התחברו</a>');
         $points.data("title", title).removeAttr("title");
 
         VideoStats.tooltip("#points-badge-hover", $points.data("title"));

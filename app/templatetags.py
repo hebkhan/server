@@ -16,12 +16,15 @@ def user_info(username, user_data):
 
 def column_major_sorted_videos(topic, num_cols=3, column_width=300, gutter=20, font_size=12):
     content = topic.content
+    while (len(content) / num_cols < 2) and num_cols > 1:
+        num_cols -= 1
     items_in_column = len(content) / num_cols
     remainder = len(content) % num_cols
     link_height = font_size * 1.5
     # Calculate the column indexes (tops of columns). Since video lists won't divide evenly, distribute
     # the remainder to the left-most columns first, and correctly increment the indices for remaining columns
     column_indices = [(items_in_column * multiplier + (multiplier if multiplier <= remainder else remainder)) for multiplier in range(1, num_cols + 1)]
+
 
     template_values = {
         "topic": topic,
@@ -68,9 +71,10 @@ def exercise_message(exercise, user_exercise_graph, sees_graph=False,
             proficient_exercises = user_exercise_graph.proficient_exercise_names()
             for prereq in exercise.prerequisites:
                 if prereq not in proficient_exercises:
+                    prereq_ex = Exercise.get_by_name(prereq)
                     suggested_prereqs.append({
-                          'ka_url': Exercise.get_relative_url(prereq),
-                          'display_name': Exercise.to_display_name(prereq),
+                          'ka_url': prereq_ex.relative_url,
+                          'display_name': prereq_ex.display_name,
                           })
         exercise_states['suggested_prereqs'] = apijsonify.jsonify(
                 suggested_prereqs)

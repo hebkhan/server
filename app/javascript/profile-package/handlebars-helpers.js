@@ -34,25 +34,28 @@ Handlebars.registerHelper("secondsToTime", function(seconds) {
     seconds -= minutes * 60;
 
     if (years) {
-        return years + " year" + (years > 1 ? "s" : "");
+        result = years > 1 ? (years + " שנים") : "שנה";
     } else if (months) {
-        return months + " month" + (months > 1 ? "s" : "");
+        result = months > 1 ? (months + " חודשים") : "חודש";
     } else if (weeks) {
-        return weeks + " week" + (weeks > 1 ? "s" : "");
+        result = weeks > 1 ? (weeks + " שבועות") : "שבוע";
     } else if (days) {
-        var result = days + " day" + (days > 1 ? "s" : "");
-        if (hours) {
-            result += " " + hours + " hour" + (hours > 1 ? "s" : "");
+        var result = days > 1 ? (days + " יום") : "יום";
+        if (hours > 1) {
+            result += " ו-" + hours + " שעות";
         }
-        return result;
     } else if (hours) {
-        var result = hours + " hour" + (hours > 1 ? "s" : "");
-        if (minutes) {
-            result += minutes + " minute" + (minutes > 1 ? "s" : "");
+        var result = hours > 1 ? (hours + " שעות") : "שעה";
+        if (minutes > 1) {
+            result += " ו-" + minutes + " דקות";
         }
     } else if (!minutes && seconds) {
-        return seconds + " second" + (seconds > 1 ? "s" : "");
+        result = seconds > 1 ? (seconds + " שניות") : "כשניה";
     } else {
-        return minutes + " minute" + (minutes > 1 ? "s" : "");
+        result = minutes > 1 ? (minutes + " דקות") : "כדקה";
     }
+    if (!isNaN(parseInt(result[0]))) {
+        result = "-" + result;
+    }
+    return result;
 });

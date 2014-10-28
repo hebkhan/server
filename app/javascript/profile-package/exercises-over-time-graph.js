@@ -54,7 +54,8 @@ var ExerciseGraphOverTime = {
         tooltip: {
             formatter: function() {
                     return "<b>" + this.point.display_name + "</b><br/>" + this.point.dt;
-            }
+            },
+            useHTML: true,
         },
         legend: {
             layout: "vertical",

@@ -105,11 +105,11 @@ var GoalProfileView = Backbone.View.extend({
         if (!goal) {
             // haven't yet received a reponse from the server after creating the
             // goal. Shouldn't happen too often, so just show a message.
-            alert("Please wait a few seconds and try again. If this is the second time you've seen this message, reload the page");
+            alert("אנא המתינו כמה שניות ונסו שוב. אם זו הפעם השניה שהנכם מקבלים הודעה זו, טענו את הדף מחדש");
             return;
         }
 
-        if (confirm("Abandoning a goal is permanent and cannot be undone. Do you really want to abandon this goal?")) {
+        if (confirm("נטישת היעד אינה ניתנת לביטול. האם אתם בטוחים שאתם רוצים לנטוש יעד זה?")) {
             // move the model to the abandoned collection
             this.model.remove(goal);
             goal.set({"abandoned": true});

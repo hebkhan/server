@@ -507,7 +507,7 @@ def topic_move_child(old_parent_id, version_id = "edit"):
         return api_invalid_param_response("Could not find topic with ID " + str(old_parent_id))
 
     if old_parent_id!=new_parent_id and child.key() in new_parent.child_keys:
-        return api_invalid_param_response("The child '%s' already appears in topic '%s'" % (child.title, new_parent.title))
+        return api_invalid_param_response("The child '%s' (%s) already appears in topic '%s'" % (child.title, child.kind(), new_parent.title))
            
     new_parent_pos = request.request_string("new_parent_pos")
 
@@ -600,9 +600,7 @@ def topic_versions():
 def topic_version_unused_content(version_id = None):
     version = models.TopicVersion.get_by_id(version_id)
     def get_key(m):
-        kind = m.kind()
-        name = getattr(m, dict(Video="title", Exercise="display_name", Url="title")[kind])
-        return kind, name
+        return m.kind(), m.title
     return sorted(version.get_unused_content(), key = get_key)
 
 @route("/api/v1/topicversion/<version_id>/url/<int:url_id>", methods=["GET"])
@@ -1406,11 +1404,11 @@ def user_exercises_all():
 
     return results
 
-@route("/api/v1/user/students/progress/summary", methods=["GET"])
+@route("/api/v1/user/students/progress/exercise_summary", methods=["GET"])
 @oauth_required()
 @jsonp
 @jsonify
-def get_students_progress_summary():
+def get_students_exercise_progress_summary():
     user_data_coach = get_user_data_coach_from_request()
 
     try:
@@ -1427,7 +1425,7 @@ def get_students_progress_summary():
 
     exercises = models.Exercise.get_all_use_cache()
     exercise_data = []
-
+    
     for exercise in exercises:
         progress_buckets = {
             'review': [],
@@ -1460,9 +1458,11 @@ def get_students_progress_summary():
                     'profile_root': student.profile_root,
             })
 
-        progress = [dict([('status', status),
-                        ('students', progress_buckets[status])])
-                        for status in progress_buckets]
+        if not any(bucket for status, bucket in progress_buckets.iteritems() if status != "not-started"):
+            # skip exercises that have no student activity
+            continue
+
+        progress = [dict(status=status, students=progress_buckets[status]) for status in progress_buckets]
 
         exercise_data.append({
             'name': exercise.name,
@@ -1471,6 +1471,51 @@ def get_students_progress_summary():
         })
 
     return {'exercises': exercise_data,
+            'num_students': len(list_students)}
+
+@route("/api/v1/user/students/progress/video_summary", methods=["GET"])
+@oauth_required()
+@jsonp
+@jsonify
+def get_students_video_progress_summary():
+    user_data_coach = get_user_data_coach_from_request()
+
+    try:
+        list_students = get_students_data_from_request(user_data_coach)
+    except Exception, e:
+        return api_invalid_param_response(e.message)
+
+    list_students = sorted(list_students, key=lambda student: student.nickname)
+    from profiles.class_progress_report_graph import get_video_progress_for_students
+    student_email_to_info = {}
+    student_to_video_id_to_status = dict(zip(list_students, get_video_progress_for_students(list_students)))
+    all_video_ids = set(vid
+                        for video_id_to_status in student_to_video_id_to_status.itervalues()
+                        for vid in video_id_to_status)
+    video_id_to_display_name = {video.key().id(): video.title
+                                for video in db.get([db.Key.from_path("Video", vid) for vid in all_video_ids])
+                                if video}
+    name_to_status_to_emails = {name: {'completed': set(), 'started': set(), 'not-started': set()}
+                                for name in video_id_to_display_name.values()}
+    for student, video_id_to_status in student_to_video_id_to_status.iteritems():
+        student_email_to_info[student.email] = dict(email=student.email,
+                                                    nickname=student.nickname,
+                                                    profile_root=student.profile_root)
+        for not_started_video in set(video_id_to_display_name) - set(video_id_to_status):
+            video_id_to_status[not_started_video] = 'not-started'
+        for video_id, status in video_id_to_status.iteritems():
+            try:
+                vid_name = video_id_to_display_name[video_id]
+            except KeyError:
+                # video doesn't exist anymore
+                continue
+            name_to_status_to_emails[vid_name][status].add(student.email)
+
+    video_data = [dict(display_name=name, progress=[dict(status=status, students=[student_email_to_info[email] for email in emails])
+                                                    for status, emails in status_to_emails.iteritems()])
+                  for name, status_to_emails in name_to_status_to_emails.iteritems()]
+
+    return {'videos': video_data,
             'num_students': len(list_students)}
 
 @route("/api/v1/user/exercises/<exercise_name>", methods=["GET"])

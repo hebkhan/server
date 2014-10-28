@@ -670,7 +670,8 @@ var globalPopupDialog = {
         options = _.extend({
             buttons: [
                 { title: 'OK', action: hideGenericMessageBox }
-            ]
+            ],
+            popup_class: 'ltr'
         }, options);
 
         var template = Templates.get( "shared.generic-dialog" );
@@ -908,6 +909,142 @@ function showAssociations() {
     }, 200);
 }
 
-$(function(){
-    setTimeout(showAssociations, 2000);
+$(function() {
+    if (document.referrer.indexOf(location.protocol + "//" + location.host) === 0) {
+        $("#associations").show();
+        $(".logo-ani10").show();
+    } else {
+        setTimeout(showAssociations, 2000);
+    }
 })
+
+var TopicNav = {
+
+    updateHash: function(hash) {
+        if (!TopicNav.hashSupport) {
+            // disabled;
+            return;
+        }
+        if (window.location.hash.slice(1) == hash) {
+            // no need;
+            return;
+        }
+        TopicNav.allowOnHashChange = false;
+        window.location.hash = hash;
+    },
+
+    openTopic: function(topic_id, speed, no_jump) {
+        var topic_anchor = $("#" + topic_id + ".heading:first");
+        if (topic_anchor.length != 1) {
+            // not found
+            return;
+        } else if (topic_anchor.hasClass("active")) {
+            console.log("topic '" + topic_id + "' already selected");
+            return;
+        }
+
+        if (typeof speed == "undefined")
+            speed = 500;
+
+        // first close all sybling content (including current)
+        // content < li < ul > contents
+        $("#library-content-main a.heading.active").removeClass("active", speed);
+        topic_anchor.addClass("active", speed);
+
+        var to_show = topic_anchor
+            .next(".content")
+            .parents(".content")
+            .andSelf();
+
+        var to_hide = $("#library-content-main .content:visible")
+            .not(to_show);
+
+        to_hide.filter(":visible").slideUp(speed);
+        to_show.filter(":hidden").slideDown(speed);
+
+        setTimeout(function() { TopicNav.colorizeHeaders(speed); }, speed+5);
+
+        $("#library-content-main span.ui-icon").removeClass("ui-icon-triangle-1-s").addClass("ui-icon-triangle-1-w");
+        to_show.prev().children("span.ui-icon").addClass("ui-icon-triangle-1-s").removeClass("ui-icon-triangle-1-w");
+
+        if (no_jump) {
+            return;
+        }
+
+        var scroll_target = topic_anchor.parent().offset().top;
+        if (to_hide.length > 0 && to_hide.offset().top < scroll_target) {
+            scroll_target -= to_hide.height();
+        }
+        scroll_target -= topic_anchor.outerHeight();  // give some context
+
+        if (speed == 0) {
+            // we actually don't wanna animate-scroll upon clicking;
+            // only scroll if the speed is 0, i.e hash changes.
+            $('html, body').animate({scrollTop: scroll_target}, speed);
+        }
+
+        TopicNav.updateHash(topic_id.slice(1));
+    },
+
+    hashSupport: true,
+    allowOnHashChange: true,
+
+    colorizeHeaders: function(speed) {
+        $("#library-content-main .heading:visible:even").addClass("even", speed);
+        $("#library-content-main .heading:visible:odd").removeClass("even", speed);
+    },
+
+    init: function(hashSupport) {
+
+        TopicNav.hashSupport = typeof hashSupport === "undefined" ? true : hashSupport;
+
+        TopicNav.colorizeHeaders();
+
+        $("#library-content-main a.heading").click(function(event) {
+            var content = $(this).next(".content");
+            if (content.is(":visible")) {
+                // this item is already open - close by selecting the parent
+                var parent_topic = content.parents(".content:first").prev("a.heading");
+                if (parent_topic.length > 0)
+                    TopicNav.openTopic(parent_topic[0].id);
+                else
+                    TopicNav.openTopic(this.id);
+            } else {
+                TopicNav.openTopic(this.id);
+            }
+            event.preventDefault();
+            return false;
+        })
+
+        if (!TopicNav.hashSupport) {
+            // disabled
+            return;
+        }
+
+        // register to has changes
+        $(window).on('hashchange', function(event) {
+            if (!TopicNav.allowOnHashChange) {
+                TopicNav.allowOnHashChange = true;
+                event.preventDefault();
+            } else {
+                var topic_anchor = $("#_" + window.location.hash.slice(1) + ".heading");
+                if (topic_anchor.length > 0) {
+                    event.preventDefault();
+                    TopicNav.openTopic(topic_anchor[0].id, 0);
+                }
+            }
+            return false;
+        });
+
+        // jump to initial topic, if exists
+        if (!window.location.hash.length ) {
+            var first_topic = $("#library-content-main a.heading:first")[0];
+            TopicNav.openTopic(first_topic.id, 0, true);
+        } else {
+            var topic_anchor = $("#_" + window.location.hash.slice(1) + ".heading");
+            if (topic_anchor.length > 0) {
+                $(function() { TopicNav.openTopic(topic_anchor[0].id, 0) });
+            }
+        }
+    }
+};

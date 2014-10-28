@@ -1,7 +1,7 @@
 {% extends "page_template.html" %}
 
 {% import 'macros/youtube.html' as youtube %}
-{% import 'macros/analytics.html' as analytics %}
+    {% import 'macros/analytics.html' as analytics %}
 {% import 'macros/mailing_lists.html' as mailing_lists %}
 
 {% block pagecss %}
@@ -15,126 +15,74 @@
 {% block pagetitle %}{% endblock pagetitle %}
 {% block pagecontent %}
 <article id="homepage">
-    <div id="main-video">
-
-        {% if is_mobile_capable %}
-            {{ youtube.player_embed(marquee_video["youtube_id"], 480, 395) }}
-        {% else %}
-            <iframe src="http://embed.ted.com/talks/lang/he/salman_khan_let_s_use_video_to_reinvent_education.html"
-                    width="645" height="395" frameborder="0" scrolling="no" webkitAllowFullScreen mozallowfullscreen allowFullScreen>
-            </iframe>
-        {% endif %}
-    </div>
     <div id="homepage-text" class="visited-no-recolor">
-        <h1 class="section-headline pulls"><a href="/#browse">רואים סרטון.</a> <a href="/exercisedashboard">פותרים תרגיל.</a></h1>
-        <h1>הדרך שלנו ללמוד כמעט הכל. ובחינם.</h1>
-        <p>
-            עם ספרייה של יותר מ- <a href="/#browse">{{approx_vid_count|thousands_separated}} סרטונים</a> בהמון 
-            נושאים - מחשבון ומתמטיקה, לפיזיקה וביולוגיה, ובנוסף <a href="/exercisedashboard">{{exercise_count}} תרגילים לשיפור ההבנה (וגם אוסף מדליות)</a>,
-            <a href="/about">אנחנו כאן כדי</a> לעזור לכם ללמוד מה שמעניין אתכם, מתי שאתם רוצים, ובלי להלחיץ אתכם.
-        </p>
-        <p class="call-to-action-buttons">
-        	<a href="/#browse" class="call-to-action simple-button action-gradient green">צפו בסרטון</a>
-        	<a href="/exercisedashboard" class="call-to-action simple-button action-gradient blue">עכשיו מתרגלים </a>
-        </p>
-        <div id="social-actions">
-            <table>
+        <h1 class="main-headline">
+            מתחילים ללמוד כאן ועכשיו. ובחינם.
+        </h1>
+    </div>
+    {% if not user_data %}
+    <div class="call-to-action-buttons desktop-only">
+        <a href="/login" class="call-to-action simple-button action-gradient green">התחברו</a>
+        <fb:facepile colorscheme="light" size="large" width="300px" max_rows="1" class="fb_iframe_widget"/>
+    </div> 
+    {% endif %}
+    {% if thumbnail_link_sets %}
+        <h2>
+            חדש ומעניין
+        </h2>
+        <div id="thumbnails_container">
+            <table width="100%">
                 <tr>
-                    <td class="social-action">
-                        <span id="fb-like-badge">
-                            <div id="fb-root"></div><fb:like href="http://www.hebrewkhan.org" send="true" layout="button_count" width="100" show_faces="false" font=""></fb:like>
-                        </span>
+                    <td width="3%">
+                        <div class="thumbnails_arrow action-gradient" id="arrow-left">
+                            <div class="arrow-left"></div>
+                        </div>
                     </td>
-                    <td class="social-action">
-                        <a href="http://twitter.com/share" class="twitter-share-button" data-counturl="http://www.hebrewkhan.org" data-url="http://www.hebrewkhan.org" data-text="Watch. Practice. Learn almost anything for free." data-count="horizontal" data-via="hebrewkhan">צייצו</a>
+                    <td width="94%">
+                        <div id="thumbnails" class="visited-no-recolor">
+                            {% for thumbnail_link_set in thumbnail_link_sets %}
+                                {% set outerloop = loop %}
+                                <div {% if not loop.first %}style="display:none;"{% endif %}><table style="width:100%"><tr>
+                                {% for thumbnail_link in thumbnail_link_set %}
+                                <td style="width:25%" class="thumbnail_td {{ thumbnail_link["type"] }} {% if thumbnail_link["selected"] %}selected{% endif %}" data-key="{{ thumbnail_link["key"]|escape }}" data-youtube-id="{{ thumbnail_link["youtube_id"]|escape }}">
+
+                                    <a href="{{ thumbnail_link["href"]|escape }}" class="thumbnail_link"><div 
+                                            {% if outerloop.first %}
+                                            class="thumb" style="background-image:url('{{ thumbnail_link["thumb_urls"]["hq"]|escape }}')"
+                                            {% else %}
+                                            class="thumb pending" data-src="{{ thumbnail_link["thumb_urls"]["hq"]|escape }}"
+                                            {% endif %}
+                                            ></div></a>
+
+                                        <a href="{{ thumbnail_link["href"]|escape }}" class="thumbnail_link"><div class="thumbnail_label"><div class="thumbnail_desc">{{ thumbnail_link["desc_html"] }}</div><div class="thumbnail_teaser">{{ thumbnail_link["teaser_html"] }}</div></div></a>
+                                    </td>
+                                {% endfor %}
+                                </tr></table></div>
+                            {% endfor %}
+                        </div>
                     </td>
-                    <td class="social-action">
-                        <g:plusone size="medium" href="http://www.hebrewkhan.org/"></g:plusone>
+                    <td width="3%">
+                        <div class="thumbnails_arrow action-gradient" id="arrow-right">
+                            <div class="arrow-right"></div>
+                        </div>
                     </td>
                 </tr>
-                <!-- <tr>
-                    <td colspan=3 class="homepage-mailing">
-                        <span>{{ mailing_lists.signup_form(3, "קבל עדכונים", "הזינו את כתובת הדוא\"ל שלכם לקבלת עידכונים על שיעורים חדשים .") }}</span>
-                    </td>
-                </tr> -->
             </table>
         </div>
-    </div>
-    {% if thumbnail_link_sets %}
-    <h2>
-        חדש ומעניין
-    </h2>
-    <div id="thumbnails_container">
-        <table width="100%">
-            <tr>
-                <td width="3%">
-                    <div class="thumbnails_arrow action-gradient" id="arrow-left">
-                        <div class="arrow-left"></div>
-                    </div>
-                </td>
-                <td width="94%">
-                    <div id="thumbnails" class="visited-no-recolor">
-                        {% for thumbnail_link_set in thumbnail_link_sets %}
-                            {% set outerloop = loop %}
-                            <div {% if not loop.first %}style="display:none;"{% endif %}><table style="width:100%"><tr>
-                            {% for thumbnail_link in thumbnail_link_set %}
-                            <td style="width:25%" class="thumbnail_td {{ thumbnail_link["type"] }} {% if thumbnail_link["selected"] %}selected{% endif %}" data-key="{{ thumbnail_link["key"]|escape }}" data-youtube-id="{{ thumbnail_link["youtube_id"]|escape }}">
-
-                                <a href="{{ thumbnail_link["href"]|escape }}" class="thumbnail_link"><div 
-                                        {% if outerloop.first %}
-                                        class="thumb" style="background-image:url('{{ thumbnail_link["thumb_urls"]["hq"]|escape }}')"
-                                        {% else %}
-                                        class="thumb pending" data-src="{{ thumbnail_link["thumb_urls"]["hq"]|escape }}"
-                                        {% endif %}
-                                        ></div></a>
-
-                                    <a href="{{ thumbnail_link["href"]|escape }}" class="thumbnail_link"><div class="thumbnail_label"><div class="thumbnail_desc">{{ thumbnail_link["desc_html"] }}</div><div class="thumbnail_teaser">{{ thumbnail_link["teaser_html"] }}</div></div></a>
-                                </td>
-                            {% endfor %}
-                            </tr></table></div>
-                        {% endfor %}
-                    </div>
-                </td>
-                <td width="3%">
-                    <div class="thumbnails_arrow action-gradient" id="arrow-right">
-                        <div class="arrow-right"></div>
-                    </div>
-                </td>
-            </tr>
-        </table>
-    </div>
     {% endif %}
 
     <div class="clear"></div>
 
-<div data-role="page" data-theme="b" {% if is_mobile %}id="browse"{% endif %}>
-    <div data-role="content">
-        <div id="mobile-homepage" class="mobile-only">
-            <img data-src="{{ "/images/logo-horizontal-large.png"|static_url }}" id="mobile-logo" />
-            <span id="page_visitors">
-                    <span id="page_num_visitors">
-                        <!-- Content will get populated by javacript at end of page -->
-                    </span>&nbsp; שיעורים הועברו
-            </span>
-        </div>
-        <h2 class="main-headline">עיינו בספריה שלנו עם יותר מ-{{approx_vid_count|thousands_separated}} סרטונים...</h2>
-        {% if DVD_list %}
-        <ul class="menu" id="menu">
-            {% for topic in DVD_list %}
-        	    <li><a href="#{{topic}}" class="menulink">{{topic}}</a></li>
-            {% endfor %}
-        </ul>
-        {% else %}
-        <div id="browse-control-anchor"></div>
-        {{ templatetags.topic_browser("browse", version_number) }}
-        {{ templatetags.topic_browser("browse-fixed", version_number) }}
-
-        {% endif %}
-        <a href="/mobilefullsite" class="mobile-only" data-role="button" data-ajax="false">לאתר הרגיל</a>
-    </div>
-</div>
-<div class="clear"></div>
-{{ library_content }}
+{% if is_mobile %}
+    {{ library_content }}
+{% else %}
+    <h3 class="section-headline pulls">
+        עיינו בספריה שלנו עם יותר מ-{{approx_vid_count|thousands_separated}} סרטונים
+        ו-{{exercise_count}} תרגילים, מסודרים לפי תוכנית הלימודים מכיתה א' ועד יב':
+        <a name="browse">&nbsp;</a>
+    </h3>
+    {{ library_content }}
+{% endif %}
 
 </article>
 
@@ -147,34 +95,33 @@
 {% block bottompagescript %}
     {% if not is_mobile %}
         {{ js_css_packages.js_package("homepage") }}
+        <script type="text/javascript">
+            $(function(){
+                VideoStats.startLoggingProgress("{{ marquee_video["key"]|escapejs }}");
+
+                if (typeof(Homepage) !== "undefined") {
+                    Homepage.initPlaceholder("{{ marquee_video["youtube_id"]|escapejs }}");
+                }
+            });
+
+            (function(){
+                var twitterWidgets = document.createElement('script');
+                twitterWidgets.type = 'text/javascript';
+                twitterWidgets.async = true;
+                twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+                // Setup a callback to track once the script loads.
+                twitterWidgets.onload = _ga.trackTwitter;
+                document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+            })();
+
+            (function() {
+                var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+                po.src = 'https://apis.google.com/js/plusone.js';
+                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+            })();
+            _ga.trackFacebook();
+        </script>
     {% endif %}
-
-    <script type="text/javascript">
-        $(function(){
-            VideoStats.startLoggingProgress("{{ marquee_video["key"]|escapejs }}");
-
-            if (typeof(Homepage) !== "undefined") {
-                Homepage.initPlaceholder("{{ marquee_video["youtube_id"]|escapejs }}");
-            }
-        });
-
-        (function(){
-            var twitterWidgets = document.createElement('script');
-            twitterWidgets.type = 'text/javascript';
-            twitterWidgets.async = true;
-            twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
-            // Setup a callback to track once the script loads.
-            twitterWidgets.onload = _ga.trackTwitter;
-            document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
-        })();
-
-        (function() {
-            var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
-            po.src = 'https://apis.google.com/js/plusone.js';
-            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
-        })();
-        _ga.trackFacebook();
-    </script>
 
     {{ analytics.crazyegg_tracker(False) }}
 

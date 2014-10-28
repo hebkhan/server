@@ -52,6 +52,22 @@ class BackupModel(db.Model):
     """
     backup_timestamp = db.DateTimeProperty(auto_now=True)
 
+
+class ContentItem(db.Model):
+
+    # List of parent topics
+    topic_string_keys = object_property.TsvProperty(indexed=False)
+
+    def has_topic(self):
+        return bool(self.topic_string_keys)
+
+    # returns the first non-hidden topic
+    def first_topic(self):
+        if self.topic_string_keys:
+            return db.get(self.topic_string_keys[0])
+        return None
+
+
 # Setting stores per-application key-value pairs
 # for app-wide settings that must be synchronized
 # across all GAE instances.
@@ -122,7 +138,7 @@ class Setting(db.Model):
     def classtime_report_startdate(val = None):
         return Setting._get_or_set_with_key("classtime_report_startdate", val)
 
-class Exercise(db.Model):
+class Exercise(ContentItem):
 
     name = db.StringProperty()
     display_name = db.StringProperty(default="")
@@ -155,6 +171,14 @@ class Exercise(db.Model):
             "author", "raw_html", "last_modified",
             "coverers", "prerequisites_ex", "assigned",
             ]
+
+    @property
+    def readable_id(self):
+        return self.name
+
+    @property
+    def title(self):
+        return self.display_name
 
     @staticmethod
     def get_relative_url(exercise_name):
@@ -660,14 +684,14 @@ class UserVideoCss(db.Model):
         return 'user_video_css_%s' % user_data.key_email
 
     @staticmethod
-    def set_started(user_data, video, version):
-        deferred.defer(set_css_deferred, user_data.key(), video.key(),
+    def set_started(user_data_key, item_key, version):
+        deferred.defer(set_css_deferred, user_data_key, item_key,
                        UserVideoCss.STARTED, version,
                        _queue="video-log-queue")
 
     @staticmethod
-    def set_completed(user_data, video, version):
-        deferred.defer(set_css_deferred, user_data.key(), video.key(),
+    def set_completed(user_data_key, item_key, version):
+        deferred.defer(set_css_deferred, user_data_key, item_key,
                        UserVideoCss.COMPLETED, version,
                        _queue="video-log-queue")
 
@@ -1083,9 +1107,9 @@ class UserData(GAEBingoIdentityModel, db.Model):
         if user_id:
             # Once we have rekeyed legacy entities,
             # we will be able to simplify this.
-            return  UserData.get_from_user_id(user_id) or \
-                    UserData.get_from_db_key_email(email) or \
-                    UserData.insert_for(user_id, email)
+            return UserData.get_from_user_id(user_id) or \
+                   UserData.get_from_db_key_email(email) or \
+                   UserData.insert_for(user_id, email)
         return None
 
     @staticmethod
@@ -1770,53 +1794,27 @@ def change_default_version(version):
 def rebuild_content_caches(version):
     topics = Topic.get_all_topics(version)  # does not include hidden topics!
 
-    videos = [v for v in Video.all()]
-    video_dict = dict((v.key(), v) for v in videos)
+    content_items = {i.key(): i for i in itertools.chain(Video.all(), Url.all(), Exercise.all())}
 
-    for video in videos:
-        video.topic_string_keys = []
+    for item in content_items.itervalues():
+        item.topic_string_keys = []
 
-
-    urls = [u for u in Url.all()]
-    url_dict = dict((u.key(), u) for u in urls)
-
-    for url in urls:
-        url.topic_string_keys = []
-
-    found_videos = 0
+    found_items = 0
 
     for topic in topics:
         logging.info("Rebuilding content cache for topic " + topic.title)
         topic_key_str = str(topic.key())
         for child_key in topic.child_keys:
-            if child_key.kind() == "Video":
-                if child_key in video_dict:
-                    video_dict[child_key].topic_string_keys.append(topic_key_str)
-                    found_videos += 1
-                else:
-                    logging.info("Failed to find video " + str(child_key))
-            elif child_key.kind() == "Url":
-                if child_key in url_dict:
-                    url_dict[child_key].topic_string_keys.append(topic_key_str)
-                    found_videos += 1
-                else:
-                    logging.info("Failed to find URL " + str(child_key))
+            item = content_items.get(child_key)
+            if item:
+                item.topic_string_keys.append(topic_key_str)
+                found_items += 1
+            else:
+                logging.info("Failed to find item: %s", child_key)
 
-    logging.info("About to put content caches for all videos")
-    try:
-        db.put(videos)
-    except:
-        logging.exception("Error putting %s videos (will attempt one-by-one)", len(videos))
-        for video in videos:
-            try:
-                video.put()
-            except:
-                logging.exception("Error putting %s", video.readable_id)
-
-    logging.info("Finished putting videos. About to put urls")
-    db.put(urls)
-
-    logging.info("Rebuilt content topic caches. (" + str(found_videos) + " videos)")
+    logging.info("About to put content caches for all items")
+    db.put(content_items.itervalues())
+    logging.info("Rebuilt content topic caches. (%s items)", found_items)
     logging.info("set_default_version complete")
 
 class VersionContentChange(db.Model):
@@ -1985,6 +1983,10 @@ class Topic(Searchable, db.Model):
     _serialize_blacklist = ["child_keys", "version", "parent_keys", "ancestor_keys", "created_on", "updated_on", "last_edited_by"]
 
     @property
+    def readable_id(self):
+        return self.id
+
+    @property
     def relative_url(self):
         return '#%s' % self.id
 
@@ -2090,7 +2092,7 @@ class Topic(Searchable, db.Model):
 
             while prev_index >= 0:
                 prev_topic = db.get(parent_topic.child_keys[prev_index])
-                if not prev_topic.hide:
+                if prev_topic.kind() == "Topic" and not prev_topic.hide:
                     return prev_topic
 
                 prev_index -= 1
@@ -2736,10 +2738,11 @@ class Topic(Searchable, db.Model):
     @staticmethod
     @layer_cache.cache_with_key_fxn(
         lambda types=None, version=None, include_hidden = False: 
-        "topic.get_filled_content_topics_%s_%s" % (
+        "topic.get_filled_content_topics_%s_%s_%s" % (
             (str(version.number)+str(version.updated_on)) if version 
             else Setting.topic_tree_version(),
-            include_hidden),
+            include_hidden,
+            "_".join(types or ["all"])),
         bigdata=True,
         layer=layer_cache.Layers.Blobstore) 
     def get_filled_content_topics(types=None, version=None, include_hidden=False):
@@ -3250,25 +3253,16 @@ def topictree_import_task(version_id, topic_id, publish, data_compressed, replac
     return True
 
 
-class Url(db.Model):
+class Url(ContentItem):
     url = db.StringProperty()
     title = db.StringProperty(indexed=False)
     tags = db.StringListProperty()
     created_on = db.DateTimeProperty(auto_now_add=True)
     updated_on = db.DateTimeProperty(indexed=False, auto_now=True)
 
-    # List of parent topics
-    topic_string_keys = object_property.TsvProperty(indexed=False)
-
     @property
     def id(self):
         return self.key().id()
-
-    # returns the first non-hidden topic
-    def first_topic(self):
-        if self.topic_string_keys:
-            return db.get(self.topic_string_keys[0])
-        return None
 
     @staticmethod
     @layer_cache.cache_with_key_fxn(lambda :
@@ -3300,7 +3294,7 @@ class Url(db.Model):
         return url
 
 
-class Video(Searchable, db.Model):
+class Video(Searchable, ContentItem):
     youtube_id = db.StringProperty()
     youtube_id_en = db.StringProperty()
     url = db.StringProperty()
@@ -3312,9 +3306,6 @@ class Video(Searchable, db.Model):
 
     # Human readable, unique id that can be used in URLS.
     readable_id = db.StringProperty()
-
-    # List of parent topics
-    topic_string_keys = object_property.TsvProperty(indexed=False)
 
     # YouTube view count from last sync.
     views = db.IntegerProperty(default = 0)
@@ -3431,15 +3422,6 @@ class Video(Searchable, db.Model):
         # return only unique videos
         video_dict = dict((v.key(), v) for v in videos)
         return video_dict.values()
-
-    def has_topic(self):
-        return bool(self.topic_string_keys)
-
-    # returns the first non-hidden topic
-    def first_topic(self):
-        if self.topic_string_keys:
-            return db.get(self.topic_string_keys[0])
-        return None
 
     def current_user_points(self):
         user_video = UserVideo.get_for_video_and_user_data(self, UserData.current())
@@ -3797,7 +3779,7 @@ class VideoLog(BackupModel):
         if seconds_watched > 0:
             if user_video.seconds_watched == 0:
                 user_data.uservideocss_version += 1
-                UserVideoCss.set_started(user_data, user_video.video, user_data.uservideocss_version)
+                UserVideoCss.set_started(user_data.key(), user_video.video.key(), user_data.uservideocss_version)
 
             user_video.seconds_watched += seconds_watched
             user_data.total_seconds_watched += seconds_watched
@@ -3842,7 +3824,7 @@ class VideoLog(BackupModel):
             user_data.videos_completed = -1
 
             user_data.uservideocss_version += 1
-            UserVideoCss.set_completed(user_data, user_video.video, user_data.uservideocss_version)
+            UserVideoCss.set_completed(user_data.key(), user_video.video.key(), user_data.uservideocss_version)
 
             bingo([
                 'struggling_videos_finished',
@@ -4815,7 +4797,7 @@ class UserExerciseGraph(object):
         def is_boundary(graph_dict, _visited=set()):
             name = graph_dict["name"]
             if name in _visited:
-                logging.warning("Cycle on %s", name)
+                # logging.debug("Cycle on %s", name)
                 return False
             _visited.add(name)
 
