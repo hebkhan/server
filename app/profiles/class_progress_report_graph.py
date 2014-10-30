@@ -34,7 +34,10 @@ def get_content_data():
                 return
             seen = set()
             for tk in item.topic_string_keys:
-                idx, topic = topics[tk]
+                try:
+                    idx, topic = topics[tk]
+                except KeyError:
+                    continue
                 for depth, tk2 in enumerate(topic.ancestor_keys[:-1][::-1]):
                     idx2, topic2 = topics[str(tk2)]
                     if idx2 in seen:
