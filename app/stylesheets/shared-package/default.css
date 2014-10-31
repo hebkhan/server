@@ -427,11 +427,12 @@ footer {
     bottom: 0;
 }
     footer.short, .push {
-        height: 38px;
+        height: 64px;
     }
     footer.short {
         color: #555;
         background: url(/images/light-page-bg.png) repeat-x 0 -30px;
+        background-color: white;
         border-top: 1px solid #C6D1AD;
         z-index: 10;
     }
@@ -441,7 +442,7 @@ footer {
         height: 188px;
     }
     footer.short #leaves {
-        height: 38px;
+        height: 64px;
     }
     footer ul.page_links {
         float: right;
@@ -463,6 +464,7 @@ footer {
             padding-right: 7px;
             padding-left: 10px;
             color: #555;
+            vertical-align: middle;
         }
     footer#footer #leaves a:hover {
         color: black;
@@ -479,7 +481,6 @@ footer {
         display: inline-block;
         height: 15px;
         position: relative;
-        top: 4px;
         width: 64px;
     }
     footer #copyleft img {
@@ -489,7 +490,7 @@ footer {
     }
     footer.short .footer-links {
         display: inline-block;
-        padding: 0 0 0 10px;
+        padding: 5px 0 5px 10px;
     }
     footer.short .small-social-links a {
         margin-left: 0;
@@ -497,7 +498,6 @@ footer {
         height: 24px;
         width: 24px;
         position: relative;
-        top: 7px;
         padding-left: 0;
     }
     .lte7 footer.short .small-social-links a {
@@ -516,28 +516,35 @@ footer {
         background-position: -10px -155px;
     }
 
-    footer.short .large-social-links a {
+    footer.short .logos div {
+        display: inline-block;
+    }
+
+    footer.short .logos a {
         margin-left: 0;
         display: inline-block;
-        height: 24px;
-        width: 24px;
         position: relative;
-        top: 7px;
         padding-left: 0;
+        width: 50px;
+        height: 50px;
+        background-repeat: no-repeat;
     }
 
-    footer.short .large-social-links .ani10 {
-        /*position: absolute;*/
-/*        display: inline;
-        right: 380px;
-        top: 22px;
-        z-index: 1;*/
-        width: 115px;
-        height: 61px;
-        background-position: 0px 0px;
-        background-image: url(/images/ani10logo.png);
+    footer.short .logos a:hover {
+        top: -1px;
     }
 
+    footer.short .logos .ani10 {
+        background-image: url(/images/logos/ani10.png);
+    }
+
+    footer.short .logos .shiurton {
+        background-image: url(/images/logos/shiurton.png);
+    }
+
+    footer.short .logos .symbolab {
+        background-image: url(/images/logos/symbolab.png);
+    }
 
     footer.short .inner {
         max-width: 1200px;
