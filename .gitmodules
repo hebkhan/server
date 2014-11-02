@@ -1,6 +1,3 @@
 [submodule "app/khan-exercises"]
 	path = app/khan-exercises
 	url = git@git.assembla.com:hebrew-khan.git
-[submodule "symbolab"]
-	path = symbolab
-	url = git@github.com:hebkhan/symbolab.git
