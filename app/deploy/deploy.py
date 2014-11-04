@@ -46,16 +46,14 @@ def pushd(directory):
     yield
     os.chdir(before)
 
-def popen_stdout(args):
+def popen_safe(args):
     if isinstance(args, str):
         args = args.split()
-    proc = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    print 'invoking command: ' + ' '.join(args)
+    proc = subprocess.Popen(args)
     ret = proc.wait()
-    stdout = proc.stdout.read()
-    stderr = proc.stderr.read()
     if ret != 0:
-        raise RuntimeError("Failed running {}. Return code: {}.\nStdout: {}.\nStderr: {}".format(args, ret, stdout, stderr))
-    return stdout
+        raise RuntimeError("Failed running {}. Return code: {}.".format(args, ret))
 
 def popen_results(args):
     proc = subprocess.Popen(args, stdout=subprocess.PIPE)
@@ -91,17 +89,19 @@ def git_status():
 
 def git_pull(exercises_branch, symbolab_branch):
     with pushd('khan-exercises'):
-        popen_stdout('git clean -fd')
+        popen_safe('git clean -fd')
 
-    popen_stdout('git submodule update --init --recursive')
+    with pushd('..'):
+        popen_safe('git submodule update --init --recursive')
+
     with pushd('khan-exercises'):
-        popen_stdout('git fetch')
-        popen_stdout('git checkout origin/{}'.format(exercises_branch))
+        popen_safe('git fetch')
+        popen_safe('git checkout origin/{}'.format(exercises_branch))
         with pushd('symbolab'):
-            popen_stdout('git fetch')
-            popen_stdout('git checkout origin/{}'.format(symbolab_branch))
-            popen_stdout('{} make.py --overwrite --target ../exercises {}'.format(sys.executable,
-                                                                                  " ".join(glob.glob("exercises/*.json"))))
+            popen_safe('git fetch')
+            popen_safe('git checkout origin/{}'.format(symbolab_branch))
+            popen_safe('{} make.py --overwrite --target ../exercises {}'.format(sys.executable,
+                                                                                " ".join(glob.glob("exercises/*.json"))))
     return git_version()
 
 def git_version():
@@ -239,7 +239,6 @@ def main():
 
     if not options.noup:
         version = git_pull(options.exercises_branch, options.symbolab_branch)
-        1/0
         if version <= 0:
             print "Could not find version after 'hg pull', 'hg up', 'hg tip'."
             return
