@@ -1,5 +1,6 @@
 import sys
 import time
+import glob
 import subprocess
 import os
 import optparse
@@ -8,6 +9,7 @@ import urllib2
 import webbrowser
 import getpass
 import re
+from contextlib import contextmanager
 
 import commands
 dev_appserver_path = os.path.realpath(commands.getoutput("which dev_appserver.py"))
@@ -36,6 +38,24 @@ if hipchat_deploy_token:
     import hipchat.room
     import hipchat.config
     hipchat.config.manual_init(hipchat_deploy_token)
+
+@contextmanager
+def pushd(directory):
+    before = os.getcwd()
+    os.chdir(directory)
+    yield
+    os.chdir(before)
+
+def popen_stdout(args):
+    if isinstance(args, str):
+        args = args.split()
+    proc = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    ret = proc.wait()
+    stdout = proc.stdout.read()
+    stderr = proc.stderr.read()
+    if ret != 0:
+        raise RuntimeError("Failed running {}. Return code: {}.\nStdout: {}.\nStderr: {}".format(args, ret, stdout, stderr))
+    return stdout
 
 def popen_results(args):
     proc = subprocess.Popen(args, stdout=subprocess.PIPE)
@@ -69,17 +89,19 @@ def git_status():
     output = popen_results(['git', 'status', '-s'])
     return len(output) > 0
 
-def git_pull():
-    # Pull latest
-    popen_results(['git', 'pull'])
+def git_pull(exercises_branch, symbolab_branch):
+    with pushd('khan-exercises'):
+        popen_stdout('git clean -fd')
 
-    # # Hg up and make sure we didn't hit a merge
-    # output = popen_results(['hg', 'up'])
-    # lines = output.split("\n")
-    # if len(lines) != 2 or lines[0].find("files updated") < 0:
-    #     # Ran into merge or other problem
-    #     return -1
-
+    popen_stdout('git submodule update --init --recursive')
+    with pushd('khan-exercises'):
+        popen_stdout('git fetch')
+        popen_stdout('git checkout origin/{}'.format(exercises_branch))
+        with pushd('symbolab'):
+            popen_stdout('git fetch')
+            popen_stdout('git checkout origin/{}'.format(symbolab_branch))
+            popen_stdout('{} make.py --overwrite --target ../exercises {}'.format(sys.executable,
+                                                                                  " ".join(glob.glob("exercises/*.json"))))
     return git_version()
 
 def git_version():
@@ -192,6 +214,9 @@ def main():
         help="Set the newly created version as the default version to serve",
         default=False)
 
+    parser.add_option('--exercises-branch', default="master")
+    parser.add_option('--symbolab-branch', default="master")
+
     options, args = parser.parse_args()
 
     if options.node:
@@ -213,7 +238,8 @@ def main():
     version = -1
 
     if not options.noup:
-        version = git_pull()
+        version = git_pull(options.exercises_branch, options.symbolab_branch)
+        1/0
         if version <= 0:
             print "Could not find version after 'hg pull', 'hg up', 'hg tip'."
             return
