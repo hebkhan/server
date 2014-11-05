@@ -902,6 +902,7 @@ var Review = {
         reviewCounterElem.data("counter", reviewsLeftCount);
     }
 };
+
 function showAssociations() {
     $("#associations").toggle({effect: "drop", direction: "right"});
     setTimeout(function() {
@@ -916,6 +917,26 @@ $(function() {
     } else {
         setTimeout(showAssociations, 2000);
     }
+})
+
+$(function() {
+    $(".logos a").qtip({
+            content: {
+                attr: "data-tooltip",
+            },
+            style: {
+                classes: "ui-tooltip-shadow ui-tooltip-rounded",
+                width: "250px"
+            },
+            position: {
+                my: "bottom center",
+                at: "top center"
+            },
+            hide: {
+                fixed: true,
+                delay: 150
+            }
+    });
 })
 
 var TopicNav = {
