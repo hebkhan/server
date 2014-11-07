@@ -1,3 +1,5 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
 import os
 import logging
 import datetime
@@ -122,36 +124,32 @@ class RequestHandler(webapp2.RequestHandler, RequestInputHandler):
 
     def handle_exception(self, e, *args):
 
-        title = "Oops. We broke our streak."
-        message_html = "We ran into a problem. It's our fault, and we're working on it."
-        sub_message_html = "This has been reported to us, and we'll be looking for a fix. If the problem continues, feel free to <a href='/reportissue?type=Defect'>send us a report directly</a>."
+        title = "אופס! נשבר..."
+        #"We ran into a problem. It's our fault, and we're working on it."
+        message_html = "נתקלנו בבעיה. זו אשמתנו, ואנחנו כבר מטפלים בעניין."
+        #"This has been reported to us, and we'll be looking for a fix. If the problem continues, feel free to <a href='/reportissue?type=Defect'>send us a report directly</a>."
+        sub_message_html = "הבעיה דווחה לנו, ואנחנו עובדים על תיקון. " \
+            "אם התקלה חוזרת, אנא <a href='/reportissue?type=Defect'>דווחו לנו ישירות</a>."
 
         if type(e) is CapabilityDisabledError:
 
             # App Engine maintenance period
-            title = "Shhh. We're studying."
-            message_html = "We're temporarily down for maintenance, and we expect this to end shortly. In the meantime, you can watch all of our videos at the <a href='http://www.youtube.com/user/khanacademy'>Khan Academy YouTube channel</a>."
-            sub_message_html = "We're really sorry for the inconvenience, and we're working to restore access as soon as possible."
+            title = "שששש. אנחנו מתרגלים."
+            message_html = "אנחנו בעבודות תיקון ותחזוקה, ואנחנו מצפים לשוב בהקדם. " \
+                "בנתיים, תוכלו לצפות בסרטונים שלנו ב<a href='https://www.youtube.com/user/KhanAcademyHebrew'>ערוץ שלנו ב-YouTube</a>."
+            sub_message_html = "אנחנו באמת מצטרעים על אי הנוחות. אנחנו עובדים בכדי להחזיר את האתר לפעולה במהרה."
 
         elif type(e) is MissingExerciseException:
 
-            title = "This exercise isn't here right now."
-            message_html = "Either this exercise doesn't exist or it's temporarily hiding. You should <a href='/exercisedashboard'>head back to our other exercises</a>."
-            sub_message_html = "If this problem continues and you think something is wrong, please <a href='/reportissue?type=Defect'>let us know by sending a report</a>."
+            title = "התרגיל איננו זמין כרגע."
+            message_html = "התרגיל אינו קיים או שהוא פשוט מוסתר זמנית. אנא <a href='/'>נסו תרגילים אחרים</a>."
+            sub_message_html = "אם הבעיה חוזרת ואתם חושבים שיש תקלה, אנא <a href='/reportissue?type=Defect'>דווחו לנו על כך</a>."
 
         elif type(e) is MissingVideoException:
 
-            # We don't log missing videos as errors because they're so common due to malformed URLs or renamed videos.
-            # Ask users to report any significant problems, and log as info in case we need to research.
-            title = "This video is no longer around."
-            message_html = "You're looking for a video that either never existed or wandered away. <a href='/'>Head to our video library</a> to find it."
-            sub_message_html = "If this problem continues and you think something is wrong, please <a href='/reportissue?type=Defect'>let us know by sending a report</a>."
-
-        elif type(e) is SmartHistoryLoadException:
-            # 404s are very common with Smarthistory as bots have gotten hold of bad urls, silencing these reports and log as info instead
-            title = "This page of the Smarthistory section of Khan Academy does not exist"
-            message_html = "Go to <a href='/'>our Smarthistory homepage</a> to find more art history content."
-            sub_message_html = "If this problem continues and you think something is wrong, please <a href='/reportissue?type=Defect'>let us know by sending a report</a>."
+            title = "הסרטון איננו זמין כרגע."
+            message_html = "הסרטון אינו קיים, או שהסרנו אותו כי יש טובים ממנו. <a href='/'>עיברו לקטלוג שלנו</a> ומצאו סרטון אחר."
+            sub_message_html = "אם הבעיה חוזרת ואתם חושבים שיש תקלה, אנא <a href='/reportissue?type=Defect'>דווחו לנו על כך</a> ונטפל בה בהקדם."
 
         if isinstance(e, QuietException):
             logging.info("Exception: %s", type(e))
@@ -224,13 +222,27 @@ class RequestHandler(webapp2.RequestHandler, RequestInputHandler):
                 env_dump = '\n'.join('%s: %s' % (k, environ[k]) for k in sorted(environ))
 
                 self.response.clear()
-                self.render_jinja2_template('viewtraceback.html', { "title": title, "message": message, "template_filename": template_filename, "template_line": template_line, "extracted_source": extracted_source, "app_root": app_root, "application_trace": application_trace, "framework_trace": framework_trace, "full_trace": full_trace, "params_dump": params_dump, "env_dump": env_dump })
+                self.render_jinja2_template('viewtraceback.html', {
+                    "title": title,
+                    "message": message,
+                    "template_filename": template_filename,
+                    "template_line": template_line,
+                    "extracted_source": extracted_source,
+                    "app_root": app_root,
+                    "application_trace": application_trace,
+                    "framework_trace": framework_trace,
+                    "full_trace": full_trace,
+                    "params_dump": params_dump,
+                    "env_dump": env_dump })
             except:
                 # We messed something up showing the backtrace nicely; just show it normally
                 pass
         else:
             self.response.clear()
-            self.render_jinja2_template('viewerror.html', { "title": title, "message_html": message_html, "sub_message_html": sub_message_html })
+            self.render_jinja2_template('viewerror.html', {
+                "title": title.decode("utf8"),
+                "message_html": message_html.decode("utf8"),
+                "sub_message_html": sub_message_html.decode("utf8") })
 
     @classmethod
     def exceptions_to_http(klass, status):
