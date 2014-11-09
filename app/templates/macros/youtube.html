@@ -20,7 +20,7 @@
 {%- endmacro %}
 
 {% macro mobile_iframe_player_embed(youtube_id, width=800, height=480, http_origin=None) -%}
-<iframe id="iframePlayer" type="text/html" width="{{ width }}" height="{{ height }}" src="http://www.youtube.com/embed/{{ youtube_id }}?enablejsapi=1&origin=http://{{ http_origin|urlencode }}"></iframe>
+<iframe id="iframePlayer" type="text/html" width="{{ width }}" height="{{ height }}" src="http://www.youtube.com/embed/{{ youtube_id }}?fs=1&enablejsapi=1&origin=http://{{ http_origin|urlencode }}" allowfullscreen></iframe>
 
 <script>
     var tag = document.createElement('script');
