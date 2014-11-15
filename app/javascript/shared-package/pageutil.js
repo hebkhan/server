@@ -920,13 +920,15 @@ $(function() {
 })
 
 $(function() {
-    $(".logos a").qtip({
+    $(".logos a").each(function() {
+        $(this).qtip({
             content: {
                 attr: "data-tooltip",
             },
             style: {
                 classes: "ui-tooltip-shadow ui-tooltip-rounded",
-                width: "250px"
+                width: $(this).data("tooltip-width") || "216px"
+                // "216px"
             },
             position: {
                 my: "bottom center",
@@ -936,6 +938,7 @@ $(function() {
                 fixed: true,
                 delay: 150
             }
+        })
     });
 })
 

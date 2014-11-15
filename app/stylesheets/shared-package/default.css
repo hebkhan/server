@@ -546,6 +546,18 @@ footer {
         background-image: url(/images/logos/symbolab.png);
     }
 
+    .ui-tooltip-content .logos-content {
+        text-align: justify;
+    }
+
+    .ui-tooltip-content .logos-content {
+        text-align: justify;
+    }
+
+    .ui-tooltip-content .logos-content.ani10 img {
+        margin-left: 10px;
+    }
+
     footer.short .inner {
         max-width: 1200px;
         margin: 0 auto;
