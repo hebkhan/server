@@ -100,8 +100,12 @@ def git_pull(exercises_branch, symbolab_branch):
         with pushd('symbolab'):
             popen_safe('git fetch')
             popen_safe('git checkout origin/{}'.format(symbolab_branch))
-            popen_safe('{} make.py --overwrite --target ../exercises {}'.format(sys.executable,
+            try:
+                popen_safe('{} make.py --overwrite --target ../exercises {}'.format(sys.executable,
                                                                                 " ".join(glob.glob("exercises/*.json"))))
+            except RuntimeError as e:
+                print "Error in symbolab: %s" % e
+
     return git_version()
 
 def git_version():
