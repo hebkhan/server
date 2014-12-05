@@ -39,7 +39,10 @@ def get_content_data():
                 except KeyError:
                     continue
                 for depth, tk2 in enumerate(topic.ancestor_keys[:-1][::-1]):
-                    idx2, topic2 = topics[str(tk2)]
+                    try:
+                        idx2, topic2 = topics[str(tk2)]
+                    except KeyError:
+                        continue
                     if idx2 in seen:
                         continue
                     seen.add(idx2)
