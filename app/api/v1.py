@@ -2292,25 +2292,40 @@ def get_student_goals():
 @jsonp
 @jsonify
 def create_user_goal():
+    batch = False
     user_data = models.UserData.current()
     if not user_data:
         return api_invalid_param_response("User is not logged in.")
 
     user_override = request.request_user_data("email")
     if user_data.developer and user_override and user_override.key_email != user_data.key_email:
-        user_data = user_override
+        users = [user_override]
+    else:
+        users = [user_data]
 
     json = request.json
     title = json.get('title')
     if not title:
         return api_invalid_param_response('Title is invalid.')
 
-    objective_descriptors = []
+    target = json.get('target') or ""
+    if target.startswith("list_id:"):
+        coach = user_data
+        key = target.partition(":")[2]
+        student_list = StudentList.get(key)
+        if not user_data.key() in student_list.coaches:
+            return api_invalid_param_response("User is not coach of this StudentList")
+        users = student_list.students
+        batch = True
 
-    goal_videos = GoalList.videos_in_current_goals(user_data)
-    current_goals = GoalList.get_current_goals(user_data)
+    tasks = []
 
-    if json:
+    for user_data in users:
+        objective_descriptors = []
+
+        goal_videos = GoalList.videos_in_current_goals(user_data)
+        current_goals = GoalList.get_current_goals(user_data)
+
         for obj in json['objectives']:
             if obj['type'] == 'GoalObjectiveAnyExerciseProficiency':
                 for goal in current_goals:
@@ -2345,16 +2360,21 @@ def create_user_goal():
                     return api_invalid_param_response("Video is already an objective in a current goal.")
                 objective_descriptors.append(obj)
 
-    if objective_descriptors:
+        if not objective_descriptors:
+            return api_invalid_param_response("No objectives specified.")
+
+        tasks.append([user_data, objective_descriptors])
+
+    goals = {}
+    for user_data, objective_descriptors in tasks:
         objectives = GoalObjective.from_descriptors(objective_descriptors,
             user_data)
 
         goal = Goal(parent=user_data, title=title, objectives=objectives)
         user_data.save_goal(goal)
+        goals[user_data.email] = goal.get_visible_data(None)
 
-        return goal.get_visible_data(None)
-    else:
-        return api_invalid_param_response("No objectives specified.")
+    return goals if batch else goals[user_data.email]
 
 
 @route("/api/v1/user/goals/<int:id>", methods=["GET"])

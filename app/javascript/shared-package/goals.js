@@ -4,7 +4,8 @@ var Goal = Backbone.Model.extend({
         complete: false,
         progress: 0,
         title: "Unnamed goal",
-        objectives: []
+        objectives: [],
+        target: null
     },
 
     urlRoot: "/api/v1/user/goals",
@@ -675,10 +676,11 @@ var NewCustomGoalDialog = Backbone.View.extend({
         });
     },
 
-    show: function() {
+    show: function(target) {
         if (!this.innerEl) {
             this.render();
         }
+        $(this.innerEl).data("target", target);
         // if we haven't yet loaded the contents of this dialog, do it
         if (!this.loaded) {
             this.loaded = true;
@@ -691,13 +693,11 @@ var NewCustomGoalDialog = Backbone.View.extend({
     },
 
     load: function() {
-        if (!dynamicPackageLoader.packageLoaded("maps")) {
-            $('<script src="http://maps.google.com/maps/api/js?v=3.3&sensor=false&callback=finishLoadingMapsPackage" type="text/javascript"></script>').appendTo(document);
-        }
         return $.ajax({url: "/goals/new", type: "GET", dataType: "html"})
             .done($.proxy(function(html) {
                 KAConsole.log("Loaded /goals/new.");
-                this.waitForMapsPackage(html);
+                $(this.innerEl).html(html);
+                createGoalInitialize();
             }, this))
             .error($.proxy(function() {
                 KAConsole.log(Array.prototype.slice.call(arguments));
@@ -709,16 +709,6 @@ var NewCustomGoalDialog = Backbone.View.extend({
         $(this.el).modal("hide");
     },
 
-    waitForMapsPackage: function(html) {
-        if (!dynamicPackageLoader.packageLoaded("maps")) {
-            var that = this;
-            setTimeout(function() { that.waitForMapsPackage(html); }, 100);
-            return;
-        }
-        KAConsole.log("Done loading.");
-        $(this.innerEl).html(html);
-        createGoalInitialize();
-    }
 });
 
 $(function() {

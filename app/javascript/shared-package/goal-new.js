@@ -244,6 +244,12 @@ var GoalCreator = {
 
         this.resize();
 
+        var target = $(".create-goal-page").parent().data("target");
+        if (target) {
+            // this goal is targeted at some other user,
+            // so the current-objectives are of no use to us
+            return
+        }
         for (var readableId in GoalCreator.getCurrentObjectives()) {
             $('.vl[data-id="' + readableId + '"]')
                 .addClass("goalVideoInvalid")
@@ -328,7 +334,10 @@ var GoalCreator = {
             titleField.val("יעד מותאם אישית: " + d.getDate() + "/" + (d.getMonth()+1) + "/" + d.getFullYear());
         }
 
+        var target = $(".create-goal-page").parent().data("target");
+
         var goal = new Goal({
+            target: target,
             title: titleField.val(),
             objectives: _.map(GoalCreator.objectives, function(o) {
                 var newObj = {
@@ -340,11 +349,20 @@ var GoalCreator = {
                 return newObj;
             })
         });
-        GoalBook.add(goal);
+        // if this goal is not targeted to another user/student-list
+        if (!target) {
+            GoalBook.add(goal);
+        }
         goal.save()
+            .success(function(jqXHR) {
+                KAConsole.log("Goal creation succeeded");
+                GoalCreator.trigger("created", jqXHR)
+            })
             .fail(function(jqXHR) {
                 KAConsole.log("Goal creation failed: " + jqXHR.responseText, goal);
-                GoalBook.remove(goal);
+                if (!target) {
+                    GoalBook.remove(goal);
+                }
             });
 
         newCustomGoalDialog.hide();
@@ -353,3 +371,5 @@ var GoalCreator = {
         return false;
     }
 };
+
+_.extend(GoalCreator, Backbone.Events);

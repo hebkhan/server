@@ -181,9 +181,17 @@ var ClassProfile = {
             });
 
             // get initially selected list
-            var list_id = $dropdown.children('li[data-selected=selected]').data('list_id');
+            var list_id = $.address.parameter("list_id");
+            if (list_id) {
+                $dropdown.children('li[data-selected=selected]').removeAttr("data-selected");
+                $dropdown.children('li[data-list_id='+list_id+']').attr("data-selected", "selected");
+            } else {
+                list_id = $dropdown.children('li[data-selected=selected]').data('list_id');
+            }
             var student_list = ClassProfile.getStudentListFromId(list_id);
             $dropdown.data('selected', student_list);
+            $('#studentlists_dropdown .ui-button-text').text(student_list.name);
+
         }
     },
 
@@ -524,6 +532,15 @@ var ClassProfile = {
                 ClassProfile.filterStudentGoals(studentGoalsViewModel);
             });
 
+        var target = $.address.parameter("list_id");
+        $(".new-goal").click(function(e) {
+            e.preventDefault();
+            window.newCustomGoalDialog.show("list_id:"+target);
+        });
+        GoalCreator.bind("created", function(xhr) {
+            ClassProfile.historyChange()
+        })
+
         ClassProfile.sortStudentGoals(studentGoalsViewModel);
         ClassProfile.filterStudentGoals(studentGoalsViewModel);
     },
@@ -714,7 +731,10 @@ var ClassProfile = {
     finishLoadGraphError: function() {
         this.fLoadingGraph = false;
         this.showGraphThrobber(false);
-        $("#graph-content").html("<div class='graph-notification'>It's our fault. We ran into a problem loading this graph. Try again later, and if this continues to happen please <a href='/reportissue?type=Defect'>let us know</a>.</div>");
+        $("#graph-content").html("<div class='graph-notification'>"+
+            "אופס... נתקלנו בתקלה כשניסינו לטעון את הגרף. " +
+            "אנא נסו שוב מאוחר יותר, ואם התקלה חוזרה אנא " +
+            "<a href='/reportissue?type=Defect'>דווחו לנו</a>.</div>");
     },
 
     // TODO: move history management out to a common utility
@@ -844,6 +864,12 @@ var ClassProfile = {
         // update the address parameter
         $.address.parameter("list_id",ui.item.data('list_id'))
 
+        // allow new goals unless we're looking a 'allstudents'
+        if (ui.item.data('list_id') == "allstudents") {
+            $(".new-goal").addClass("disabled").removeClass("green");
+        } else {
+            $(".new-goal").addClass("green").removeClass("disabled");
+        }
 
         // update appearance of dropdown
         $('#studentlists_dropdown .ui-button-text').text(student_list.name);
