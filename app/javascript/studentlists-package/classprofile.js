@@ -193,6 +193,11 @@ var ClassProfile = {
             $('#studentlists_dropdown .ui-button-text').text(student_list.name);
 
         }
+
+        GoalCreator.bind("created", function(xhr) {
+            ClassProfile.historyChange()
+        })
+
     },
 
     highlightPoints: function(chart, fxnHighlight) {
@@ -533,13 +538,18 @@ var ClassProfile = {
             });
 
         var target = $.address.parameter("list_id");
-        $(".new-goal").click(function(e) {
-            e.preventDefault();
-            window.newCustomGoalDialog.show("list_id:"+target);
-        });
-        GoalCreator.bind("created", function(xhr) {
-            ClassProfile.historyChange()
-        })
+        // allow new goals unless we're looking a 'allstudents'
+        if (target == "allstudents") {
+            $(".new-goal").addClass("disabled").removeClass("green");
+        } else {
+            $(".new-goal")
+                .addClass("green")
+                .removeClass("disabled")
+                .click(function(e) {
+                    e.preventDefault();
+                    window.newCustomGoalDialog.show("list_id:"+target);
+                });
+        }
 
         ClassProfile.sortStudentGoals(studentGoalsViewModel);
         ClassProfile.filterStudentGoals(studentGoalsViewModel);
@@ -863,13 +873,6 @@ var ClassProfile = {
 
         // update the address parameter
         $.address.parameter("list_id",ui.item.data('list_id'))
-
-        // allow new goals unless we're looking a 'allstudents'
-        if (ui.item.data('list_id') == "allstudents") {
-            $(".new-goal").addClass("disabled").removeClass("green");
-        } else {
-            $(".new-goal").addClass("green").removeClass("disabled");
-        }
 
         // update appearance of dropdown
         $('#studentlists_dropdown .ui-button-text').text(student_list.name);
