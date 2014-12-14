@@ -4,6 +4,7 @@
     {{#each rowData}}
         <div class="goal-row" data-id="{{rowID}}">
             <div class="student-name">
+                <input class="goal-check" data-id="{{student.email}}" type="checkbox"/>
                 <a href="{{student.profile_url}}">{{student.nickname}}</a>
                 {{#if goal.objectives}}
                 <span class="goal-count">({{goal_idx}}/{{student.goal_count}})</span>

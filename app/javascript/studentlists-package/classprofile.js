@@ -537,19 +537,27 @@ var ClassProfile = {
                 ClassProfile.filterStudentGoals(studentGoalsViewModel);
             });
 
-        var target = $.address.parameter("list_id");
-        // allow new goals unless we're looking a 'allstudents'
-        if (target == "allstudents") {
-            $(".new-goal").addClass("disabled").removeClass("green");
-        } else {
-            $(".new-goal")
-                .addClass("green")
-                .removeClass("disabled")
-                .click(function(e) {
-                    e.preventDefault();
-                    window.newCustomGoalDialog.show("list_id:"+target);
-                });
-        }
+        $(".new-goal")
+            .addClass("disabled")
+            .removeClass("green")
+            .click(function(e) {
+                e.preventDefault();
+                var users_csv = $(".goal-check:checked")
+                    .map(function(){return $(this).data("id");})
+                    .toArray()
+                    // unique elements
+                    .filter(function(el, index, arr) { return index === arr.indexOf(el); })
+                    .join();
+                window.newCustomGoalDialog.show("students:"+users_csv);
+            });
+
+        $(".goal-check").click(function() {
+            if ($(".goal-check:checked").length) {
+                $(".new-goal").addClass("green").removeClass("disabled");
+            } else {
+                $(".new-goal").removeClass("green").addClass("disabled");
+            }
+        });
 
         ClassProfile.sortStudentGoals(studentGoalsViewModel);
         ClassProfile.filterStudentGoals(studentGoalsViewModel);
