@@ -2327,6 +2327,39 @@ def create_user_goal():
         batch = True
 
     tasks = []
+    class InvalidObjective(Exception): pass
+    def validate(obj):
+        if obj['type'] == 'GoalObjectiveAnyExerciseProficiency':
+            for goal in current_goals:
+                for o in goal.objectives:
+                    if isinstance(o, GoalObjectiveAnyExerciseProficiency):
+                        raise InvalidObjective("User already has a current exercise process goal.")
+            return obj
+
+        if obj['type'] == 'GoalObjectiveAnyVideo':
+            for goal in current_goals:
+                for o in goal.objectives:
+                    if isinstance(o, GoalObjectiveAnyVideo):
+                        raise InvalidObjective("User already has a current video process goal.")
+            return obj
+
+        if obj['type'] == 'GoalObjectiveExerciseProficiency':
+            obj['exercise'] = models.Exercise.get_by_name(obj['internal_id'])
+            if not obj['exercise'] or not obj['exercise'].is_visible_to_current_user():
+                raise InvalidObjective("Internal error: Could not find exercise.")
+            return obj
+
+        if obj['type'] == 'GoalObjectiveWatchVideo':
+            obj['video'] = models.Video.get_for_readable_id(obj['internal_id'])
+            if not obj['video']:
+                raise InvalidObjective("Internal error: Could not find video.")
+            user_video = models.UserVideo.get_for_video_and_user_data(obj['video'], user_data)
+            if user_video and user_video.completed:
+                raise InvalidObjective("Video has already been watched.")
+            if obj['video'].readable_id in goal_videos:
+                raise InvalidObjective("Video is already an objective in a current goal (%s, %s)." % 
+                    (obj['video'].readable_id, user_data.email))
+            return obj
 
     for user_data in users:
         objective_descriptors = []
@@ -2335,41 +2368,16 @@ def create_user_goal():
         current_goals = GoalList.get_current_goals(user_data)
 
         for obj in json['objectives']:
-            if obj['type'] == 'GoalObjectiveAnyExerciseProficiency':
-                for goal in current_goals:
-                    for o in goal.objectives:
-                        if isinstance(o, GoalObjectiveAnyExerciseProficiency):
-                            return api_invalid_param_response(
-                                "User already has a current exercise process goal.")
-                objective_descriptors.append(obj)
-
-            if obj['type'] == 'GoalObjectiveAnyVideo':
-                for goal in current_goals:
-                    for o in goal.objectives:
-                        if isinstance(o, GoalObjectiveAnyVideo):
-                            return api_invalid_param_response(
-                                "User already has a current video process goal.")
-                objective_descriptors.append(obj)
-
-            if obj['type'] == 'GoalObjectiveExerciseProficiency':
-                obj['exercise'] = models.Exercise.get_by_name(obj['internal_id'])
-                if not obj['exercise'] or not obj['exercise'].is_visible_to_current_user():
-                    return api_invalid_param_response("Internal error: Could not find exercise.")
-                objective_descriptors.append(obj)
-
-            if obj['type'] == 'GoalObjectiveWatchVideo':
-                obj['video'] = models.Video.get_for_readable_id(obj['internal_id'])
-                if not obj['video']:
-                    return api_invalid_param_response("Internal error: Could not find video.")
-                user_video = models.UserVideo.get_for_video_and_user_data(obj['video'], user_data)
-                if user_video and user_video.completed:
-                    return api_invalid_param_response("Video has already been watched.")
-                if obj['video'].readable_id in goal_videos:
-                    return api_invalid_param_response("Video is already an objective in a current goal.")
-                objective_descriptors.append(obj)
+            try:
+                objective_descriptors.append(validate(obj))
+            except InvalidObjective, e:
+                if not batch:
+                    return api_invalid_param_response(e)
 
         if not objective_descriptors:
-            return api_invalid_param_response("No objectives specified.")
+            if not batch:
+                return api_invalid_param_response("No objectives specified.")
+            continue
 
         tasks.append([user_data, objective_descriptors])
 
