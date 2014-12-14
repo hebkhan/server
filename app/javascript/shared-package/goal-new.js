@@ -24,6 +24,12 @@ var GoalCreator = {
         GoalCreator.updateViewAndDescription();
     },
     getCurrentObjectives: function() {
+        if ($(".create-goal-page").parent().data("target")) {
+            // this goal is targeted at some other user,
+            // so the current-objectives are of no use to us
+            return {};
+        }
+
         var list = {};
         $.each(GoalBook.models, function(idx, model) {
             $.each(model.get("objectives"), function(idx2, objective) {
@@ -244,12 +250,6 @@ var GoalCreator = {
 
         this.resize();
 
-        var target = $(".create-goal-page").parent().data("target");
-        if (target) {
-            // this goal is targeted at some other user,
-            // so the current-objectives are of no use to us
-            return
-        }
         for (var readableId in GoalCreator.getCurrentObjectives()) {
             $('.vl[data-id="' + readableId + '"]')
                 .addClass("goalVideoInvalid")
