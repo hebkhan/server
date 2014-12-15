@@ -59,6 +59,12 @@ var GoalCreator = {
                 GoalCreator.onClicked(name, title, type);
             });
 
+        if ($(".create-goal-page").parent().data("target")) {
+            // this goal is targeted at some other user,
+            // so the completed objectives are of no use to us
+            return;
+        }
+
         $("#goal-choose-videos .vl").each(function(i, element) {
             var jel = $(element);
             var span = jel.children("span");
