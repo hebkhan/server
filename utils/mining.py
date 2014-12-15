@@ -18,7 +18,7 @@ extra_paths = [
     os.path.join(gae_path, 'lib', 'yaml', 'lib'),
 ]
 
-sys.path[:1] = extra_paths
+#sys.path[:1] = extra_paths
 
 from secrets_dev import app_engine_username, app_engine_password
 
@@ -31,7 +31,7 @@ def init_remote_api(app_id):
 
     remote_api_stub.ConfigureRemoteApi(None, '/_ah/remote_api', login, '%s.appspot.com' % app_id)
 
-import gspread
+#import gspread
 
 os.environ["SERVER_SOFTWARE"] = "Miner"
 import models
