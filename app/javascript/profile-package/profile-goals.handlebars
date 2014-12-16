@@ -6,6 +6,9 @@
         file to maintain consistency. }}
         <div class="goal pulls {{#if completed}}{{#unless abandoned}}complete{{/unless}}{{/if}}" data-id="{{id}}">
             <p class="goal-description">
+                {{#if by_coach}}
+                    <span "goal-creator">בהדרכה - </span>
+                {{/if}}
                 {{#if ../readonly}}
                 <span class="goal-title">{{title}}</span>
                 {{else}}

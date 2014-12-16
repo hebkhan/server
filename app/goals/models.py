@@ -16,6 +16,7 @@ class Goal(db.Model):
     # data
     title = db.StringProperty(indexed=False)
     objectives = ObjectProperty()
+    creator = db.StringProperty(indexed=False)
 
     # a goal is 'completed' if it's finished or abandoned. This property is
     # indexed so that we can quickly fetch currently open goals
@@ -38,6 +39,7 @@ class Goal(db.Model):
             updated_ago=timesince_ago(self.updated_on),
             completed=self.completed_on,
             abandoned=self.abandoned,
+            by_coach=self.creator=="coach",
         )
 
         if self.completed:

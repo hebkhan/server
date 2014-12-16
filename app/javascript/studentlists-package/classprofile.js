@@ -551,7 +551,8 @@ var ClassProfile = {
                 window.newCustomGoalDialog.show("students:"+users_csv);
             });
 
-        $(".goal-check").click(function() {
+        $(".goal-check").change(function() {
+            $(".goal-check[data-id='" + $(this).data("id") + "']").attr("checked", this.checked);
             if ($(".goal-check:checked").length) {
                 $(".new-goal").addClass("green").removeClass("disabled");
             } else {

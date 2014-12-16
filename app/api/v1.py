@@ -2292,21 +2292,18 @@ def get_student_goals():
 @jsonp
 @jsonify
 def create_user_goal():
-    batch = False
     user_data = models.UserData.current()
     if not user_data:
         return api_invalid_param_response("User is not logged in.")
-
-    user_override = request.request_user_data("email")
-    if user_data.developer and user_override and user_override.key_email != user_data.key_email:
-        users = [user_override]
-    else:
-        users = [user_data]
 
     json = request.json
     title = json.get('title')
     if not title:
         return api_invalid_param_response('Title is invalid.')
+
+    users = [user_data]
+    batch = False
+    creator = user_data
 
     target = json.get('target') or ""
     if target.startswith("list_id:"):
@@ -2383,10 +2380,10 @@ def create_user_goal():
 
     goals = {}
     for user_data, objective_descriptors in tasks:
-        objectives = GoalObjective.from_descriptors(objective_descriptors,
-            user_data)
+        objectives = GoalObjective.from_descriptors(objective_descriptors, user_data)
 
-        goal = Goal(parent=user_data, title=title, objectives=objectives)
+        goal = Goal(parent=user_data, title=title, objectives=objectives,
+                    creator="user" if (creator==user_data) else "coach")
         user_data.save_goal(goal)
         goals[user_data.email] = goal.get_visible_data(None)
 

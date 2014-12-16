@@ -5,7 +5,8 @@ var Goal = Backbone.Model.extend({
         progress: 0,
         title: "Unnamed goal",
         objectives: [],
-        target: null
+        target: null,
+        creator: "user"
     },
 
     urlRoot: "/api/v1/user/goals",
