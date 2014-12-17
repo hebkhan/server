@@ -2,18 +2,19 @@
     <div id="class-goal-filter-desc"></div>
     <div id="class-student-goal">
     {{#each rowData}}
-        <div class="goal-row" data-id="{{rowID}}">
+        <div class="goal-row" data-id="{{rowID}}" data-student="{{student.email}}">
             <div class="student-name">
                 <input class="goal-check" data-id="{{student.email}}" type="checkbox"/>
                 <a href="{{student.profile_url}}">{{student.nickname}}</a>
                 {{#if goal.objectives}}
                 <span class="goal-count">({{goal_idx}}/{{student.goal_count}})</span>
-                {{#if goal.by_coach}}
-                <span class="goal-creator">(בהדרכה)</span>
-                {{/if}}
                 <div>
-                    <div class="goal-start-time">מועד התחלה {{goal.created_ago}}</div>
-                    <div class="goal-update-time">מועד עדכון אחרון {{goal.updated_ago}}</div>
+                    <span class="goal-start-time">מועד התחלה - {{goal.created_ago}}</span>
+                    <span class="goal-update-time">מועד עדכון אחרון - {{goal.updated_ago}}</span>
+                    {{#if goal.by_coach}}
+                        | <span class="goal-creator">יעד מדריך</span>
+                            <a class="goal-remove" href="#" data-id="{{goal.id}}">(הסר)</a>
+                    {{/if}}
                 </div>
                 {{/if}}
             </div>

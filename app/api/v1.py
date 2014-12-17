@@ -2389,6 +2389,29 @@ def create_user_goal():
 
     return goals if batch else goals[user_data.email]
 
+@route("/api/v1/student/goals/<int:id>", methods=["DELETE"])
+@oauth_optional()
+@jsonp
+@jsonify
+def delete_student_goal(id):
+    coach = models.UserData.current()
+    if not coach:
+        return api_invalid_param_response("Coach not logged in")
+
+    user_data = request.request_user_data("email")
+    if not user_data:
+        return api_invalid_param_response("User not found")
+
+    if not user_data.is_coached_by(coach):
+        return api_invalid_param_response("Not this user's coach")
+
+    goal = Goal.get_by_id(id, parent=user_data)
+
+    if not goal:
+        return api_invalid_param_response("Could not find goal with ID %s" % (id,))
+
+    goal.delete()
+    return True
 
 @route("/api/v1/user/goals/<int:id>", methods=["GET"])
 @oauth_optional()

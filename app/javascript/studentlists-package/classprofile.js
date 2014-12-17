@@ -552,14 +552,29 @@ var ClassProfile = {
             });
 
         $(".goal-check").change(function() {
-            $(".goal-check[data-id='" + $(this).data("id") + "']").attr("checked", this.checked);
+            var student = $(this).closest(".goal-row").data("student");
+            $(".goal-row[data-student='" + student + "'] .goal-check").attr("checked", this.checked);
             if ($(".goal-check:checked").length) {
                 $(".new-goal").addClass("green").removeClass("disabled");
             } else {
                 $(".new-goal").removeClass("green").addClass("disabled");
             }
         });
-
+        $(".goal-remove").click(function(e) {
+            e.preventDefault();
+            var goal_id = $(this).data("id");
+            var student_email = $(this).closest(".goal-row").data("student");
+            $.ajax({
+                type: "DELETE",
+                url: "/api/v1/student/goals/" + goal_id + "?" + $.param({"email": student_email}),
+                // dataType: "json",
+                // contentType: "application/json",
+                // data: JSON.stringify({"email": student_email}),
+                success: (function(xhr) {
+                    ClassProfile.historyChange();
+                })
+            });
+        });
         ClassProfile.sortStudentGoals(studentGoalsViewModel);
         ClassProfile.filterStudentGoals(studentGoalsViewModel);
     },

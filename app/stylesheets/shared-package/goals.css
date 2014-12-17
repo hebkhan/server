@@ -294,9 +294,10 @@ ul.inline-list, ul.inline-list li {
 }
 #class-student-goal .goal-creator {
     font-size: 8pt;
+    font-weight: bold;
     color: #678D00;
-    float: left;
-    margin-left: 1em;
+/*    float: left;
+    margin-left: 1em;*/
 }
 #class-student-goal .goal {
     display: inline-block;
