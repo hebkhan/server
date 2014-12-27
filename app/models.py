@@ -449,6 +449,14 @@ class UserExercise(db.Model):
         query.filter('user =', user_data.user)
         return query
 
+    @staticmethod
+    def get_for_exercise_and_user_data(exercise_name, user_data):
+        if not user_data:
+            return None
+        query = UserExercise.get_for_user_data(user_data)
+        query = query.filter("exercise =", exercise_name)
+        return query.get()
+
     def get_user_data(self):
         user_data = None
 

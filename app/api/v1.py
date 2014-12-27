@@ -2324,8 +2324,13 @@ def create_user_goal():
         batch = True
 
     tasks = []
+
     class InvalidObjective(Exception): pass
     def validate(obj):
+        if obj['internal_id'] in current_objectives:
+            raise InvalidObjective("This item is already an objective in a current goal (%s, %s)." % 
+                (obj['internal_id'], user_data.email))
+
         if obj['type'] == 'GoalObjectiveAnyExerciseProficiency':
             for goal in current_goals:
                 for o in goal.objectives:
@@ -2344,6 +2349,9 @@ def create_user_goal():
             obj['exercise'] = models.Exercise.get_by_name(obj['internal_id'])
             if not obj['exercise'] or not obj['exercise'].is_visible_to_current_user():
                 raise InvalidObjective("Internal error: Could not find exercise.")
+            user_exercise = models.UserExercise.get_for_exercise_and_user_data(obj['internal_id'], user_data)
+            if user_exercise and user_exercise.progress >= 1:
+                raise InvalidObjective("Exercise has been completed.")
             return obj
 
         if obj['type'] == 'GoalObjectiveWatchVideo':
@@ -2353,16 +2361,13 @@ def create_user_goal():
             user_video = models.UserVideo.get_for_video_and_user_data(obj['video'], user_data)
             if user_video and user_video.completed:
                 raise InvalidObjective("Video has already been watched.")
-            if obj['video'].readable_id in goal_videos:
-                raise InvalidObjective("Video is already an objective in a current goal (%s, %s)." % 
-                    (obj['video'].readable_id, user_data.email))
             return obj
 
     for user_data in users:
         objective_descriptors = []
 
-        goal_videos = GoalList.videos_in_current_goals(user_data)
         current_goals = GoalList.get_current_goals(user_data)
+        current_objectives = [obj.internal_id() for g in current_goals for obj in g.objectives]
 
         for obj in json['objectives']:
             try:
@@ -2370,6 +2375,7 @@ def create_user_goal():
             except InvalidObjective, e:
                 if not batch:
                     return api_invalid_param_response(e)
+                logging.warning(e)
 
         if not objective_descriptors:
             if not batch:
