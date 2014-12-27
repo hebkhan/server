@@ -549,17 +549,28 @@ var ClassProfile = {
                     .filter(function(el, index, arr) { return index === arr.indexOf(el); })
                     .join();
                 window.newCustomGoalDialog.show("students:"+users_csv);
+            })
+            .bind("goal-check-changed", function() {
+                if ($(".goal-check:checked").length) {
+                    $(".goal-check-all").attr("checked", true);
+                    $(".new-goal").addClass("green").removeClass("disabled");
+                } else {
+                    $(".goal-check-all").attr("checked", false);
+                    $(".new-goal").removeClass("green").addClass("disabled");
+                }
             });
+
+        $(".goal-check-all").change(function() {
+            $(".goal-check").attr("checked", this.checked);
+            $(".new-goal").trigger("goal-check-changed");
+        });
 
         $(".goal-check").change(function() {
             var student = $(this).closest(".goal-row").data("student");
             $(".goal-row[data-student='" + student + "'] .goal-check").attr("checked", this.checked);
-            if ($(".goal-check:checked").length) {
-                $(".new-goal").addClass("green").removeClass("disabled");
-            } else {
-                $(".new-goal").removeClass("green").addClass("disabled");
-            }
+            $(".new-goal").trigger("goal-check-changed");
         });
+
         $(".goal-remove").click(function(e) {
             e.preventDefault();
             var goal_id = $(this).data("id");
@@ -833,6 +844,9 @@ var ClassProfile = {
     // TODO: this is redundant with addobjectivehover in profile.js
     AddObjectiveHover: function(element) {
         var infoHover = $("#info-hover-container");
+        if (infoHover.length === 0) {
+            infoHover = $('<div id="info-hover-container"></div>').appendTo("body");
+        }
         var lastHoverTime;
         var mouseX;
         var mouseY;

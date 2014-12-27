@@ -312,6 +312,11 @@ ul.inline-list, ul.inline-list li {
     margin-top: 3px;
 }
 
+#class-student-goals input[type=checkbox] {
+    position: relative;
+    top: 3px;
+}
+
 .goal-title {
     font-size: 14px;
     font-weight: bold;
@@ -358,6 +363,11 @@ input.goal-title:hover {
 }
 .create-goal-page .goal .goal-description {
     text-align: center;
+}
+
+.goal-creator {
+    font-weight: bold;
+    color: #678D00;
 }
 
 #goals-nav-container .goal-description.pulls {

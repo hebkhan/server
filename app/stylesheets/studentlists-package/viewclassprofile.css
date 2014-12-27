@@ -187,6 +187,9 @@
 }
 #individual_report #vital-statistics #class-student-goals .goal-row {
     white-space: nowrap;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    border-bottom: 1px solid #EEE;
 }
 
 #class-student-goals .goal .no-goal {
