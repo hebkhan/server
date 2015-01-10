@@ -1,11 +1,12 @@
 # coding=utf8
 from itertools import izip, chain
-
+import logging
 from jinja2.utils import escape
 
 from templatefilters import escapejs, timesince_ago
+from points import VideoPointCalculator, video_progress_from_points
 from models import Exercise, UserExerciseGraph
-from models import UserVideoCss, Video
+from models import UserVideoCss, Video, UserVideo
 from models import Topic, Setting
 import pickle
 import layer_cache
@@ -93,7 +94,7 @@ def class_progress_report_graph_context(user_data, list_students):
 
     exercise_list.sort(key=lambda e: e["display_name"])
 
-    all_video_progress = dict(get_video_progress_for_students(list_students))
+    all_video_progress = dict(get_video_progress_for_students(list_students, granular=False))
     videos_found = reduce(set.union, all_video_progress.itervalues(), set())
     video_list = [videos_all[vid_id] for vid_id in videos_found if vid_id in videos_all]
     video_list.sort(key=lambda v: v["display_name"])
@@ -182,17 +183,35 @@ def class_progress_report_graph_context(user_data, list_students):
     }
 
 
-def get_video_progress_for_students(students):
+def get_video_progress_for_students(students, granular=True):
+    youtube_ids = {video.key().id(): video.youtube_id for video in Video.get_all()}
+    def get_key_and_progress(vid_str, student, progress):
+        vid_id = int(vid_str[2:])
+        if granular and progress is not 'completed':
+            try:
+                youtube_id = youtube_ids[vid_id]
+            except KeyError:
+                logging.error("Couldn't get youtube_id for %s", vid_id)
+            else:
+                user_video = UserVideo.get_for_video_and_user_data(youtube_id, student)
+                if user_video:
+                    points = video_progress_from_points(VideoPointCalculator(user_video))
+                    if points > 0.66:
+                        progress = "watched-most"
+                    elif points > 0.33:
+                        progress = "watched-some"
+        return vid_id, progress
+
     keys = (UserVideoCss._key_for(student) for student in students)
     data = UserVideoCss.get_by_key_name(keys)
     for student, css in izip(students, data):
         if css:
             vid_css_data = pickle.loads(css.pickled_dict)
-            video_progress = {
-                int(vid_str[2:]): progress
+            video_progress = dict(
+                get_key_and_progress(vid_str, student, progress)
                 for progress, vids in vid_css_data.iteritems()
                 for vid_str in vids
-            }
+            )
             yield student, video_progress
         else:
             yield student, {}

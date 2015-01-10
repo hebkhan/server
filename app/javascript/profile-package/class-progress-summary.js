@@ -1,7 +1,35 @@
 var ProgressSummaryView = function(type) {
     var fInitialized = false,
         template = Templates.get("profile.class-progress-summary"),
-        exerciseStatusInfo = {
+        updateFilterTimeout = null,
+        context = null,
+        statusInfo = null;
+
+    if (type == "video") {
+        statusInfo = {
+                "watched-some": {
+                    display: "צפה חלקית",
+                    fShowOnLeft: true,
+                    order: 0},
+                "watched-most": {
+                    display: "כמעט סיים",
+                    fShowOnLeft: true,
+                    order: 1},
+                completed: {
+                    display: "סיים",
+                    fShowOnLeft: true,
+                    order: 2},
+                started: {
+                    display: "התחיל",
+                    fShowOnLeft: false,
+                    order: 3},
+                "not-started": {
+                    display: "לא התחיל",
+                    fShowOnLeft: false,
+                    order: 4}
+        }
+    } else {
+        statusInfo = {
                 struggling: {
                     display: "מתקשה",
                     fShowOnLeft: true,
@@ -22,28 +50,7 @@ var ProgressSummaryView = function(type) {
                     display: "לא התחיל",
                     fShowOnLeft: false,
                     order: 4}
-        },
-        videoStatusInfo = {
-            completed: {
-                display: "סיים",
-                fShowOnLeft: true,
-                order: 0},
-            started: {
-                display: "התחיל",
-                fShowOnLeft: false,
-                order: 1},
-            "not-started": {
-                display: "לא התחיל",
-                fShowOnLeft: false,
-                order: 2}
-        },
-        updateFilterTimeout = null,
-        context = null,
-        statusInfo = null;
-    if (type == "video") {
-        statusInfo = videoStatusInfo;
-    } else {
-        statusInfo = exerciseStatusInfo;
+        }
     }
 
     function toPixelWidth(num) {
@@ -86,6 +93,16 @@ var ProgressSummaryView = function(type) {
         Handlebars.registerHelper("toDisplay", function(status) {
             return statusInfo[status].display;
         });
+
+        if (type=="video") {
+            Handlebars.registerHelper("toLink", function(profile_root, name) {
+                return profile_root + "/vital-statistics/focus";
+            });
+        } else {
+            Handlebars.registerHelper("toLink", function(profile_root, name) {
+                return profile_root + "/vital-statistics/exercise-problems/" + name;
+            });
+        }
 
         Handlebars.registerHelper("progressColumn", function(block) {
             this.progressSide = block.hash.side === "left" ? "right" : "left";

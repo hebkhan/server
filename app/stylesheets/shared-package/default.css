@@ -1622,6 +1622,22 @@ ul.ui-autocomplete .ui-menu-item a span.autocomplete-exercise {
             background-color: #0080C9;
             color: #eee !important;
         }
+
+        .exercise-color.started {
+            background-color: #c7e5f7;
+        }
+        .exercise-color.watched-some {
+            background-color: #95ccdb;
+        }
+        .exercise-color.watched-most {
+            background-color: #3299c4;
+            color: #eee !important;
+        }
+        .exercise-color.completed {
+            background-color: #0080C9;
+            color: #eee !important;
+        }
+
         .exercise-color.completed {
             background-color: #0080C9;
             color: #eee !important;
@@ -1644,9 +1660,6 @@ ul.ui-autocomplete .ui-menu-item a span.autocomplete-exercise {
         .exercise-color.struggling {
             background-color: #C30202;
             color: #dfdfdf !important;
-        }
-        .exercise-color.started {
-            background-color: #c7e5f7;
         }
         .exercise-color.border-only {
           background-color: transparent;

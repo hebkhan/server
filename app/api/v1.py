@@ -2,6 +2,7 @@ import os
 import datetime
 import logging
 from itertools import izip
+from collections import defaultdict
 
 from flask import request, current_app, Response
 
@@ -1492,28 +1493,30 @@ def get_students_video_progress_summary():
     all_video_ids = set(vid
                         for video_id_to_status in student_to_video_id_to_status.itervalues()
                         for vid in video_id_to_status)
-    video_id_to_display_name = {video.key().id(): video.title
+    vids_by_id = {video.key().id(): video
                                 for video in db.get([db.Key.from_path("Video", vid) for vid in all_video_ids])
                                 if video}
-    name_to_status_to_emails = {name: {'completed': set(), 'started': set(), 'not-started': set()}
-                                for name in video_id_to_display_name.values()}
+    name_to_status_to_emails = defaultdict(
+        lambda: {k:set() for k in "not-started started watched-some watched-most completed".split()})
     for student, video_id_to_status in student_to_video_id_to_status.iteritems():
         student_email_to_info[student.email] = dict(email=student.email,
                                                     nickname=student.nickname,
                                                     profile_root=student.profile_root)
-        for not_started_video in set(video_id_to_display_name) - set(video_id_to_status):
+        for not_started_video in set(vids_by_id) - set(video_id_to_status):
             video_id_to_status[not_started_video] = 'not-started'
         for video_id, status in video_id_to_status.iteritems():
-            try:
-                vid_name = video_id_to_display_name[video_id]
-            except KeyError:
+            if video_id not in vids_by_id:
                 # video doesn't exist anymore
                 continue
-            name_to_status_to_emails[vid_name][status].add(student.email)
+            name_to_status_to_emails[video_id][status].add(student.email)
 
-    video_data = [dict(display_name=name, progress=[dict(status=status, students=[student_email_to_info[email] for email in emails])
-                                                    for status, emails in status_to_emails.iteritems()])
-                  for name, status_to_emails in name_to_status_to_emails.iteritems()]
+    video_data = [
+            dict(
+                display_name=vids_by_id[id].title, name=vids_by_id[id].readable_id,
+                progress=[dict(status=status, students=[student_email_to_info[email] for email in emails])
+                                                    for status, emails in status_to_emails.iteritems()]
+            ) for id, status_to_emails in name_to_status_to_emails.iteritems()
+    ]
 
     return {'videos': video_data,
             'num_students': len(list_students)}
