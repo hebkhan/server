@@ -220,7 +220,6 @@ javascript = {
             "utils/simplify.js",
             "utils/slice-clone.js",
             "utils/stat.js",
-            "utils/symbolab.js",
             "utils/tmpl.js",
             "utils/word-problems.js",
             "utils/spin.js",

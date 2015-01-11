@@ -87,7 +87,7 @@ def git_status():
     output = popen_results(['git', 'status', '-s'])
     return len(output) > 0
 
-def git_pull(exercises_branch, symbolab_branch):
+def git_pull(exercises_branch):
     with pushd('khan-exercises'):
         popen_safe('git clean -fd')
 
@@ -97,14 +97,6 @@ def git_pull(exercises_branch, symbolab_branch):
     with pushd('khan-exercises'):
         popen_safe('git fetch')
         popen_safe('git checkout origin/{}'.format(exercises_branch))
-        with pushd('symbolab'):
-            popen_safe('git fetch')
-            popen_safe('git checkout origin/{}'.format(symbolab_branch))
-            try:
-                popen_safe('{} make.py --overwrite --target ../exercises {}'.format(sys.executable,
-                                                                                " ".join(glob.glob("exercises/*.json"))))
-            except RuntimeError as e:
-                print "Error in symbolab: %s" % e
 
     return git_version()
 
@@ -242,7 +234,7 @@ def main():
     version = -1
 
     if not options.noup:
-        version = git_pull(options.exercises_branch, options.symbolab_branch)
+        version = git_pull(options.exercises_branch)
         if version <= 0:
             print "Could not find version after 'hg pull', 'hg up', 'hg tip'."
             return
