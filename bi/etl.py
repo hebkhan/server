@@ -21,6 +21,7 @@ os.environ["SERVER_SOFTWARE"] = "Miner"
 
 from itertools import chain
 from sqlalchemy import create_engine
+from sqlalchemy.exc import IntegrityError
 from mining import init_remote_api
 import model
 
@@ -31,9 +32,14 @@ def init_db():
     model.metadata.create_all(engine)
     conn = engine.connect()
 
+def chunkify(iterable, chunk_size):
+    data = list(iterable)
+    for i in xrange(0, len(data), chunk_size):
+        yield data[i:i + chunk_size]
+
 def query_in(model, key, values, batch_size=30):
     result = []
-    for chunk in (values[i:i + batch_size] for i in xrange(0, len(values), batch_size)):
+    for chunk in chunkify(values, batch_size):
         result.extend(model.all().filter(key + " in", chunk))
     return result
 
@@ -44,12 +50,22 @@ def convert_and_insert(appengine_obj):
 def load_through_student_list(name, max_students=100):
     student_list = model.StudentList.model.all().filter("name =", name).get()
     students = student_list.students.fetch(max_students)
-    problems = query_in(model.ProblemLog.model, "user", [student.user for student in students])
+    users = [student.user for student in students]
+    user_videos = query_in(model.UserVideo.model, "user", users)
+    videos = [user_video.video for user_video in user_videos]
+    problems = query_in(model.ProblemLog.model, "user", users)
     exercise_names = [problem.exercise for problem in problems]
     exercises = query_in(model.Exercise.model, "name", exercise_names)
-    import pdb;pdb.set_trace()
-    for obj in chain(students, problems, exercises):
-        convert_and_insert(obj)
+    user_exercises = []
+    for user_chunk in chunkify(users, 10):
+        for exercise_chunk in chunkify(exercise_names, 10):
+            user_exercises.extend(model.UserExercise.model.all().filter("exercise in ", exercise_chunk).filter("user in ", user_chunk))
+    
+    for obj in chain(students, problems, exercises, user_videos, videos, user_exercises):
+        try:
+            convert_and_insert(obj)
+        except IntegrityError:
+            pass
 
 def load_from_each(n=1):
     for cls in model.Model.__subclasses__():
@@ -82,7 +98,7 @@ if __name__ == '__main__':
     init_remote_api('hebkhan')
     #load_through_problem_log()
     #load_from_each()
-    #load_student_lists()
+    load_student_lists()
     #load_through_student_list("כיתת מופת - ח3")
     #print_student_lists(300)
     load_through_student_list(u'\u05d81-\u05d84')
