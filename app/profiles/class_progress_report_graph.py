@@ -196,7 +196,9 @@ def get_video_progress_for_students(students, granular=True):
                 user_video = UserVideo.get_for_video_and_user_data(youtube_id, student)
                 if user_video:
                     points = video_progress_from_points(VideoPointCalculator(user_video))
-                    if points > 0.66:
+                    if points > 0.9:
+                        progress = "completed"
+                    elif points > 0.66:
                         progress = "watched-most"
                     elif points > 0.33:
                         progress = "watched-some"
