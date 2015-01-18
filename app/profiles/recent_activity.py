@@ -40,7 +40,7 @@ class RecentExerciseActivity(RecentActivity):
         self.c_problems = 1
         self.multiple = False
         self.earned_proficiency = problem_log.earned_proficiency
-        self.exercise_display_name = models.Exercise.get_by_name(problem_log.exercise).display_name
+        self.exercise_display_name = models.Exercise.get_by_name(problem_log.exercise, all=True).display_name
 
     def is_complete(self):
         return self.earned_proficiency

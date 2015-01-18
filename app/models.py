@@ -193,10 +193,10 @@ class Exercise(ContentItem):
         return util.absolute_url(self.relative_url)
 
     @staticmethod
-    def get_by_name(name, version=None):
+    def get_by_name(name, version=None, all=False):
         dict_exercises = Exercise._get_dict_use_cache_unsafe()
         if dict_exercises.has_key(name):
-            if dict_exercises[name].is_visible_to_current_user():
+            if all or dict_exercises[name].is_visible_to_current_user():
                 exercise = dict_exercises[name]
                 # if there is a version check to see if there are any updates to the video
                 if version:
