@@ -2320,10 +2320,16 @@ def create_user_goal():
     elif target.startswith("students:"):
         coach = user_data
         emails = target.partition(":")[2].split(",")
-        users = map(models.UserData.get_from_db_key_email, emails)
-        for user in users:
+
+        to_user_data = lambda email: (
+            models.UserData.get_from_user_input_email(email)
+            or models.UserData.get_from_user_id(email))
+        users = map(to_user_data, emails)
+        for user, email in zip(users, emails):
+            if not user:
+                return api_invalid_param_response("Unknown user: %s" % email)
             if not user.is_coached_by(coach):
-                return api_invalid_param_response("User %s is not coached by %s", user.user_email, coach.user_email)
+                return api_invalid_param_response("User %s is not coached by %s" % (user.user_email, coach.user_email))
         batch = True
 
     tasks = []
