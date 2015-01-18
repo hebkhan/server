@@ -369,6 +369,13 @@ var GoalCreator = {
                 if (!target) {
                     GoalBook.remove(goal);
                 }
+                hideGenericMessageBox();
+                popupGenericMessageBox({
+                    title: "אופס...",
+                    message: "חלה שגיאה כשניסינו ליצור את היעדים החדשים.</br>אנא נסו שנית, ואם השגיאה חוזרת דווחו לנו!" +
+                             "<div style='direction: ltr'>\"" + jqXHR.responseText + "\"</div>",
+                    popup_class: "rtl"
+                });
             });
 
         newCustomGoalDialog.hide();
