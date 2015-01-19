@@ -1,4 +1,5 @@
 # coding=utf8
+import datetime
 from itertools import izip, chain
 import logging
 from jinja2.utils import escape
@@ -94,7 +95,7 @@ def class_progress_report_graph_context(user_data, list_students):
 
     exercise_list.sort(key=lambda e: e["display_name"])
 
-    all_video_progress = dict(get_video_progress_for_students(list_students, granular=False))
+    all_video_progress = get_video_progress_for_students(list_students, granular=False)
     videos_found = reduce(set.union, all_video_progress.itervalues(), set())
     video_list = [videos_all[vid_id] for vid_id in videos_found if vid_id in videos_all]
     video_list.sort(key=lambda v: v["display_name"])
@@ -184,36 +185,31 @@ def class_progress_report_graph_context(user_data, list_students):
 
 
 def get_video_progress_for_students(students, granular=True):
-    youtube_ids = {video.key().id(): video.youtube_id for video in Video.get_all()}
-    def get_key_and_progress(vid_str, student, progress):
-        vid_id = int(vid_str[2:])
-        if granular and progress is not 'completed':
-            try:
-                youtube_id = youtube_ids[vid_id]
-            except KeyError:
-                logging.error("Couldn't get youtube_id for %s", vid_id)
-            else:
-                user_video = UserVideo.get_for_video_and_user_data(youtube_id, student)
-                if user_video:
-                    points = video_progress_from_points(VideoPointCalculator(user_video))
-                    if points > 0.9:
-                        progress = "completed"
-                    elif points > 0.66:
-                        progress = "watched-most"
-                    elif points > 0.33:
-                        progress = "watched-some"
+    def get_key_and_progress(user_video):
+        vid_id = UserVideo.video.get_value_for_datastore(user_video).id()
+        points = video_progress_from_points(VideoPointCalculator(user_video))
+        if points > 0.9:
+            progress = "completed"
+        elif points > 0.66:
+            progress = "watched-most"
+        elif points > 0.33:
+            progress = "watched-some"
+        else:
+            progress = "not-started"
         return vid_id, progress
 
-    keys = (UserVideoCss._key_for(student) for student in students)
-    data = UserVideoCss.get_by_key_name(keys)
-    for student, css in izip(students, data):
-        if css:
-            vid_css_data = pickle.loads(css.pickled_dict)
-            video_progress = dict(
-                get_key_and_progress(vid_str, student, progress)
-                for progress, vids in vid_css_data.iteritems()
-                for vid_str in vids
-            )
-            yield student, video_progress
-        else:
-            yield student, {}
+    dt_start = datetime.datetime.now() - datetime.timedelta(days=31)
+    keys = [s.user for s in students]
+    key_to_student = dict(zip(keys, students))
+    items = []
+    for key_chunk in (keys[i:i+30] for i in xrange(0,len(keys),30)):
+        query = UserVideo.all().filter("last_watched >=", dt_start)
+        items.extend(query.filter("user in", key_chunk))
+
+    students_progress = {}
+    for user_video in items:
+        user_key = UserVideo.user.get_value_for_datastore(user_video)
+        vid_id, progress = get_key_and_progress(user_video)
+        students_progress.setdefault(key_to_student[user_key], {})[vid_id] = progress
+
+    return students_progress
