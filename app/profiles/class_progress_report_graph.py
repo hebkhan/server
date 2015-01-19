@@ -190,10 +190,11 @@ def get_video_progress_for_students(students, granular=True):
         query = UserVideo.all().filter("last_watched >=", dt_start)
         items.extend(query.filter("user in", key_chunk))
 
-    students_progress = {}
+    students_progress = {student:{} for student in students}
     for user_video in items:
         user_key = UserVideo.user.get_value_for_datastore(user_video)
+        student = key_to_student[user_key]
         vid_id, progress = get_key_and_progress(user_video)
-        students_progress.setdefault(key_to_student[user_key], {})[vid_id] = progress
+        students_progress[student][vid_id] = progress
 
     return students_progress
