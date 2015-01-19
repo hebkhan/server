@@ -13,17 +13,6 @@ import pickle
 import layer_cache
 
 
-STATUSES = dict(
-    started = "התחיל",
-    completed = "צפה",
-    review = "סיים",
-    struggling = "מתקשה",
-    proficient = "מנוסה",
-    proficient_implicit = "מנוסה (עקב נסיון ביחידות מתקדמות יותר)",
-)
-STATUSES[""] = ""
-
-
 @layer_cache.cache_with_key_fxn(
     lambda : "content_data_%s" % (Setting.cached_content_add_date()),
     layer=layer_cache.Layers.Blobstore)
@@ -119,7 +108,6 @@ def class_progress_report_graph_context(user_data, list_students):
 
             graph_dict = user_exercise_graph.graph_dict(exercise_name)
 
-            status = ""
             status_name = ""
 
             if graph_dict["proficient"]:
@@ -135,10 +123,8 @@ def class_progress_report_graph_context(user_data, list_students):
             elif graph_dict["total_done"] > 0:
                 status_name = "started"
 
-            status = STATUSES[status_name]
-            if status:
+            if status_name:
                 student_data['exercises'].append({
-                    "status": status,
                     "status_name": status_name,
                     "progress": graph_dict["progress"],
                     "total_done": graph_dict["total_done"],
@@ -148,16 +134,14 @@ def class_progress_report_graph_context(user_data, list_students):
             else:
                 student_data['exercises'].append({
                     "name": exercise_name,
-                    "status": status,
+                    "status_name": status_name,
                 })
 
         video_progress = all_video_progress[student]
         for video in video_list:
             status_name = video_progress.get(video["key_id"], "")
-            status = STATUSES[status_name]
             student_data['videos'].append({
                     "name": video["display_name"],
-                    "status": status,
                     "status_name": status_name,
                 })
 

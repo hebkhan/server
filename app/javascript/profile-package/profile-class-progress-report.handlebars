@@ -51,11 +51,11 @@
                     <tr class="student-exercises-row" data-id="{{ idx }}">
                       {{#each progress}}
                         <td class="student-module-status exercise-color {{ status_css }} {{#if notTransparent}}action-gradient seethrough{{/if}}" data-id="{{ idx }}">
-                          {{#if status}}
+                          {{#if status_name}}
                           <div class="hover-content" style="display: none;">
                             <b>{{ ../../nickname }}</b><br/>
                             <b>{{ exercise_display }}</b><br/>
-                            <em><nobr>מצב: {{ status }}</nobr></em><br/>
+                            <em><nobr>מצב: {{ toStatusText status_name }}</nobr></em><br/>
                             {{#if isExercise}}
                                 <em>התקדמות: {{ progress }}%</em><br/>
                                 {{#if last_done_ago}}

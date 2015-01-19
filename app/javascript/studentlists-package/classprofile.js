@@ -9,6 +9,16 @@ var ClassProfile = {
     initialGraphUrl: null, // Filled in by the template after script load.
     fLoadingGraph: false,
     fLoadedGraph: false,
+    statusInfo: {
+        "watched-some": "צפה חלקית",
+        "watched-most": "כמעט סיים",
+        struggling: "מתקשה",
+        review: "סיים",
+        proficient: "מיומן",
+        completed: "סיים",
+        started: "התחיל",
+        "not-started": "לא התחיל",
+    },
 
     init: function() {
 
@@ -997,6 +1007,9 @@ var ClassProfile = {
         Handlebars.registerHelper("toTopicName", function(idx) {
             return data.topic_names[idx];
         });
+        Handlebars.registerHelper("toStatusText", function(status) {
+            return ClassProfile.statusInfo[status];
+        });
 
         var template = Templates.get( "profile.profile-class-progress-report" );
 
@@ -1226,7 +1239,7 @@ var ProgressReport = {
             var foundMatchingExercise = false;
             var matchesFilter = filterText.length <= 1 || studentRow.nickname_lower.indexOf(filterText) > -1;
             $.each(studentRow.progress, function(idx2, exercise) {
-                if (exercise.status != '' && matchingColumns[idx2]) {
+                if (exercise.status_name != '' && matchingColumns[idx2]) {
                     foundMatchingExercise = true;
                     return false;
                 }
@@ -1239,7 +1252,7 @@ var ProgressReport = {
 
                 if (matchesFilter) {
                     $.each(studentRow.progress, function(idx2, exercise) {
-                        if (exercise.status != '')
+                        if (exercise.status_name != '')
                             visibleColumns[idx2] = true;
                     });
                 }
@@ -1272,7 +1285,7 @@ var ProgressReport = {
                             filteredColumns[idx2] = true;
                             foundValid = true;
                         } else {
-                            studentRow.matchingCells[idx2] = (exercise.status == '');
+                            studentRow.matchingCells[idx2] = (exercise.status_name == '');
                         }
                     });
                     if (!foundValid) {
