@@ -25,7 +25,7 @@
         <td style="vertical-align: top;">
           <div id="firstcol" style="overflow:hidden;">
             <table cellspacing="0" cellpadding="0" border="0" >
-                {{#each exercise_list}}
+                {{#each students}}
                 <tr class="student-email-row" data-id="{{ idx }}">
                     <td class="tableFirstCol student-email" style="vertical-align: none;">
                         <a style="color:#006699;" href="{{profile_root}}/vital-statistics/exercise-progress">
@@ -47,15 +47,15 @@
         <td valign="top">
             <div id="table_div" class="sizeOnResize fancy-scrollbar" style="overflow:scroll;width:450px;position:relative;" onscroll="ProgressReport.onScroll();" >
                 <table style="width:100%;" cellspacing="0" cellpadding="0" border="0">
-                    {{#each exercise_list}}
+                    {{#each students}}
                     <tr class="student-exercises-row" data-id="{{ idx }}">
                       {{#each progress}}
                         <td class="student-module-status exercise-color {{ status_css }} {{#if notTransparent}}action-gradient seethrough{{/if}}" data-id="{{ idx }}">
                           {{#if status_name}}
                           <div class="hover-content" style="display: none;">
                             <b>{{ ../../nickname }}</b><br/>
-                            <b>{{ exercise_display }}</b><br/>
-                            <em><nobr>מצב: {{ toStatusText status_name }}</nobr></em><br/>
+                            <b>{{ display_name }}</b><br/>
+                            <em><nobr>מצב: {{ toStatusText type status_name }}</nobr></em><br/>
                             {{#if isExercise}}
                                 <em>התקדמות: {{ progress }}%</em><br/>
                                 {{#if last_done_ago}}

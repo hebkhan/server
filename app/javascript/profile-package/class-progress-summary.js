@@ -3,10 +3,8 @@ var ProgressSummaryView = function(type) {
         template = Templates.get("profile.class-progress-summary"),
         updateFilterTimeout = null,
         context = null,
-        statusInfo = null;
-
-    if (type == "video") {
         statusInfo = {
+            video: {
                 "watched-some": {
                     display: "צפה חלקית",
                     fShowOnLeft: true,
@@ -27,9 +25,8 @@ var ProgressSummaryView = function(type) {
                     display: "לא התחיל",
                     fShowOnLeft: false,
                     order: 4}
-        }
-    } else {
-        statusInfo = {
+            },
+            exercise: {
                 struggling: {
                     display: "מתקשה",
                     fShowOnLeft: true,
@@ -50,8 +47,8 @@ var ProgressSummaryView = function(type) {
                     display: "לא התחיל",
                     fShowOnLeft: false,
                     order: 4}
+            }
         }
-    }
 
     function toPixelWidth(num) {
         return Math.round(200 * num / context.num_students);
@@ -91,7 +88,7 @@ var ProgressSummaryView = function(type) {
         });
 
         Handlebars.registerHelper("toDisplay", function(status) {
-            return statusInfo[status].display;
+            return statusInfo[type][status].display;
         });
 
         if (type=="video") {
@@ -114,7 +111,7 @@ var ProgressSummaryView = function(type) {
                 fOnLeft = (block.hash.side === "left");
 
             $.each(progress, function(index, p) {
-                if (fOnLeft === statusInfo[p.status].fShowOnLeft) {
+                if (fOnLeft === statusInfo[type][p.status].fShowOnLeft) {
                     result += block(p);
                 }
             });
@@ -168,7 +165,7 @@ var ProgressSummaryView = function(type) {
 
             $.each(context.items, function(index, item) {
                 item.progress.sort(function(first, second) {
-                    return statusInfo[first.status].order - statusInfo[second.status].order;
+                    return statusInfo[type][first.status].order - statusInfo[type][second.status].order;
                 });
             });
             $("#graph-content").html(template(context));

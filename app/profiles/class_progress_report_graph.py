@@ -60,7 +60,7 @@ def get_content_data():
     return topic_names, videos, exercises
 
 
-def class_progress_report_graph_context(user_data, list_students):
+def class_progress_report_graph_context(user_data, list_students, days=31):
     if not user_data:
         return {}
 
@@ -84,7 +84,7 @@ def class_progress_report_graph_context(user_data, list_students):
 
     exercise_list.sort(key=lambda e: e["display_name"])
 
-    all_video_progress = get_video_progress_for_students(list_students, granular=False)
+    all_video_progress = get_video_progress_for_students(list_students, days=days)
     videos_found = reduce(set.union, all_video_progress.itervalues(), set())
     video_list = [videos_all[vid_id] for vid_id in videos_found if vid_id in videos_all]
     video_list.sort(key=lambda v: v["display_name"])
@@ -168,7 +168,7 @@ def class_progress_report_graph_context(user_data, list_students):
     }
 
 
-def get_video_progress_for_students(students, granular=True):
+def get_video_progress_for_students(students, granular=True, days=31):
     def get_key_and_progress(user_video):
         vid_id = UserVideo.video.get_value_for_datastore(user_video).id()
         points = video_progress_from_points(VideoPointCalculator(user_video))
@@ -182,7 +182,7 @@ def get_video_progress_for_students(students, granular=True):
             progress = "not-started"
         return vid_id, progress
 
-    dt_start = datetime.datetime.now() - datetime.timedelta(days=31)
+    dt_start = datetime.datetime.now() - datetime.timedelta(days=days)
     keys = [s.user for s in students]
     key_to_student = dict(zip(keys, students))
     items = []

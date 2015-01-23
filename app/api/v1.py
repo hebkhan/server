@@ -1486,10 +1486,11 @@ def get_students_video_progress_summary():
     except Exception, e:
         return api_invalid_param_response(e.message)
 
+    days = request.request_int("days", 31)
     list_students = sorted(list_students, key=lambda student: student.nickname)
     from profiles.class_progress_report_graph import get_video_progress_for_students
     student_email_to_info = {}
-    student_to_video_id_to_status = get_video_progress_for_students(list_students)
+    student_to_video_id_to_status = get_video_progress_for_students(list_students, days=days)
     all_video_ids = set(vid
                         for video_id_to_status in student_to_video_id_to_status.itervalues()
                         for vid in video_id_to_status)

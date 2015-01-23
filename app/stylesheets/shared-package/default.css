@@ -2816,10 +2816,17 @@ a.proficient-badge.disabled {
     height: 20px;
     padding-right: 95px;
 }
+
+#module-progress .watched-some,
+#module-progress .watched-most,
+#module-progress .completed,
 #module-progress .proficient,
 #module-progress .review,
 #module-progress .struggling,
 #module-progress .started,
+.progress-legend.watched-some,
+.progress-legend.watched-most,
+.progress-legend.completed,
 .progress-legend.proficient,
 .progress-legend.review,
 .progress-legend.struggling,
@@ -2827,10 +2834,16 @@ a.proficient-badge.disabled {
     cursor: pointer;
     border-color: #fff;
 }
+.lte9 #module-progress .watched-some,
+.lte9 #module-progress .watched-most,
+.lte9 #module-progress .completed,
 .lte9 #module-progress .proficient,
 .lte9 #module-progress .review,
 .lte9 #module-progress .struggling,
 .lte9 #module-progress .started,
+.lte9 .progress-legend.watched-some,
+.lte9 .progress-legend.watched-most,
+.lte9 .progress-legend.completed,
 .lte9 .progress-legend.proficient,
 .lte9 .progress-legend.review,
 .lte9 .progress-legend.struggling,

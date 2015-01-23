@@ -10,14 +10,20 @@ var ClassProfile = {
     fLoadingGraph: false,
     fLoadedGraph: false,
     statusInfo: {
-        "watched-some": "צפה חלקית",
-        "watched-most": "כמעט סיים",
-        struggling: "מתקשה",
-        review: "סיים",
-        proficient: "מיומן",
-        completed: "סיים",
-        started: "התחיל",
-        "not-started": "לא התחיל",
+        video: {
+            "watched-some":  "צפה חלקית",
+            "watched-most":  "כמעט סיים",
+            completed:  "סיים",
+            started:  "התחיל",
+            "not-started":  "לא התחיל",
+        },
+        exercise: {
+            struggling:  "מתקשה",
+            review:  "סיים",
+            proficient:  "מיומן",
+            started:  "התחיל",
+            "not-started":  "לא התחיל",
+        }
     },
 
     init: function() {
@@ -942,31 +948,35 @@ var ClassProfile = {
         ClassProfile.updateStudentInfo(data.progress_data.length, data.c_points);
 
         $.each(data.exercise_names, function(idx, exercise) {
+            exercise.type = "exercise";
             exercise.isExercise = true;
         });
 
-        $.each(data.video_names, function(idx, exercise) {
-            exercise.isVideo = true;
+        $.each(data.video_names, function(idx, video) {
+            video.type = "video";
+            video.isExercise = false;
         });
 
         data.progress_names = data.exercise_names.concat(data.video_names);
-        $.each(data.progress_names, function(idx, exercise) {
-            exercise.display_name_lower = exercise.display_name.toLowerCase();
-            exercise.idx = idx;
+        $.each(data.progress_names, function(idx, item) {
+            item.display_name_lower = item.display_name.toLowerCase();
+            item.idx = idx;
         });
 
-        data.exercise_list = [];
+        data.students = [];
         $.each(data.progress_data, function(idx, student_row) {
-            data.exercise_list.push(student_row);
+            data.students.push(student_row);
         });
-        data.exercise_list.sort(function(a, b) { if (a.nickname < b.nickname) return -1; else if (b.nickname < a.nickname) return 1; return 0; });
+        data.students.sort(function(a, b) { if (a.nickname < b.nickname) return -1; else if (b.nickname < a.nickname) return 1; return 0; });
 
-        $.each(data.exercise_list, function(idx, student_row) {
+        $.each(data.students, function(idx, student_row) {
             student_row.idx = idx;
             student_row.nickname_lower = student_row.nickname.toLowerCase();
             var lastIdx = 0;
             $.each(student_row.exercises, function(idx2, exercise) {
-                exercise.exercise_display = data.exercise_names[idx2].display_name;
+                exercise.type = "exercise";
+                exercise.idx = idx2;
+                exercise.display_name = data.exercise_names[idx2].display_name;
                 exercise.progress = (exercise.progress*100).toFixed(0);
                 // TODO: awkward turtle, replace w normal href
                 exercise.link = student_row.profile_root
@@ -978,27 +988,30 @@ var ClassProfile = {
                     exercise.seconds_since_done = -1;
                 }
 
-                exercise.status_css = 'transparent';
-                if (exercise.status_name == 'review') exercise.status_css = 'review light';
-                else if (exercise.status_name == 'proficient') exercise.status_css = 'proficient';
-                else if (exercise.status_name == 'struggling') exercise.status_css = 'struggling';
-                else if (exercise.status_name == 'started') exercise.status_css = 'started';
-                exercise.notTransparent = (exercise.status_css != 'transparent');
+                exercise.notTransparent = true;
+                if (exercise.status_name == 'review')
+                    exercise.status_css = 'review light';
+                else if (exercise.status_name == 'not-started') {
+                    exercise.status_css = 'transparent';
+                    exercise.notTransparent = false;
+                } else
+                    exercise.status_css = exercise.status_name;
 
-                exercise.idx = idx2;
-                exercise.isExercise = true;
                 lastIdx = idx2 + 1;
             });
 
             $.each(student_row.videos, function(idx2, video) {
-                video.video_display = data.progress_names[lastIdx + idx2].display_name;
-                video.status_css = 'transparent';
-                if (video.status_name == 'completed') video.status_css = 'proficient';
-                else if (video.status_name == 'started') video.status_css = 'started';
-                video.link = "/video/" + data.video_names[idx2].name;
-                video.notTransparent = (video.status_css != 'transparent');
-                video.isVideo = true;
+                video.type = "video";
                 video.idx = lastIdx + idx2;
+                video.display_name = data.progress_names[lastIdx + idx2].display_name;
+
+                video.notTransparent = true;
+                if (video.status_name == 'not-started') {
+                    video.status_css = 'transparent';
+                    video.notTransparent = false;
+                } else
+                    video.status_css = video.status_name;
+                video.link = "/video/" + data.video_names[idx2].name;
             });
 
             student_row.progress = student_row.exercises.concat(student_row.videos);
@@ -1007,8 +1020,8 @@ var ClassProfile = {
         Handlebars.registerHelper("toTopicName", function(idx) {
             return data.topic_names[idx];
         });
-        Handlebars.registerHelper("toStatusText", function(status) {
-            return ClassProfile.statusInfo[status];
+        Handlebars.registerHelper("toStatusText", function(type, status) {
+            return ClassProfile.statusInfo[type][status];
         });
 
         var template = Templates.get( "profile.profile-class-progress-report" );
@@ -1115,7 +1128,7 @@ var ProgressReport = {
         });
         $('#module-progress').find('tr.student-email-row').each(function() {
             var row_idx = $(this).attr('data-id');
-            var row = (row_idx >= 0) ? model.exercise_list[row_idx] : self.hiddenStudentsModel;
+            var row = (row_idx >= 0) ? model.students[row_idx] : self.hiddenStudentsModel;
             self.rowViews.push(new ProgressReport.studentRowView({
                 el: this,
                 model: row,
@@ -1124,7 +1137,7 @@ var ProgressReport = {
         });
         $('#module-progress').find('tr.student-exercises-row').each(function() {
             var row_idx = $(this).attr('data-id');
-            var row = (row_idx >= 0) ? model.exercise_list[row_idx] : self.hiddenStudentsModel;
+            var row = (row_idx >= 0) ? model.students[row_idx] : self.hiddenStudentsModel;
             var rowView = new ProgressReport.studentRowView({
                 el: this,
                 model: row
@@ -1235,7 +1248,7 @@ var ProgressReport = {
         });
 
         // Match rows with filter text
-        $.each(model.exercise_list, function(idx, studentRow) {
+        $.each(model.students, function(idx, studentRow) {
             var foundMatchingExercise = false;
             var matchesFilter = filterText.length <= 1 || studentRow.nickname_lower.indexOf(filterText) > -1;
             $.each(studentRow.progress, function(idx2, exercise) {
@@ -1267,7 +1280,7 @@ var ProgressReport = {
             var filteredColumns = [];
 
             // Hide students who are not struggling in one of the visible columns
-            $.each(model.exercise_list, function(idx, studentRow) {
+            $.each(model.students, function(idx, studentRow) {
                 if (studentRow.visible) {
                     var foundValid = false;
                     studentRow.matchingCells = [];
@@ -1301,15 +1314,14 @@ var ProgressReport = {
                     visibleColumns[idx] = false;
             });
         } else {
-            $.each(model.exercise_list, function(idx, studentRow) {
+            $.each(model.students, function(idx, studentRow) {
                 studentRow.matchingCells = null;
             });
         }
 
 
-        $.each(model.progress_names, function(idx, exercise) {
-            if ((exercise.isVideo && progressType != 'video') ||
-                (exercise.isExercise && progressType != 'exercise')) {
+        $.each(model.progress_names, function(idx, progress) {
+            if (progress.type != progressType) {
                 matchingColumns[idx] = false;
                 visibleColumns[idx] = false;
             }
