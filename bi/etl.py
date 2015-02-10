@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
 import sys, os
+import logging
+import datetime
+    
+logger = logging.getLogger(__name__)
+
 gae_path = "/usr/local/google_appengine/"
 
 extra_paths = [
@@ -45,22 +50,37 @@ def query_in(model, key, values, batch_size=30):
 
 def convert_and_insert(appengine_obj):    
     converted = model.Model.from_appengine(appengine_obj)
-    conn.execute(converted.table.insert(), **vars(converted))
+    try:
+        conn.execute(converted.table.insert(), **vars(converted))
+    except IntegrityError:
+        conn.execute(converted.table.update().where(converted.table.c.id == converted.id).values(**vars(converted)))
 
 def load_through_student_list(name, max_students=100):
+    logger.warn('getting classes')
     student_list = model.StudentList.model.all().filter("name =", name).get()
+    logger.warn('getting students')
     students = student_list.students.fetch(max_students)
     users = [student.user for student in students]
+    logger.warn('getting videos')
     user_videos = query_in(model.UserVideo.model, "user", users)
     videos = [user_video.video for user_video in user_videos]
+    logger.warn('getting problems')
     problems = query_in(model.ProblemLog.model, "user", users)
     exercise_names = [problem.exercise for problem in problems]
+    logger.warn('getting exercises')
     exercises = query_in(model.Exercise.model, "name", exercise_names)
     user_exercises = []
-    for user_chunk in chunkify(users, 10):
+    logger.warn('getting user exercises')
+    for user_chunk in chunkify(users, 3):
         for exercise_chunk in chunkify(exercise_names, 10):
-            user_exercises.extend(model.UserExercise.model.all().filter("exercise in ", exercise_chunk).filter("user in ", user_chunk))
-    
+            logger.warn('getting chunk')
+            for retry in xrange(100):
+                try:
+                    user_exercises.extend(model.UserExercise.model.all().filter("exercise in ", exercise_chunk).filter("user in ", user_chunk))
+                    break
+                except:
+                    logger.warn('retry {}'.format(retry))
+    init_db()
     for obj in chain(students, problems, exercises, user_videos, videos, user_exercises):
         try:
             convert_and_insert(obj)
@@ -91,14 +111,40 @@ def print_student_lists(n=100):
     for student_list in student_lists:
         print student_list.students.count(), student_list.key(), repr(student_list.name)
 
+def load_data_in_range(start, end):
+    logger.warn('getting user exercises')
+    user_exercises = model.UserExercise.model.all().filter("last_done >= ", start).filter("last_done < ", end).fetch(10000)
+    logger.warn('getting videos')
+    user_videos = model.UserVideo.model.all().filter("last_watched >= ", start).filter("last_watched < ", end).fetch(10000)
+
+    videos = {user_video.video for user_video in user_videos}
+
+    exercise_names = {user_exercise.exercise for user_exercise in user_exercises}
+    logger.warn('getting exercises')
+    exercises = query_in(model.Exercise.model, "name", exercise_names)
+    
+    user_keys = {i.user for i in user_videos + user_exercises}
+    logger.warn('getting users')
+    users = query_in(model.UserData.model, "user_email", {i.email() for i in user_keys})
+    student_list_ids = [student_list_key.id() for user in users for student_list_key in user.student_lists]
+    student_lists = model.StudentList.model.get_by_id(student_list_ids)
+    logger.warn('getting coaches')
+    users += query_in(model.UserData.model, "user_email",
+                      {coach.name()
+                       for student_list in student_lists
+                       for coach in student_list.coaches})
+    logger.warn('inserting')
+    for obj in chain(student_lists, users, exercises, videos, user_exercises, user_videos):
+        convert_and_insert(obj)
+
 if __name__ == '__main__':
-    import logging
     logging.basicConfig()
     init_db()
     init_remote_api('hebkhan')
     #load_through_problem_log()
     #load_from_each()
-    load_student_lists()
+    #load_student_lists()
     #load_through_student_list("כיתת מופת - ח3")
     #print_student_lists(300)
-    load_through_student_list(u'\u05d81-\u05d84')
+    #load_through_student_list(u'\u05d81-\u05d84')
+    load_data_in_range(datetime.datetime(2015, 1, 25, 0), datetime.datetime(2015, 2, 10))
