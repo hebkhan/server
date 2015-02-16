@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
-import sys, os
+import os
+import sys
+import time
 import logging
 import datetime
     
@@ -117,7 +119,7 @@ def load_data_in_range(start, end):
     logger.warn('getting videos')
     user_videos = model.UserVideo.model.all().filter("last_watched >= ", start).filter("last_watched < ", end).fetch(10000)
 
-    videos = {user_video.video for user_video in user_videos}
+    videos = {user_video.video for user_video in user_videos} # TODO: batch
 
     exercise_names = {user_exercise.exercise for user_exercise in user_exercises}
     logger.warn('getting exercises')
@@ -137,6 +139,16 @@ def load_data_in_range(start, end):
     for obj in chain(student_lists, users, exercises, videos, user_exercises, user_videos):
         convert_and_insert(obj)
 
+def load_data_daily():
+    last_night = datetime.datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
+    day_before = last_night - datetime.timedelta(days=1)
+    while True:
+        logger.warn('fetching from {} to {}'.format(day_before, last_night))
+        load_data_in_range(day_before, last_night)
+        day_before = last_night
+        last_night += datetime.timedelta(days=1)
+        time.sleep((last_night - datetime.datetime.now()).total_seconds())
+        
 if __name__ == '__main__':
     logging.basicConfig()
     init_db()
@@ -147,4 +159,5 @@ if __name__ == '__main__':
     #load_through_student_list("כיתת מופת - ח3")
     #print_student_lists(300)
     #load_through_student_list(u'\u05d81-\u05d84')
-    load_data_in_range(datetime.datetime(2015, 1, 25, 0), datetime.datetime(2015, 2, 10))
+    #load_data_in_range(datetime.datetime(2015, 2, 15), datetime.datetime(2015, 2, 16))
+    load_data_daily()
