@@ -179,7 +179,7 @@ def get_video_progress_for_students(students, granular=True, days=31):
         elif points > 0.33:
             progress = "watched-some"
         else:
-            progress = "not-started"
+            progress = "started"
         return vid_id, progress
 
     dt_start = datetime.datetime.now() - datetime.timedelta(days=days)
