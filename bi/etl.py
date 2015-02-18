@@ -27,7 +27,7 @@ sys.path[:1] = extra_paths
 os.environ["SERVER_SOFTWARE"] = "Miner"
 
 from itertools import chain
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, select
 from sqlalchemy.exc import IntegrityError
 from mining import init_remote_api
 import model
@@ -116,16 +116,24 @@ def print_student_lists(n=100):
 def load_data_in_range(start, end):
     logger.warn('getting user exercises')
     user_exercises = model.UserExercise.model.all().filter("last_done >= ", start).filter("last_done < ", end).fetch(10000)
-    logger.warn('getting videos')
+    logger.warn('getting user videos')
     user_videos = model.UserVideo.model.all().filter("last_watched >= ", start).filter("last_watched < ", end).fetch(10000)
-    videos = model.Video.model.get(list({v._video for v in user_videos}))
+    logger.warn('got {} user exercises and {} user videos'.format(len(user_exercises), len(user_videos)))
+    existing_videos = {id for (id,) in conn.execute(select([model.Video.table.c.id]))}
+    video_keys = {v._video for v in user_videos}
+    videos_to_fetch = [v for v in video_keys if v.id() not in existing_videos]
+    logger.warn('fetching {} out of {} videos'.format(len(videos_to_fetch), len(video_keys)))
+    videos = model.Video.model.get(videos_to_fetch)
     exercise_names = {user_exercise.exercise for user_exercise in user_exercises}
-    logger.warn('getting exercises')
-    exercises = query_in(model.Exercise.model, "name", exercise_names)
-    
-    user_keys = {i.user for i in user_videos + user_exercises}
-    logger.warn('getting users')
-    users = query_in(model.UserData.model, "user_email", {i.email() for i in user_keys})
+    existing_exercises = {name for (name,) in conn.execute(select([model.Exercise.table.c.name]))}
+    exercises_to_fetch = exercise_names - existing_exercises
+    logger.warn('fetching {} out of {} exercises'.format(len(exercises_to_fetch), len(existing_exercises)))
+    exercises = query_in(model.Exercise.model, "name", exercises_to_fetch)
+    user_emails = {i.user.email() for i in user_videos + user_exercises}
+    existing_users = {u for (u,) in conn.execute(select([model.UserData.table.c.user_email]))}
+    users_to_fetch = user_emails - existing_users
+    logger.warn('getting {} out of {} users'.format(len(users_to_fetch), len(existing_users)))
+    users = query_in(model.UserData.model, "user_email", users_to_fetch)
     student_list_ids = [student_list_key.id() for user in users for student_list_key in user.student_lists]
     student_lists = model.StudentList.model.get_by_id(student_list_ids)
     logger.warn('getting coaches')
@@ -145,7 +153,7 @@ def load_data_daily():
         load_data_in_range(day_before, last_night)
         day_before = last_night
         last_night += datetime.timedelta(days=1)
-        time.sleep((last_night - datetime.datetime.now()).total_seconds())
+        time.sleep((last_night - datetime.datetime.now()).total_seconds() + 3600) # sleep until 1AM
         
 if __name__ == '__main__':
     logging.basicConfig()
@@ -157,5 +165,5 @@ if __name__ == '__main__':
     #load_through_student_list("כיתת מופת - ח3")
     #print_student_lists(300)
     #load_through_student_list(u'\u05d81-\u05d84')
-    #load_data_in_range(datetime.datetime(2015, 2, 15), datetime.datetime(2015, 2, 16))
+    #load_data_in_range(datetime.datetime(2015, 2, 15, 19), datetime.datetime(2015, 2, 16))
     load_data_daily()
