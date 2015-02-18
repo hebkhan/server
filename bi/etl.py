@@ -127,12 +127,12 @@ def load_data_in_range(start, end):
     exercise_names = {user_exercise.exercise for user_exercise in user_exercises}
     existing_exercises = {name for (name,) in conn.execute(select([model.Exercise.table.c.name]))}
     exercises_to_fetch = exercise_names - existing_exercises
-    logger.warn('fetching {} out of {} exercises'.format(len(exercises_to_fetch), len(existing_exercises)))
+    logger.warn('fetching {} out of {} exercises'.format(len(exercises_to_fetch), len(exercise_names)))
     exercises = query_in(model.Exercise.model, "name", exercises_to_fetch)
     user_emails = {i.user.email() for i in user_videos + user_exercises}
     existing_users = {u for (u,) in conn.execute(select([model.UserData.table.c.user_email]))}
     users_to_fetch = user_emails - existing_users
-    logger.warn('getting {} out of {} users'.format(len(users_to_fetch), len(existing_users)))
+    logger.warn('getting {} out of {} users'.format(len(users_to_fetch), len(user_emails)))
     users = query_in(model.UserData.model, "user_email", users_to_fetch)
     student_list_ids = [student_list_key.id() for user in users for student_list_key in user.student_lists]
     student_lists = model.StudentList.model.get_by_id(student_list_ids)
