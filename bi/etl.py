@@ -115,12 +115,10 @@ def print_student_lists(n=100):
 
 def load_data_in_range(start, end):
     logger.warn('getting user exercises')
-    user_exercises = model.UserExercise.model.all().filter("last_done >= ", start).filter("last_done < ", end).fetch(10000)
+    user_exercises = model.UserExercise.model.all().filter("last_done >= ", start).filter("last_done < ", end).fetch(1)
     logger.warn('getting videos')
-    user_videos = model.UserVideo.model.all().filter("last_watched >= ", start).filter("last_watched < ", end).fetch(10000)
-
-    videos = {user_video.video for user_video in user_videos} # TODO: batch
-
+    user_videos = model.UserVideo.model.all().filter("last_watched >= ", start).filter("last_watched < ", end).fetch(1)
+    videos = model.Video.model.get([v._video for v in user_videos])
     exercise_names = {user_exercise.exercise for user_exercise in user_exercises}
     logger.warn('getting exercises')
     exercises = query_in(model.Exercise.model, "name", exercise_names)
