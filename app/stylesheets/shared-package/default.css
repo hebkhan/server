@@ -3146,6 +3146,13 @@ a.proficient-badge.disabled {
     float: right;
 }
 
+.embedded-logo {
+    height: 2em;
+    position: relative;
+    top: 7px;
+    right: 0.2em;
+}
+
 a.call-to-action {
     display: block;
     font-size: 20px;
