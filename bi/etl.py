@@ -154,7 +154,12 @@ def load_data_daily():
         day_before = last_night
         last_night += datetime.timedelta(days=1)
         time.sleep((last_night - datetime.datetime.now()).total_seconds() + 3600) # sleep until 1AM
-        
+
+def reload_users():
+    emails = {u for (u,) in conn.execute(select([model.UserData.table.c.user_email]))}
+    users = query_in(model.UserData.model, "user_email", list(emails))
+    map(convert_and_insert, users)
+
 if __name__ == '__main__':
     logging.basicConfig()
     init_db()

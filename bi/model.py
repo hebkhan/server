@@ -12,6 +12,7 @@ def nested_getattr(obj, path):
 
 type_map = {db.IntegerProperty: BigInteger,
             db.StringProperty: String,
+            db.StringListProperty: ARRAY(String),
             db.TextProperty: String,
             db.FloatProperty: Float,
             db.DateTimeProperty: DateTime,
@@ -85,6 +86,7 @@ class UserData(Model):
     points = None
     joined = None
     student_lists = None
+    coaches = None
 
 class Exercise(Model):
     id_type = BigInteger
