@@ -29,7 +29,7 @@ os.environ["SERVER_SOFTWARE"] = "Miner"
 from itertools import chain
 from sqlalchemy import create_engine, select
 from sqlalchemy.exc import IntegrityError
-from mining import init_remote_api
+from mining import init_remote_api, batch_iter
 import model
 
 conn = None
@@ -115,9 +115,9 @@ def print_student_lists(n=100):
 
 def load_data_in_range(start, end):
     logger.warn('getting user exercises')
-    user_exercises = model.UserExercise.model.all().filter("last_done >= ", start).filter("last_done < ", end).fetch(10000)
+    user_exercises = list(batch_iter(model.UserExercise.model.all().filter("last_done >= ", start).filter("last_done < ", end)))
     logger.warn('getting user videos')
-    user_videos = model.UserVideo.model.all().filter("last_watched >= ", start).filter("last_watched < ", end).fetch(10000)
+    user_videos = list(batch_iter(model.UserVideo.model.all().filter("last_watched >= ", start).filter("last_watched < ", end)))
     logger.warn('got {} user exercises and {} user videos'.format(len(user_exercises), len(user_videos)))
     existing_videos = {id for (id,) in conn.execute(select([model.Video.table.c.id]))}
     video_keys = {v._video for v in user_videos}
