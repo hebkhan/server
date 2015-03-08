@@ -201,7 +201,7 @@ def layer_cache_check_set_return(
                 if layer & Layers.Memcache:
                     set_to_memcache(key, result, time=expiration, namespace=namespace)
                 return result
-        
+
         if layer & Layers.Blobstore:
             result = BlobCache.get(key, namespace=namespace)
             # TODO: fill upward layers if size of dumped result is going to be less than 1MB (might be too costly to figure that out
@@ -258,7 +258,8 @@ def layer_cache_check_set_return(
         import traceback, StringIO
         fp = StringIO.StringIO()
         traceback.print_exc(file=fp)
-        logging.info(fp.getvalue())
+        logging.error("Error fetching from cache (key=%s)", key)
+        logging.error(fp.getvalue())
 
         if permanent_key_fxn is not None:
             permanent_key = permanent_key_fxn(*args, **kwargs)
