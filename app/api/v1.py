@@ -2337,7 +2337,7 @@ def create_user_goal():
 
     class InvalidObjective(Exception): pass
     def validate(obj):
-        if obj['internal_id'] in current_objectives:
+        if obj.get('internal_id', None) in current_objectives:
             raise InvalidObjective("This item is already an objective in a current goal (%s, %s)." % 
                 (obj['internal_id'], user_data.email))
 
