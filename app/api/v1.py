@@ -2270,7 +2270,7 @@ def get_student_goals():
         return api_invalid_param_response(e.message)
 
     dt_end = datetime.datetime.now()
-    days = request.request_int("days", 7)
+    days = request.request_int("days", 31)
     dt_start = dt_end - datetime.timedelta(days=days)
 
     students = sorted(students, key=lambda student: student.nickname)
