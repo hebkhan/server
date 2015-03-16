@@ -2405,6 +2405,7 @@ def create_user_goal():
 
     return goals if batch else goals[user_data.email]
 
+@route("/api/v1/student/goals", defaults=dict(id=None), methods=["POST"])
 @route("/api/v1/student/goals/<int:id>", methods=["DELETE"])
 @oauth_optional()
 @jsonp
@@ -2414,19 +2415,24 @@ def delete_student_goal(id):
     if not coach:
         return api_invalid_param_response("Coach not logged in")
 
-    user_data = request.request_user_data("email")
-    if not user_data:
-        return api_invalid_param_response("User not found")
+    def get_validated_goal(id, email):
+        user_data = models.UserData.get_possibly_current_user(email)
+        if not user_data:
+            return api_invalid_param_response("User not found")
+        if not user_data.is_coached_by(coach):
+            return api_invalid_param_response("Not this user's coach")
+        goal = Goal.get_by_id(id, parent=user_data)
+        if not goal:
+            return api_invalid_param_response("Could not find goal with ID %s" % (id,))
+        return goal
 
-    if not user_data.is_coached_by(coach):
-        return api_invalid_param_response("Not this user's coach")
+    if id:
+        email = request.request_string("email")
+        goals = [get_validated_goal(id, email)]
+    else:
+        goals = [get_validated_goal(**item) for item in request.json]
 
-    goal = Goal.get_by_id(id, parent=user_data)
-
-    if not goal:
-        return api_invalid_param_response("Could not find goal with ID %s" % (id,))
-
-    goal.delete()
+    db.delete(goals)
     return True
 
 @route("/api/v1/user/goals/<int:id>", methods=["GET"])

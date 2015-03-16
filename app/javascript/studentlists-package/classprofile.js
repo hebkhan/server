@@ -566,25 +566,56 @@ var ClassProfile = {
                     .join();
                 window.newCustomGoalDialog.show("students:"+users_csv);
             })
+
+        $(".delete-goals")
+            .addClass("disabled")
+            .removeClass("orange")
+            .click(function(e) {
+                e.preventDefault();
+                var goals = $(".goal-check:checked")
+                        .closest(".student-name")
+                        .find(".goal-remove")
+                        .map(function(){ return {
+                            id:($(this).data("id")),
+                            email:$(this).closest(".goal-row").data("student")};
+                        }).toArray();
+                $.ajax({
+                    type: "POST",
+                    url: "/api/v1/student/goals",
+                    dataType: "json",
+                    contentType: "application/json",
+                    data: JSON.stringify(goals),
+                    success: (function(xhr) {
+                        ClassProfile.historyChange();
+                    })
+                });
+            })
+
+        $(".new-goal").add("delete-goals")
             .bind("goal-check-changed", function() {
                 if ($(".goal-check:checked").length) {
                     $(".goal-check-all").attr("checked", true);
+                    // see if there are removable goals
+                    if ($(".goal-check:checked").closest(".student-name").find(".goal-remove").length) {
+                        $(".delete-goals").addClass("orange").removeClass("disabled");
+                    }
                     $(".new-goal").addClass("green").removeClass("disabled");
                 } else {
                     $(".goal-check-all").attr("checked", false);
+                    $(".delete-goals").removeClass("orange").addClass("disabled");
                     $(".new-goal").removeClass("green").addClass("disabled");
                 }
             });
 
         $(".goal-check-all").change(function() {
             $(".goal-check").attr("checked", this.checked);
-            $(".new-goal").trigger("goal-check-changed");
+            $(".new-goal").add("delete-goals").trigger("goal-check-changed");
         });
 
         $(".goal-check").change(function() {
-            var student = $(this).closest(".goal-row").data("student");
-            $(".goal-row[data-student='" + student + "'] .goal-check").attr("checked", this.checked);
-            $(".new-goal").trigger("goal-check-changed");
+            // var student = $(this).closest(".goal-row").data("student");
+            // $(".goal-row[data-student='" + student + "'] .goal-check").attr("checked", this.checked);
+            $(".new-goal").add("delete-goals").trigger("goal-check-changed");
         });
 
         $(".goal-remove").click(function(e) {
