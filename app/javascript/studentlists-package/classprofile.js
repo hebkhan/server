@@ -1237,7 +1237,7 @@ var ProgressReport = {
             $("#progressreport-recent").prop("checked", false);
             $("#progressreport-struggling").prop("checked", false);
         }
-        $(".graph-options").children().hide();
+        $("#progress-legends").children().hide();
         $("#"+progressType+"-progress-legend").show();
 
         var filterText = $.trim($('#student-progressreport-search').val().toLowerCase());
