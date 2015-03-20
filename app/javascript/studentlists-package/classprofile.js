@@ -1005,6 +1005,7 @@ var ClassProfile = {
             student_row.nickname_lower = student_row.nickname.toLowerCase();
             var lastIdx = 0;
             $.each(student_row.exercises, function(idx2, exercise) {
+                exercise.isExercise = true;
                 exercise.type = "exercise";
                 exercise.idx = idx2;
                 exercise.display_name = data.exercise_names[idx2].display_name;
@@ -1032,6 +1033,7 @@ var ClassProfile = {
             });
 
             $.each(student_row.videos, function(idx2, video) {
+                video.isExercise = false;
                 video.type = "video";
                 video.idx = lastIdx + idx2;
                 video.display_name = data.progress_names[lastIdx + idx2].display_name;
