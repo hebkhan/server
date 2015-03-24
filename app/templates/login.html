@@ -8,7 +8,7 @@
 
 {% block pagecontent %}
 <article id="login-page">
-    <h2 class="pulls">{% if direct %}התחברות{% else %}יש להתחבר כדי לגשת בחלק זה של האתר.{% endif %}</h2>
+    <h2 class="pulls">{% if direct %}התחברות{% else %}יש להתחבר כדי לגשת לחלק זה של האתר.{% endif %}</h2>
     <h3>יש לכם כבר חשבון באחד מאתרים אלה? לחצו על הלוגו בכדי להתחבר באמצעות החשבון שלכם כאן:</h3>
 
     <form method="POST" id="login-form" action="/login?continue={{continue|urlencode}}">

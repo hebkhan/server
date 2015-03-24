@@ -566,25 +566,56 @@ var ClassProfile = {
                     .join();
                 window.newCustomGoalDialog.show("students:"+users_csv);
             })
+
+        $(".delete-goals")
+            .addClass("disabled")
+            .removeClass("orange")
+            .click(function(e) {
+                e.preventDefault();
+                var goals = $(".goal-check:checked")
+                        .closest(".student-name")
+                        .find(".goal-remove")
+                        .map(function(){ return {
+                            id:($(this).data("id")),
+                            email:$(this).closest(".goal-row").data("student")};
+                        }).toArray();
+                $.ajax({
+                    type: "POST",
+                    url: "/api/v1/student/goals",
+                    dataType: "json",
+                    contentType: "application/json",
+                    data: JSON.stringify(goals),
+                    success: (function(xhr) {
+                        ClassProfile.historyChange();
+                    })
+                });
+            })
+
+        $(".new-goal").add("delete-goals")
             .bind("goal-check-changed", function() {
                 if ($(".goal-check:checked").length) {
                     $(".goal-check-all").attr("checked", true);
+                    // see if there are removable goals
+                    if ($(".goal-check:checked").closest(".student-name").find(".goal-remove").length) {
+                        $(".delete-goals").addClass("orange").removeClass("disabled");
+                    }
                     $(".new-goal").addClass("green").removeClass("disabled");
                 } else {
                     $(".goal-check-all").attr("checked", false);
+                    $(".delete-goals").removeClass("orange").addClass("disabled");
                     $(".new-goal").removeClass("green").addClass("disabled");
                 }
             });
 
         $(".goal-check-all").change(function() {
             $(".goal-check").attr("checked", this.checked);
-            $(".new-goal").trigger("goal-check-changed");
+            $(".new-goal").add("delete-goals").trigger("goal-check-changed");
         });
 
         $(".goal-check").change(function() {
-            var student = $(this).closest(".goal-row").data("student");
-            $(".goal-row[data-student='" + student + "'] .goal-check").attr("checked", this.checked);
-            $(".new-goal").trigger("goal-check-changed");
+            // var student = $(this).closest(".goal-row").data("student");
+            // $(".goal-row[data-student='" + student + "'] .goal-check").attr("checked", this.checked);
+            $(".new-goal").add("delete-goals").trigger("goal-check-changed");
         });
 
         $(".goal-remove").click(function(e) {
@@ -974,6 +1005,7 @@ var ClassProfile = {
             student_row.nickname_lower = student_row.nickname.toLowerCase();
             var lastIdx = 0;
             $.each(student_row.exercises, function(idx2, exercise) {
+                exercise.isExercise = true;
                 exercise.type = "exercise";
                 exercise.idx = idx2;
                 exercise.display_name = data.exercise_names[idx2].display_name;
@@ -1001,6 +1033,7 @@ var ClassProfile = {
             });
 
             $.each(student_row.videos, function(idx2, video) {
+                video.isExercise = false;
                 video.type = "video";
                 video.idx = lastIdx + idx2;
                 video.display_name = data.progress_names[lastIdx + idx2].display_name;
@@ -1206,7 +1239,7 @@ var ProgressReport = {
             $("#progressreport-recent").prop("checked", false);
             $("#progressreport-struggling").prop("checked", false);
         }
-        $(".graph-options").children().hide();
+        $("#progress-legends").children().hide();
         $("#"+progressType+"-progress-legend").show();
 
         var filterText = $.trim($('#student-progressreport-search').val().toLowerCase());

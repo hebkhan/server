@@ -716,9 +716,9 @@ div.profile-notification.uncover-nav {
 
 #stats-filters a.graph-link{ display:none; }
 
-#stats-filters .filter-block{ display:inline-block; vertical-align:top; margin-left:24px; }
+#stats-filters .filter-block{ display:inline-block; vertical-align:top; margin-left:0px; }
 
-#stats-filters .coach-filter-block {display:inline; margin-left:1em;}
+#stats-filters .coach-filter-block {display:inline; margin-left:0.5em;}
 
 #stats-filters p {font-size:10px; margin: 0; display:inline-block; }
 #stats-filters h3 {

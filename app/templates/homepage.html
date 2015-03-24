@@ -18,70 +18,25 @@
         <h1 class="main-headline">
             מתחילים ללמוד כאן ועכשיו. ובחינם.
         </h1>
+        {% if not is_mobile %}
+            <h3 class="section-headline pulls">
+                עיינו בספריה שלנו עם יותר מ-{{approx_vid_count|thousands_separated}} סרטונים ו-{{exercise_count}} תרגילים, מסודרים לפי תוכנית הלימודים מכיתה א' ועד יב'.
+                <br>מלבד סרטיו של סלמאן קהאן אותם תרגמנו ודובבנו מאנגלית לעברית, תמצאו בספריה שלנו:
+                <h3>כ-2000 סרטונים במתמטיקה (כולל בגרויות) שנערכו ע"י <img class="embedded-logo" src="/images/ani10logo.png">
+                <h3>וכ-120 סרטונים במתמטיקה ("מתמטיקה תחילה") שנערכו ע"י אלי נצר <img class="embedded-logo" src="/images/logos/shiurton.png">
+                <a name="browse">&nbsp;</a>
+            </h3>
+        {% endif %}
     </div>
     {% if not user_data %}
     <div class="call-to-action-buttons desktop-only">
         <a href="/login" class="call-to-action simple-button action-gradient green">התחברו</a>
         <fb:facepile colorscheme="light" size="large" width="300px" max_rows="1" class="fb_iframe_widget"/>
-    </div> 
-    {% endif %}
-    {% if thumbnail_link_sets %}
-        <h2>
-            חדש ומעניין
-        </h2>
-        <div id="thumbnails_container">
-            <table width="100%">
-                <tr>
-                    <td width="3%">
-                        <div class="thumbnails_arrow action-gradient" id="arrow-left">
-                            <div class="arrow-left"></div>
-                        </div>
-                    </td>
-                    <td width="94%">
-                        <div id="thumbnails" class="visited-no-recolor">
-                            {% for thumbnail_link_set in thumbnail_link_sets %}
-                                {% set outerloop = loop %}
-                                <div {% if not loop.first %}style="display:none;"{% endif %}><table style="width:100%"><tr>
-                                {% for thumbnail_link in thumbnail_link_set %}
-                                <td style="width:25%" class="thumbnail_td {{ thumbnail_link["type"] }} {% if thumbnail_link["selected"] %}selected{% endif %}" data-key="{{ thumbnail_link["key"]|escape }}" data-youtube-id="{{ thumbnail_link["youtube_id"]|escape }}">
-
-                                    <a href="{{ thumbnail_link["href"]|escape }}" class="thumbnail_link"><div 
-                                            {% if outerloop.first %}
-                                            class="thumb" style="background-image:url('{{ thumbnail_link["thumb_urls"]["hq"]|escape }}')"
-                                            {% else %}
-                                            class="thumb pending" data-src="{{ thumbnail_link["thumb_urls"]["hq"]|escape }}"
-                                            {% endif %}
-                                            ></div></a>
-
-                                        <a href="{{ thumbnail_link["href"]|escape }}" class="thumbnail_link"><div class="thumbnail_label"><div class="thumbnail_desc">{{ thumbnail_link["desc_html"] }}</div><div class="thumbnail_teaser">{{ thumbnail_link["teaser_html"] }}</div></div></a>
-                                    </td>
-                                {% endfor %}
-                                </tr></table></div>
-                            {% endfor %}
-                        </div>
-                    </td>
-                    <td width="3%">
-                        <div class="thumbnails_arrow action-gradient" id="arrow-right">
-                            <div class="arrow-right"></div>
-                        </div>
-                    </td>
-                </tr>
-            </table>
-        </div>
+    </div>
     {% endif %}
 
     <div class="clear"></div>
-
-{% if is_mobile %}
     {{ library_content }}
-{% else %}
-    <h3 class="section-headline pulls">
-        עיינו בספריה שלנו עם יותר מ-{{approx_vid_count|thousands_separated}} סרטונים
-        ו-{{exercise_count}} תרגילים, מסודרים לפי תוכנית הלימודים מכיתה א' ועד יב':
-        <a name="browse">&nbsp;</a>
-    </h3>
-    {{ library_content }}
-{% endif %}
 
 </article>
 

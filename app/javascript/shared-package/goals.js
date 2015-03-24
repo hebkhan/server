@@ -153,24 +153,24 @@ var Goal = Backbone.Model.extend({
     },
 
     defaultVideoProcessGoalAttrs_: {
-        title: "Complete Five Videos",
+        title: "צפה בחמישה סרטונים",
         objectives: [
-            { description: "Any video", type: "GoalObjectiveAnyVideo" },
-            { description: "Any video", type: "GoalObjectiveAnyVideo" },
-            { description: "Any video", type: "GoalObjectiveAnyVideo" },
-            { description: "Any video", type: "GoalObjectiveAnyVideo" },
-            { description: "Any video", type: "GoalObjectiveAnyVideo" }
+            { description: "סרטון כלשהו", type: "GoalObjectiveAnyVideo" },
+            { description: "סרטון כלשהו", type: "GoalObjectiveAnyVideo" },
+            { description: "סרטון כלשהו", type: "GoalObjectiveAnyVideo" },
+            { description: "סרטון כלשהו", type: "GoalObjectiveAnyVideo" },
+            { description: "סרטון כלשהו", type: "GoalObjectiveAnyVideo" }
         ]
     },
 
     defaultExerciseProcessGoalAttrs_: {
-        title: "Complete Five Exercises",
+        title: "השלם חמישה תרגילים",
         objectives: [
-            { description: "Any exercise", type: "GoalObjectiveAnyExerciseProficiency" },
-            { description: "Any exercise", type: "GoalObjectiveAnyExerciseProficiency" },
-            { description: "Any exercise", type: "GoalObjectiveAnyExerciseProficiency" },
-            { description: "Any exercise", type: "GoalObjectiveAnyExerciseProficiency" },
-            { description: "Any exercise", type: "GoalObjectiveAnyExerciseProficiency" }
+            { description: "תרגיל כלשהו", type: "GoalObjectiveAnyExerciseProficiency" },
+            { description: "תרגיל כלשהו", type: "GoalObjectiveAnyExerciseProficiency" },
+            { description: "תרגיל כלשהו", type: "GoalObjectiveAnyExerciseProficiency" },
+            { description: "תרגיל כלשהו", type: "GoalObjectiveAnyExerciseProficiency" },
+            { description: "תרגיל כלשהו", type: "GoalObjectiveAnyExerciseProficiency" }
         ]
     },
 

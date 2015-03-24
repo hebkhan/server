@@ -36,7 +36,7 @@ ul.inline-list, ul.inline-list li {
 .goal .objective-description {
     display: block;
     overflow: hidden;
-    padding: 0 5px;
+    padding: 0 3px;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
