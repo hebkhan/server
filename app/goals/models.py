@@ -362,7 +362,7 @@ class GoalObjectiveAnyExerciseProficiency(GoalObjective):
         if self.exercise_name:
             return Exercise.get_relative_url(self.exercise_name)
         else:
-            return "/exercisedashboard"
+            return "/#browse"
 
     def internal_id(self):
         return ''

@@ -60,7 +60,7 @@ var Social = {
         FB.ui({
             method: "feed",
             name: amount + " question" + plural + " answered!",
-            link: "http://www.hebrewkhan.org/exercisedashboard",
+            link: "http://www.hebrewkhan.org/#browse",
             picture: "http://www.hebrewkhan.org/images/proficient-badge-complete.png",
             caption: "www.hebrewkhan.org",
             description: "I just answered " + amount + " question" + plural + " " + prof + " " + exer + " on www.hebrewkhan.org" ,

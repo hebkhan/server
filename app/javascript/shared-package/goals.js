@@ -144,7 +144,7 @@ var Goal = Backbone.Model.extend({
             return "/exercise/" + objective.internal_id;
         },
         GoalObjectiveAnyExerciseProficiency: function(objective) {
-            return "/exercisedashboard";
+            return "/#browse";
         }
     },
 

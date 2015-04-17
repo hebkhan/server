@@ -324,6 +324,9 @@ def exercise_graph_dict_json(user_data, admin=False):
 class ViewAllExercises(request_handler.RequestHandler):
 
     def get(self):
+        if not self.request_bool("map", default=False):
+            return self.redirect("/#browse")
+
         user_data = models.UserData.current() or models.UserData.pre_phantom()
         user_exercise_graph = models.UserExerciseGraph.get(user_data)
 
