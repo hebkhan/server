@@ -815,6 +815,9 @@ function stringArraysEqual(ar1, ar2) {
                     var field = $(this).attr("name");
                     if (field) {
                         var value = ( this.type == "checkbox" ) ?  $( this ).is( ":checked" ) : $( this ).val();
+                        if (field === "id") {
+                            value = value.trim().toLowerCase();
+                        }
                         if (String(self.model.get(field)) != String(value)) {
                             attrs[field] = value;
                         }
