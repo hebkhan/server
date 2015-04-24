@@ -46,6 +46,15 @@
             </tr>
 
             <tr>
+                <td style="font-weight:bold;">Min. problems for proficiency</td>
+                <td style="padding-bottom:9px;">
+                    <input type="text" name="min_problems_required" value="{{ model.min_problems_required }}" class="short" /></br>
+                    {{#if oldValues.min_problems_required }}<span class="old-value">Old value: <input type="text" disabled value="{{ oldValues.min_problems_required }}" class="short"/></span><br/>{{/if}}
+                    <em>Number of correct answers for necessary for achieving proficiency in this exercise (default is 5).</em>
+                </td>
+            </tr>
+
+            <tr>
                 <td style="font-weight:bold;">Horizontal position</td>
                 <td style="padding-bottom:9px;">
                     <input type="text" name="v_position" value="{{ model.v_position }}" class="short" /></br>

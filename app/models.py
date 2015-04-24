@@ -166,12 +166,12 @@ class Exercise(ContentItem):
     creation_date = db.DateTimeProperty(auto_now_add=True, default=datetime.datetime(2011, 1, 1))
     description = db.TextProperty()
     tags = db.StringListProperty()
+    min_problems_required = db.IntegerProperty(default=consts.MIN_PROBLEMS_IMPOSED)
 
     _serialize_blacklist = [
             "author", "raw_html", "last_modified",
             "coverers", "prerequisites_ex", "assigned",
             ]
-
     @property
     def readable_id(self):
         return self.name
@@ -360,20 +360,22 @@ class UserExercise(db.Model):
 
     _serialize_blacklist = ["review_interval_secs", "_progress", "_accuracy_model"]
 
-    _MIN_PROBLEMS_FROM_ACCURACY_MODEL = AccuracyModel.min_streak_till_threshold(consts.PROFICIENCY_ACCURACY_THRESHOLD)
-    _MIN_PROBLEMS_REQUIRED = max(_MIN_PROBLEMS_FROM_ACCURACY_MODEL, consts.MIN_PROBLEMS_IMPOSED)
+    min_problems_required = db.IntegerProperty(default=consts.MIN_PROBLEMS_IMPOSED)
 
     # Bound function objects to normalize the progress bar display from a probability
     # TODO(david): This is a bit of a hack to not have the normalizer move too
     #     slowly if the user got a lot of wrongs.
-    _all_correct_normalizer = InvFnExponentialNormalizer(
-        accuracy_model = AccuracyModel().update(correct=False),
-        proficiency_threshold = AccuracyModel.simulate([True] * _MIN_PROBLEMS_REQUIRED)
-    ).normalize
-    _had_wrong_normalizer = InvFnExponentialNormalizer(
-        accuracy_model = AccuracyModel().update([False] * 3),
-        proficiency_threshold = consts.PROFICIENCY_ACCURACY_THRESHOLD
-    ).normalize
+    def _all_correct_normalizer(self, prediction):
+        return InvFnExponentialNormalizer(
+            accuracy_model=AccuracyModel().update(correct=False),
+            proficiency_threshold=AccuracyModel.simulate([True] * self.min_problems_required)
+        ).normalize(prediction)
+
+    def _had_wrong_normalizer(self, prediction):
+        return InvFnExponentialNormalizer(
+            accuracy_model=AccuracyModel().update([False] * 3),
+            proficiency_threshold=consts.PROFICIENCY_ACCURACY_THRESHOLD
+        ).normalize(prediction)
 
     @property
     def exercise_states(self):
@@ -416,9 +418,9 @@ class UserExercise(db.Model):
 
         if self.accuracy_model().total_done <= self.accuracy_model().total_correct():
             # Impose a minimum number of problems required to be done.
-            normalized_prediction = UserExercise._all_correct_normalizer(prediction)
+            normalized_prediction = self._all_correct_normalizer(prediction)
         else:
-            normalized_prediction = UserExercise._had_wrong_normalizer(prediction)
+            normalized_prediction = self._had_wrong_normalizer(prediction)
 
         if self.summative:
             if normalized_prediction >= 1.0:
@@ -1320,6 +1322,7 @@ class UserData(GAEBingoIdentityModel, db.Model):
                 last_done=None,
                 total_done=0,
                 summative=exercise.summative,
+                min_problems_required=exercise.min_problems_required,
                 _accuracy_model=AccuracyModel(),
                 )
 

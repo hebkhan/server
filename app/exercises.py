@@ -703,6 +703,9 @@ class UpdateExercise(request_handler.RequestHandler):
         if "description" in data:
             exercise.description = data["description"]
 
+        if "min_problems_required" in data:
+            exercise.min_problems_required = int(data["min_problems_required"])
+
         exercise.live = data["live"]
 
         exercise.put()
@@ -794,6 +797,7 @@ class UpdateExercise(request_handler.RequestHandler):
         data["summative"] = self.request_bool('summative', default=False)
         data["v_position"] = self.request.get('v_position')
         data["h_position"] = self.request.get('h_position')
+        data["min_problems_required"] = self.request.get('min_problems_required')
         data["display_name"] = self.request.get('display_name')
         data["short_display_name"] = self.request.get('short_display_name')
         data["live"] = self.request_bool("live", default=False)
