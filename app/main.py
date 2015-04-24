@@ -53,13 +53,14 @@ import unisubs
 
 import models
 from models import UserData, Video, Url, ExerciseVideo, UserVideo, VideoLog, VideoSubtitles, Topic
+from goals.models import GoalList
 from discussion import comments, notification, qa, voting, moderation
 from about import blog, util_about
 from phantom_users import util_notify
 from badges import util_badges, custom_badges
 from mailing_lists import util_mailing_lists
 from profiles import util_profile
-from custom_exceptions import MissingVideoException
+from custom_exceptions import MissingVideoException, MissingUrlException
 from oauth_provider import apps as oauth_apps
 from phantom_users.phantom_util import get_phantom_user_id_from_cookies
 from phantom_users.cloner import Clone
@@ -86,6 +87,22 @@ def get_mangled_topic_name(topic_name):
     for char in " :()":
         topic_name = topic_name.replace(char, "")
     return topic_name
+
+
+class VisitUrl(request_handler.RequestHandler):
+
+    @ensure_xsrf_cookie
+    def get(self, url_id=""):
+        url = Url.get_by_id(int(url_id))
+        if url is None:
+            raise MissingUrlException("Missing url '%s'" % url_id)
+
+        user_data = UserData.current()
+        if user_data:
+            goals_updated = GoalList.update_goals(user_data, lambda goal: goal.just_visited_url(user_data, url))
+
+        self.redirect(url.url.encode("utf8"))
+
 
 class ViewVideo(request_handler.RequestHandler):
 
@@ -767,6 +784,7 @@ application = webapp2.WSGIApplication([
     ('/updateexercise', exercises.UpdateExercise),
     ('/moveexercisemapnodes', exercises.MoveMapNodes),
     ('/admin94040', exercises.ExerciseAdmin),
+    ('/url/(.*)', VisitUrl),
     ('/video/(.*)', ViewVideo),
     ('/v/(.*)', ViewVideo),
     ('/video', ViewVideo), # Backwards URL compatibility

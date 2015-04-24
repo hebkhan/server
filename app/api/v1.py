@@ -2336,6 +2336,7 @@ def create_user_goal():
     tasks = []
 
     class InvalidObjective(Exception): pass
+
     def validate(obj):
         if obj.get('internal_id', None) in current_objectives:
             raise InvalidObjective("This item is already an objective in a current goal (%s, %s)." % 
@@ -2371,6 +2372,12 @@ def create_user_goal():
             user_video = models.UserVideo.get_for_video_and_user_data(obj['video'], user_data)
             if user_video and user_video.completed:
                 raise InvalidObjective("Video has already been watched.")
+            return obj
+
+        if obj['type'] == 'GoalObjectiveVisitURL':
+            obj['url'] = models.Url.get_by_id(int(obj['internal_id']))
+            if not obj['url']:
+                raise InvalidObjective("Internal error: Could not find url.")
             return obj
 
     for user_data in users:

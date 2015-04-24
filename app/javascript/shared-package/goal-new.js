@@ -52,7 +52,7 @@ var GoalCreator = {
                     return;
                 }
 
-                var type = href.indexOf("/video")==0 ? "video" : "exercise";
+                var type = href.indexOf("/video")==0 ? "video" : href.indexOf("/exercise")==0 ? "exercise" : "url";
                 var span = jel.children("span");
                 var name = jel.attr("data-id");
                 var title = span.text();
@@ -239,8 +239,10 @@ var GoalCreator = {
 
         if (type === "exercise") {
             GoalCreator.toggleObjectiveInternal("GoalObjectiveExerciseProficiency", "exercise", id, title);
-        } else {
+        } else if (type === "video") {
             GoalCreator.toggleObjectiveInternal("GoalObjectiveWatchVideo", "video", id, title);
+        } else {
+            GoalCreator.toggleObjectiveInternal("GoalObjectiveVisitURL", "url", id, title);
         }
 
         GoalCreator.updateCount();

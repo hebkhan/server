@@ -75,6 +75,12 @@ ul.inline-list, ul.inline-list li {
     background: #3A4759 url(/images/video-camera-icon-inset-small.png) no-repeat 50% 50%; /*! data-uri(/images/video-camera-icon-inset-small.png) */
 }
 
+.goal a.objective.url:before,
+.goal a.objective.GoalObjectiveVisitURL:before {
+    background: #3A4759 url(/images/link-icon-inset-small.png) no-repeat 50% 50%; /*! data-uri(/images/video-camera-icon-inset-small.png) */
+}
+
+
 .ie .goal a.objective:before  {
     border: none;
     right: -2px;

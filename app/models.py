@@ -3288,7 +3288,7 @@ class Url(ContentItem):
 
         root = Topic.get_root(version)
         urls = root.get_urls(include_descendants = True, include_hidden = False)
-        
+
         # return only unique urls
         url_dict = dict((u.key(), u) for u in urls)
         return url_dict.values()
@@ -3302,6 +3302,18 @@ class Url(ContentItem):
             if change:
                 url = change.updated_content(url)
         return url
+
+    @staticmethod
+    def get_relative_url(id):
+        return '/url/%s' % id
+
+    @property
+    def relative_url(self):
+        return Url.get_relative_url(self.id)
+
+    @property
+    def ka_url(self):
+        return util.absolute_url(self.relative_url)
 
 
 class Video(Searchable, ContentItem):

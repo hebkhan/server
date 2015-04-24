@@ -10,6 +10,9 @@ class MissingVideoException(QuietException):
 class MissingExerciseException(Exception):
     pass
 
+class MissingUrlException(QuietException):
+    pass
+
 class TumblrException(Exception):
     pass
 

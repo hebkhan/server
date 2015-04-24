@@ -8,7 +8,7 @@ from google.appengine.ext import db
 from object_property import ObjectProperty
 from templatefilters import timesince_ago, seconds_to_time_string
 
-from models import Exercise, UserVideo, Video
+from models import Exercise, UserVideo, Video, Url
 import util
 
 
@@ -100,14 +100,25 @@ class Goal(db.Model):
         if became_proficient:
             any_exercises = [o for o in self.objectives
                 if isinstance(o, GoalObjectiveAnyExerciseProficiency)]
-            found = user_exercise.exercise in [o.exercise_name for o in
-                any_exercises]
+            found = user_exercise.exercise in [o.exercise_name for o in any_exercises]
             if not found:
                 for ex_obj in any_exercises:
                     if not ex_obj.completed:
                         ex_obj.record_complete(user_exercise.exercise_model)
                         changed = True
                         break
+
+        if changed:
+            self.record_complete()
+
+        return changed
+
+    def just_visited_url(self, user_data, url):
+        changed = False
+        for objective in self.objectives:
+            if isinstance(objective, GoalObjectiveVisitURL):
+                if objective.record_progress(user_data, url):
+                    changed = True
 
         if changed:
             self.record_complete()
@@ -274,9 +285,10 @@ class GoalObjective(object):
                     user_data))
             elif desc['type'] == 'GoalObjectiveWatchVideo':
                 objs.append(GoalObjectiveWatchVideo(desc['video'], user_data))
+            elif desc['type'] == 'GoalObjectiveVisitURL':
+                objs.append(GoalObjectiveVisitURL(desc['url'], user_data))
             elif desc['type'] == "GoalObjectiveAnyExerciseProficiency":
-                objs.append(GoalObjectiveAnyExerciseProficiency(
-                    description="תרגיל כלשהו"))
+                objs.append(GoalObjectiveAnyExerciseProficiency(description="תרגיל כלשהו"))
             elif desc['type'] == "GoalObjectiveAnyVideo":
                 objs.append(GoalObjectiveAnyVideo(description="סרטון כלשהו"))
         return objs
@@ -304,6 +316,7 @@ class GoalObjective(object):
     def init_from_json(self, json):
         self.description = json['description']
         self.progress = json['progress']
+
 
 class GoalObjectiveExerciseProficiency(GoalObjective):
     # Objective definition (Chosen at goal creation time)
@@ -407,6 +420,33 @@ class GoalObjectiveWatchVideo(GoalObjective):
             self.progress = user_video.progress
             return True
         return False
+
+
+class GoalObjectiveVisitURL(GoalObjective):
+
+    def __init__(self, url, user_data):
+        self.url_id = url.id
+        self.description = url.title
+        self.progress = 0.0
+
+    def init_from_json(self, json):
+        super(GoalObjectiveVisitURL, self).init_from_json(json)
+        obj = Url.get_by_id(json['internal_id'])
+        self.url_id = obj.id
+        self.description = obj.title
+
+    def url(self):
+        return "/url/%s" % self.url_id
+
+    def internal_id(self):
+        return self.url_id
+
+    def record_progress(self, user_data, url):
+        if self.url_id == url.id:
+            self.progress = 1.0
+            return True
+        return False
+
 
 class GoalObjectiveAnyVideo(GoalObjective):
     # which video fulfilled this objective, set upon completion

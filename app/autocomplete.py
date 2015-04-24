@@ -39,7 +39,7 @@ def url_title_dicts(version_number=None):
     return [{
         "title": url.title,
         "key": str(url.key()),
-        "relative_url": url.url,
+        "relative_url": url.relative_url,
         "id": url.key().id()
     } for url in Url.get_all_live(version=version)]
 

@@ -117,6 +117,7 @@ var Goal = Backbone.Model.extend({
         objective.progressStr = Goal.floatToPercentageStr(objective.progress);
         objective.iconFillHeight = Goal.calcIconFillHeight(objective);
         objective.objectiveWidth = objectiveWidth;
+        objective.isURL = (objective.type == "GoalObjectiveVisitURL");
         objective.isVideo = (objective.type == "GoalObjectiveWatchVideo");
         objective.isAnyVideo = (objective.type == "GoalObjectiveAnyVideo");
         objective.isExercise = (objective.type == "GoalObjectiveExerciseProficiency");
@@ -134,6 +135,9 @@ var Goal = Backbone.Model.extend({
     },
 
     objectiveUrlForType: {
+        GoalObjectiveVisitURL: function(objective) {
+            return objective.url;
+        },
         GoalObjectiveWatchVideo: function(objective) {
             return "/video/" + objective.internal_id;
         },
