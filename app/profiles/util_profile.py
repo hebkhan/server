@@ -451,8 +451,7 @@ class ProfileDateToolsGraph(ProfileGraph):
         return dt_utc + datetime.timedelta(minutes=self.tz_offset())
 
 class ClassProfileDateGraph(ClassProfileGraph, ProfileDateToolsGraph):
-
-    DATE_FORMAT = "%m/%d/%Y"
+    DATE_FORMAT = "%d/%m/%Y"
 
     def get_date(self):
         dt_ctz = self.request_date_ctz("dt")
