@@ -328,7 +328,7 @@ class RequestHandler(webapp2.RequestHandler, RequestInputHandler):
             template_values['user_data'] = user_data
 
         user_data = template_values['user_data']
-        email = user_data.email
+        email = user_data.email if user_data else ""
         template_values['username'] = user_data.nickname if user_data else ""
         template_values['user_email'] = email if not is_facebook_user_id(email) else ""
         template_values['viewer_profile_root'] = user_data.profile_root if user_data else "/profile/nouser"
