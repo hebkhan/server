@@ -14,6 +14,7 @@ from google.appengine.runtime.apiproxy_errors import CapabilityDisabledError
 import webapp2
 import shared_jinja
 
+from facebook_util import is_facebook_user_id
 from custom_exceptions import MissingVideoException, MissingExerciseException, SmartHistoryLoadException, QuietException
 from app import App
 import cookie_util
@@ -327,8 +328,9 @@ class RequestHandler(webapp2.RequestHandler, RequestInputHandler):
             template_values['user_data'] = user_data
 
         user_data = template_values['user_data']
-
+        email = user_data.email
         template_values['username'] = user_data.nickname if user_data else ""
+        template_values['user_email'] = email if not is_facebook_user_id(email) else ""
         template_values['viewer_profile_root'] = user_data.profile_root if user_data else "/profile/nouser"
         template_values['points'] = user_data.points if user_data else 0
         template_values['logged_in'] = not user_data.is_phantom if user_data else False

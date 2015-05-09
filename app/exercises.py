@@ -243,7 +243,6 @@ class ViewExercise(request_handler.RequestHandler):
             'read_only': read_only,
             'selected_nav_link': 'practice',
             'browser_disabled': browser_disabled,
-            'hide_feedback' : True,
             'is_webos': is_webos,
             'renderable': renderable,
             'issue_labels': ('Component-Code,Exercise-%s,Problem-%s' % (exid, problem_number)),

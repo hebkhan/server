@@ -1,0 +1,31 @@
+{% macro integrate(webengage_id, username, user_email) -%}
+
+    <script id="_webengage_script_tag" type="text/javascript">
+        var _we_category_field = {
+            'name' : 'קטגוריה',
+            // 'options' : ['בעיה', 'הצעה', 'אהבתי']
+        };
+
+        var _weq = _weq || {
+            'webengage.licenseCode' : '{{ webengage_id }}',
+            'webengage.feedback.formData' : [
+                {
+                    'name' : 'דואר אלקטורני',
+                    'value' : '{{ user_email|escapejs }}',
+                }, {
+                    'name' : 'שם',
+                    'value' : '{{ username|escapejs }}'
+                },
+                _we_category_field,
+            ],
+        };
+        (function(d){
+            var _we = d.createElement('script');
+            _we.type = 'text/javascript';
+            _we.async = true;
+            _we.src = (d.location.protocol == 'https:' ? "//ssl.widgets.webengage.com" : "//cdn.widgets.webengage.com") + "/js/widget/webengage-min-v-4.0.js";
+            var _sNode = d.getElementById('_webengage_script_tag');
+            _sNode.parentNode.insertBefore(_we, _sNode);
+        })(document);
+    </script>
+{%- endmacro %}

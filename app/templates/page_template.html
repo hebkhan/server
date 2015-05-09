@@ -1,4 +1,5 @@
 {%- import 'macros/user.html' as user -%}
+{%- import 'macros/webengage.html' as webengage -%}
 <!DOCTYPE html>
 <!--[if IE]><![endif]-->
 <html itemscope itemtype="http://schema.org/Organization"
@@ -202,28 +203,9 @@
         })();
     </script>
     {%- endif -%}
-
-    {%- if not (hide_feedback or is_mobile) -%}
-    <script id="_webengage_script_tag" type="text/javascript">
-      window.webengageWidgetInit = window.webengageWidgetInit || function(){
-        webengage.init({
-          licenseCode: '{{ webengage_id }}'
-        }).onReady(function(){
-          webengage.render();
-        });
-      };
-
-      (function(d){
-        var _we = d.createElement('script');
-        _we.type = 'text/javascript';
-        _we.async = true;
-        _we.src = (d.location.protocol == 'https:' ? "//ssl.widgets.webengage.com" : "//cdn.widgets.webengage.com") + "/js/widget/webengage-min-v-3.0.js";
-        var _sNode = d.getElementById('_webengage_script_tag');
-        _sNode.parentNode.insertBefore(_we, _sNode);
-      })(document);
-    </script>
+    {%- if not is_mobile -%}
+        {{ webengage.integrate(webengage_id, username, user_email) }}
     {%- endif -%}
-
     {{ gae_mini_profiler.profiler_includes() }}
 
     {%- if global_goals -%}
