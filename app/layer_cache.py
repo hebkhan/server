@@ -1,7 +1,6 @@
 # the following 3 imports are needed for blobcache
 from __future__ import with_statement
-from google.appengine.api import files
-from google.appengine.ext import blobstore
+import cloudstorage as gcs
 
 import datetime
 import logging
@@ -13,6 +12,7 @@ from google.appengine.ext import db
 from app import App
 import request_cache
 
+BLOBCACHE_BUCKET = "blobcache"
 if App.is_dev_server:
     # cachepy disables itself during development presumably to avoid confusion.
     # Instead, alias it to request_cache. This means individual requests will
@@ -20,6 +20,15 @@ if App.is_dev_server:
     import request_cache as cachepy
 else:
     import cachepy
+    from google.appengine.api.app_identity import get_application_id
+    try:
+        app_id = get_application_id()
+    except AttributeError:
+        BLOBCACHE_BUCKET += "-error"
+    else:
+        if app_id.endswith("-dev"):
+            BLOBCACHE_BUCKET += "-dev"
+
 
 # layer_cache provides an easy way to cache the result of functions across requests.
 # layer_cache uses cachepy's in-memory storage, memcache, and the datastore.
@@ -368,85 +377,53 @@ class KeyValueCache(db.Model):
 class BlobCache():
 
     @staticmethod
-    def get_filename(key, namespace=""):
-        return "blobcache-%s-%s" % (namespace, key)
+    def get_filename(key, namespace="all"):
+        return "/%s/%s/%s" % (BLOBCACHE_BUCKET, namespace, key)
+
 
     @staticmethod
-    def get_blob_infos(key, namespace=""):
-        filename = BlobCache.get_filename(key, namespace)
-        return blobstore.BlobInfo.all().filter("filename =", filename).fetch(100)
-        
-    @staticmethod
-    def get_first_blob_info(key, namespace=""):
-        infos = BlobCache.get_blob_infos(key, namespace)
+    def get(key, namespace="all"):
+        try:
+            blob = gcs.open(BlobCache.get_filename(key, namespace))
+        except gcs.NotFoundError:
+            return
 
-        if infos:
-            infos = sorted(infos, key=lambda info: info.creation)
-            return infos[-1]
-        else:
-            return None
-
-    @staticmethod
-    def get(key, namespace=""):
-        from datetime import datetime
-        start = datetime.now()
-        blob_info = BlobCache.get_first_blob_info(key, namespace)
-        end = datetime.now()
-        logging.info("time to get blob info %s", (end-start))
-
-        if blob_info:
-            start = datetime.now()
-            blob_reader = blob_info.open()
-            value = blob_reader.read()
-            end = datetime.now()
-            logging.info("time to read blob into mem %s", (end-start))
-
-            start = datetime.now()
-            obj = pickle.loads(value)
-            end = datetime.now()
-            logging.info("time to depickle %s", (end-start))
-
-            return obj
+        with blob as f:
+            obj = pickle.load(f)
+        return obj
        
     @staticmethod
-    def set(key, result, time=DEFAULT_LAYER_CACHE_EXPIRATION_SECONDS, namespace=""):
-        old_blob_infos = BlobCache.get_blob_infos(key, namespace)
+    def set(key, result, time=DEFAULT_LAYER_CACHE_EXPIRATION_SECONDS, namespace="all"):
+        # old_blob_infos = BlobCache.get_blob_infos(key, namespace)
+        # filename = BlobCache.get_filename(key, namespace)
+        # return gcs.listbucket(filename).fetch(100)
       
         value = pickle.dumps(result)
         
         # Create the file
-        file_name = files.blobstore.create(mime_type='application/octet-stream', _blobinfo_uploaded_filename=BlobCache.get_filename(key, namespace))
+        filename = BlobCache.get_filename(key, namespace)
+        gcs_file = gcs.open(filename, 'w', content_type='application/octet-stream')
  
         # might need to wrap it in an object to handle expiration time here
         
         # write the pickled result to the file
         pos = 0
         chunkSize = 65536
-        with files.open(file_name, 'a') as f:
-            while pos < len(value):
-                chunk = value[pos:pos+chunkSize]
-                pos += chunkSize
-                f.write(chunk)
+        with gcs_file as f:
+            for pos in range(0, len(value), chunkSize):
+                f.write(value[pos:pos+chunkSize])
 
-        # Finalize the file. Do this before attempting to read it.
-        files.finalize(file_name)
+        # # Get the file's blob key
+        # blob_key = files.blobstore.get_blob_key(file_name)
 
-        # Get the file's blob key
-        blob_key = files.blobstore.get_blob_key(file_name)
-
-        for info in old_blob_infos:
-            try:
-                info.delete()
-            except Exception, e:
-                # If deleting blob times out, don't crash the request. Just log the error.
-                logging.error("Failed to delete old blob from layer_cache: %s" % e)
+        # for info in old_blob_infos:
+        #     try:
+        #         info.delete()
+        #     except Exception, e:
+        #         # If deleting blob times out, don't crash the request. Just log the error.
+        #         logging.error("Failed to delete old blob from layer_cache: %s" % e)
 
     @staticmethod
-    def delete(key, namespace=""):
-        for info in BlobCache.get_blob_infos(key, namespace):
-            try:
-                info.delete()
-            except Exception, e:
-                # If deleting blob times out, don't crash the request. Just log the error.
-                logging.error("Failed to delete old blob from layer_cache: %s" % e)
-
+    def delete(key, namespace="all"):
+        filename = BlobCache.get_filename(key, namespace)
+        gcs.delete(filename)

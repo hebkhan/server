@@ -19,7 +19,6 @@ class App(object):
 
     domain = "www.hebrewkhan.org"
     realm = "http://www.hebrewkhan.org"
-
     offline_mode = False
 
 for attr in [
