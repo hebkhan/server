@@ -63,6 +63,14 @@ class ModelMeta(type):
         appengine_model_to_bi_model[model] = t
         return t
 
+def key_to_string(key):
+    suffix = key.id_or_name()
+    parent = key.parent()
+    if parent is None:
+        return suffix
+    else:
+        return key_to_string(parent) + '%' + suffix
+
 class Model(object):
     __metaclass__ = ModelMeta
 
@@ -73,7 +81,7 @@ class Model(object):
         for field in model.fields:
             setattr(result, field.dest, field.convert(nested_getattr(obj, field.source)))
         if model.id_type:
-            result.id = obj.key().id() or obj.key().name()
+            result.id = key_to_string(obj.key())
         return result
 
 class UserData(Model):
