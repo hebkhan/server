@@ -43,7 +43,6 @@ import exercisestats.report
 import exercisestats.report_json
 import github
 import paypal
-import smarthistory
 import topics
 import goals.handlers
 import stories
@@ -742,10 +741,6 @@ class MemcacheViewer(request_handler.RequestHandler):
         if self.request_bool("clear", False):
             memcache.delete(key, namespace=namespace)
 
-applicationSmartHistory = webapp2.WSGIApplication([
-    ('/.*', smarthistory.SmartHistoryProxy)
-])
-
 application = webapp2.WSGIApplication([
     ('/', homepage.ViewHomePage),
     ('/about', util_about.ViewAbout),
@@ -799,7 +794,6 @@ application = webapp2.WSGIApplication([
     ('/mobilefullsite', MobileFullSite),
     ('/mobilesite', MobileSite),
 
-    ('/admin/import_smarthistory', topics.ImportSmartHistory),
     ('/admin/reput', bulk_update.handler.UpdateKind),
     ('/admin/retargetfeedback', RetargetFeedback),
     ('/admin/startnewbadgemapreduce', util_badges.StartNewBadgeMapReduce),
