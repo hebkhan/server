@@ -163,11 +163,11 @@ def open_browser_to_ka_version(version):
 
 def deploy(version, email, password):
     print "Deploying version " + str(version)
-    return 0 == popen_return_code(['appcfg.py', '-V', str(version), "-e", email, "--passin", "update", "."], "%s\n" % password)
+    return 0 == popen_return_code(['appcfg.py', '-V', str(version), "--no_oauth2", "-e", email, "--passin", "update", "."], "%s\n" % password)
 
 def set_default_version(version, email, password):
     print "Setting version as default" + str(version)
-    return 0 == popen_return_code(['appcfg.py', '-V', str(version), "-e", email, "--passin", "set_default_version", "."], "%s\n" % password)
+    return 0 == popen_return_code(['appcfg.py', '-V', str(version), "--no_oauth2", "-e", email, "--passin", "set_default_version", "."], "%s\n" % password)
 
 def main():
 

@@ -12,7 +12,7 @@ from google.appengine.ext import db
 from app import App
 import request_cache
 
-BLOBCACHE_BUCKET = "blobcache"
+BLOBCACHE_BUCKET = "hebkhan.appspot.com"
 if App.is_dev_server:
     # cachepy disables itself during development presumably to avoid confusion.
     # Instead, alias it to request_cache. This means individual requests will
@@ -27,7 +27,7 @@ else:
         BLOBCACHE_BUCKET += "-error"
     else:
         if app_id.endswith("-dev"):
-            BLOBCACHE_BUCKET += "-dev"
+            BLOBCACHE_BUCKET = "hebkhan-dev.appspot.com"
 
 
 # layer_cache provides an easy way to cache the result of functions across requests.
