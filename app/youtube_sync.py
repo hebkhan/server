@@ -4,46 +4,48 @@ import logging
 import re
 from urlparse import urlparse
 
-import gdata.youtube
-import gdata.youtube.service
-import gdata.alt.appengine
-
 from google.appengine.api import taskqueue
 from google.appengine.api import users
 from google.appengine.ext import db
+
+from apiclient.discovery import build
 
 from models import Setting, Video, Playlist, VideoPlaylist, Topic
 import request_handler
 import hashlib
 
+
+developer_key = "AIzaSyC7_9i35QKX7pKXQ4353ioRfw7tNWnJ2zs"
+
+def YouTubeService():
+    return build("youtube", "v3", developerKey=developer_key)
+
+
+def parse_ISO8601_duration(dur, M=dict(H=3600, M=60, S=1)):
+    return sum(int(d)*M[u] for d, u in (m.groups() for m in re.finditer("(\d+)(\w)", dur)))
+
+
 def youtube_get_video_data_dict(youtube_id):
-    yt_service = gdata.youtube.service.YouTubeService()
-
-    # Now that we run these queries from the App Engine servers, we need to 
-    # explicitly specify our developer_key to avoid being lumped together w/ rest of GAE and
-    # throttled by YouTube's "Too many request" quota
-    yt_service.developer_key = "AI39si6ctKTnSR_Vx7o7GpkpeSZAKa6xjbZz6WySzTvKVYRDAO7NHBVwofphk82oP-OSUwIZd0pOJyNuWK8bbOlqzJc9OFozrQ"
-    yt_service.client_id = "n/a"
-
     logging.info("trying to get info for youtube_id: %s" % youtube_id)
-    try:
-        video = yt_service.GetYouTubeVideoEntry(video_id=youtube_id)
-    except:
-        return
-    else:
-        video_data = {"youtube_id" : youtube_id,
-                      "title" : video.media.title.text.decode('utf-8'),
-                      "url" : video.media.player.url.decode('utf-8'),
-                      "duration" : int(video.media.duration.seconds)}
+    yt_service = YouTubeService()
+    ret = yt_service.videos().list(part="statistics,contentDetails,snippet", id=youtube_id).execute()
+    if not ret['items']:
+        raise Exception("Couldn't find '%s' in youtube" % youtube_id)
+    video, = ret['items']
+    from pprint import pformat
+    logging.info(pformat(video))
 
-        if video.statistics:
-            video_data["views"] = int(video.statistics.view_count)
+    video_data = {"youtube_id" : youtube_id,
+                  "title" : video['snippet']['title'],
+                  "url" : "http://youtube.com/watch?v=%s" % youtube_id,
+                  "duration" : parse_ISO8601_duration(video['contentDetails']['duration'])}
 
-        video_data["description"] = (video.media.description.text or '').decode('utf-8')
-        video_data["keywords"] = (video.media.keywords.text or '').decode('utf-8')
-        video_data["readable_id"] = "video-%s" % youtube_id
+    video_data["views"] = int(video['statistics']['viewCount'])
+    video_data["description"] = video['snippet']['description']
+    video_data["keywords"] = ", ".join(video['snippet'].get('tags', ""))
+    video_data["readable_id"] = "video-%s" % youtube_id
 
-        return video_data
+    return video_data
 
 
 def youtube_get_video_data(video):
@@ -67,10 +69,12 @@ class YouTubeSyncStep:
     REGENERATE_LIBRARY_CONTENT = 6
     UPDATE_FROM_TOPICS = 7
 
+
 class YouTubeSyncStepLog(db.Model):
     step = db.IntegerProperty()
     generation = db.IntegerProperty()
     dt = db.DateTimeProperty(auto_now_add = True)
+
 
 class YouTubeSync(request_handler.RequestHandler):
 
@@ -125,13 +129,7 @@ class YouTubeSync(request_handler.RequestHandler):
         Setting.last_youtube_sync_generation_start(int(Setting.last_youtube_sync_generation_start()) + 1)
 
     def updateVideoAndPlaylistData(self):
-        yt_service = gdata.youtube.service.YouTubeService()
-
-        # Now that we run these queries from the App Engine servers, we need to 
-        # explicitly specify our developer_key to avoid being lumped together w/ rest of GAE and
-        # throttled by YouTube's "Too many request" quota
-        yt_service.developer_key = "AI39si6ctKTnSR_Vx7o7GpkpeSZAKa6xjbZz6WySzTvKVYRDAO7NHBVwofphk82oP-OSUwIZd0pOJyNuWK8bbOlqzJc9OFozrQ"
-        yt_service.client_id = "n/a"
+        yt_service = YouTubeService()
 
         video_youtube_id_dict = Video.get_dict(Video.all(), lambda video: video.youtube_id)
         video_playlist_key_dict = VideoPlaylist.get_key_dict(VideoPlaylist.all())
