@@ -38,6 +38,7 @@ import inspect
 import os
 import pickle
 import types
+import logging
 
 from google.appengine.ext import ndb
 
@@ -173,6 +174,7 @@ def for_name(fq_name, recursive=False):
   fq_name = str(fq_name)
   module_name = __name__
   short_name = fq_name
+  logging.debug("looking for %s from %s", short_name, module_name)
 
   if fq_name.rfind(".") >= 0:
     (module_name, short_name) = (fq_name[:fq_name.rfind(".")],
@@ -193,6 +195,7 @@ def for_name(fq_name, recursive=False):
       raise ImportError("Could not find '%s' on path '%s'" % (
                         short_name, module_name))
   except ImportError:
+    logging.debug("Import error", exc_info=True)
     # module_name is not actually a module. Try for_name for it to figure
     # out what's this.
     try:
