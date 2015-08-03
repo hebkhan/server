@@ -2469,7 +2469,7 @@ class Topic(Searchable, db.Model):
     @layer_cache.cache_with_key_fxn(
     lambda self, types=[], include_hidden=False:
             "topic.make_tree_%s_%s_%s" % (
-            self.key().id(), "-".join(types), include_hidden),
+            self.key().id_or_name(), "-".join(types), include_hidden),
             layer=layer_cache.Layers.Blobstore)
     def make_tree(self, types=[], include_hidden=False):
         query = Topic.all().filter("ancestor_keys =", self.key())
