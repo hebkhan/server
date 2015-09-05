@@ -15,6 +15,7 @@ def append_paths():
 
     extra_paths = [
         os.path.abspath("."),
+        os.path.abspath("./lib"),
         gae_path,
         # These paths are required by the SDK.
         os.path.join(gae_path, 'lib', 'webapp2-2.5.2'),
