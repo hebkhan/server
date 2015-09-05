@@ -1,0 +1,9 @@
+../mox.py
+../stubout.py
+../__pycache__/mox.cpython-34.pyc
+../__pycache__/stubout.cpython-34.pyc
+./
+top_level.txt
+PKG-INFO
+SOURCES.txt
+dependency_links.txt

@@ -1,8 +1,0 @@
-handlers:
-- url: /mapreduce/pipeline/images
-  static_dir: app/mapreduce/lib/pipeline/ui/images
-
-- url: /mapreduce(/.*)?
-  script: mapreduce.main.APP
-  login: admin
-
