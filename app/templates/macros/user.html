@@ -43,6 +43,48 @@
     {% endif %}
 {%- endmacro %}
 
-{% macro possible_points_badge(points, possible_points, logged_in=True) -%}
-<div class="video-energy-points"{% if logged_in %} title="{{ points }} נקודות נצברו בצפיה בסרטון זה"{% else %} title="אתם צוברים נקודות עבור צפיה בסרטון זה. התחברו בכדי לשמור אותן!"{% endif %}><span class="video-energy-points-current">{{ points }}</span> מתוך {{ possible_points }}</div>
+{% macro possible_points_badge(points, possible_points, logged_in=True, is_mobile=False) -%}
+<div class="video-energy-points"
+    {% if logged_in %}
+        title="{{ points }} נקודות נצברו בצפיה בסרטון זה"
+    {% else %}
+        title="אתם צוברים נקודות עבור צפיה בסרטון זה. התחברו בכדי לשמור אותן!"
+    {% endif %}>
+    <span class="video-energy-points-current">צברת {{ points }}</span> מתוך {{ possible_points }} נקודות
+    {% if is_mobile and not logged_in %}
+        <a href="#mobile-login">(התחברו כדי לשמור!)</a>
+    {% endif %}
+</div>
+{%- endmacro %}
+
+
+{% macro mobile_login(login_url) %}
+<div data-role="dialog" data-theme="c" id="mobile-login">
+    <div data-role="content">
+        <form method="POST" id="login-form" action="{{ login_url }}" data-ajax="false">
+        </form>
+
+        <h1>התחבר באמצעות:</h1>
+        <ul data-role="listview"  data-theme="c" data-inset="true">
+            <li>
+                <a id="login-google">
+                <img src="/images/google-logo-icon.png"/>
+                גוגל
+                </a>
+            </li>
+            <li>
+                <a id="login-facebook">
+                <img src="/images/facebook-logo-icon.png"/>
+                פייסבוק
+                </a>
+            </li>
+            <li>
+                <a data-rel="back">חזור</a>
+            </li>
+        </ul>
+        {% if not anointed %}
+            בהתחברות אתם מסכימים לתת ליישום זה גישה לנתוני המידע שלכם באקדמיית קהאן.
+        {% endif %}
+    </div>
+</div>
 {%- endmacro %}

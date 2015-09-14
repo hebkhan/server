@@ -705,6 +705,9 @@ class UpdateExercise(request_handler.RequestHandler):
         if "min_problems_required" in data:
             exercise.min_problems_required = int(data["min_problems_required"])
 
+        if "min_problems_required" in data:
+            exercise.is_mobile_compatible = data["is_mobile_compatible"]
+
         exercise.live = data["live"]
 
         exercise.put()

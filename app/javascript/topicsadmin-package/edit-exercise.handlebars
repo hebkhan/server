@@ -46,6 +46,26 @@
             </tr>
 
             <tr>
+                <td style="font-weight:bold;">Mobile Compatibility</td>
+                <td style="padding-bottom:9px;">
+                    <label for="compat_yes">Compatible&nbsp;</label>
+                    <input type="radio" id="compat_yes" name="is_mobile_compatible" value="true"
+                        {{#if model.is_mobile_compatible }}checked="checked"{{/if}}/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <label for="compat_no">Incompatible&nbsp;</label>
+                    <input type="radio" id="compat_no" name="is_mobile_compatible" value="false"
+                        {{#unless model.is_mobile_compatible }}checked="checked"{{/unless}}/>
+                    <br/>
+                    {{#if oldValues.is_mobile_compatible }}
+                    <span class="old-value">Old value:
+                    <input type="text" disabled value="{{#if oldValues.is_mobile_compatible }}Compatible{{else}}Incompatible{{/if}}"/>
+                    </span><br/>{{/if}}
+                    <em>Should this exercise be shown on a mobile device?</em>
+                </td>
+
+            </tr>
+
+            <tr>
                 <td style="font-weight:bold;">Min. problems for proficiency</td>
                 <td style="padding-bottom:9px;">
                     <input type="text" name="min_problems_required" value="{{ model.min_problems_required }}" class="short" /></br>

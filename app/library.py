@@ -70,6 +70,8 @@ def prepare(topic, depth=0, max_depth=4):
         return []  # trim this branch
 
     topic.content_count = Counter(item.kind().lower() for item in topic.content)
+    topic.content_count['mobile_exercise'] += sum(1 for item in topic.content if item.kind() == "Exercise" and item.is_mobile_compatible)
+
     if topic.content and topic.subtopics:
         dummy = TopicDummy(id=topic.id+"-leaf", title=u"תוכן נוסף", content=topic.content, subtopics=[],
                            content_count=topic.content_count, all_content_count=topic.content_count, depth=topic.depth+1)

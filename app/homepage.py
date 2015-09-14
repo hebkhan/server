@@ -133,8 +133,9 @@ class ViewHomePage(request_handler.RequestHandler):
     def get(self):
 
         version_number = None
+        user_data = models.UserData.current()
 
-        if models.UserData.current() and models.UserData.current().developer:
+        if user_data and user_data.developer:
             version_number = self.request_string('version', default=None)
 
         thumbnail_link_sets = new_and_noteworthy_link_sets()
@@ -201,7 +202,13 @@ class ViewHomePage(request_handler.RequestHandler):
                             'link_heat': self.request_bool("heat", default=False),
                             'version_number': version_number
                         }
-
+        if is_mobile and user_data and not user_data.is_phantom:
+            from profiles.util_profile import UserProfile
+            user_data = models.UserData.current()
+            template_values.update(
+                user_profile=UserProfile.from_user(user_data, user_data),
+                count_videos=models.Setting.count_videos(),
+                )
         self.render_jinja2_template('homepage.html', template_values)
 
         layer_cache.enable()

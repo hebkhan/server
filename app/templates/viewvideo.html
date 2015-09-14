@@ -38,18 +38,25 @@
     <div data-role="header" class="mobile-only" data-theme="b">
         <a href="#" data-rel="back" data-icon="arrow-l">חזור</a>
         <h2>{{video.title|escape}}</h2>
-        <a href="/" data-icon="home" data-iconpos="notext" data-direction="reverse"></a>
+        <a href="/" data-icon="home" data-iconpos="notext" data-direction="reverse" data-ajax="false"></a>
     </div>
     <div data-role="content" itemscope itemtype="http://schema.org/VideoObject">
         <link itemprop="url" href="/video/{{video.readable_id}}?topic={{topic.id}}">
+
+        {% if is_mobile and video.description %}
+        <div data-role="collapsible" data-mini="true" data-theme="d">
+            <h1 class="title-header">{{video.title|escape}}: {{video.description|escape}}</h1>
+            <span itemprop="description">{{video.description|escape}}</span>
+        </div>
+        {% else %}
         <div id="description">
             {%- if button_top_exercise %}
-            <a href="{{button_top_exercise.url}}" class="practice simple-button action-gradient green desktop-only" title="בדקו את הבנתכם באמצעות תרגיל">תרגול</a>
+            <a href="{{button_top_exercise.url}}" class="practice simple-button action-gradient green" title="בדקו את הבנתכם באמצעות תרגיל">תרגול</a>
             {%- endif %}
             <h1 class="title-header">
-                <span itemprop="name" class="title desktop-only">{{video.title|escape}}</span>
+                <span itemprop="name" class="title">{{video.title|escape}}</span>
             {% if video.description %}
-                <span class="long-description"><span class="desktop-only">: </span>
+                <span class="long-description">
                     <br>
                         <span itemprop="description">{{video.description|escape}}</span>
                 </span>
@@ -72,6 +79,8 @@
             </div>
             {%- endif %}
         </div>
+        {% endif %}
+
     <div style="margin-top: -5px;">
         <nav class="prev_next_nav desktop-only">
             {% if previous_video %}
@@ -102,13 +111,13 @@
             <link itemprop="thumbnailUrl" href="http://img.youtube.com/vi/{{video.youtube_id}}/hqdefault.jpg">
             {{ youtube.player_embed(video.youtube_id, mobile=is_mobile_capable, http_origin=http_host) }}
         </div>
-        <span class="video_extra_links desktop-only">
+        <span class="video_extra_links">
             <nobr>
-            <div class="extra-link-bar">
+            <div class="extra-link-bar desktop-only">
                 {{ social.share_video_button(video.title, video.description, video.youtube_id, "Video-Page-Share") }}
             </div>
             <span style="float:right;" id="points-badge-hover">
-                {{ user.possible_points_badge(awarded_points, video_points_base, logged_in) }}
+                {{ user.possible_points_badge(awarded_points, video_points_base, logged_in, is_mobile) }}
             </span>
             </nobr>
          </span>
@@ -120,11 +129,29 @@
     </div>
     </div>
 </div>
+{% if is_mobile and not logged_in %}
+    {{ user.mobile_login(login_url) }}
+{% endif %}
 </article>
 {% endblock pagecontent %}
 
 {% block bottompagescript %}
-    {% if not is_mobile %}
+    {% if is_mobile %}
+        <script>
+        {% if user_data %}
+            $("#mobile-login-btn")
+                .text("{{ username }} ({{ user_data.points }} נקודות)")
+                .attr("href", "#mobile-profile")
+        {% endif %}
+        $("#login-google").click(function(e) {
+            $("#login-form").submit();
+        });
+        $("#login-facebook").click(function(e) {
+            FacebookHook.doLogin();
+        });
+        $("abbr.timeago").timeago()
+        </script>
+    {% else %}
         {{ js_css_packages.js_package("video") }}
         <script>
           $(function() {
