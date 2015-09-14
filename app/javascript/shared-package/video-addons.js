@@ -326,11 +326,13 @@ var VideoStats = {
             var jelPoints = $(".video-energy-points");
             if (jelPoints.length)
             {
-                jelPoints.data("title", jelPoints.data("title").replace(/^\d+/, video.points));
+                if (jelPoints.data("title")) { // the modalvideo.js is included only in desktop
+                    jelPoints.data("title", jelPoints.data("title").replace(/^\d+/, video.points));
+                    // Replace the old tooltip with an updated one.
+                    VideoStats.tooltip("#points-badge-hover", jelPoints.data("title"));
+                }
                 $(".video-energy-points-current", jelPoints).text(video.points);
 
-                // Replace the old tooltip with an updated one.
-                VideoStats.tooltip("#points-badge-hover", jelPoints.data("title"));
             }
         }
     },
@@ -429,4 +431,3 @@ function connectYouTubePlayer(player) {
     $(VideoControls).trigger("playerready");
     $(VideoStats).trigger("playerready");
 }
-

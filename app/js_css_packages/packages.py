@@ -40,6 +40,7 @@ javascript = {
             "handlebars-extras.js",
             "cookies.js",
             "pageutil.js",
+            "facebook-hook.js",
             "video-addons.js",
             "api.js",
             "backbone-extensions.js",
@@ -146,11 +147,12 @@ javascript = {
         "files": [
             "jquery.js",
             "mobile.js",
-            #"jquery.mobile-1.0a4.1.js",
             "jquery.mobile-1.2.1.js",
             "../shared-package/cookies.js",
             "../shared-package/video-addons.js",
             "../shared-package/api.js",
+            "../shared-package/facebook-hook.js",
+            "../shared-package/jquery.timeago.js",
         ]
     },
     "studentlists": {

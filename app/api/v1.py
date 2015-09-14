@@ -777,14 +777,15 @@ def exercise_save(exercise_name = None, version_id = "edit"):
 def exercise_save_data(version, data, exercise=None, put_change=True):
     if "name" not in data:
         raise Exception("exercise 'name' missing")
-    data["live"] = data["live"] == "true" or data["live"] == True 
+    data["live"] = data.get("live") in ("true", True)
     data["v_position"] = int(data["v_position"])
     data["h_position"] = int(data["h_position"])
     data["seconds_per_fast_problem"] = float(data.get("seconds_per_fast_problem", 0))
     data["min_problems_required"] = int(data.get("min_problems_required", 5))
+    data["is_mobile_compatible"] = data.get("is_mobile_compatible") in ("true", True)
     data.setdefault("display_name", data["name"])
     changeable_props = ["name", "display_name", "short_display_name",
-                        "h_position", "v_position",
+                        "h_position", "v_position", "is_mobile_compatible",
                         "live", "summative", "min_problems_required",
                         "prerequisites", "covers", "related_videos"]
     if exercise:

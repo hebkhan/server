@@ -53,3 +53,95 @@ h2.main-headline { text-align: center; }
 }
 */
 .ui-page { -webkit-backface-visibility: hidden; }
+
+.video_extra_links .video-energy-points {
+    background: #005987;
+    float: left;
+    line-height: 18px;
+    text-align: center;
+    padding: 2px 5px 3px;
+    color: white;
+    font-weight: bold;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    text-shadow: none;
+
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
+
+
+#mobile-profile {
+    float:right;
+}
+
+.nickname {
+    font-size: 150%;
+    padding: 0;
+    margin: 0;
+}
+
+.basic-stats {
+    min-width: 180px;
+    margin-top: 14px;
+}
+
+.basic-user-info {
+    /* force a position-context and background color so that it can be
+     * highlighted in the out-of-the-box experience. */
+    background: #eee;
+    position: relative;
+}
+
+.basic-stats .simple-stat {
+    float: right;
+    text-align: right;
+    margin-left: 9px;
+}
+.simple-stat .summary-icon {
+    display: block;
+    width: 16px;
+    height: 16px;
+    margin: 2px 0 1px;
+    background: #005987;
+    border-radius: 5px;
+    padding: 2px 8px;
+}
+
+.simple-stat .summary-icon.star {
+    width: 14px;
+    height: 14px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+}
+
+.simple-stat .stat-divider {
+    font-size: 150%;
+    vertical-align: middle;
+}
+
+.energy-points-badge {
+    background: #005987;
+    float: left;
+    line-height: 18px;
+    text-align: center;
+    padding: 2px 5px 3px;
+    color: white;
+    font-weight: bold;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    text-shadow: none;
+
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
+
+.clearfix:before, .clearfix:after { content: ""; display: table; }
+.clearfix:after { clear: both; }
+.clearfix { *zoom: 1; }
+
+.topic-list-view .ui-li-count.exercise {
+    left: 80px;
+    border-color: #bcb;
+    color: #272;
+}

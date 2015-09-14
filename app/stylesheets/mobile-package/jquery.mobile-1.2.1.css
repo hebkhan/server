@@ -771,7 +771,7 @@ a.ui-link-inherit {
 	-webkit-border-bottom-right-radius: .6em /*{global-radii-blocks}*/;
 	border-bottom-right-radius: 		.6em /*{global-radii-blocks}*/;
 	}
-.ui-corner-right {
+.ui-corner-left {
 	-moz-border-radius-topleft: 		.6em /*{global-radii-blocks}*/;
 	-webkit-border-top-right-radius: 	.6em /*{global-radii-blocks}*/;
 	border-top-right-radius: 			.6em /*{global-radii-blocks}*/;
@@ -779,7 +779,7 @@ a.ui-link-inherit {
 	-webkit-border-bottom-right-radius: .6em /*{global-radii-blocks}*/;
 	border-bottom-right-radius: 		.6em /*{global-radii-blocks}*/;
 }
-.ui-corner-left {
+.ui-corner-right {
 	-moz-border-radius-topright: 		.6em /*{global-radii-blocks}*/;
 	-webkit-border-top-left-radius: 	.6em /*{global-radii-blocks}*/;
 	border-top-left-radius: 			.6em /*{global-radii-blocks}*/;

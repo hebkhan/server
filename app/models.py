@@ -153,6 +153,9 @@ class Exercise(ContentItem):
     # combining the content of other exercises
     summative = db.BooleanProperty(default=False)
 
+    # True if this exercise can be use on mobile device
+    is_mobile_compatible = db.BooleanProperty(default=False)
+
     # Teachers contribute raw html with embedded CSS and JS
     # and we sanitize it with Caja before displaying it to
     # students.
