@@ -62,6 +62,7 @@ def prepare(topic, depth=0, max_depth=4):
             else:
                 topic.subtopics.extend(prepare(child, depth=depth+1, max_depth=max_depth))
         else:
+            child.key_id = child.key().id()
             add_once(child)
 
     del topic.children
@@ -102,8 +103,6 @@ def library_content_html(mobile=False, version_number=None):
         version = TopicVersion.get_default_version()
 
     tree = Topic.get_root(version).make_tree(types = ["Topics", "Video", "Exercise", "Url"])
-
-    videos = [item for item in walk_children(tree) if item.kind()=="Video"]
 
     root, = prepare(tree)
     topics = root.subtopics

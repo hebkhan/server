@@ -145,3 +145,8 @@ h2.main-headline { text-align: center; }
     border-color: #bcb;
     color: #272;
 }
+
+.vid-progress {
+    background-repeat: no-repeat;
+    background-position: 100% 50%;
+}
