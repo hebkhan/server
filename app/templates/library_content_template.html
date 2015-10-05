@@ -61,28 +61,31 @@
                     {% elif topic.content %}
                         {% for item in topic.content %}
                             {% if item.kind()=="Video" %}
-                                <li data-theme="c">
+                                <li data-theme="d">
                                 <a href="{{item.relative_url}}?topic={{topic.id}}" title="{{item.description|escape}}"
-                                    data-id='{{ item.readable_id|escape }}' data-ajax="false">
-                                <img src="images/video-camera-icon-inset-small.png" class="ui-li-icon"/>
-                                    <span class="vid-progress v{{item.key_id}}">
+                                    class="video" data-id='{{ item.readable_id|escape }}' data-ajax="false">
+                                    <!-- <img src="images/video-camera-icon-inset-small.png" class="ui-li-icon"/> -->
+                                    <span class="content-title vid-progress v{{item.key_id}}">
                                     {{ item.title }}
                                     </span>
                                 </a>
                             {% elif item.kind()=="Exercise" and item.is_mobile_compatible %}
                                 <li data-theme="d">
                                 <a href="{{item.relative_url}}?topic={{topic.id}}" title="{{item.name|escape}}"
-                                    data-id='{{ item.name|escape }}' data-ajax="false">
-                                    <img src="images/exercise-icon-active.png" class="ui-li-icon"/>
-                                    <span class="vid-progress v{{item.key_id}}">
+                                    class="exercise" data-id='{{ item.name|escape }}' data-ajax="false">
+                                    <!-- <img src="images/exercise-icon-active.png" class="ui-li-icon"/> -->
+                                    <span class="content-title vid-progress v{{item.key_id}}">
                                     {{ item.title }}
                                     </span>
                                 </a>
                             {% elif item.kind()=="Url" %}
-                                <li data-theme="c">
-                                <a href="{{item.relative_url}}" data-id='{{ item.id|escape }}' data-ajax="false">
-                                    <img src="images/link-icon-inset-small.png" class="ui-li-icon"/>
+                                <li data-theme="d">
+                                <a href="{{item.relative_url}}" title="{{item.title|escape}}"
+                                    class="url" data-id='{{ item.id|escape }}' data-ajax="false">
+                                    <!-- <img src="images/link-icon-inset-small.png" class="ui-li-icon"/> -->
+                                    <span class="content-title">
                                     {{ item.title }}
+                                    </span>
                                 </a>
                             {% endif %}
                             </li>

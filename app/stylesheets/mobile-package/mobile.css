@@ -150,3 +150,21 @@ h2.main-headline { text-align: center; }
     background-repeat: no-repeat;
     background-position: 100% 50%;
 }
+
+.video, .exercise, .url {
+    background-repeat: no-repeat;
+    background-position: 2em 50%;
+    background-size: 2em;
+}
+
+.video {
+    background-image: url('/images/activity-video-icon-inset.png');
+}
+
+.exercise {
+    background-image: url('/images/activity-exercise-icon-incomplete.png');
+}
+
+.url {
+    background-image: url('/images/link-icon-inset.png');
+}
