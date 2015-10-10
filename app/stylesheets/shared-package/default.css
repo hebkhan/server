@@ -599,6 +599,16 @@ footer {
             background-position: -320px -465px;
         }
 
+    #top-header #logo #here-and-now-logo-image {
+        position: absolute;
+        right: 295px;
+        top: 6px;
+        z-index: 1;        
+        width: 75px;
+        height: 75px;
+        background-image: url(/images/here-and-now-logo.75.png);
+    }
+
  
 footer.short .small-social .logo-ani10 {
     display: inline;
