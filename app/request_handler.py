@@ -359,6 +359,7 @@ class RequestHandler(webapp2.RequestHandler, RequestInputHandler):
 
         # client-side error logging
         template_values['include_errorception'] = gandalf('errorception')
+        template_values['include_bugsnag'] = gandalf('bugsnag')
 
         if user_data:
             goals = GoalList.get_current_goals(user_data)

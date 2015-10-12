@@ -7,13 +7,25 @@
     xmlns:fb="http://www.facebook.com/2008/fbml" {{ data_require }}>
       <head>
         <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8"/>
+        {% if include_bugsnag and not hide_analytics -%}
+        <script
+          src="//d2wy8f7a9ursnm.cloudfront.net/bugsnag-2.min.js"
+          data-apikey="631fdfcc28ff3e0e5d74e8cd8a6b5823">
+        </script>
+        <script type="text/javascript">
+            Bugsnag.user = {
+              name: '{{ username|escapejs }}',
+              email: '{{ user_email|escapejs }}'
+            };
+        </script>
+        {%- endif %}
         {% if include_errorception and not hide_analytics -%}
         <script>
-        var _errs=["4efc1674aa8bc407591e0ad6"];(function(a,b){a.onerror=function(){_errs.push(arguments)};
-        var d=function(){var a=b.createElement("script"),c=b.getElementsByTagName("script")[0];
-        a.src="//d15qhc0lu1ghnk.cloudfront.net/beacon.js";a.async=!0;
-        c.parentNode.insertBefore(a,c)};a.addEventListener?a.addEventListener("load",d,!1):
-        a.attachEvent("onload",d)})(window,document);
+            (function(_,e,rr,s){_errs=[s];var c=_.onerror;_.onerror=function(){var a=arguments;_errs.push(a);
+            c&&c.apply(this,a)};var b=function(){var c=e.createElement(rr),b=e.getElementsByTagName(rr)[0];
+            c.src="//beacon.errorception.com/"+s+".js";c.async=!0;b.parentNode.insertBefore(c,b)};
+            _.addEventListener?_.addEventListener("load",b,!1):_.attachEvent("onload",b)})
+            (window,document,"script","561c1a0a9d71cecf7d0008c2");
         </script>
         {%- endif %}
         <!--[if lte IE 6]><script src="/javascript/ie-warning.js"></script><script>window.onload=function(){e("/images/ie-warning/")}</script><![endif]-->

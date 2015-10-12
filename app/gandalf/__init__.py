@@ -3,6 +3,7 @@ import logging
 from gandalf.cache import GandalfCache
 from gandalf.config import current_logged_in_identity
 
+
 def gandalf(bridge_name):
 
     if not bridge_name:
@@ -36,4 +37,3 @@ def gandalf(bridge_name):
                 return False
 
     return passes_a_whitelist
-
