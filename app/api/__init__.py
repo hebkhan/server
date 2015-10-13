@@ -46,16 +46,17 @@ def route(rule, **options):
 
     return api_route_wrap
 
+
 def is_current_api_version(xsrf_token):
     if not xsrf_token:
         return True # Only validate website users
 
-    delims = xsrf_token.split("_")
-    if len(delims) != 3 or delims[0] != XSRF_API_VERSION:
-        logging.warning("Out of date API version detected: %s != %s" % (XSRF_API_VERSION, delims[0]))
+    if not xsrf_token.startswith(XSRF_API_VERSION + "_"):
+        logging.warning("Out of date API version detected: %s != %s", XSRF_API_VERSION, xsrf_token)
         return False
 
     return True
+
 
 def add_api_header(func):
     @wraps(func)
@@ -69,8 +70,7 @@ def add_api_header(func):
             # as proxies. It would be unwise to cache headers that indicate error
             # conditions, since they are per-user.
             cacheable = result.cache_control.public
-            if (not cacheable and 
-                    not is_current_api_version(os.environ.get(XSRF_HEADER_KEY))):
+            if (not cacheable and not is_current_api_version(os.environ.get(XSRF_HEADER_KEY))):
                 result.headers["X-KA-API-Version-Mismatch"] = "true"
 
         return result
