@@ -28,6 +28,7 @@ import youtube_sync
 import warmup
 import library
 import homepage
+import doratid
 
 import search
 
@@ -946,6 +947,9 @@ application = webapp2.WSGIApplication([
     ('/index\.html', PermanentRedirectToHome),
 
     ('/_ah/warmup.*', warmup.Warmup),
+
+    # Dor-Atid
+    ('/dor-atid', doratid.ViewDorAtidHomepage),
 
     ], debug=True)
 

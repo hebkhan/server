@@ -331,4 +331,9 @@ stylesheets = {
             "topics-admin.css"
         ]
     },
+    "doratid" : {
+        "files" : [
+            "doratid-navbar.css"
+        ]
+    }
 }
