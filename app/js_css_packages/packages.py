@@ -333,7 +333,8 @@ stylesheets = {
     },
     "doratid" : {
         "files" : [
-            "doratid-navbar.css"
+            "doratid-navbar.css",
+            "doratid-homepage.css",
         ]
     }
 }

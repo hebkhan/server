@@ -1,6 +1,6 @@
 [submodule "app/khan-exercises"]
 	path = app/khan-exercises
-	url = git@git.assembla.com:hebrew-khan.git
+	url = git://git.assembla.com/hebrew-khan.git
 [submodule "appengine-mapreduce"]
 	path = appengine-mapreduce
 	url = git@github.com:GoogleCloudPlatform/appengine-mapreduce.git
