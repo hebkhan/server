@@ -324,6 +324,14 @@ stylesheets = {
             "mathquill.min.css",
         ]
     },
+    "mobile-exercises": {
+        "base_path": "../khan-exercises/css",
+        "base_url": "/khan-exercises/css",
+        "files": [
+            "khan-exercise-mobile.css",
+            "mathquill.min.css",
+        ]
+    },
     "topicsadmin": {
         "files": [
             "ui_dynatree.css",
