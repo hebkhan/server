@@ -11,3 +11,8 @@ jQuery(document).bind("mobileinit", function() {
 	$.mobile.page.prototype.options.backBtnText = "חזור";
 });
 
+var Notifications = {
+    show: function(sNotificationContainerHtml) {},
+    showTemplate: function(templateName) {},
+    hide: function() {}
+};

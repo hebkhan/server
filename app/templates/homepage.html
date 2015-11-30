@@ -94,7 +94,9 @@
         {% if user_data %}
             $("#mobile-login-btn")
                 .text("{{ username }} ({{ user_data.points }} נקודות)")
+            {% if not user_data.is_phantom %}
                 .attr("href", "#mobile-profile")
+            {% endif %}
         {% endif %}
         $("#login-google").click(function(e) {
             $("#login-form").submit();

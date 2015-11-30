@@ -168,3 +168,7 @@ h2.main-headline { text-align: center; }
 .url {
     background-image: url('/images/link-icon-inset.png');
 }
+
+.vars {
+    display: none;
+}

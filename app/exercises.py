@@ -125,8 +125,6 @@ class ViewExercise(request_handler.RequestHandler):
         # When viewing another student's problem or a problem out-of-order, show read-only view
         read_only = viewing_other or problem_number != (user_exercise.total_done + 1)
 
-        exercise_template_html = exercise_template()
-
         exercise_body_html, exercise_inline_script, exercise_inline_style, data_require, sha1 = exercise_contents(exercise)
         user_exercise.exercise_model.sha1 = sha1
 
@@ -231,8 +229,10 @@ class ViewExercise(request_handler.RequestHandler):
             (exid, user_data_student.key_email, problem_number + 1)
 
         user_exercise_json = jsonify.jsonify(user_exercise)
+        exercise_template_html = exercise_template(self.is_mobile())
 
         template_values = {
+            'is_mobile_allowed': True,
             'exercise': exercise,
             'user_exercise_json': user_exercise_json,
             'exercise_body_html': exercise_body_html,
@@ -246,13 +246,14 @@ class ViewExercise(request_handler.RequestHandler):
             'is_webos': is_webos,
             'renderable': renderable,
             'issue_labels': ('Component-Code,Exercise-%s,Problem-%s' % (exid, problem_number)),
-            'alternate_hints_treatment': ab_test('Hints or Show Solution Dec 10',
-                ViewExercise._hints_ab_test_alternatives,
-                ViewExercise._hints_conversion_names,
-                ViewExercise._hints_conversion_types,
-                'Hints or Show Solution Nov 5'),
+            'alternate_hints_treatment': "more_visible",  # ab_test('Hints or Show Solution Dec 10',
+            #     ViewExercise._hints_ab_test_alternatives,
+            #     ViewExercise._hints_conversion_names,
+            #     ViewExercise._hints_conversion_types,
+            #     'Hints or Show Solution Nov 5'),
             'reviews_left_count': reviews_left_count if review_mode else "null",
         }
+        logging.info("alternate_hints_treatment: %s", template_values['alternate_hints_treatment'])
         self.render_jinja2_template("exercise_template.html", template_values)
 
 
@@ -356,8 +357,9 @@ class RawExercise(request_handler.RequestHandler):
         self.response.out.write(raw_exercise_contents(exercise_file))
 
 @layer_cache.cache(layer=layer_cache.Layers.InAppMemory)
-def exercise_template():
-    path = os.path.join(os.path.dirname(__file__), "khan-exercises/exercises/khan-exercise.html")
+def exercise_template(mobile):
+    name = "khan-exercise-mobile.html" if mobile else "khan-exercise.html"
+    path = os.path.join(os.path.dirname(__file__), "khan-exercises/exercises/%s" % name)
 
     contents = ""
     f = open(path)
