@@ -15,6 +15,9 @@ from avatars import util_avatars
 from badges import util_badges
 from gae_bingo.gae_bingo import bingo
 from experiments import SuggestedActivityExperiment
+# Ofer: unless there's an import cycle, better have all the imports at the top
+from profiles.class_progress_report_graph import class_progress_report_graph_context
+
 
 def get_last_student_list(request_handler, student_lists, use_cookie=True):
     student_lists = student_lists.fetch(100)
@@ -89,6 +92,7 @@ def get_coach_student_and_student_list(request_handler):
     student = get_student(coach, request_handler)
     return (coach, student, student_list)
 
+
 class ViewClassProfile(request_handler.RequestHandler):
     @disallow_phantoms
     @ensure_xsrf_cookie
@@ -131,16 +135,16 @@ class ViewClassProfile(request_handler.RequestHandler):
             exercises = models.Exercise.get_all_use_cache()
             exercises.sort(key=lambda ex: ex.display_name)
 
-            dates_to_mark = []
-            from profiles import class_progress_report_graph
+            dates_to_mark = set()  # Ofer: use a 'set' collection to ensure uniquness (see .add below)
             students = get_students_data(coach, list_id)
-            students_data = class_progress_report_graph.class_progress_report_graph_context(coach, students)
-            for processData in students_data["progress_data"]:
-                for exercise in processData["exercises"]:
-                    if "last_done" in exercise.keys():
-                        date = exercise["last_done"].strftime("%Y/%m/%d")
-                        if date not in dates_to_mark:
-                            dates_to_mark.append(date)
+            # Ofer: I assume this is the same function used once the user selects a date?
+            students_data = class_progress_report_graph_context(coach, students)
+            for progress_data in students_data["progress_data"]:    # Ofer: python doesn't like camel case for variable names :)
+                for exercise in progress_data["exercises"]:
+                    # Ofer: .get() returns None if the key isn't find. So it's like checking and getting in one opertaion
+                    last_done = exercise.get("last_done")
+                    if last_done:
+                        dates_to_mark.add(last_done.strftime("%Y/%m/%d"))
 
             template_values = {
                     'user_data_coach': coach,
@@ -157,7 +161,7 @@ class ViewClassProfile(request_handler.RequestHandler):
                     'selected_nav_link': 'coach',
                     "view": self.request_string("view", default=""),
                     'stats_charts_class': 'coach-view',
-                    'dates_to_mark' : dates_to_mark,
+                    'dates_to_mark' : sorted(dates_to_mark),  # Ofer: convert the set to a list that's also sorted
                     }
             self.render_jinja2_template('viewclassprofile.html', template_values)
         else:
