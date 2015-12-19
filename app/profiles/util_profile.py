@@ -131,6 +131,17 @@ class ViewClassProfile(request_handler.RequestHandler):
             exercises = models.Exercise.get_all_use_cache()
             exercises.sort(key=lambda ex: ex.display_name)
 
+            dates_to_mark = []
+            from profiles import class_progress_report_graph
+            students = get_students_data(coach, list_id)
+            students_data = class_progress_report_graph.class_progress_report_graph_context(coach, students)
+            for processData in students_data["progress_data"]:
+                for exercise in processData["exercises"]:
+                    if "last_done" in exercise.keys():
+                        date = exercise["last_done"].strftime("%Y/%m/%d")
+                        if date not in dates_to_mark:
+                            dates_to_mark.append(date)
+
             template_values = {
                     'user_data_coach': coach,
                     'coach_email': coach.email,
@@ -146,6 +157,7 @@ class ViewClassProfile(request_handler.RequestHandler):
                     'selected_nav_link': 'coach',
                     "view": self.request_string("view", default=""),
                     'stats_charts_class': 'coach-view',
+                    'dates_to_mark' : dates_to_mark,
                     }
             self.render_jinja2_template('viewclassprofile.html', template_values)
         else:

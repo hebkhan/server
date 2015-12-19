@@ -17,10 +17,24 @@
 {%- endmacro %}
 
 
-{% macro graph_calendar_picker(user_data, graph_type) -%}
+{% macro graph_calendar_picker(user_data, graph_type, dates_to_mark) -%}
 <input type="text" id="targetDatepicker" value="היום"/>
 <script>
-    $(function(){$("#targetDatepicker").datepicker({ dateFormat: 'dd/mm/yy' }).change(function(){ClassProfile.loadGraphStudentListAware("/profile/graph/{{ graph_type|escape }}?coach_email={{ user_data.email|escape }}&dt=" + this.value);});});
+    function daysToMark(date) { 
+        var dicOfDates = {}
+        {% for date in dates_to_mark %}
+        dicOfDates[ new Date("{{ date }}")] = new Date("{{ date }}");
+        {% endfor %}
+
+        var highlight = dicOfDates[date]; 
+        if (highlight) {
+             return [true, "markedDay", ''];
+        } else {
+             return [true, '', ''];
+        }
+    }
+
+    $(function(){$("#targetDatepicker").datepicker({ beforeShowDay: daysToMark,  dateFormat: 'dd/mm/yy' }).change(function(){ClassProfile.loadGraphStudentListAware("/profile/graph/{{ graph_type|escape }}?coach_email={{ user_data.email|escape }}&dt=" + this.value);});});
 </script>
 {%- endmacro %}
 
