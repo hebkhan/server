@@ -15,6 +15,8 @@ from avatars import util_avatars
 from badges import util_badges
 from gae_bingo.gae_bingo import bingo
 from experiments import SuggestedActivityExperiment
+from profiles.class_progress_report_graph import class_progress_report_graph_context
+
 
 def get_last_student_list(request_handler, student_lists, use_cookie=True):
     student_lists = student_lists.fetch(100)
@@ -89,6 +91,7 @@ def get_coach_student_and_student_list(request_handler):
     student = get_student(coach, request_handler)
     return (coach, student, student_list)
 
+
 class ViewClassProfile(request_handler.RequestHandler):
     @disallow_phantoms
     @ensure_xsrf_cookie
@@ -131,6 +134,16 @@ class ViewClassProfile(request_handler.RequestHandler):
             exercises = models.Exercise.get_all_use_cache()
             exercises.sort(key=lambda ex: ex.display_name)
 
+            dates_to_mark = set()
+            students = get_students_data(coach, list_id)
+            # Ofer: I assume this is the same function used once the user selects a date?
+            students_data = class_progress_report_graph_context(coach, students)
+            for progress_data in students_data["progress_data"]:
+                for exercise in progress_data["exercises"]:
+                    last_done = exercise.get("last_done")
+                    if last_done:
+                        dates_to_mark.add(last_done.strftime("%Y/%m/%d"))
+
             template_values = {
                     'user_data_coach': coach,
                     'coach_email': coach.email,
@@ -146,6 +159,7 @@ class ViewClassProfile(request_handler.RequestHandler):
                     'selected_nav_link': 'coach',
                     "view": self.request_string("view", default=""),
                     'stats_charts_class': 'coach-view',
+                    'dates_to_mark' : sorted(dates_to_mark),  
                     }
             self.render_jinja2_template('viewclassprofile.html', template_values)
         else:
