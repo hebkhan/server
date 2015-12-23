@@ -20,7 +20,6 @@
 {% macro graph_calendar_picker(user_data, graph_type, dates_to_mark) -%}
 <input type="text" id="targetDatepicker" value="היום"/>
 <script>
-    // Ofer: looks cleaner in the HTML this way
     var dates = {{ dates_to_mark }};
     var active_dates = {};
     for (i in dates) {
@@ -28,8 +27,6 @@
     };
 
     function daysToMark(date) {
-        // Ofer: seems to me it would be better to simply make unselectable.
-        // Why would anyone want to select a date where there's no activity?
         return [active_dates[date]];
     }
 

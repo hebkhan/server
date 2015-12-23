@@ -15,7 +15,6 @@ from avatars import util_avatars
 from badges import util_badges
 from gae_bingo.gae_bingo import bingo
 from experiments import SuggestedActivityExperiment
-# Ofer: unless there's an import cycle, better have all the imports at the top
 from profiles.class_progress_report_graph import class_progress_report_graph_context
 
 
@@ -135,13 +134,12 @@ class ViewClassProfile(request_handler.RequestHandler):
             exercises = models.Exercise.get_all_use_cache()
             exercises.sort(key=lambda ex: ex.display_name)
 
-            dates_to_mark = set()  # Ofer: use a 'set' collection to ensure uniquness (see .add below)
+            dates_to_mark = set()
             students = get_students_data(coach, list_id)
             # Ofer: I assume this is the same function used once the user selects a date?
             students_data = class_progress_report_graph_context(coach, students)
-            for progress_data in students_data["progress_data"]:    # Ofer: python doesn't like camel case for variable names :)
+            for progress_data in students_data["progress_data"]:
                 for exercise in progress_data["exercises"]:
-                    # Ofer: .get() returns None if the key isn't find. So it's like checking and getting in one opertaion
                     last_done = exercise.get("last_done")
                     if last_done:
                         dates_to_mark.add(last_done.strftime("%Y/%m/%d"))
@@ -161,7 +159,7 @@ class ViewClassProfile(request_handler.RequestHandler):
                     'selected_nav_link': 'coach',
                     "view": self.request_string("view", default=""),
                     'stats_charts_class': 'coach-view',
-                    'dates_to_mark' : sorted(dates_to_mark),  # Ofer: convert the set to a list that's also sorted
+                    'dates_to_mark' : sorted(dates_to_mark),  
                     }
             self.render_jinja2_template('viewclassprofile.html', template_values)
         else:
