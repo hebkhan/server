@@ -22,14 +22,10 @@
                   <li>
                       <span id="edit-profile" class="simple-button action-gradient">עריכת פרופיל</span>
                       <ul class="sub_menu">
-                        {{#if isFullyEditable}}
                         <li><a id="edit-basic-info" href="javascript:void(0)">עריכת מידע אישי</a></li>
-                        {{/if}}
                         <li><a id="edit-display-case" href="javascript:void(0)">עריכת מיצג המדליות</a></li>
                         <li><a id="edit-avatar" href="javascript:void(0)">עריכת סמל אישי</a></li>
-                        {{#if isFullyEditable}}
                         <li><a id="edit-visibility" href="javascript:void(0)">לשינוי הגדרות פרטיות</a></li>
-                        {{/if}}
                       </ul>
                   </li>
               </ul>
@@ -57,9 +53,7 @@
     </div>
 
 </div>
-{{#if isFullyEditable}}
 <a href="javascript:void(0)" id="edit-visibility"
     class="edit-visibility visibility-toggler {{#if isPublic}}public{{else}}private{{/if}}">הפרופיל {{#if isPublic}}ציבורי{{else}}פרטי{{/if}}</a>
 <div id="username-picker-container" class="modal fade hide" style="display: none;">
 </div>
-{{/if}}
