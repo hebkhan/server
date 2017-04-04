@@ -1,5 +1,5 @@
 {% macro integrate(webengage_id, username, user_email) -%}
-    <script>
+    <script id="_webengage_script_tag" type="text/javascript">
         var _weq = _weq || {
             'webengage.licenseCode' : '{{ webengage_id }}',
             'webengage.feedback.formData' : [
