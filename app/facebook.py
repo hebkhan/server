@@ -260,11 +260,12 @@ def get_user_from_cookie_patched(cookies, app_id, app_secret):
     )
 
     file = urllib.urlopen("https://graph.facebook.com/oauth/access_token?" + urllib.urlencode(args))
+    token_response = file.read()
     try:
-        token_response = file.read()
-        access_token = cgi.parse_qs(token_response)["access_token"][-1]
+        access_token = cgi.parse_qs(token_response)["data"]["access_token"]
     except Exception, e:
         logging.warning("Failed to get facebook access token: %s" % e)
+        logging.debug(token_response)
         return None
     finally:
         file.close()
@@ -312,3 +313,5 @@ def parse_signed_request(signed_request, secret):
 
     return {}
     
+
+
