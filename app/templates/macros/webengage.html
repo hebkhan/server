@@ -1,22 +1,5 @@
 {% macro integrate(webengage_id, username, user_email) -%}
     <script id="_webengage_script_tag" type="text/javascript">
-        var _weq = _weq || {
-            'webengage.licenseCode' : '{{ webengage_id }}',
-            'webengage.feedback.formData' : [
-                {
-                    'name' : 'דואר אלקטורני',
-                    'value' : '{{ user_email|escapejs }}',
-                }, {
-                    'name' : 'שם',
-                    'value' : '{{ username|escapejs }}'
-                },
-                {
-                    'name' : 'קטגוריה',
-                    // 'options' : ['בעיה', 'הצעה', 'אהבתי']
-                }
-            ],
-        };
-
         var webengage;
         ! function(w, e, b, n, g) {
             function o(e, t) {
@@ -45,14 +28,24 @@
                 setTimeout(function() {
                     var f = e.createElement("script"),
                         d = e.getElementById("_webengage_script_tag");
-                    f.type = "text/javascript";
-                    f.async = !0;
-                    f.src = ("https:" == e.location.protocol ? "https://ssl.widgets.webengage.com" : "http://cdn.widgets.webengage.com") + "/js/webengage-min-v-6.0.js";
-                    d.parentNode.insertBefore(f, d);
+                    f.type = "text/javascript", f.async = !0, f.src = ("https:" == e.location.protocol ? "https://ssl.widgets.webengage.com" : "http://cdn.widgets.webengage.com") + "/js/webengage-min-v-6.0.js", d.parentNode.insertBefore(f, d)
                 })
             }
         }(window, document, "webengage");
-        webengage.init({{ webengage_id }});
+        webengage.init("{{ webengage_id }}");
 
+        webengage.feedback.options('formData', [
+                    {
+                        'name' : 'דואר אלקטורני',
+                        'value' : '',
+                    }, {
+                        'name' : 'שם',
+                        'value' : ''
+                    // },
+                    // {
+                    //     'name' : 'קטגוריה',
+                    //     'options' : ['בעיה', 'הצעה', 'אהבתי']
+                    }
+                ]);
     </script>
 {%- endmacro %}
