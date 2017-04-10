@@ -300,7 +300,7 @@ class Exercise(ContentItem):
             return Exercise._get_all_use_cache_safe()
 
     @staticmethod
-    @layer_cache.cache_with_key_fxn(lambda *args, **kwargs: "all_exercises_unsafe_%s" % Setting.cached_exercises_date())
+    @layer_cache.cache_with_key_fxn((lambda *args, **kwargs: "all_exercises_unsafe_%s" % Setting.cached_exercises_date()), bigdata=True)
     def _get_all_use_cache_unsafe():
         query = Exercise.all_unsafe().order('h_position')
         return query.fetch(1000) # TODO(Ben) this limit is tenuous
@@ -310,7 +310,7 @@ class Exercise(ContentItem):
         return filter(lambda exercise: exercise.live, Exercise._get_all_use_cache_unsafe())
 
     @staticmethod
-    @layer_cache.cache_with_key_fxn(lambda *args, **kwargs: "all_exercises_dict_unsafe_%s" % Setting.cached_exercises_date())
+    @layer_cache.cache_with_key_fxn((lambda *args, **kwargs: "all_exercises_dict_unsafe_%s" % Setting.cached_exercises_date()), bigdata=True)
     def _get_dict_use_cache_unsafe():
         exercises = Exercise._get_all_use_cache_unsafe()
         dict_exercises = {}
