@@ -1,6 +1,10 @@
 {% macro integrate(webengage_id, username, user_email) -%}
     <script id="_webengage_script_tag" type="text/javascript">
         var webengage;
+        var _we_category_field = {
+            'name' : 'קטגוריה',
+            // 'options' : ['בעיה', 'הצעה', 'אהבתי']
+        };
         ! function(w, e, b, n, g) {
             function o(e, t) {
                 e[t[t.length - 1]] = function() {
@@ -41,11 +45,7 @@
                     }, {
                         'name' : 'שם',
                         'value' : ''
-                    // },
-                    // {
-                    //     'name' : 'קטגוריה',
-                    //     'options' : ['בעיה', 'הצעה', 'אהבתי']
-                    }
+                    }, _we_category_field
                 ]);
     </script>
 {%- endmacro %}
